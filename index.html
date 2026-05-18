@@ -247,7 +247,7 @@ header::after {
 .messages::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
 
 /* WELCOME */
-.welcome { text-align: center; padding: 24px 16px; animation: fadeUp 0.5s ease both; }
+.welcome { text-align: center; padding: 16px 12px; animation: fadeUp 0.5s ease both; }
 @keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:none} }
 .welcome-emoji { font-size: 52px; display: block; margin-bottom: 12px; animation: swing 3s ease-in-out infinite; }
 @keyframes swing { 0%,100%{transform:rotate(-8deg)} 50%{transform:rotate(8deg)} }
@@ -291,16 +291,17 @@ header::after {
 }
 .char-card.judgy .char-card-tag { background: rgba(232,48,42,0.15); color: var(--red2); }
 .char-card.barry .char-card-tag { background: rgba(122,155,255,0.15); color: #7b9fff; }
-.starters { display: grid; grid-template-columns: repeat(2,1fr); gap: 8px; max-width: 520px; margin: 0 auto; }
+.starters { display: grid; grid-template-columns: repeat(2,1fr); gap: 6px; max-width: 480px; margin: 0 auto; }
 .starter {
   background: var(--card); border: 1px solid var(--border);
   border-radius: 10px; padding: 11px 13px;
   text-align: left; cursor: pointer; transition: all 0.15s;
-  font-family: var(--sans);
+  font-family: var(--sans); display: flex; align-items: flex-start;
+  gap: 8px;
 }
 .starter:hover { border-color: var(--red); transform: translateY(-1px); }
 .starter.barry-s:hover { border-color: #7b9fff; }
-.starter-e { font-size: 16px; margin-bottom: 4px; display: block; }
+.starter-e { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
 .starter-t { font-size: 12px; color: var(--text2); line-height: 1.4; }
 
 /* MESSAGES */
@@ -557,17 +558,17 @@ header::after {
     </div>
     <div class="header-right">
       <div class="rage-wrap">
-        <span class="rage-label">Rage</span>
+        <span class="rage-label" style="display:none;">Rage</span>
         <div class="rage-pips" id="ragePips">
           <div class="rage-pip"></div><div class="rage-pip"></div>
           <div class="rage-pip"></div><div class="rage-pip"></div>
           <div class="rage-pip"></div>
         </div>
       </div>
-      <button class="theme-btn" onclick="newCase()" title="New case" style="font-size:13px;width:auto;padding:0 10px;gap:4px;display:flex;align-items:center;">
+      <button class="theme-btn" onclick="toggleTheme()" id="themeBtn" title="Toggle theme" style="font-size:16px;">🌙</button>
+      <button class="theme-btn" onclick="newCase()" title="New case" style="font-size:13px;width:auto;padding:0 10px;gap:4px;display:flex;align-items:center;white-space:nowrap;">
         🔄 <span style="font-size:11px;font-weight:500;">New</span>
       </button>
-      <button class="theme-btn" onclick="toggleTheme()" id="themeBtn" title="Toggle theme">🌙</button>
     </div>
   </header>
 
@@ -1312,10 +1313,21 @@ async function sendMessage() {
   input.focus();
 }
 
+// ── PASTE YOUR ANTHROPIC API KEY BELOW ──────────────────────
+// Get it from: console.anthropic.com → API Keys
+// FORMAT: 'sk-ant-api03-...'
+// ⚠️ Move to Supabase Edge Function before going fully public
+const ANTHROPIC_KEY = 'YOUR_ANTHROPIC_API_KEY_HERE';
+
 async function callClaude(system, userMsg) {
   const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': ANTHROPIC_KEY,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true',
+    },
     body: JSON.stringify({
       model: 'claude-sonnet-4-6',
       max_tokens: 600,
@@ -1325,7 +1337,7 @@ async function callClaude(system, userMsg) {
   });
   const data = await res.json();
   if (data.content?.[0]?.text) return data.content[0].text;
-  throw new Error('No response');
+  throw new Error(data.error?.message || 'No response');
 }
 
 // ── LEGAL FORMS ────────────────────────────────────────────
