@@ -21,17 +21,30 @@
   --overlay:  rgba(0,0,0,0.7);
 }
 [data-theme="light"] {
-  --bg:       #f5f3ee;
-  --bg2:      #ede9e0;
+  --bg:       #f0ede6;
+  --bg2:      #e4dfd6;
   --card:     #ffffff;
-  --card2:    #f9f7f3;
-  --border:   rgba(0,0,0,0.08);
-  --border2:  rgba(0,0,0,0.14);
-  --text:     #1a1820;
-  --text2:    #5a5470;
-  --text3:    #9896a8;
-  --shadow:   rgba(0,0,0,0.12);
-  --overlay:  rgba(0,0,0,0.4);
+  --card2:    #f5f2ed;
+  --border:   rgba(0,0,0,0.12);
+  --border2:  rgba(0,0,0,0.2);
+  --text:     #0f0e14;
+  --text2:    #2a2838;
+  --text3:    #6b6880;
+  --shadow:   rgba(0,0,0,0.15);
+  --overlay:  rgba(0,0,0,0.45);
+}
+[data-theme="medium"] {
+  --bg:       #1e1c28;
+  --bg2:      #252333;
+  --card:     #2e2b3e;
+  --card2:    #353248;
+  --border:   rgba(255,255,255,0.09);
+  --border2:  rgba(255,255,255,0.16);
+  --text:     #f0eff6;
+  --text2:    #b8b6cc;
+  --text3:    #7a7890;
+  --shadow:   rgba(0,0,0,0.4);
+  --overlay:  rgba(0,0,0,0.6);
 }
 :root {
   --red:      #e8302a;
@@ -242,19 +255,42 @@ header::after {
 .welcome h2 .red { color: var(--red); }
 .welcome h2 .navy { color: #7b9fff; }
 .welcome p { font-size: 14px; color: var(--text2); line-height: 1.6; max-width: 440px; margin: 0 auto 20px; font-weight: 300; }
-.char-duo { display: flex; gap: 10px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
+.char-duo { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 420px; margin: 0 auto 20px; }
 .char-card {
-  background: var(--card); border: 1px solid var(--border);
-  border-radius: 12px; padding: 12px 16px; text-align: center;
-  min-width: 130px;
+  background: var(--card); border: 2px solid var(--border);
+  border-radius: 14px; padding: 16px 12px; text-align: center;
+  min-width: 0; cursor: pointer; transition: all 0.2s;
+  position: relative; overflow: hidden;
 }
+.char-card::after {
+  content: 'Chat with me only →';
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: rgba(0,0,0,0.7); color: white;
+  font-size: 10px; padding: 5px; font-family: var(--sans);
+  transform: translateY(100%); transition: transform 0.2s;
+  font-weight: 500;
+}
+.char-card:hover::after { transform: translateY(0); }
+.char-card:hover { transform: translateY(-3px); }
 .char-card.judgy { border-color: rgba(232,48,42,0.3); }
 .char-card.barry { border-color: rgba(122,155,255,0.3); }
-.char-card-emoji { font-size: 24px; margin-bottom: 4px; }
-.char-card-name { font-family: var(--display); font-size: 16px; letter-spacing: 1px; }
+.char-card.judgy:hover { border-color: var(--red); box-shadow: 0 8px 24px rgba(232,48,42,0.2); }
+.char-card.barry:hover { border-color: #7b9fff; box-shadow: 0 8px 24px rgba(122,155,255,0.2); }
+.char-card.selected-char { border-width: 2px; }
+.char-card.judgy.selected-char { border-color: var(--red); background: rgba(232,48,42,0.08); }
+.char-card.barry.selected-char { border-color: #7b9fff; background: rgba(122,155,255,0.08); }
+.char-card-emoji { font-size: 28px; margin-bottom: 6px; }
+.char-card-name { font-family: var(--display); font-size: 18px; letter-spacing: 1px; }
 .char-card.judgy .char-card-name { color: var(--red2); }
 .char-card.barry .char-card-name { color: #7b9fff; }
-.char-card-desc { font-size: 11px; color: var(--text3); margin-top: 3px; line-height: 1.4; }
+.char-card-desc { font-size: 11px; color: var(--text3); margin-top: 4px; line-height: 1.4; }
+.char-card-tag {
+  display: inline-block; font-size: 9px; margin-top: 6px;
+  padding: 2px 8px; border-radius: 10px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+.char-card.judgy .char-card-tag { background: rgba(232,48,42,0.15); color: var(--red2); }
+.char-card.barry .char-card-tag { background: rgba(122,155,255,0.15); color: #7b9fff; }
 .starters { display: grid; grid-template-columns: repeat(2,1fr); gap: 8px; max-width: 520px; margin: 0 auto; }
 .starter {
   background: var(--card); border: 1px solid var(--border);
@@ -278,8 +314,9 @@ header::after {
 .msg.judgy .msg-av { background: linear-gradient(135deg,var(--red),#8b0000); box-shadow: 0 3px 10px rgba(232,48,42,0.25); }
 .msg.barry .msg-av { background: linear-gradient(135deg,var(--navy),var(--navy2)); box-shadow: 0 3px 10px rgba(26,39,68,0.4); }
 .msg.user .msg-av { background: var(--card2); border: 1px solid var(--border2); }
-.msg-wrap { max-width: 74%; display: flex; flex-direction: column; gap: 3px; }
+.msg-wrap { max-width: 78%; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
 .msg.user .msg-wrap { align-items: flex-end; }
+.msg.judgy, .msg.barry { justify-content: flex-start; }
 .msg-name { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.8px; padding: 0 4px; }
 .msg.judgy .msg-name { color: var(--red2); }
 .msg.barry .msg-name { color: #7b9fff; }
@@ -291,6 +328,7 @@ header::after {
 .msg.judgy .msg-bubble {
   background: var(--card); border: 1px solid var(--border);
   border-top-left-radius: 4px;
+  color: var(--text);
 }
 .msg.judgy .msg-bubble::before {
   content: ''; position: absolute; left: -1px; top: 0; bottom: 0;
@@ -299,6 +337,7 @@ header::after {
 .msg.barry .msg-bubble {
   background: var(--card); border: 1px solid var(--border);
   border-top-left-radius: 4px;
+  color: var(--text);
 }
 .msg.barry .msg-bubble::before {
   content: ''; position: absolute; left: -1px; top: 0; bottom: 0;
@@ -453,10 +492,13 @@ header::after {
   </div>
 
   <div class="sidebar-section">
-    <div class="sidebar-label">Characters</div>
+    <div class="sidebar-label">Session</div>
     <div class="sidebar-item active" onclick="setView('chat',this)">
       <span class="si-icon">⚖️</span> The Judgy + Barry
       <span class="si-badge">LIVE</span>
+    </div>
+    <div class="sidebar-item" onclick="newCase(); closeSidebar()">
+      <span class="si-icon">🔄</span> New case
     </div>
   </div>
 
@@ -522,6 +564,9 @@ header::after {
           <div class="rage-pip"></div>
         </div>
       </div>
+      <button class="theme-btn" onclick="newCase()" title="New case" style="font-size:13px;width:auto;padding:0 10px;gap:4px;display:flex;align-items:center;">
+        🔄 <span style="font-size:11px;font-weight:500;">New</span>
+      </button>
       <button class="theme-btn" onclick="toggleTheme()" id="themeBtn" title="Toggle theme">🌙</button>
     </div>
   </header>
@@ -546,15 +591,23 @@ header::after {
       <h2>THE <span class="red">JUDGY</span> & <span class="navy">BARRY</span></h2>
       <p>Brutally honest advice from the sharpest tongue in the courtroom and her surprisingly competent ex-husband lawyer.</p>
       <div class="char-duo">
-        <div class="char-card judgy">
+        <div class="char-card judgy" id="charJudgy" onclick="selectChar('judgy')">
           <div class="char-card-emoji">⚖️</div>
           <div class="char-card-name">JUDGY</div>
           <div class="char-card-desc">Roasts you. Loves you.<br>Tells the truth anyway.</div>
+          <div class="char-card-tag">Life · Love · Work</div>
         </div>
-        <div class="char-card barry">
+        <div class="char-card barry" id="charBarry" onclick="selectChar('barry')">
           <div class="char-card-emoji">👔</div>
           <div class="char-card-name">BARRY</div>
           <div class="char-card-desc">Legal & business advice.<br>Still wears that suit.</div>
+          <div class="char-card-tag">Legal · Business · Tax</div>
+        </div>
+      </div>
+      <div id="charModeBar" style="display:none;margin-bottom:16px;max-width:420px;margin-left:auto;margin-right:auto;">
+        <div style="background:var(--card);border:1px solid var(--border2);border-radius:10px;padding:8px 14px;display:flex;align-items:center;justify-content:space-between;font-size:12px;">
+          <span id="charModeLabel" style="color:var(--text2);"></span>
+          <button onclick="selectChar('both')" style="font-size:11px;padding:3px 10px;border-radius:6px;background:var(--card2);border:1px solid var(--border2);color:var(--text2);cursor:pointer;font-family:var(--sans);">← Both</button>
         </div>
       </div>
       <div class="starters">
@@ -858,6 +911,7 @@ header::after {
 <script>
 // ── STATE ──────────────────────────────────────────────────
 let topic = 'general';
+let charMode = 'both'; // 'both' | 'judgy' | 'barry'
 let isDark = true;
 let msgCount = 0;
 let isThinking = false;
@@ -875,12 +929,20 @@ function closeSidebar() {
 }
 
 // ── THEME ──────────────────────────────────────────────────
+const themes = ['dark', 'medium', 'light'];
+const themeIcons = { dark: '🌙', medium: '🌆', light: '☀️' };
+const themeLabels = { dark: 'Dark', medium: 'Medium', light: 'Light' };
+let themeIndex = 0;
+
 function toggleTheme() {
-  isDark = !isDark;
-  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-  document.getElementById('themeBtn').textContent = isDark ? '🌙' : '☀️';
+  themeIndex = (themeIndex + 1) % 3;
+  const t = themes[themeIndex];
+  isDark = t === 'dark';
+  document.documentElement.setAttribute('data-theme', t);
+  document.getElementById('themeBtn').textContent = themeIcons[t];
+  document.getElementById('themeBtnLabel') && (document.getElementById('themeBtnLabel').textContent = themeLabels[t]);
   const st = document.getElementById('sidebarThemeToggle');
-  st.classList.toggle('on', !isDark);
+  st.classList.toggle('on', t !== 'dark');
 }
 
 // ── PAGES ──────────────────────────────────────────────────
@@ -1061,6 +1123,80 @@ PERSONALITY:
 No verdict line needed — just a short clap back.`;
 
 // ── MAIN SEND ──────────────────────────────────────────────
+function newCase() {
+  // Clear all messages and restore welcome screen
+  const msgs = document.getElementById('messages');
+  msgs.innerHTML = `
+    <div class="welcome" id="welcome">
+      <span class="welcome-emoji">⚖️</span>
+      <h2>THE <span class="red">JUDGY</span> & <span class="navy">BARRY</span></h2>
+      <p>Brutally honest advice from the sharpest tongue in the courtroom and her surprisingly competent ex-husband lawyer.</p>
+      <div class="char-duo">
+        <div class="char-card judgy" id="charJudgy" onclick="selectChar('judgy')">
+          <div class="char-card-emoji">⚖️</div>
+          <div class="char-card-name">JUDGY</div>
+          <div class="char-card-desc">Roasts you. Loves you.<br>Tells the truth anyway.</div>
+          <div class="char-card-tag">Life · Love · Work</div>
+        </div>
+        <div class="char-card barry" id="charBarry" onclick="selectChar('barry')">
+          <div class="char-card-emoji">👔</div>
+          <div class="char-card-name">BARRY</div>
+          <div class="char-card-desc">Legal & business advice.<br>Still wears that suit.</div>
+          <div class="char-card-tag">Legal · Business · Tax</div>
+        </div>
+      </div>
+      <div id="charModeBar" style="display:none;margin-bottom:16px;max-width:420px;margin-left:auto;margin-right:auto;">
+        <div style="background:var(--card);border:1px solid var(--border2);border-radius:10px;padding:8px 14px;display:flex;align-items:center;justify-content:space-between;font-size:12px;">
+          <span id="charModeLabel" style="color:var(--text2);"></span>
+          <button onclick="selectChar('both')" style="font-size:11px;padding:3px 10px;border-radius:6px;background:var(--card2);border:1px solid var(--border2);color:var(--text2);cursor:pointer;font-family:var(--sans);">← Both</button>
+        </div>
+      </div>
+      <div class="starters">
+        <button class="starter" onclick="useStarter(this)"><span class="starter-e">💔</span><span class="starter-t">My ex wants to get back together but they cheated on me</span></button>
+        <button class="starter barry-s" onclick="useStarter(this)"><span class="starter-e">👔</span><span class="starter-t">I want to start an LLC — where do I begin?</span></button>
+        <button class="starter" onclick="useStarter(this)"><span class="starter-e">🤝</span><span class="starter-t">My coworker keeps stealing my ideas in meetings</span></button>
+        <button class="starter barry-s" onclick="useStarter(this)"><span class="starter-e">📋</span><span class="starter-t">I need a simple demand letter for money owed to me</span></button>
+      </div>
+    </div>`;
+  // Reset state
+  msgCount = 0;
+  charMode = 'both';
+  document.querySelectorAll('.rage-pip').forEach(p => p.classList.remove('on'));
+  document.getElementById('chatInput').value = '';
+  document.getElementById('chatInput').placeholder = 'State your case... ⚖️';
+  autoResize(document.getElementById('chatInput'));
+}
+
+function selectChar(mode) {
+  charMode = mode;
+  // Update card styles
+  document.getElementById('charJudgy')?.classList.toggle('selected-char', mode === 'judgy');
+  document.getElementById('charBarry')?.classList.toggle('selected-char', mode === 'barry');
+  
+  const bar = document.getElementById('charModeBar');
+  const lbl = document.getElementById('charModeLabel');
+  
+  if (mode === 'both') {
+    if (bar) bar.style.display = 'none';
+    document.getElementById('charJudgy')?.classList.remove('selected-char');
+    document.getElementById('charBarry')?.classList.remove('selected-char');
+  } else {
+    if (bar) bar.style.display = 'block';
+    if (lbl) lbl.textContent = mode === 'judgy' 
+      ? '⚖️ Chatting with Judgy only' 
+      : '👔 Chatting with Barry only';
+    // Update input placeholder
+    const input = document.getElementById('chatInput');
+    if (input) input.placeholder = mode === 'judgy' 
+      ? 'Tell Judgy your situation... ⚖️' 
+      : 'Ask Barry a legal or business question... 👔';
+  }
+  
+  // If welcome still showing, scroll to input
+  const chatInput = document.getElementById('chatInput');
+  if (chatInput) chatInput.focus();
+}
+
 async function sendMessage() {
   const input = document.getElementById('chatInput');
   const text = input.value.trim();
@@ -1071,7 +1207,49 @@ async function sendMessage() {
   isThinking = true;
   document.getElementById('sendBtn').disabled = true;
 
-  const barrySituation = isLegalOrBusiness(text);
+  // Respect character mode selection
+  const barrySituation = charMode === 'barry' || (charMode === 'both' && isLegalOrBusiness(text));
+  const judgyOnly = charMode === 'judgy';
+
+  if (judgyOnly) {
+    // JUDGY ONLY MODE
+    showTyping('judgy');
+    try {
+      const topicCtx = { relationship:'relationship issue', work:'work situation', coworker:'coworker drama', personal:'personal growth', family:'family situation', general:'' };
+      const judgyRes = await callClaude(
+        JUDGY_PROMPT + (topicCtx[topic] ? `\n\nContext: This is a ${topicCtx[topic]}.` : ''),
+        text
+      );
+      removeTyping('judgy');
+      const { body: judgyBody, verdict: judgyVerdict } = parseVerdict(judgyRes, '⚖️ VERDICT:');
+      addMsg('judgy', formatResponse(judgyBody), judgyVerdict);
+    } catch(e) {
+      removeTyping('judgy');
+      addMsg('judgy', "Court is experiencing technical difficulties. Try again.", '⚖️ VERDICT: Case postponed.');
+    }
+    isThinking = false;
+    document.getElementById('sendBtn').disabled = false;
+    input.focus();
+    return;
+  }
+
+  if (charMode === 'barry') {
+    // BARRY ONLY MODE
+    showTyping('barry');
+    try {
+      const barryRes = await callClaude(BARRY_PROMPT, text);
+      removeTyping('barry');
+      const { body: barryBody, verdict: barryVerdict } = parseVerdict(barryRes, '📋 RULING:');
+      addMsg('barry', formatResponse(barryBody), barryVerdict, true);
+    } catch(e) {
+      removeTyping('barry');
+      addMsg('barry', "Connection dropped. Barry T. Lawson, Esq.", '📋 RULING: Try again.', true);
+    }
+    isThinking = false;
+    document.getElementById('sendBtn').disabled = false;
+    input.focus();
+    return;
+  }
 
   if (barrySituation) {
     // BARRY leads on legal/business
