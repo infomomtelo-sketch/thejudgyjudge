@@ -1313,31 +1313,18 @@ async function sendMessage() {
   input.focus();
 }
 
-// ── PASTE YOUR ANTHROPIC API KEY BELOW ──────────────────────
-// Get it from: console.anthropic.com → API Keys
-// FORMAT: 'sk-ant-api03-...'
-// ⚠️ Move to Supabase Edge Function before going fully public
-const ANTHROPIC_KEY = 'YOUR_ANTHROPIC_API_KEY_HERE';
+// ── SUPABASE EDGE FUNCTION — KEY IS SAFE ────────────────────
+const JUDGY_FN_URL = 'https://dmemzljerldzeiwqfxzp.supabase.co/functions/v1/judgy-chat';
 
 async function callClaude(system, userMsg) {
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
+  const res = await fetch(JUDGY_FN_URL, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': ANTHROPIC_KEY,
-      'anthropic-version': '2023-06-01',
-      'anthropic-dangerous-direct-browser-access': 'true',
-    },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-6',
-      max_tokens: 600,
-      system,
-      messages: [{ role: 'user', content: userMsg }]
-    })
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ system, userMessage: userMsg })
   });
   const data = await res.json();
-  if (data.content?.[0]?.text) return data.content[0].text;
-  throw new Error(data.error?.message || 'No response');
+  if (data.text) return data.text;
+  throw new Error(data.error || 'No response');
 }
 
 // ── LEGAL FORMS ────────────────────────────────────────────
