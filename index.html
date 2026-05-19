@@ -1314,7 +1314,7 @@ async function sendMessage() {
 }
 
 // ── SUPABASE EDGE FUNCTION — KEY IS SAFE ────────────────────
-const JUDGY_FN_URL = 'https://dmemzljerldzeiwqfxzp.supabase.co/functions/v1/judgy-chat';
+const JUDGY_FN_URL = 'https://dmemzljerldzeiwqfxzp.supabase.co/functions/v1/judgy-chat-v2-ts';
 
 async function callClaude(system, userMsg) {
   const res = await fetch(JUDGY_FN_URL, {
