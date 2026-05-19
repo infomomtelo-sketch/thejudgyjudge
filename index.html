@@ -565,6 +565,7 @@ header::after {
           <div class="rage-pip"></div>
         </div>
       </div>
+      <button class="theme-btn" onclick="toggleJudgySound()" id="judgySoundBtn" title="Toggle sound" style="font-size:16px;">🔊</button>
       <button class="theme-btn" onclick="toggleTheme()" id="themeBtn" title="Toggle theme" style="font-size:16px;">🌙</button>
       <button class="theme-btn" onclick="newCase()" title="New case" style="font-size:13px;width:auto;padding:0 10px;gap:4px;display:flex;align-items:center;white-space:nowrap;">
         🔄 <span style="font-size:11px;font-weight:500;">New</span>
@@ -959,10 +960,32 @@ function setView(v, el) {
 }
 
 // ── TOPICS ─────────────────────────────────────────────────
+let judgySoundOn = true;
+function toggleJudgySound() {
+  judgySoundOn = !judgySoundOn;
+  document.getElementById('judgySoundBtn').textContent = judgySoundOn ? '🔊' : '🔇';
+}
+
+const topicPlaceholders = {
+  general:      'State your case... ⚖️',
+  relationship: 'My ex wants to get back together but they cheated on me...',
+  work:         'My boss takes credit for my work in every meeting...',
+  coworker:     'My coworker does nothing but gets the same pay as me...',
+  personal:     'I keep self-sabotaging every good thing in my life...',
+  family:       'My parents keep comparing me to my sibling...',
+  legal:        'Ask Barry a legal question...',
+  business:     'Ask Barry about starting or growing a business...',
+  money:        'Someone owes me money and keeps avoiding me...',
+};
+
 function setTopic(btn, t) {
   document.querySelectorAll('.topic-pill').forEach(p => p.classList.remove('active'));
   btn.classList.add('active');
   topic = t;
+  const input = document.getElementById('chatInput');
+  if (input) {
+    input.placeholder = topicPlaceholders[t] || 'State your case... ⚖️';
+  }
 }
 function quickTopic(t) {
   topic = t;
@@ -1203,6 +1226,7 @@ async function sendMessage() {
   const text = input.value.trim();
   if (!text || isThinking) return;
   input.value = ''; autoResize(input);
+  lastJudgyMsg = text;
   addMsg('user', text);
   updateRage();
   isThinking = true;
