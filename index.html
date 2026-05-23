@@ -4,8 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Judgy — Brutally Honest AI Advice</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://js.stripe.com/v3/"></script>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
 <style>
 /* ── THEME TOKENS ─────────────────────────────────────────── */
@@ -1223,6 +1221,7 @@ header::after {
 </div>
 
 <script>
+
 // ── YOUR BUILDS — recommended by Judgy & Barry ─────────────
 const MY_BUILDS = [
   {
@@ -1303,7 +1302,7 @@ const FOLLOW_UPS = {
   relationship: [
     { emoji: '💔', text: 'Do I need to cut them off completely?' },
     { emoji: '🤔', text: 'How do I know if I should stay or leave?' },
-    { emoji: '😤', text: 'They keep apologizing — should I believe them?' },
+    { emoji: '😤', text: "They keep apologizing — should I believe them?" },
     { emoji: '❤️‍🩹', text: 'How do I actually heal from this?' },
   ],
   work: [
@@ -1314,9 +1313,9 @@ const FOLLOW_UPS = {
   ],
   coworker: [
     { emoji: '🗣️', text: 'Should I go to HR or handle it directly?' },
-    { emoji: '📸', text: 'How do I document what they're doing?' },
-    { emoji: '🤝', text: 'Can we fix this or is it too far gone?' },
-    { emoji: '🚪', text: 'Is this a sign I need a new job?' },
+    { emoji: '📸', text: "How do I document what they're doing?" },
+    { emoji: '🤝', text: "Can we fix this or is it too far gone?" },
+    { emoji: '🚪', text: "Is this a sign I need a new job?" },
   ],
   legal: [
     { emoji: '📋', text: 'Can you draft a simple demand letter for me?' },
@@ -1327,7 +1326,7 @@ const FOLLOW_UPS = {
   business: [
     { emoji: '🏢', text: 'Should I form an LLC or stay a sole proprietor?' },
     { emoji: '💰', text: 'How do I price my services?' },
-    { emoji: '📣', text: 'What's the fastest way to get my first client?' },
+    { emoji: '📣', text: "What's the fastest way to get my first client?" },
     { emoji: '🌐', text: 'Do I need a website right now?' },
   ],
   money: [
@@ -1338,7 +1337,7 @@ const FOLLOW_UPS = {
   ],
   family: [
     { emoji: '🗣️', text: 'How do I set boundaries without destroying the relationship?' },
-    { emoji: '💔', text: 'Is it okay to cut off family?' },
+    { emoji: '💔', text: "Is it okay to cut off family?" },
     { emoji: '🤝', text: 'How do I have this conversation?' },
     { emoji: '🧠', text: 'Am I the problem here?' },
   ],
@@ -1350,9 +1349,9 @@ const FOLLOW_UPS = {
   ],
   general: [
     { emoji: '🔍', text: 'Tell me more specifically what I should do first' },
-    { emoji: '⚖️', text: 'What's the harshest truth about my situation?' },
-    { emoji: '🤔', text: 'What am I missing that I can't see myself?' },
-    { emoji: '💪', text: 'What's one thing I can do right now?' },
+    { emoji: '⚖️', text: "What's the harshest truth about my situation?" },
+    { emoji: '🤔', text: "What am I missing that I can't see myself?" },
+    { emoji: '💪', text: "What's one thing I can do right now?" },
   ],
 };
 
@@ -1385,10 +1384,7 @@ const THEME_LBLS  = { dark: 'Dark mode', medium: 'Medium mode', light: 'Light mo
 let themeIndex    = 0;
 
 // ── INIT ───────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
-  renderWelcome();
-  promptForKey();
-});
+// ← DOMContentLoaded moved to bottom
 
 // ── SIDEBAR ────────────────────────────────────────────────
 function openSidebar() {
@@ -2175,8 +2171,7 @@ const STRIPE_PUB_KEY    = 'YOUR_STRIPE_PUBLISHABLE_KEY'; // ← paste from Strip
 const STRIPE_PRICE_ID   = 'price_1TZgyMPyqn30Gz280fSPInVq';
 const FREE_MSG_LIMIT    = 5;
 
-// Supabase client
-const _sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// _sb initialized lazily in initAuth() above
 
 // App auth state
 let _user       = null;   // supabase user object
@@ -2184,39 +2179,54 @@ let _isPro      = false;  // has active subscription
 let _freeUsed   = 0;      // messages used on free tier (persisted in localStorage)
 let _authMode   = 'signin'; // 'signin' | 'signup'
 
-// ── INIT AUTH ──────────────────────────────────────────────
-(async function initAuth() {
-  // Restore free count from localStorage
-  _freeUsed = parseInt(localStorage.getItem('judgy_free_used') || '0', 10);
+// ── INIT AUTH — lazy, safe, won't crash if SDKs not loaded ──
+let _sb = null;
+
+function loadSupabase() {
+  if (_sb) return true;
+  if (typeof supabase === 'undefined') return false;
+  try {
+    _sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    return true;
+  } catch(e) { return false; }
+}
+
+async function initAuth() {
+  // Restore free count safely
+  try {
+    _freeUsed = parseInt(localStorage.getItem('judgy_free_used') || '0', 10);
+  } catch(e) { _freeUsed = 0; }
   updateFreeBadge();
 
-  // Listen for auth state changes
+  if (!loadSupabase()) {
+    // SDKs not available (sandbox/preview) — show login btn, skip auth
+    updateAuthUI();
+    return;
+  }
+
   _sb.auth.onAuthStateChange(async (event, session) => {
     if (session?.user) {
       _user = session.user;
       await checkSubscription();
       updateAuthUI();
     } else {
-      _user   = null;
-      _isPro  = false;
+      _user = null; _isPro = false;
       updateAuthUI();
     }
   });
 
-  // Get initial session
-  const { data: { session } } = await _sb.auth.getSession();
-  if (session?.user) {
-    _user = session.user;
-    await checkSubscription();
-  }
+  try {
+    const { data: { session } } = await _sb.auth.getSession();
+    if (session?.user) { _user = session.user; await checkSubscription(); }
+  } catch(e) {}
   updateAuthUI();
-})();
+}
 
 // ── CHECK SUBSCRIPTION via Supabase ───────────────────────
 // Expects a 'subscriptions' table in Supabase with columns:
 // user_id, status ('active'|'trialing'), price_id
 async function checkSubscription() {
-  if (!_user) { _isPro = false; return; }
+  if (!_user || !_sb) { _isPro = false; return; }
   try {
     const { data } = await _sb
       .from('subscriptions')
@@ -2326,6 +2336,7 @@ async function doAuth() {
   const name  = document.getElementById('authName')?.value.trim() || '';
   const btn   = document.getElementById('authSubmitBtn');
 
+  if (!loadSupabase()) { setAuthMsg('Auth service unavailable. Deploy to your live site to use auth.'); return; }
   if (!email || !pass) { setAuthMsg('Please fill in all fields.'); return; }
   if (pass.length < 6) { setAuthMsg('Password must be at least 6 characters.'); return; }
 
@@ -2355,6 +2366,7 @@ async function doAuth() {
 }
 
 async function doOAuth(provider) {
+  if (!loadSupabase()) { setAuthMsg('Auth service unavailable. Deploy to your live site to use auth.'); return; }
   const { error } = await _sb.auth.signInWithOAuth({
     provider,
     options: {
@@ -2369,6 +2381,7 @@ async function doOAuth(provider) {
 async function doForgotPassword() {
   const email = document.getElementById('authEmail').value.trim();
   if (!email) { setAuthMsg('Enter your email address first.'); return; }
+  if (!loadSupabase()) { setAuthMsg('Auth service unavailable. Deploy to your live site.'); return; }
   const { error } = await _sb.auth.resetPasswordForEmail(email, {
     redirectTo: window.location.href + '?reset=true'
   });
@@ -2381,7 +2394,7 @@ async function doForgotPassword() {
 
 async function signOut() {
   closeAcctMenu();
-  await _sb.auth.signOut();
+  if (_sb) await _sb.auth.signOut();
   _user  = null;
   _isPro = false;
   updateAuthUI();
@@ -2432,6 +2445,7 @@ async function startCheckout() {
   try {
     // Call your Supabase Edge Function to create a Stripe Checkout Session
     // Deploy: supabase/functions/create-checkout/index.ts
+    if (!loadSupabase()) throw new Error('Supabase SDK not loaded');
     const { data, error } = await _sb.functions.invoke('create-checkout', {
       body: {
         priceId:    STRIPE_PRICE_ID,
@@ -2450,23 +2464,50 @@ async function startCheckout() {
   }
 }
 
-// Handle redirect back from Stripe
-(function checkStripeReturn() {
-  const params = new URLSearchParams(window.location.search);
-  if (params.get('checkout') === 'success') {
-    history.replaceState({}, '', window.location.pathname);
-    setTimeout(async () => {
-      await checkSubscription();
-      updateAuthUI();
-      // Show success toast
-      const toast = document.createElement('div');
-      toast.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#22c55e;color:white;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:500;z-index:999;box-shadow:0 4px 20px rgba(0,0,0,0.3);';
-      toast.textContent = '🎉 Welcome to Pro! Court is fully in session.';
-      document.body.appendChild(toast);
-      setTimeout(() => toast.remove(), 4000);
-    }, 1000);
+// ← stripe return check moved to DOMContentLoaded
+
+
+// ── BOOT — everything runs after DOM is ready ──────────────
+document.addEventListener('DOMContentLoaded', function() {
+
+  // 1. Render welcome screen first — always works, no dependencies
+  renderWelcome();
+
+  // 2. Prompt for API key
+  promptForKey();
+
+  // 3. Check Stripe return (safe - no SDK needed)
+  try {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('checkout') === 'success') {
+      history.replaceState({}, '', window.location.pathname);
+      setTimeout(async function() {
+        await checkSubscription();
+        updateAuthUI();
+        const toast = document.createElement('div');
+        toast.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#22c55e;color:white;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:500;z-index:999;box-shadow:0 4px 20px rgba(0,0,0,0.3);';
+        toast.textContent = '🎉 Welcome to Pro! Court is fully in session.';
+        document.body.appendChild(toast);
+        setTimeout(function() { toast.remove(); }, 4000);
+      }, 1000);
+    }
+  } catch(e) {}
+
+  // 4. Load external SDKs last — failure here never blocks the UI
+  function loadScript(src, cb) {
+    var s = document.createElement('script');
+    s.src = src; s.async = true;
+    s.onload = cb || function(){};
+    s.onerror = function() { console.warn('SDK not available (sandbox/offline):', src); };
+    document.head.appendChild(s);
   }
-})();
+
+  loadScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2', function() {
+    loadScript('https://js.stripe.com/v3/', function() {
+      initAuth();
+    });
+  });
+});
 
 </script>
 
