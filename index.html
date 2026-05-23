@@ -522,55 +522,6 @@ header::after {
   .char-duo { grid-template-columns: 1fr; max-width: 240px; }
 }
 
-/* ── API KEY MODAL ────────────────────────────────────────── */
-.key-modal-bg {
-  position: fixed; inset: 0; background: var(--overlay);
-  z-index: 500; display: flex; align-items: center; justify-content: center;
-  opacity: 0; pointer-events: none; transition: opacity 0.25s;
-  padding: 20px;
-}
-.key-modal-bg.open { opacity: 1; pointer-events: all; }
-.key-modal {
-  background: var(--card); border: 1px solid var(--border2);
-  border-radius: 18px; padding: 28px 24px; width: 100%; max-width: 420px;
-  box-shadow: 0 20px 60px var(--shadow);
-  transform: translateY(20px); transition: transform 0.25s;
-}
-.key-modal-bg.open .key-modal { transform: translateY(0); }
-.key-modal-logo { font-family: var(--display); font-size: 26px; letter-spacing: 2px; margin-bottom: 6px; }
-.key-modal-logo .red { color: var(--red); }
-.key-modal h3 { font-family: var(--serif); font-size: 17px; margin-bottom: 8px; color: var(--text); }
-.key-modal p { font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 16px; }
-.key-modal p a { color: #7b9fff; text-decoration: none; }
-.key-modal p a:hover { text-decoration: underline; }
-.key-input-wrap {
-  display: flex; gap: 8px; margin-bottom: 8px;
-}
-.key-input {
-  flex: 1; padding: 10px 12px; border-radius: 9px;
-  border: 1px solid var(--border2); background: var(--bg);
-  color: var(--text); font-family: var(--sans); font-size: 13px;
-  outline: none; transition: border-color 0.15s;
-  font-family: monospace;
-}
-.key-input:focus { border-color: var(--red); }
-.key-save-btn {
-  padding: 10px 18px; border-radius: 9px;
-  background: var(--red); border: none; color: white;
-  font-size: 13px; font-family: var(--sans); font-weight: 500;
-  cursor: pointer; transition: background 0.15s; white-space: nowrap;
-}
-.key-save-btn:hover { background: var(--red2); }
-.key-error {
-  display: none; font-size: 11px; color: var(--red2); margin-bottom: 8px;
-}
-.key-note {
-  font-size: 11px; color: var(--text3); line-height: 1.5;
-  padding: 8px 10px; background: var(--bg); border-radius: 7px;
-  border: 1px solid var(--border);
-}
-.key-note strong { color: var(--text2); }
-
 /* ── AUTH MODAL ───────────────────────────────────────────── */
 .auth-modal-bg {
   position: fixed; inset: 0; background: var(--overlay);
@@ -1852,27 +1803,7 @@ async function sendMessage() {
   } catch (e) {
     removeTyping('judgy');
     removeTyping('barry');
-    if (e.message === 'NO_KEY') {
-      _pendingRetry = () => {
-        const input2 = document.getElementById('chatInput');
-        input2.value = text;
-        onInputChange(input2);
-        if (conversationHistory.length && conversationHistory[conversationHistory.length-1].role === 'user')
-          conversationHistory.pop();
-        const msgs2 = document.getElementById('messages');
-        const allUser = msgs2.querySelectorAll('.msg.user');
-        if (allUser.length) allUser[allUser.length-1].remove();
-        isThinking = false;
-        document.getElementById('sendBtn').disabled = false;
-        sendMessage();
-      };
-      promptForKey();
-    } else if (e.message === 'BAD_KEY') {
-      _apiKey = '';
-      showBadKeyError(barrySit ? 'barry' : 'judgy', text);
-    } else {
-      showError(barrySit ? 'barry' : 'judgy', text);
-    }
+    showError(barrySit ? 'barry' : 'judgy', text);
   }
 
   isThinking = false;
@@ -1902,42 +1833,6 @@ function showError(role, originalText) {
   msgs.scrollTop = msgs.scrollHeight;
 }
 
-function showBadKeyError(role, originalText) {
-  const msgs = document.getElementById('messages');
-  const div  = document.createElement('div');
-  div.className = `msg ${role}`;
-  const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  const name = role === 'barry' ? 'BARRY T. LAWSON, ESQ.' : 'THE JUDGY';
-  const icon = role === 'barry' ? '👔' : '⚖️';
-  div.innerHTML = `
-    <div class="msg-av">${icon}</div>
-    <div class="msg-wrap">
-      <div class="msg-name">${name}</div>
-      <div class="msg-bubble">
-        <span class="msg-error">⚠️ Invalid API key. Please check your key and try again.</span>
-        <br><button class="retry-btn" onclick="retryWithNewKey(this,'${escHtml(originalText)}')">🔑 Enter Key Again</button>
-      </div>
-      <div class="msg-time">${time}</div>
-    </div>`;
-  msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
-}
-
-function retryWithNewKey(btn, text) {
-  btn.closest('.msg')?.remove();
-  const msgs = document.getElementById('messages');
-  const allUser = msgs.querySelectorAll('.msg.user');
-  if (allUser.length) allUser[allUser.length-1].remove();
-  if (conversationHistory.length && conversationHistory[conversationHistory.length-1].role === 'user')
-    conversationHistory.pop();
-  _pendingRetry = () => {
-    const input2 = document.getElementById('chatInput');
-    input2.value = text;
-    onInputChange(input2);
-    sendMessage();
-  };
-  promptForKey();
-}
 
 function retryMessage(btn, text) {
   // Remove the error message bubble
@@ -1963,67 +1858,19 @@ function escHtml(s) {
 
 function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-// ── API KEY ────────────────────────────────────────────────
-let _apiKey = '';
+// ── API CALL — via Supabase Edge Function (key stays server-side) ──
+const JUDGY_FN_URL = 'https://dmemzljerldzeiwqfxzp.supabase.co/functions/v1/judgy-chat-v2-ts';
 
-function getApiKey() { return _apiKey; }
-
-function promptForKey() {
-  document.getElementById('keyModal').classList.add('open');
-  setTimeout(() => document.getElementById('keyInput').focus(), 100);
-}
-
-function saveKey() {
-  const val = document.getElementById('keyInput').value.trim();
-  if (!val.startsWith('sk-ant-')) {
-    document.getElementById('keyError').style.display = 'block';
-    return;
-  }
-  _apiKey = val;
-  document.getElementById('keyModal').classList.remove('open');
-  document.getElementById('keyInput').value = '';
-  document.getElementById('keyError').style.display = 'none';
-  // Re-attempt the pending send if any
-  if (_pendingRetry) { _pendingRetry(); _pendingRetry = null; }
-}
-
-function handleKeyModalKey(e) {
-  if (e.key === 'Enter') saveKey();
-  if (e.key === 'Escape') document.getElementById('keyModal').classList.remove('open');
-}
-
-let _pendingRetry = null;
-
-// ── API CALL ───────────────────────────────────────────────
 async function callClaude(system, userMsg) {
-  if (!_apiKey) {
-    // Store what we were trying to do so we can retry after key entry
-    throw new Error('NO_KEY');
-  }
-
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
+  const res = await fetch(JUDGY_FN_URL, {
     method: 'POST',
-    headers: {
-      'Content-Type':         'application/json',
-      'x-api-key':            _apiKey,
-      'anthropic-version':    '2023-06-01',
-      'anthropic-dangerous-direct-browser-calls': 'true'
-    },
-    body: JSON.stringify({
-      model:      'claude-haiku-4-5-20251001',
-      max_tokens: 600,
-      system:     system,
-      messages:   [{ role: 'user', content: userMsg }]
-    })
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ system, userMessage: userMsg })
   });
-
-  if (res.status === 401) throw new Error('BAD_KEY');
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
   const data = await res.json();
-  const text = data?.content?.[0]?.text;
-  if (text) return text;
-  throw new Error('No response from Claude');
+  if (data.text) return data.text;
+  throw new Error(data.error || 'No response');
 }
 
 // ── LEGAL FORMS ────────────────────────────────────────────
@@ -2473,9 +2320,6 @@ document.addEventListener('DOMContentLoaded', function() {
   // 1. Render welcome screen first — always works, no dependencies
   renderWelcome();
 
-  // 2. Prompt for API key
-  promptForKey();
-
   // 3. Check Stripe return (safe - no SDK needed)
   try {
     const params = new URLSearchParams(window.location.search);
@@ -2510,29 +2354,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 </script>
-
-<!-- API KEY MODAL -->
-<div class="key-modal-bg" id="keyModal">
-  <div class="key-modal">
-    <div class="key-modal-logo">THE <span class="red">JUDGY</span></div>
-    <h3>Enter your Anthropic API Key</h3>
-    <p>
-      This app calls Claude directly from your browser. Your key is stored only in memory — never saved, never sent anywhere except the Anthropic API.<br><br>
-      Get a key at <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a>
-    </p>
-    <div class="key-input-wrap">
-      <input class="key-input" id="keyInput" type="password"
-        placeholder="sk-ant-api03-..."
-        onkeydown="handleKeyModalKey(event)"
-        autocomplete="off" spellcheck="false"/>
-      <button class="key-save-btn" onclick="saveKey()">Let's go ⚖️</button>
-    </div>
-    <div class="key-error" id="keyError">⚠️ That doesn't look like a valid Anthropic key (should start with sk-ant-)</div>
-    <div class="key-note">
-      <strong>🔒 Privacy:</strong> Your key lives only in this browser tab's memory. Refreshing the page clears it. We never log or store it.
-    </div>
-  </div>
-</div>
 
 
 <!-- AUTH MODAL -->
