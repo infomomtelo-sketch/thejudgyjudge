@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>The Judgy — Brutally Honest AI Advice</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
 <style>
 [data-theme="dark"] {
@@ -399,6 +400,17 @@ header::after {
 @keyframes tdBounce{0%,60%,100%{transform:none;opacity:0.5}30%{transform:translateY(-5px);opacity:1}}
 
 /* ── INPUT ── */
+.suggestion-chip {
+  font-size:11px;padding:5px 12px;border-radius:20px;
+  border:1px solid var(--border2);background:var(--card);
+  color:var(--text2);cursor:pointer;white-space:nowrap;
+  font-family:var(--sans);flex-shrink:0;transition:all 0.15s;
+  font-style:italic;
+}
+.suggestion-chip:hover,.suggestion-chip:active {
+  border-color:var(--gold);color:var(--gold2);background:var(--gold-dim);
+}
+#suggestionChips::-webkit-scrollbar{display:none}
 .input-area { padding: 12px 18px 16px; padding-bottom: max(16px, env(safe-area-inset-bottom)); border-top: 1px solid var(--border); background: var(--bg2); flex-shrink: 0; }
 .input-wrap {
   display: flex; gap: 10px; align-items: flex-end;
@@ -524,12 +536,13 @@ header::after {
   <div class="sidebar-section">
     <div class="sidebar-label">Topics</div>
     <div class="sidebar-item" onclick="quickTopic('relationship'); closeSidebar()"><span class="si-icon">♡</span> Relationships</div>
-    <div class="sidebar-item" onclick="quickTopic('work'); closeSidebar()"><span class="si-icon">◈</span> Work drama</div>
+    <div class="sidebar-item" onclick="quickTopic('work'); closeSidebar()"><span class="si-icon">◈</span> Career path</div>
+    <div class="sidebar-item" onclick="quickTopic('personal'); closeSidebar()"><span class="si-icon">◎</span> Skills & AI learning</div>
     <div class="sidebar-item" onclick="quickTopic('coworker'); closeSidebar()"><span class="si-icon">◉</span> Co-workers</div>
-    <div class="sidebar-item" onclick="quickTopic('legal'); closeSidebar()"><span class="si-icon">§</span> Legal (Barry)</div>
-    <div class="sidebar-item" onclick="quickTopic('business'); closeSidebar()"><span class="si-icon">◆</span> Business (Barry)</div>
-    <div class="sidebar-item" onclick="quickTopic('money'); closeSidebar()"><span class="si-icon">$</span> Money</div>
     <div class="sidebar-item" onclick="quickTopic('family'); closeSidebar()"><span class="si-icon">⌂</span> Family</div>
+    <div class="sidebar-item" onclick="quickTopic('legal'); closeSidebar()"><span class="si-icon">§</span> Legal · Tenant rights</div>
+    <div class="sidebar-item" onclick="quickTopic('business'); closeSidebar()"><span class="si-icon">◆</span> Business (Barry)</div>
+    <div class="sidebar-item" onclick="quickTopic('money'); closeSidebar()"><span class="si-icon">$</span> Tax & Money</div>
   </div>
   <div class="sidebar-divider"></div>
   <div class="sidebar-section">
@@ -596,13 +609,13 @@ header::after {
   <div class="topics-bar">
     <button class="topic-pill active" onclick="setTopic(this,'general')">⚖ All</button>
     <button class="topic-pill" onclick="setTopic(this,'relationship')">♡ Love</button>
-    <button class="topic-pill" onclick="setTopic(this,'work')">◈ Work</button>
+    <button class="topic-pill" onclick="setTopic(this,'work')">◈ Career</button>
+    <button class="topic-pill" onclick="setTopic(this,'personal')">◎ Skills & AI</button>
     <button class="topic-pill" onclick="setTopic(this,'coworker')">◉ Co-workers</button>
-    <button class="topic-pill" onclick="setTopic(this,'personal')">◎ Personal</button>
     <button class="topic-pill" onclick="setTopic(this,'family')">⌂ Family</button>
     <button class="topic-pill barry-pill" onclick="setTopic(this,'legal')">§ Legal</button>
     <button class="topic-pill barry-pill" onclick="setTopic(this,'business')">◆ Business</button>
-    <button class="topic-pill barry-pill" onclick="setTopic(this,'money')">$ Money</button>
+    <button class="topic-pill barry-pill" onclick="setTopic(this,'money')">$ Tax & Money</button>
   </div>
 
   <div class="messages" id="messages">
@@ -641,14 +654,16 @@ header::after {
   </div>
 
   <div class="input-area">
+    <div id="suggestionChips" style="display:flex;gap:6px;overflow-x:auto;margin-bottom:8px;scrollbar-width:none;padding:0 2px"></div>
     <div class="input-wrap">
       <textarea class="chat-input" id="chatInput"
         placeholder="Present your case to the court..."
-        rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+        rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"
+        onfocus="fillFromPlaceholder()"></textarea>
       <button class="send-btn" id="sendBtn" onclick="sendMessage()">⚖</button>
     </div>
     <div class="input-footer">
-      <span class="input-hint">Enter to send · Shift+Enter for new line</span>
+      <span class="input-hint" onclick="fillRandomQuestion()" style="cursor:pointer;user-select:none" title="Tap for a sample question">Tap ⚖ for a sample question · Enter to send</span>
       <span style="font-size:10px;color:var(--text3);font-family:var(--sans);" id="charCt">0/500</span>
     </div>
   </div>
@@ -728,7 +743,7 @@ header::after {
         <div class="form-field"><label class="form-label">Amount Owed ($)</label><input class="form-input" id="dl-amount" placeholder="500.00"/></div>
         <div class="form-field"><label class="form-label">Reason for Debt</label><input class="form-input" id="dl-reason" placeholder="Unpaid loan from January 2026"/></div>
         <div class="form-field"><label class="form-label">Payment Deadline</label><input class="form-input" id="dl-deadline" type="date"/></div>
-        <button class="form-btn" onclick="generateDemandLetter()">Generate Demand Letter</button>
+        <button class="form-btn" onclick="generateDemandLetter(); this.textContent='Generating...'; setTimeout(()=>this.textContent='Generate Demand Letter',2000)">Generate Demand Letter</button>
       </div>
     </div>
     <div class="page-section">
@@ -737,7 +752,7 @@ header::after {
         <div class="form-field"><label class="form-label">State/Jurisdiction</label><input class="form-input" id="div-state" placeholder="California"/></div>
         <div class="form-field"><label class="form-label">Children involved?</label><select class="form-input" id="div-kids"><option>No children</option><option>1 child</option><option>2+ children</option></select></div>
         <div class="form-field"><label class="form-label">Assets</label><input class="form-input" id="div-assets" placeholder="Home, savings, retirement..."/></div>
-        <button class="form-btn" onclick="generateDivorceChecklist()">Generate Checklist</button>
+        <button class="form-btn" id="divBtn" onclick="this.textContent='Barry is preparing...'; generateDivorceChecklist()">Generate Checklist</button>
         <div class="referral-links">
           <a class="ref-link" href="https://www.legalzoom.com/divorce/" target="_blank">LegalZoom Divorce</a>
           <a class="ref-link" href="https://www.rocketlawyer.com/family-and-personal/divorce.rl" target="_blank">Rocket Lawyer</a>
@@ -751,7 +766,7 @@ header::after {
         <div class="form-field"><label class="form-label">Business Name</label><input class="form-input" id="llc-name" placeholder="My Business LLC"/></div>
         <div class="form-field"><label class="form-label">State</label><input class="form-input" id="llc-state" placeholder="Wyoming, Delaware..."/></div>
         <div class="form-field"><label class="form-label">Business Type</label><select class="form-input" id="llc-type"><option>Online business / ecommerce</option><option>Service business</option><option>Real estate</option><option>Tech / SaaS</option></select></div>
-        <button class="form-btn" onclick="generateLLCGuide()">Generate LLC Guide</button>
+        <button class="form-btn" id="llcBtn" onclick="this.textContent='Barry is researching...'; generateLLCGuide()">Generate LLC Guide</button>
         <div class="referral-links">
           <a class="ref-link" href="https://www.legalzoom.com/business/business-formation/llc-overview.html" target="_blank">LegalZoom LLC</a>
           <a class="ref-link" href="https://www.incfile.com" target="_blank">Bizee (Incfile)</a>
@@ -856,49 +871,58 @@ header::after {
 // ── YOUR BUILDS — cross-recommend based on topic ────────────
 const MY_BUILDS = [
   {
-    id: 'postpilots',
-    name: 'PostPilots',
-    url: 'https://postpilots.xyz',
-    emoji: '✏️',
-    tagline: 'Schedule posts to LinkedIn, X, Instagram & more',
-    keywords: ['social media','linkedin','instagram','twitter','post','content','brand','marketing','followers','audience','viral','tiktok','facebook'],
-    topics: ['business','work'],
+    id: 'rentyapp',
+    name: 'RentyApp',
+    url: 'https://rentyapp.net',
+    emoji: '🏠',
+    tagline: 'Property management made simple for landlords',
+    keywords: ['landlord','tenant','rent','lease','property','manage','evict','maintenance','rental income','property manager','rent collection','lease agreement'],
+    topics: ['legal','money','family'],
+  },
+  {
+    id: 'myrental',
+    name: 'MyRental.space',
+    url: 'https://myrental.space',
+    emoji: '🔑',
+    tagline: 'Find and list rental properties easily',
+    keywords: ['rent','rental','apartment','sublet','subletting','housing','furnished','find a place','listing','landlord','tenant','move in'],
+    topics: ['legal','money','family'],
   },
   {
     id: 'dropvault',
     name: 'DropVault',
     url: 'https://dropvault.live',
     emoji: '📦',
-    tagline: 'Sell digital products & earn passive income',
-    keywords: ['sell','product','digital','ebook','course','template','income','passive','creator','monetize','online store','download'],
+    tagline: 'Sell digital products and earn passive income',
+    keywords: ['sell','product','digital','ebook','course','template','income','passive','creator','monetize','online store','download','side hustle','make money'],
     topics: ['business','money'],
   },
   {
-    id: 'ecrenta',
-    name: 'Ecrenta',
-    url: 'https://ecrenta.space',
-    emoji: '🏠',
-    tagline: 'Furnished rentals in Fresno for traveling nurses',
-    keywords: ['rent','rental','apartment','nurse','travel','housing','furnished','fresno','accommodation','healthcare'],
-    topics: [],
-  },
-  {
     id: 'fluentra',
-    name: 'Fluentra',
+    name: 'Fluentra AI',
     url: 'https://fluentra.ai',
-    emoji: '🗣️',
-    tagline: 'AI-powered language fluency practice',
-    keywords: ['language','speak','english','fluent','accent','communication','presentation','interview','public speaking','articulate'],
-    topics: ['work','personal'],
+    emoji: '🤖',
+    tagline: 'AI assistant for building, strategy and copywriting',
+    keywords: ['ai','artificial intelligence','learn ai','build website','strategy','copywriting','ai learning','automation','chatgpt','ai tools','skills','tech'],
+    topics: ['work','personal','business'],
   },
   {
     id: 'buildshowcase',
     name: 'Build Showcase',
     url: 'https://build-showcase.dev',
     emoji: '🏗️',
-    tagline: 'Showcase & promote your web projects',
-    keywords: ['portfolio','showcase','project','builder','developer','website','launch','side project','build','deploy'],
-    topics: ['business'],
+    tagline: 'Showcase and promote your web projects',
+    keywords: ['portfolio','showcase','project','builder','developer','website','launch','side project','build','deploy','freelance','coding'],
+    topics: ['business','work'],
+  },
+  {
+    id: 'postpilots',
+    name: 'PostPilots',
+    url: 'https://postpilots.xyz',
+    emoji: '✏️',
+    tagline: 'Schedule posts to LinkedIn, X, Instagram and more',
+    keywords: ['social media','linkedin','instagram','twitter','post','content','brand','marketing','followers','audience','viral','tiktok','facebook','career path'],
+    topics: ['business','work'],
   },
 ];
 
@@ -929,21 +953,24 @@ function detectRelevantBuild(userText, topic) {
 // ── BUILD RECOMMENDATION HTML ────────────────────────────────
 function buildRecommendationHTML(build) {
   return `
-    <div class="build-rec" onclick="window.open('${build.url}','_blank')" 
-         style="margin-top:10px;padding:9px 12px;background:rgba(245,200,66,0.06);
-                border:1px solid rgba(245,200,66,0.2);border-radius:8px;
+    <div onclick="window.open('${build.url}','_blank')"
+         style="margin-top:12px;padding:10px 13px;background:rgba(196,160,80,0.05);
+                border:1px solid rgba(196,160,80,0.18);border-radius:9px;
                 cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:10px;"
-         onmouseover="this.style.borderColor='rgba(245,200,66,0.5)'"
-         onmouseout="this.style.borderColor='rgba(245,200,66,0.2)'">
-      <span style="font-size:20px;flex-shrink:0">${build.emoji}</span>
+         onmouseover="this.style.borderColor='rgba(196,160,80,0.5)';this.style.background='rgba(196,160,80,0.09)'"
+         onmouseout="this.style.borderColor='rgba(196,160,80,0.18)';this.style.background='rgba(196,160,80,0.05)'">
+      <div style="width:32px;height:32px;border-radius:8px;background:rgba(196,160,80,0.1);
+                  border:1px solid rgba(196,160,80,0.2);display:flex;align-items:center;
+                  justify-content:center;font-size:14px;flex-shrink:0">${build.emoji}</div>
       <div style="flex:1;min-width:0">
-        <div style="font-size:11px;color:#f5c842;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px">
-          💡 Might help you
+        <div style="font-size:10px;color:rgba(196,160,80,0.6);font-weight:500;
+                    text-transform:uppercase;letter-spacing:1px;margin-bottom:2px">
+          Might help you
         </div>
-        <div style="font-size:13px;color:#f0eff6;font-weight:500">${build.name}</div>
-        <div style="font-size:11px;color:#9896a8;margin-top:1px">${build.tagline}</div>
+        <div style="font-size:13px;color:#f2ede4;font-weight:500;font-family:'Playfair Display',serif">${build.name}</div>
+        <div style="font-size:11px;color:#a89880;margin-top:1px;font-family:'DM Sans',sans-serif">${build.tagline}</div>
       </div>
-      <span style="font-size:12px;color:#9896a8;flex-shrink:0">↗</span>
+      <span style="font-size:11px;color:rgba(196,160,80,0.5);flex-shrink:0">↗</span>
     </div>`;
 }
 
@@ -1170,23 +1197,117 @@ function toggleJudgySound() {
 
 // ── TOPICS ─────────────────────────────────────────────────
 const topicPlaceholders = {
-  general:      'Present your case to the court...',
-  relationship: 'My ex wants to get back together but they cheated...',
-  work:         'My boss takes credit for my work in every meeting...',
-  coworker:     'My coworker does nothing but gets the same pay...',
-  personal:     'I keep self-sabotaging every good thing in my life...',
-  family:       'My parents keep comparing me to my sibling...',
-  legal:        'Ask Barry a legal question...',
-  business:     'Ask Barry about starting or growing a business...',
-  money:        'Someone owes me money and keeps avoiding me...',
+  general:      "Present your case to the court...",
+  relationship: "My ex wants to get back together but they cheated...",
+  work:         "I don't know which career path is right for me...",
+  coworker:     "My coworker gets the same pay but does half the work...",
+  personal:     "I want to learn AI but don't know where to start...",
+  family:       "My parents keep comparing me to my sibling...",
+  legal:        "What do I need to know about subletting my apartment?",
+  business:     "How do I figure out which skills are worth learning in 2026?",
+  money:        "I have no idea how to handle my taxes as a freelancer...",
 };
+
+const topicRotations = {
+  general: [
+    "Present your case to the court...",
+    "Ask Judgy anything — she's heard worse...",
+    "State your situation. Court is in session.",
+    "What's going on? Barry's ready to advise.",
+  ],
+  work: [
+    "I don't know which career path is right for me...",
+    "My boss takes credit for my work in every meeting...",
+    "I want to switch careers but I'm scared to start over...",
+    "How do I negotiate a raise without getting fired?",
+    "I want to build skills in AI — where do I begin?",
+  ],
+  legal: [
+    "What do I need to know about subletting my apartment?",
+    "My landlord won't return my security deposit...",
+    "I need to send a demand letter — how do I do it?",
+    "What are my rights as a tenant?",
+    "I want to start an LLC — what state is best?",
+    "My employer hasn't paid me — what can I do?",
+  ],
+  business: [
+    "How do I figure out which skills are worth learning in 2026?",
+    "I want to start a side hustle — where do I begin?",
+    "How do I price my freelance services?",
+    "I want to build and sell a digital product — is it realistic?",
+    "What's the difference between an LLC and sole proprietor?",
+  ],
+  money: [
+    "I have no idea how to handle my taxes as a freelancer...",
+    "Someone owes me money and keeps avoiding me...",
+    "I want to start investing but don't know where to start...",
+    "How do I create a budget I'll actually stick to?",
+    "I'm thinking about subletting my place — what do I need to know?",
+  ],
+  personal: [
+    "I want to learn AI but don't know where to start...",
+    "I keep self-sabotaging every good thing in my life...",
+    "I feel stuck and don't know how to move forward...",
+    "I want to build new skills but have no time...",
+    "How do I stop procrastinating on things that matter?",
+  ],
+  relationship: [
+    "My ex wants to get back together but they cheated on me...",
+    "I think I'm falling for someone who isn't available...",
+    "My partner and I fight about money constantly...",
+    "I don't know if I should end this relationship...",
+  ],
+  family: [
+    "My parents keep comparing me to my sibling...",
+    "I'm thinking about subletting a room to help with rent...",
+    "My family doesn't support my career choice...",
+    "I'm dealing with a difficult family member at work...",
+  ],
+  coworker: [
+    "My coworker gets the same pay but does half the work...",
+    "Someone keeps taking credit for my ideas in meetings...",
+    "My coworker is undermining me to our boss...",
+    "How do I deal with a passive-aggressive colleague?",
+  ],
+};
+
+let placeholderTimers = {};
+function rotatePlaceholder() {
+  const input = document.getElementById('chatInput');
+  if (!input || document.activeElement === input) return;
+  const rots = topicRotations[topic] || topicRotations.general;
+  const idx = Math.floor(Math.random() * rots.length);
+  input.placeholder = rots[idx];
+}
+setInterval(rotatePlaceholder, 4000);
+
 
 function setTopic(btn, t) {
   document.querySelectorAll('.topic-pill').forEach(p => p.classList.remove('active'));
   btn.classList.add('active');
   topic = t;
   const input = document.getElementById('chatInput');
-  if (input) input.placeholder = topicPlaceholders[t] || 'State your case... ⚖️';
+  if (input) input.placeholder = topicPlaceholders[t] || 'Present your case to the court...';
+  renderChips();
+}
+
+function renderChips() {
+  const wrap = document.getElementById('suggestionChips');
+  if (!wrap) return;
+  const rots = topicRotations[topic] || topicRotations.general;
+  const shuffled = [...rots].sort(() => Math.random() - 0.5).slice(0, 3);
+  wrap.innerHTML = shuffled.map(q =>
+    `<button class="suggestion-chip" onclick="useChip(this)">${q}</button>`
+  ).join('');
+}
+
+function useChip(btn) {
+  const input = document.getElementById('chatInput');
+  input.value = btn.textContent;
+  autoResize(input);
+  input.focus();
+  document.getElementById('suggestionChips').innerHTML = '';
+  sendMessage();
 }
 function quickTopic(t) {
   topic = t;
@@ -1200,6 +1321,29 @@ function autoResize(el) {
   el.style.height = 'auto';
   el.style.height = Math.min(el.scrollHeight, 100) + 'px';
   document.getElementById('charCt').textContent = el.value.length + '/500';
+}
+
+function fillRandomQuestion() {
+  const input = document.getElementById('chatInput');
+  const rots = topicRotations[topic] || topicRotations.general;
+  const idx = Math.floor(Math.random() * rots.length);
+  input.value = rots[idx];
+  autoResize(input);
+  input.focus();
+  input.setSelectionRange(input.value.length, input.value.length);
+}
+
+function fillFromPlaceholder() {
+  const input = document.getElementById('chatInput');
+  if (input.value.trim() !== '') return;
+  const ph = input.placeholder;
+  if (!ph || ph === 'Present your case to the court...') return;
+  // Small delay so focus completes first
+  setTimeout(() => {
+    input.value = ph;
+    autoResize(input);
+    input.setSelectionRange(input.value.length, input.value.length);
+  }, 50);
 }
 function handleKey(e) {
   if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
@@ -1362,9 +1506,9 @@ function selectChar(mode) {
 const STRIPE_LINKS = {
   starter:  'https://buy.stripe.com/3cIfZgbeq6p03ft1Fkg3600',
   pro:      'https://buy.stripe.com/00wdR882eaFg03hcjYg3601',
-  token_sm: 'https://buy.stripe.com/3cI5kC4Q29Bc2bp83Ig3602',
-  token_md: 'https://buy.stripe.com/cNi14m6Ya7t49DR6ZEg3603',
-  token_lg: 'https://buy.stripe.com/eVqaEWdmy00C2bp5VAg3604',
+  token_sm: 'https://buy.stripe.com/eVq28q1DQ7t42bp5VAg3605',
+  token_md: 'https://buy.stripe.com/5kQeVcaam14G5nBes6g3606',
+  token_lg: 'https://buy.stripe.com/aFa6oGbeq5kWdU783Ig3607',
 };
 
 const FREE_LIMIT = 10;
@@ -1451,7 +1595,7 @@ function checkLimit() {
 }
 
 // Check for payment success on page load
-window.addEventListener('load', () => { checkPayment(); updatePlanUI(); });
+window.addEventListener('load', () => { checkPayment(); updatePlanUI(); renderChips(); });
 
 async function sendMessage() {
   const input = document.getElementById('chatInput');
@@ -1566,6 +1710,7 @@ async function sendMessage() {
   isThinking = false;
   document.getElementById('sendBtn').disabled = false;
   input.focus();
+  renderChips();
 }
 
 // ── SUPABASE EDGE FUNCTION CALL ─────────────────────────────
@@ -1600,6 +1745,9 @@ async function generateDivorceChecklist() {
   const state  = document.getElementById('div-state').value || 'your state';
   const kids   = document.getElementById('div-kids').value;
   const assets = document.getElementById('div-assets').value || 'various assets';
+  const btns = document.querySelectorAll('#page-forms .form-btn');
+  btns.forEach(b => b.disabled = true);
+  document.getElementById('formOutput').style.display = 'none';
   try {
     const res = await callClaude(
       `You are Barry T. Lawson, Esq. Generate a practical divorce preparation checklist. Be helpful and specific. Format as a numbered checklist. Add a brief disclaimer at the end. Keep to 200 words max.`,
@@ -1609,7 +1757,13 @@ async function generateDivorceChecklist() {
     document.getElementById('formOutputContent').textContent = res;
     document.getElementById('formOutput').style.display = 'block';
     document.getElementById('formOutput').scrollIntoView({ behavior: 'smooth' });
-  } catch (e) { alert('Barry dropped his clipboard. Try again.'); }
+  } catch (e) {
+    const out = document.getElementById('formOutputContent');
+    out.textContent = 'Barry is having technical difficulties. Please try again in a moment.';
+    document.getElementById('formOutput').style.display = 'block';
+  } finally {
+    document.querySelectorAll('#page-forms .form-btn').forEach(b => b.disabled = false);
+  }
 }
 
 async function generateLLCGuide() {
@@ -1625,7 +1779,11 @@ async function generateLLCGuide() {
     document.getElementById('formOutputContent').textContent = res;
     document.getElementById('formOutput').style.display = 'block';
     document.getElementById('formOutput').scrollIntoView({ behavior: 'smooth' });
-  } catch (e) { alert('Try again.'); }
+  } catch (e) {
+    const out = document.getElementById('formOutputContent');
+    out.textContent = 'Barry is unavailable right now. Please try again in a moment.';
+    document.getElementById('formOutput').style.display = 'block';
+  }
 }
 
 function downloadForm() {
@@ -1699,17 +1857,17 @@ function downloadLP() {
     </div>
     <div class="pw-divider" style="padding:0 16px"><span>or top up</span></div>
     <div class="pw-tokens" style="margin-top:8px">
-      <a class="pw-token" href="https://buy.stripe.com/3cI5kC4Q29Bc2bp83Ig3602" target="_blank" onclick="trackClick('token_sm')">
+      <a class="pw-token" href="https://buy.stripe.com/eVq28q1DQ7t42bp5VAg3605" target="_blank" onclick="trackClick('token_sm')">
         <div class="pw-token-amount">20</div>
         <div class="pw-token-cases">cases</div>
         <div class="pw-token-price">$3</div>
       </a>
-      <a class="pw-token" href="https://buy.stripe.com/cNi14m6Ya7t49DR6ZEg3603" target="_blank" onclick="trackClick('token_md')">
+      <a class="pw-token" href="https://buy.stripe.com/5kQeVcaam14G5nBes6g3606" target="_blank" onclick="trackClick('token_md')">
         <div class="pw-token-amount">60</div>
         <div class="pw-token-cases">cases</div>
         <div class="pw-token-price">$8</div>
       </a>
-      <a class="pw-token" href="https://buy.stripe.com/eVqaEWdmy00C2bp5VAg3604" target="_blank" onclick="trackClick('token_lg')">
+      <a class="pw-token" href="https://buy.stripe.com/aFa6oGbeq5kWdU783Ig3607" target="_blank" onclick="trackClick('token_lg')">
         <div class="pw-token-amount">150</div>
         <div class="pw-token-cases">cases</div>
         <div class="pw-token-price">$15</div>
