@@ -157,6 +157,25 @@ html, body { height: 100%; height: 100dvh; font-family: var(--sans); background:
 }
 .sidebar-divider { height: 1px; background: var(--border); margin: 8px 12px; }
 .sidebar-footer { margin-top: auto; padding: 14px; border-top: 1px solid var(--border); }
+
+.upgrade-btn {
+  height: 30px; padding: 0 12px; border-radius: 20px;
+  background: linear-gradient(135deg, rgba(139,26,26,0.3), rgba(196,160,80,0.15));
+  border: 1px solid rgba(196,160,80,0.35); color: var(--gold);
+  font-size: 11px; font-weight: 500; cursor: pointer; font-family: var(--sans);
+  letter-spacing: 0.5px; transition: all 0.15s; white-space: nowrap;
+  display: flex; align-items: center; gap: 5px;
+}
+.upgrade-btn:hover { background: linear-gradient(135deg, rgba(139,26,26,0.5), rgba(196,160,80,0.25)); border-color: var(--gold); }
+.upgrade-btn.paid { background: rgba(196,160,80,0.1); color: var(--gold2); border-color: rgba(196,160,80,0.25); cursor: default; }
+.plan-status {
+  padding: 10px 14px; margin: 6px 12px; border-radius: 8px;
+  background: var(--gold-dim); border: 1px solid var(--border2);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.plan-status-label { font-size: 11px; color: var(--text2); }
+.plan-status-value { font-size: 12px; font-weight: 500; color: var(--gold); }
+
 .disclaimer-box {
   background: var(--judgy-dim); border: 1px solid rgba(139,26,26,0.25);
   border-radius: 8px; padding: 10px 12px; font-size: 11px; color: var(--text3); line-height: 1.5;
@@ -521,6 +540,17 @@ header::after {
   </div>
   <div class="sidebar-divider"></div>
   <div class="sidebar-section">
+    <div class="sidebar-label">Membership</div>
+    <div class="plan-status" id="sidebarPlanStatus">
+      <span class="plan-status-label">Current plan</span>
+      <span class="plan-status-value" id="sidebarPlanValue">Free — 10 cases/mo</span>
+    </div>
+    <div class="sidebar-item" onclick="showPaywall(); closeSidebar()">
+      <span class="si-icon" style="color:var(--gold)">⚖</span> Upgrade plan
+    </div>
+  </div>
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-section">
     <div class="sidebar-label">Court Records</div>
     <div class="sidebar-item" onclick="openPage('disclaimer'); closeSidebar()"><span class="si-icon">!</span> Disclaimer</div>
     <div class="sidebar-item" onclick="openPage('privacy'); closeSidebar()"><span class="si-icon">⊙</span> Privacy Policy</div>
@@ -557,6 +587,7 @@ header::after {
         </div>
       </div>
       <button class="hbtn icon-only" onclick="toggleJudgySound()" id="judgySoundBtn" title="Toggle sound">🔊</button>
+      <button class="upgrade-btn" id="upgradeHeaderBtn" onclick="showPaywall()" title="Upgrade">⚖ Upgrade</button>
       <button class="hbtn icon-only" onclick="toggleTheme()" id="themeBtn" title="Toggle theme">🌙</button>
       <button class="hbtn" onclick="newCase()">↺ <span style="font-size:11px;font-weight:500;">New</span></button>
     </div>
@@ -1353,7 +1384,24 @@ function checkPayment() {
     localStorage.setItem('judgy_msgs', '0');
     totalMsgCount = 0;
     showToast('Welcome to The Judgy — court is fully in session.');
+    updatePlanUI();
     window.history.replaceState({}, '', window.location.pathname);
+  }
+}
+
+
+function updatePlanUI() {
+  const msgs = totalMsgCount;
+  const paid = isPaid;
+  const val = document.getElementById('sidebarPlanValue');
+  const btn = document.getElementById('upgradeHeaderBtn');
+  if (paid) {
+    if (val) val.textContent = 'Pro — unlimited';
+    if (btn) { btn.textContent = '⚖ Pro'; btn.classList.add('paid'); btn.onclick = null; }
+  } else {
+    const remaining = Math.max(0, FREE_LIMIT - msgs);
+    if (val) val.textContent = `Free — ${remaining} cases left`;
+    if (btn) { btn.textContent = '⚖ Upgrade'; btn.classList.remove('paid'); btn.onclick = () => showPaywall(); }
   }
 }
 
@@ -1394,6 +1442,7 @@ function checkLimit() {
   if (isPaid) return true;
   totalMsgCount++;
   saveCount();
+  updatePlanUI();
   if (totalMsgCount > FREE_LIMIT) {
     showPaywall();
     return false;
@@ -1402,7 +1451,7 @@ function checkLimit() {
 }
 
 // Check for payment success on page load
-window.addEventListener('load', checkPayment);
+window.addEventListener('load', () => { checkPayment(); updatePlanUI(); });
 
 async function sendMessage() {
   const input = document.getElementById('chatInput');
