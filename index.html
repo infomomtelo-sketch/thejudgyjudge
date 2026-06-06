@@ -2,915 +2,632 @@
 <html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>The Judgy — Brutally Honest AI Advice</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
 <style>
-/* ── THEME TOKENS ─────────────────────────────────────────── */
 [data-theme="dark"] {
-  --bg:      #0a0a0b;
-  --bg2:     #111114;
-  --card:    #18181c;
-  --card2:   #1e1e24;
-  --border:  rgba(255,255,255,0.07);
-  --border2: rgba(255,255,255,0.13);
-  --text:    #f0eff6;
-  --text2:   #9896a8;
-  --text3:   #504e65;
-  --shadow:  rgba(0,0,0,0.5);
-  --overlay: rgba(0,0,0,0.7);
+  --bg:        #0e0c09;
+  --bg2:       #141210;
+  --card:      #1a1714;
+  --card2:     #201d19;
+  --border:    rgba(196,160,80,0.12);
+  --border2:   rgba(196,160,80,0.22);
+  --text:      #f2ede4;
+  --text2:     #a89880;
+  --text3:     #5c5040;
+  --shadow:    rgba(0,0,0,0.7);
+  --overlay:   rgba(0,0,0,0.75);
+  --gold:      #c4a050;
+  --gold2:     #e8c870;
+  --gold-dim:  rgba(196,160,80,0.08);
 }
 [data-theme="light"] {
-  --bg:      #f0ede6;
-  --bg2:     #e4dfd6;
-  --card:    #ffffff;
-  --card2:   #f5f2ed;
-  --border:  rgba(0,0,0,0.12);
-  --border2: rgba(0,0,0,0.2);
-  --text:    #0f0e14;
-  --text2:   #2a2838;
-  --text3:   #6b6880;
-  --shadow:  rgba(0,0,0,0.15);
-  --overlay: rgba(0,0,0,0.45);
-}
-[data-theme="medium"] {
-  --bg:      #1e1c28;
-  --bg2:     #252333;
-  --card:    #2e2b3e;
-  --card2:   #353248;
-  --border:  rgba(255,255,255,0.09);
-  --border2: rgba(255,255,255,0.16);
-  --text:    #f0eff6;
-  --text2:   #b8b6cc;
-  --text3:   #7a7890;
-  --shadow:  rgba(0,0,0,0.4);
-  --overlay: rgba(0,0,0,0.6);
+  --bg:        #f5f0e8;
+  --bg2:       #ede8de;
+  --card:      #ffffff;
+  --card2:     #f7f3ec;
+  --border:    rgba(120,90,30,0.15);
+  --border2:   rgba(120,90,30,0.28);
+  --text:      #1a1410;
+  --text2:     #5c4830;
+  --text3:     #9c8060;
+  --shadow:    rgba(0,0,0,0.18);
+  --overlay:   rgba(0,0,0,0.5);
+  --gold:      #8b6520;
+  --gold2:     #a07830;
+  --gold-dim:  rgba(139,101,32,0.08);
 }
 :root {
-  --red:      #e8302a;
-  --red2:     #ff4540;
-  --navy:     #1a2744;
-  --navy2:    #2a3d6e;
-  --gold:     #f5c842;
-  --green:    #22c55e;
-  --sans:     'DM Sans', sans-serif;
-  --serif:    'Lora', serif;
-  --display:  'Bebas Neue', sans-serif;
-  --sidebar-w: 280px;
+  --judgy:     #8b1a1a;
+  --judgy2:    #c42020;
+  --judgy-dim: rgba(139,26,26,0.1);
+  --barry:     #1a2744;
+  --barry2:    #2a3d6e;
+  --barry-dim: rgba(42,61,110,0.12);
+  --sidebar-w: 290px;
+  --sans:      'DM Sans', sans-serif;
+  --serif:     'EB Garamond', serif;
+  --display:   'Playfair Display', serif;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; font-family: var(--sans); background: var(--bg); color: var(--text); overflow: hidden; transition: background 0.3s, color 0.3s; }
-
-/* ── SIDEBAR OVERLAY ──────────────────────────────────────── */
-.sidebar-overlay {
-  position: fixed; inset: 0; background: var(--overlay);
-  z-index: 200; opacity: 0; pointer-events: none;
-  transition: opacity 0.3s;
+html, body { height: 100%; height: 100dvh; font-family: var(--sans); background: var(--bg); color: var(--text); overflow: hidden; transition: background 0.3s, color 0.3s; }
+/* ── PAYWALL MODAL ── */
+.paywall-overlay {
+  position: fixed; inset: 0; z-index: 8000;
+  background: rgba(0,0,0,0.75); display: flex;
+  align-items: flex-end; justify-content: center;
+  padding-bottom: env(safe-area-inset-bottom,0);
+  animation: pwFadeIn 0.3s ease;
 }
+@keyframes pwFadeIn { from{opacity:0} to{opacity:1} }
+.paywall-modal {
+  background: var(--bg2); border: 1px solid var(--border2);
+  border-radius: 18px 18px 0 0; width: 100%; max-width: 480px;
+  overflow: hidden; animation: pwSlideUp 0.35s cubic-bezier(0.16,1,0.3,1);
+}
+@keyframes pwSlideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
+.pw-handle { width: 36px; height: 4px; border-radius: 2px; background: var(--border2); margin: 10px auto 0; }
+.pw-top { padding: 14px 20px 12px; text-align: center; border-bottom: 1px solid var(--border); }
+.pw-icon { width: 42px; height: 42px; border-radius: 50%; background: var(--judgy-dim); border: 1px solid rgba(196,32,32,0.2); display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; font-size: 18px; color: var(--judgy2); }
+.pw-title { font-family: var(--display); font-weight: 900; font-size: 17px; color: var(--text); letter-spacing: 0.5px; margin-bottom: 3px; }
+.pw-sub { font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--gold); }
+.pw-bar-wrap { margin: 10px 20px 0; background: var(--border); border-radius: 4px; height: 4px; overflow: hidden; }
+.pw-bar { height: 100%; background: var(--judgy2); border-radius: 4px; width: 100%; }
+.pw-plans { padding: 12px 16px; display: flex; flex-direction: column; gap: 8px; }
+.pw-plan { border-radius: 10px; border: 1px solid var(--border2); padding: 11px 13px; cursor: pointer; transition: all 0.15s; display: flex; align-items: center; gap: 11px; text-decoration: none; }
+.pw-plan:hover { border-color: var(--gold); background: var(--gold-dim); transform: translateY(-1px); }
+.pw-plan.featured { border-color: rgba(196,160,80,0.4); background: var(--gold-dim); }
+.pw-plan-icon { width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+.pi-s { background: rgba(196,160,80,0.1); color: var(--gold); }
+.pi-p { background: var(--judgy-dim); color: var(--judgy2); }
+.pi-t { background: var(--barry-dim); color: #7b9fff; }
+.pw-plan-info { flex: 1; min-width: 0; }
+.pw-plan-name { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 2px; display: flex; align-items: center; gap: 6px; }
+.pw-badge { font-size: 9px; padding: 2px 6px; border-radius: 10px; font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; }
+.pw-badge-pop { background: var(--gold-dim); color: var(--gold); border: 1px solid var(--border2); }
+.pw-badge-unl { background: var(--judgy-dim); color: var(--judgy2); border: 1px solid rgba(139,26,26,0.2); }
+.pw-plan-desc { font-size: 11px; color: var(--text2); line-height: 1.4; }
+.pw-plan-price { text-align: right; flex-shrink: 0; }
+.pw-amount { font-family: var(--display); font-weight: 700; font-size: 16px; color: var(--text); }
+.pw-period { font-size: 10px; color: var(--text3); display: block; margin-top: 1px; }
+.pw-divider { display: flex; align-items: center; gap: 8px; padding: 0 4px; }
+.pw-divider::before, .pw-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.pw-divider span { font-size: 10px; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; }
+.pw-tokens { padding: 0 16px 4px; display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 6px; }
+.pw-token { border-radius: 8px; border: 1px solid var(--border2); padding: 9px 8px; text-align: center; cursor: pointer; transition: all 0.15s; text-decoration: none; display: block; }
+.pw-token:hover { border-color: #7b9fff; background: var(--barry-dim); transform: translateY(-1px); }
+.pw-token-amount { font-family: var(--display); font-weight: 700; font-size: 15px; color: var(--text); }
+.pw-token-cases { font-size: 10px; color: var(--text2); margin-top: 1px; }
+.pw-token-price { font-size: 11px; color: #7b9fff; margin-top: 3px; font-weight: 500; }
+.pw-footer { padding: 10px 20px 14px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.pw-skip { font-family: var(--serif); font-style: italic; font-size: 12px; color: var(--text3); cursor: pointer; background: none; border: none; transition: color 0.15s; }
+.pw-skip:hover { color: var(--text2); }
+.pw-secure { font-size: 10px; color: var(--text3); display: flex; align-items: center; gap: 4px; }
+.success-toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--bg2); border: 1px solid rgba(196,160,80,0.4); border-radius: 10px; padding: 10px 18px; font-size: 13px; color: var(--gold); font-family: var(--serif); font-style: italic; z-index: 9000; transition: transform 0.4s cubic-bezier(0.16,1,0.3,1); white-space: nowrap; display: flex; align-items: center; gap: 8px; }
+.success-toast.show { transform: translateX(-50%) translateY(0); }
+
+
+/* ── SIDEBAR OVERLAY ── */
+.sidebar-overlay { position: fixed; inset: 0; background: var(--overlay); z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
 .sidebar-overlay.open { opacity: 1; pointer-events: all; }
 
-/* ── SIDEBAR ──────────────────────────────────────────────── */
+/* ── SIDEBAR ── */
 .sidebar {
-  position: fixed; top: 0; left: 0; bottom: 0;
-  width: var(--sidebar-w);
-  background: var(--bg2);
-  border-right: 1px solid var(--border2);
-  z-index: 300;
-  transform: translateX(-100%);
+  position: fixed; top: 0; left: 0; bottom: 0; width: var(--sidebar-w);
+  background: var(--bg2); border-right: 1px solid var(--border2);
+  z-index: 300; transform: translateX(-100%);
   transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
-  display: flex; flex-direction: column;
-  overflow-y: auto;
+  display: flex; flex-direction: column; overflow-y: auto;
 }
 .sidebar.open { transform: translateX(0); }
 .sidebar-head {
-  padding: 20px 20px 16px;
-  border-bottom: 1px solid var(--border);
+  padding: 20px 20px 16px; border-bottom: 1px solid var(--border);
   display: flex; align-items: center; justify-content: space-between;
-  flex-shrink: 0;
 }
 .sidebar-logo {
-  font-family: var(--display);
-  font-size: 22px; letter-spacing: 2px; color: var(--text);
-  display: flex; align-items: center; gap: 8px;
+  font-family: var(--display); font-size: 20px; letter-spacing: 1px;
+  color: var(--gold); display: flex; align-items: center; gap: 8px;
 }
+.sidebar-logo .gavel { font-size: 18px; }
 .sidebar-close {
-  width: 32px; height: 32px; border-radius: 8px;
+  width: 32px; height: 32px; border-radius: 6px;
   background: var(--card); border: 1px solid var(--border);
   color: var(--text2); font-size: 16px; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: all 0.15s;
+  display: flex; align-items: center; justify-content: center; transition: all 0.15s;
 }
 .sidebar-close:hover { background: var(--card2); color: var(--text); }
-.sidebar-section { padding: 16px 14px 8px; }
+.sidebar-section { padding: 14px 12px 6px; }
 .sidebar-label {
-  font-size: 10px; font-weight: 500; color: var(--text3);
-  text-transform: uppercase; letter-spacing: 1.2px;
-  padding: 0 6px; margin-bottom: 6px;
+  font-size: 9px; font-weight: 500; color: var(--gold);
+  text-transform: uppercase; letter-spacing: 2px; padding: 0 8px; margin-bottom: 6px;
 }
 .sidebar-item {
-  display: flex; align-items: center; gap: 10px;
-  padding: 10px; border-radius: 10px;
-  color: var(--text2); cursor: pointer;
-  font-size: 13.5px; transition: all 0.15s;
-  margin-bottom: 2px; border: 1px solid transparent;
+  display: flex; align-items: center; gap: 10px; padding: 9px 10px;
+  border-radius: 8px; color: var(--text2); cursor: pointer; font-size: 13px;
+  transition: all 0.15s; margin-bottom: 1px; border: 1px solid transparent;
 }
 .sidebar-item:hover { background: var(--card); color: var(--text); }
 .sidebar-item.active { background: var(--card); color: var(--text); border-color: var(--border2); }
-.sidebar-item .si-icon { font-size: 16px; width: 22px; text-align: center; flex-shrink: 0; }
+.sidebar-item .si-icon { font-size: 15px; width: 22px; text-align: center; color: var(--gold); }
 .sidebar-item .si-badge {
-  margin-left: auto; font-size: 10px;
-  background: var(--red); color: white;
-  padding: 2px 7px; border-radius: 10px; font-weight: 500;
+  margin-left: auto; font-size: 9px; background: var(--judgy2); color: white;
+  padding: 2px 7px; border-radius: 10px; font-weight: 500; letter-spacing: 0.5px;
 }
-.sidebar-divider { height: 1px; background: var(--border); margin: 8px 14px; }
-
-/* THEME TOGGLE IN SIDEBAR */
-.theme-toggle-row {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 10px 16px; margin: 8px 14px;
-  background: var(--card); border-radius: 10px;
-  border: 1px solid var(--border);
-}
-.ttr-label { font-size: 13px; color: var(--text2); display: flex; align-items: center; gap: 8px; }
-.toggle-switch {
-  width: 40px; height: 22px; border-radius: 11px;
-  background: var(--border2); cursor: pointer;
-  position: relative; border: none; transition: background 0.2s;
-  flex-shrink: 0;
-}
-.toggle-switch.on { background: var(--navy2); }
-.toggle-switch::after {
-  content: ''; position: absolute;
-  width: 16px; height: 16px; border-radius: 50%;
-  background: white; top: 3px; left: 3px;
-  transition: transform 0.2s;
-}
-.toggle-switch.on::after { transform: translateX(18px); }
-
-.sidebar-footer {
-  margin-top: auto; padding: 14px;
-  border-top: 1px solid var(--border);
-  flex-shrink: 0;
-}
+.sidebar-divider { height: 1px; background: var(--border); margin: 8px 12px; }
+.sidebar-footer { margin-top: auto; padding: 14px; border-top: 1px solid var(--border); }
 .disclaimer-box {
-  background: rgba(232,48,42,0.08);
-  border: 1px solid rgba(232,48,42,0.2);
-  border-radius: 10px; padding: 10px 12px;
-  font-size: 11px; color: var(--text3); line-height: 1.5;
+  background: var(--judgy-dim); border: 1px solid rgba(139,26,26,0.25);
+  border-radius: 8px; padding: 10px 12px; font-size: 11px; color: var(--text3); line-height: 1.5;
 }
-.disclaimer-box strong { color: var(--red2); display: block; margin-bottom: 3px; font-size: 11px; }
+.disclaimer-box strong { color: var(--judgy2); display: block; margin-bottom: 3px; font-size: 11px; }
 
-/* ── APP LAYOUT ───────────────────────────────────────────── */
-.app { display: flex; flex-direction: column; height: 100vh; position: relative; }
+/* ── APP LAYOUT ── */
+.app { display: flex; flex-direction: column; height: 100vh; height: 100dvh; position: relative; }
 
-/* ── HEADER ───────────────────────────────────────────────── */
+/* ── HEADER ── */
 header {
-  padding: 0 16px;
-  height: 56px;
-  border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; gap: 12px;
-  background: var(--bg2);
-  flex-shrink: 0;
-  position: relative;
+  padding: 0 18px; height: 58px; border-bottom: 1px solid var(--border2);
+  display: flex; align-items: center; gap: 14px;
+  background: var(--bg2); flex-shrink: 0; position: relative;
 }
 header::after {
-  content: ''; position: absolute; bottom: -1px; left: 0; right: 0;
-  height: 1px; background: linear-gradient(90deg, var(--red) 0%, transparent 40%);
+  content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, var(--gold) 0%, transparent 50%);
 }
 .menu-btn {
-  width: 36px; height: 36px; border-radius: 9px;
-  background: var(--card); border: 1px solid var(--border);
-  color: var(--text2); font-size: 15px; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: all 0.15s; flex-shrink: 0;
+  width: 36px; height: 36px; border-radius: 8px; background: var(--card);
+  border: 1px solid var(--border); color: var(--text2); font-size: 15px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; transition: all 0.15s; flex-shrink: 0;
 }
 .menu-btn:hover { background: var(--card2); color: var(--text); }
 .header-logo {
-  font-family: var(--display);
-  font-size: 24px; letter-spacing: 2px; color: var(--text);
-  display: flex; align-items: center; gap: 8px; line-height: 1;
+  font-family: var(--display); font-size: 22px; letter-spacing: 1.5px;
+  color: var(--text); display: flex; align-items: center; gap: 10px; line-height: 1;
 }
-.header-logo .red { color: var(--red); }
+.header-logo .accent { color: var(--gold); }
+.header-logo .gavel-icon {
+  width: 28px; height: 28px; border-radius: 6px;
+  background: var(--gold-dim); border: 1px solid var(--border2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+}
 .header-center { flex: 1; display: flex; align-items: center; justify-content: center; }
 .session-badge {
-  font-size: 11px; color: var(--text3);
-  display: flex; align-items: center; gap: 5px;
+  font-size: 11px; color: var(--text3); display: flex; align-items: center; gap: 5px;
+  font-family: var(--serif); letter-spacing: 0.5px; font-style: italic;
 }
-.session-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--green); animation: blink 2s infinite;
-}
+.session-dot { width: 6px; height: 6px; border-radius: 50%; background: #4a9; animation: blink 2.5s infinite; }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
 .header-right { display: flex; align-items: center; gap: 8px; }
-.hdr-btn {
-  height: 32px; border-radius: 8px;
-  background: var(--card); border: 1px solid var(--border);
-  color: var(--text2); font-size: 14px; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: all 0.15s; padding: 0 10px; gap: 4px;
-  white-space: nowrap; font-family: var(--sans);
+.hbtn {
+  height: 32px; border-radius: 7px; background: var(--card); border: 1px solid var(--border);
+  color: var(--text2); font-size: 13px; cursor: pointer; display: flex; align-items: center;
+  justify-content: center; padding: 0 10px; gap: 5px; transition: all 0.15s; font-family: var(--sans);
 }
-.hdr-btn:hover { background: var(--card2); color: var(--text); }
-.hdr-btn.icon-only { width: 32px; padding: 0; }
+.hbtn:hover { background: var(--card2); color: var(--text); border-color: var(--border2); }
+.hbtn.icon-only { width: 32px; padding: 0; }
 .rage-wrap { display: flex; align-items: center; gap: 5px; }
 .rage-pips { display: flex; gap: 3px; }
-.rage-pip { width: 5px; height: 13px; border-radius: 2px; background: var(--border2); transition: background 0.3s; }
-.rage-pip.on { background: var(--red); }
+.rage-pip { width: 4px; height: 14px; border-radius: 2px; background: var(--border2); transition: background 0.3s; }
+.rage-pip.on { background: var(--judgy2); }
 .rage-pip.on:nth-child(4) { background: var(--gold); }
-.rage-pip.on:nth-child(5) { background: #ff8c00; }
+.rage-pip.on:nth-child(5) { background: #e8a020; }
 
-/* ── TOPIC BAR ────────────────────────────────────────────── */
+/* ── TOPIC BAR ── */
 .topics-bar {
-  padding: 8px 16px;
-  border-bottom: 1px solid var(--border);
-  display: flex; gap: 6px; overflow-x: auto;
-  background: var(--bg2); flex-shrink: 0;
+  padding: 8px 18px; border-bottom: 1px solid var(--border);
+  display: flex; gap: 5px; overflow-x: auto; background: var(--bg2); flex-shrink: 0;
   scrollbar-width: none;
 }
 .topics-bar::-webkit-scrollbar { display: none; }
 .topic-pill {
-  font-size: 12px; padding: 5px 12px; border-radius: 20px;
-  border: 1px solid var(--border2); background: transparent;
-  color: var(--text2); cursor: pointer; transition: all 0.15s;
-  font-family: var(--sans); white-space: nowrap; flex-shrink: 0;
+  font-size: 11px; padding: 5px 13px; border-radius: 20px; border: 1px solid var(--border2);
+  background: transparent; color: var(--text2); cursor: pointer; transition: all 0.15s;
+  font-family: var(--sans); white-space: nowrap; flex-shrink: 0; letter-spacing: 0.2px;
 }
-.topic-pill:hover { border-color: var(--red); color: var(--red2); }
-.topic-pill.active { border-color: var(--red); color: var(--red2); background: rgba(232,48,42,0.1); }
-.topic-pill.barry:hover { border-color: #7b9fff; color: #7b9fff; }
-.topic-pill.barry.active { border-color: var(--navy2); color: #7b9fff; background: rgba(26,39,68,0.3); }
+.topic-pill:hover { border-color: var(--gold); color: var(--gold2); }
+.topic-pill.active { border-color: var(--gold); color: var(--gold2); background: var(--gold-dim); }
+.topic-pill.barry-pill { border-color: rgba(42,61,110,0.5); color: #7b9fff; }
+.topic-pill.barry-pill.active { background: var(--barry-dim); border-color: #7b9fff; }
 
-/* ── MESSAGES ─────────────────────────────────────────────── */
-.messages {
-  flex: 1; overflow-y: auto;
-  padding: 20px 16px;
-  display: flex; flex-direction: column; gap: 16px;
-}
-.messages::-webkit-scrollbar { width: 4px; }
+/* ── MESSAGES ── */
+.messages { flex: 1; overflow-y: auto; padding: 24px 20px; display: flex; flex-direction: column; gap: 20px; }
+.messages::-webkit-scrollbar { width: 3px; }
 .messages::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
 
 /* WELCOME */
-.welcome { text-align: center; padding: 16px 12px; animation: fadeUp 0.5s ease both; }
-@keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:none} }
-.welcome-emoji { font-size: 52px; display: block; margin-bottom: 12px; animation: swing 3s ease-in-out infinite; }
-@keyframes swing { 0%,100%{transform:rotate(-8deg)} 50%{transform:rotate(8deg)} }
-.welcome h2 { font-family: var(--display); font-size: clamp(28px,6vw,48px); letter-spacing: 3px; margin-bottom: 8px; }
-.welcome h2 .red { color: var(--red); }
-.welcome h2 .navy { color: #7b9fff; }
-.welcome p { font-size: 14px; color: var(--text2); line-height: 1.6; max-width: 440px; margin: 0 auto 20px; font-weight: 300; }
-.char-duo { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 420px; margin: 0 auto 20px; }
+.welcome { text-align: center; padding: 12px 12px 8px; animation: fadeUp 0.6s ease both; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:none} }
+
+.welcome-crest {
+  width: 72px; height: 72px; border-radius: 50%; margin: 0 auto 20px;
+  background: var(--gold-dim); border: 1px solid var(--border2);
+  display: flex; align-items: center; justify-content: center; font-size: 30px;
+  animation: breathe 4s ease-in-out infinite;
+}
+@keyframes breathe { 0%,100%{transform:scale(1)} 50%{transform:scale(1.04)} }
+
+.welcome h2 {
+  font-family: var(--display); font-size: clamp(26px,5vw,44px);
+  font-weight: 900; letter-spacing: 1px; margin-bottom: 4px; line-height: 1.1;
+  color: var(--text);
+}
+.welcome h2 .judgy-name { color: var(--judgy2); }
+.welcome h2 .barry-name { color: #7b9fff; }
+.welcome-subtitle {
+  font-family: var(--serif); font-size: 15px; color: var(--text2);
+  font-style: italic; margin-bottom: 6px; letter-spacing: 0.3px;
+}
+.welcome-rule {
+  width: 80px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 12px auto 20px;
+}
+
+.char-duo { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 440px; margin: 0 auto 24px; }
 .char-card {
-  background: var(--card); border: 2px solid var(--border);
-  border-radius: 14px; padding: 16px 12px; text-align: center;
-  min-width: 0; cursor: pointer; transition: all 0.2s;
-  position: relative; overflow: hidden;
+  border-radius: 12px; padding: 18px 14px 14px; text-align: center; cursor: pointer;
+  transition: all 0.25s; position: relative; overflow: hidden; border: 1px solid var(--border);
+  background: var(--card);
 }
-.char-card::after {
-  content: 'Chat with me only →';
-  position: absolute; bottom: 0; left: 0; right: 0;
-  background: rgba(0,0,0,0.7); color: white;
-  font-size: 10px; padding: 5px; font-family: var(--sans);
-  transform: translateY(100%); transition: transform 0.2s;
-  font-weight: 500;
+.char-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
 }
-.char-card:hover::after { transform: translateY(0); }
-.char-card:hover { transform: translateY(-3px); }
-.char-card.judgy { border-color: rgba(232,48,42,0.3); }
-.char-card.barry { border-color: rgba(122,155,255,0.3); }
-.char-card.judgy:hover { border-color: var(--red); box-shadow: 0 8px 24px rgba(232,48,42,0.2); }
-.char-card.barry:hover { border-color: #7b9fff; box-shadow: 0 8px 24px rgba(122,155,255,0.2); }
-.char-card.selected-char { border-width: 2px; }
-.char-card.judgy.selected-char { border-color: var(--red); background: rgba(232,48,42,0.08); }
-.char-card.barry.selected-char { border-color: #7b9fff; background: rgba(122,155,255,0.08); }
-.char-card-emoji { font-size: 28px; margin-bottom: 6px; }
-.char-card-name { font-family: var(--display); font-size: 18px; letter-spacing: 1px; }
-.char-card.judgy .char-card-name { color: var(--red2); }
+.char-card.judgy::before { background: var(--judgy2); }
+.char-card.barry::before { background: #7b9fff; }
+.char-card:hover { transform: translateY(-3px); border-color: var(--border2); }
+.char-card.judgy:hover { box-shadow: 0 8px 32px rgba(139,26,26,0.15); }
+.char-card.barry:hover { box-shadow: 0 8px 32px rgba(122,155,255,0.1); }
+.char-card.judgy.selected-char { border-color: var(--judgy2); background: var(--judgy-dim); }
+.char-card.barry.selected-char { border-color: #7b9fff; background: var(--barry-dim); }
+
+.char-monogram {
+  width: 50px; height: 50px; border-radius: 50%; margin: 0 auto 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--display); font-size: 20px; font-weight: 700; letter-spacing: -1px;
+}
+.char-card.judgy .char-monogram { background: var(--judgy-dim); color: var(--judgy2); border: 1px solid rgba(196,32,32,0.2); }
+.char-card.barry .char-monogram { background: var(--barry-dim); color: #7b9fff; border: 1px solid rgba(122,155,255,0.2); }
+
+.char-card-name { font-family: var(--display); font-size: 17px; font-weight: 700; letter-spacing: 0.5px; }
+.char-card.judgy .char-card-name { color: var(--judgy2); }
 .char-card.barry .char-card-name { color: #7b9fff; }
-.char-card-desc { font-size: 11px; color: var(--text3); margin-top: 4px; line-height: 1.4; }
+.char-card-title { font-family: var(--serif); font-size: 12px; color: var(--text3); font-style: italic; margin-top: 3px; }
 .char-card-tag {
-  display: inline-block; font-size: 9px; margin-top: 6px;
-  padding: 2px 8px; border-radius: 10px; font-weight: 500;
-  text-transform: uppercase; letter-spacing: 0.5px;
+  display: inline-block; font-size: 9px; margin-top: 8px; padding: 3px 9px;
+  border-radius: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px;
 }
-.char-card.judgy .char-card-tag { background: rgba(232,48,42,0.15); color: var(--red2); }
-.char-card.barry .char-card-tag { background: rgba(122,155,255,0.15); color: #7b9fff; }
-.char-mode-bar {
-  display: none; margin-bottom: 16px;
-  max-width: 420px; margin-left: auto; margin-right: auto;
-}
-.char-mode-bar.visible { display: block; }
-.char-mode-inner {
-  background: var(--card); border: 1px solid var(--border2);
-  border-radius: 10px; padding: 8px 14px;
-  display: flex; align-items: center; justify-content: space-between;
-  font-size: 12px;
-}
-.char-mode-lbl { color: var(--text2); }
-.char-mode-reset {
-  font-size: 11px; padding: 3px 10px; border-radius: 6px;
-  background: var(--card2); border: 1px solid var(--border2);
-  color: var(--text2); cursor: pointer; font-family: var(--sans);
-  transition: all 0.15s;
-}
-.char-mode-reset:hover { border-color: var(--border2); color: var(--text); }
-.starters { display: grid; grid-template-columns: repeat(2,1fr); gap: 6px; max-width: 480px; margin: 0 auto; }
+.char-card.judgy .char-card-tag { background: var(--judgy-dim); color: var(--judgy2); border: 1px solid rgba(196,32,32,0.15); }
+.char-card.barry .char-card-tag { background: var(--barry-dim); color: #7b9fff; border: 1px solid rgba(122,155,255,0.15); }
+
+.starters { display: grid; grid-template-columns: repeat(2,1fr); gap: 7px; max-width: 500px; margin: 0 auto; }
 .starter {
-  background: var(--card); border: 1px solid var(--border);
-  border-radius: 10px; padding: 11px 13px;
-  text-align: left; cursor: pointer; transition: all 0.15s;
-  font-family: var(--sans); display: flex; align-items: flex-start;
-  gap: 8px;
+  background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+  padding: 10px 13px; text-align: left; cursor: pointer; transition: all 0.15s;
+  font-family: var(--sans); display: flex; align-items: flex-start; gap: 8px;
 }
-.starter:hover { border-color: var(--red); transform: translateY(-1px); }
+.starter:hover { border-color: var(--gold); transform: translateY(-1px); }
 .starter.barry-s:hover { border-color: #7b9fff; }
-.starter-e { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.starter-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; color: var(--text3); }
 .starter-t { font-size: 12px; color: var(--text2); line-height: 1.4; }
 
 /* MESSAGES */
-.msg { display: flex; gap: 10px; animation: fadeUp 0.3s ease both; }
+.msg { display: flex; gap: 12px; animation: fadeUp 0.3s ease both; }
 .msg.user { flex-direction: row-reverse; }
 .msg-av {
-  width: 34px; height: 34px; border-radius: 9px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 15px; flex-shrink: 0; margin-top: 2px;
+  width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center;
+  justify-content: center; font-family: var(--display); font-size: 13px; font-weight: 700;
+  flex-shrink: 0; margin-top: 4px; letter-spacing: -0.5px;
 }
-.msg.judgy .msg-av { background: linear-gradient(135deg,var(--red),#8b0000); box-shadow: 0 3px 10px rgba(232,48,42,0.25); }
-.msg.barry .msg-av { background: linear-gradient(135deg,var(--navy),var(--navy2)); box-shadow: 0 3px 10px rgba(26,39,68,0.4); }
-.msg.user .msg-av { background: var(--card2); border: 1px solid var(--border2); }
-.msg-wrap { max-width: 78%; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.msg.judgy .msg-av { background: var(--judgy); border: 1px solid var(--judgy2); color: var(--gold2); }
+.msg.barry .msg-av { background: var(--barry); border: 1px solid #7b9fff; color: #a8c0ff; }
+.msg.user .msg-av { background: var(--card2); border: 1px solid var(--border2); color: var(--text2); font-size: 12px; }
+.msg-wrap { max-width: 78%; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
 .msg.user .msg-wrap { align-items: flex-end; }
-.msg-name { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.8px; padding: 0 4px; }
-.msg.judgy .msg-name { color: var(--red2); }
+.msg-name {
+  font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.2px; padding: 0 4px;
+  display: flex; align-items: center; gap: 5px;
+}
+.msg.judgy .msg-name { color: var(--judgy2); }
 .msg.barry .msg-name { color: #7b9fff; }
+.msg-name-rule { height: 1px; width: 20px; }
+.msg.judgy .msg-name-rule { background: var(--judgy2); opacity: 0.4; }
+.msg.barry .msg-name-rule { background: #7b9fff; opacity: 0.4; }
+
 .msg-bubble {
-  border-radius: 14px; padding: 11px 14px;
-  font-size: 13.5px; line-height: 1.65;
-  position: relative; word-break: break-word;
+  border-radius: 14px; padding: 13px 16px;
+  font-size: 14px; line-height: 1.7; position: relative;
+  font-family: var(--serif);
 }
 .msg.judgy .msg-bubble {
-  background: var(--card); border: 1px solid var(--border);
-  border-top-left-radius: 4px; color: var(--text);
-}
-.msg.judgy .msg-bubble::before {
-  content: ''; position: absolute; left: -1px; top: 0; bottom: 0;
-  width: 3px; background: var(--red); border-radius: 2px 0 0 2px;
+  background: var(--card); border: 1px solid var(--border); border-top-left-radius: 4px;
+  border-left: 3px solid var(--judgy); color: var(--text);
 }
 .msg.barry .msg-bubble {
-  background: var(--card); border: 1px solid var(--border);
-  border-top-left-radius: 4px; color: var(--text);
-}
-.msg.barry .msg-bubble::before {
-  content: ''; position: absolute; left: -1px; top: 0; bottom: 0;
-  width: 3px; background: var(--navy2); border-radius: 2px 0 0 2px;
+  background: var(--card); border: 1px solid var(--border); border-top-left-radius: 4px;
+  border-left: 3px solid #7b9fff; color: var(--text);
 }
 .msg.user .msg-bubble {
-  background: rgba(232,48,42,0.1);
-  border: 1px solid rgba(232,48,42,0.2);
-  border-top-right-radius: 4px;
+  background: var(--gold-dim); border: 1px solid var(--border2); border-top-right-radius: 4px;
+  font-family: var(--sans); font-size: 13.5px;
 }
-.msg-time { font-size: 10px; color: var(--text3); padding: 0 4px; }
+.msg-time { font-size: 10px; color: var(--text3); padding: 0 6px; font-family: var(--sans); }
+
 .verdict-line {
-  margin-top: 8px; padding: 6px 10px;
-  background: rgba(245,200,66,0.1);
-  border: 1px solid rgba(245,200,66,0.25);
-  border-radius: 7px; font-size: 12px;
-  color: var(--gold); display: flex; align-items: flex-start; gap: 6px;
+  margin-top: 10px; padding: 8px 12px;
+  background: rgba(196,160,80,0.06); border: 1px solid rgba(196,160,80,0.2);
+  border-radius: 8px; font-size: 12px; color: var(--gold2);
+  display: flex; align-items: flex-start; gap: 6px; font-family: var(--sans);
 }
 .barry-verdict {
-  margin-top: 8px; padding: 6px 10px;
-  background: rgba(122,155,255,0.08);
-  border: 1px solid rgba(122,155,255,0.2);
-  border-radius: 7px; font-size: 12px;
-  color: #7b9fff; display: flex; align-items: flex-start; gap: 6px;
+  margin-top: 10px; padding: 8px 12px;
+  background: rgba(122,155,255,0.06); border: 1px solid rgba(122,155,255,0.2);
+  border-radius: 8px; font-size: 12px; color: #a8c0ff;
+  display: flex; align-items: flex-start; gap: 6px; font-family: var(--sans);
 }
-
-/* RETRY BUTTON */
-.retry-btn {
-  display: inline-flex; align-items: center; gap: 5px;
-  margin-top: 8px; padding: 5px 12px; border-radius: 7px;
-  background: var(--card2); border: 1px solid var(--border2);
-  color: var(--text2); font-size: 11px; cursor: pointer;
-  font-family: var(--sans); transition: all 0.15s;
-}
-.retry-btn:hover { border-color: var(--red); color: var(--red2); }
-
-/* ERROR STATE */
-.msg-error { color: var(--text3); font-style: italic; font-size: 13px; }
-
-/* FORM CARD */
-.form-card {
-  background: var(--card2); border: 1px solid var(--border2);
-  border-radius: 12px; padding: 14px; margin-top: 10px;
-}
-.form-card-title { font-size: 12px; font-weight: 500; color: var(--text); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
-.form-field { margin-bottom: 8px; }
-.form-label { font-size: 11px; color: var(--text3); margin-bottom: 3px; display: block; }
-.form-input {
-  width: 100%; padding: 7px 10px; border-radius: 7px;
-  border: 1px solid var(--border2); background: var(--bg);
-  color: var(--text); font-family: var(--sans); font-size: 12px; outline: none;
-  transition: border-color 0.15s;
-}
-.form-input:focus { border-color: var(--navy2); }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.form-btn {
-  width: 100%; padding: 8px; border-radius: 8px;
-  background: var(--navy); border: none; color: white;
-  font-size: 13px; font-family: var(--sans); font-weight: 500;
-  cursor: pointer; margin-top: 8px; transition: background 0.15s;
-}
-.form-btn:hover:not(:disabled) { background: var(--navy2); }
-.form-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-.referral-links { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
-.ref-link {
-  font-size: 11px; padding: 4px 10px; border-radius: 6px;
-  background: var(--card); border: 1px solid var(--border2);
-  color: var(--text2); text-decoration: none; transition: all 0.15s;
-}
-.ref-link:hover { border-color: var(--navy2); color: #7b9fff; }
 
 /* TYPING */
 .typing-bub {
   background: var(--card); border: 1px solid var(--border);
   border-radius: 14px; border-top-left-radius: 4px;
-  padding: 12px 16px; display: flex; align-items: center; gap: 5px;
+  padding: 14px 18px; display: flex; align-items: center; gap: 6px;
 }
-.td { width: 7px; height: 7px; border-radius: 50%; opacity: 0.5; animation: tdBounce 1.2s ease infinite; }
-.msg.judgy .td { background: var(--red2); }
+.td { width: 6px; height: 6px; border-radius: 50%; opacity: 0.5; animation: tdBounce 1.2s ease infinite; }
+.msg.judgy .td { background: var(--judgy2); }
 .msg.barry .td { background: #7b9fff; }
 .td:nth-child(2){animation-delay:0.2s} .td:nth-child(3){animation-delay:0.4s}
 @keyframes tdBounce{0%,60%,100%{transform:none;opacity:0.5}30%{transform:translateY(-5px);opacity:1}}
 
-/* ── INPUT ────────────────────────────────────────────────── */
-.input-area {
-  padding: 12px 16px 14px;
-  border-top: 1px solid var(--border);
-  background: var(--bg2); flex-shrink: 0;
-}
+/* ── INPUT ── */
+.input-area { padding: 12px 18px 16px; padding-bottom: max(16px, env(safe-area-inset-bottom)); border-top: 1px solid var(--border); background: var(--bg2); flex-shrink: 0; }
 .input-wrap {
-  display: flex; gap: 8px; align-items: flex-end;
+  display: flex; gap: 10px; align-items: flex-end;
   background: var(--card); border: 1px solid var(--border2);
-  border-radius: 12px; padding: 9px 12px;
-  transition: border-color 0.15s;
+  border-radius: 12px; padding: 10px 12px; transition: border-color 0.2s;
 }
-.input-wrap:focus-within { border-color: var(--red); }
+.input-wrap:focus-within { border-color: var(--gold); }
 .chat-input {
   flex: 1; background: transparent; border: none; outline: none;
-  font-family: var(--sans); font-size: 14px; color: var(--text);
-  resize: none; min-height: 22px; max-height: 100px; line-height: 1.5;
+  font-family: var(--serif); font-size: 14px; color: var(--text);
+  resize: none; min-height: 22px; max-height: 100px; line-height: 1.6;
 }
-.chat-input::placeholder { color: var(--text3); }
+.chat-input::placeholder { color: var(--text3); font-style: italic; font-family: var(--serif); }
 .send-btn {
-  width: 34px; height: 34px; border-radius: 9px;
-  background: var(--red); border: none; font-size: 15px;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; flex-shrink: 0; transition: all 0.15s;
+  width: 36px; height: 36px; border-radius: 8px; background: var(--judgy); border: none;
+  font-size: 16px; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; flex-shrink: 0; transition: all 0.15s; color: var(--gold2);
 }
-.send-btn:hover:not(:disabled) { background: var(--red2); transform: scale(1.05); }
+.send-btn:hover { background: var(--judgy2); transform: scale(1.05); }
 .send-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
-.input-footer { display: flex; justify-content: space-between; margin-top: 6px; padding: 0 2px; align-items: center; }
-.input-hint { font-size: 11px; color: var(--text3); }
-.char-counter { font-size: 11px; color: var(--text3); transition: color 0.2s; }
-.char-counter.warn { color: var(--gold); }
-.char-counter.over { color: var(--red2); }
+.input-footer { display: flex; justify-content: space-between; margin-top: 5px; padding: 0 2px; }
+.input-hint { font-size: 10px; color: var(--text3); font-family: var(--sans); letter-spacing: 0.2px; }
 
-/* ── PAGES ────────────────────────────────────────────────── */
+/* ── PAGE OVERLAYS ── */
 .page-overlay {
-  position: fixed; inset: 0; background: var(--bg);
-  z-index: 400; overflow-y: auto;
-  transform: translateX(100%);
+  position: fixed; inset: 0; background: var(--bg); z-index: 400;
+  overflow-y: auto; transform: translateX(100%);
   transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
 }
 .page-overlay.open { transform: translateX(0); }
 .page-header {
-  display: flex; align-items: center; gap: 12px;
-  padding: 16px 20px; border-bottom: 1px solid var(--border);
-  background: var(--bg2); position: sticky; top: 0; z-index: 1;
+  display: flex; align-items: center; gap: 12px; padding: 16px 22px;
+  border-bottom: 1px solid var(--border); background: var(--bg2);
+  position: sticky; top: 0; z-index: 1;
 }
 .page-back {
-  width: 32px; height: 32px; border-radius: 8px;
-  background: var(--card); border: 1px solid var(--border);
-  color: var(--text2); cursor: pointer; display: flex;
-  align-items: center; justify-content: center; font-size: 16px;
-  transition: all 0.15s;
+  width: 32px; height: 32px; border-radius: 7px; background: var(--card);
+  border: 1px solid var(--border); color: var(--text2); cursor: pointer;
+  display: flex; align-items: center; justify-content: center; font-size: 16px; transition: all 0.15s;
 }
 .page-back:hover { color: var(--text); background: var(--card2); }
-.page-title { font-family: var(--display); font-size: 22px; letter-spacing: 2px; }
-.page-body { padding: 24px 20px; max-width: 680px; margin: 0 auto; }
+.page-title { font-family: var(--display); font-size: 20px; letter-spacing: 1px; color: var(--gold); }
+.page-body { padding: 28px 24px; max-width: 680px; margin: 0 auto; }
 .page-section { margin-bottom: 28px; }
-.page-section h3 { font-family: var(--serif); font-size: 18px; margin-bottom: 10px; color: var(--text); }
-.page-section p { font-size: 14px; color: var(--text2); line-height: 1.7; margin-bottom: 10px; }
+.page-section h3 { font-family: var(--display); font-size: 17px; margin-bottom: 10px; color: var(--text); }
+.page-section p { font-family: var(--serif); font-size: 14px; color: var(--text2); line-height: 1.75; margin-bottom: 10px; }
 .page-section ul { padding-left: 20px; }
-.page-section li { font-size: 14px; color: var(--text2); line-height: 1.7; margin-bottom: 5px; }
+.page-section li { font-family: var(--serif); font-size: 14px; color: var(--text2); line-height: 1.75; margin-bottom: 5px; }
 .warning-box {
-  background: rgba(232,48,42,0.08); border: 1px solid rgba(232,48,42,0.25);
-  border-radius: 10px; padding: 14px 16px; margin-bottom: 16px;
+  background: var(--judgy-dim); border: 1px solid rgba(139,26,26,0.25);
+  border-radius: 10px; padding: 14px 16px; margin-bottom: 18px;
 }
-.warning-box strong { color: var(--red2); display: block; margin-bottom: 6px; }
+.warning-box strong { color: var(--judgy2); display: block; margin-bottom: 6px; font-size: 13px; letter-spacing: 0.5px; }
 .warning-box p { font-size: 13px; color: var(--text2); margin: 0; }
 
-/* ── MOBILE ───────────────────────────────────────────────── */
+/* FORMS */
+.form-card {
+  background: var(--card2); border: 1px solid var(--border2);
+  border-radius: 10px; padding: 16px;
+}
+.form-card-title { font-size: 12px; font-weight: 500; color: var(--gold); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; letter-spacing: 0.5px; text-transform: uppercase; }
+.form-field { margin-bottom: 10px; }
+.form-label { font-size: 11px; color: var(--text3); margin-bottom: 3px; display: block; letter-spacing: 0.3px; text-transform: uppercase; }
+.form-input {
+  width: 100%; padding: 8px 11px; border-radius: 7px;
+  border: 1px solid var(--border2); background: var(--bg);
+  color: var(--text); font-family: var(--sans); font-size: 13px; outline: none;
+}
+.form-input:focus { border-color: var(--gold); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.form-btn {
+  width: 100%; padding: 9px; border-radius: 8px; background: var(--barry);
+  border: 1px solid rgba(122,155,255,0.3); color: #a8c0ff;
+  font-size: 13px; font-family: var(--sans); font-weight: 500; cursor: pointer;
+  margin-top: 10px; transition: all 0.15s; letter-spacing: 0.3px;
+}
+.form-btn:hover { background: var(--barry2); color: white; }
+.referral-links { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+.ref-link {
+  font-size: 11px; padding: 5px 11px; border-radius: 6px; background: var(--card);
+  border: 1px solid var(--border2); color: var(--text2); text-decoration: none; transition: all 0.15s; cursor: pointer;
+}
+.ref-link:hover { border-color: var(--gold); color: var(--gold2); }
+
+/* CHARMODE BAR */
+.char-mode-bar {
+  background: var(--card); border: 1px solid var(--border2); border-radius: 9px;
+  padding: 7px 14px; display: flex; align-items: center;
+  justify-content: space-between; font-size: 12px; max-width: 440px; margin: 0 auto 16px;
+}
+.char-mode-label { color: var(--text2); font-family: var(--serif); font-style: italic; }
+.char-mode-back {
+  font-size: 11px; padding: 3px 10px; border-radius: 6px; background: var(--card2);
+  border: 1px solid var(--border2); color: var(--text2); cursor: pointer; font-family: var(--sans);
+}
+
 @media(max-width:540px){
   .starters { grid-template-columns: 1fr; }
-  .msg-wrap { max-width: 86%; }
-  .char-duo { grid-template-columns: 1fr 1fr; }
-  .form-row { grid-template-columns: 1fr; }
-  .header-logo { font-size: 20px; }
-  .session-badge span:last-child { display: none; }
+  .msg-wrap { max-width: 88%; }
+  .char-duo { max-width: 320px; }
 }
-@media(max-width:380px){
-  .char-duo { grid-template-columns: 1fr; max-width: 240px; }
-}
-
-/* ── AUTH MODAL ───────────────────────────────────────────── */
-.auth-modal-bg {
-  position: fixed; inset: 0; background: var(--overlay);
-  z-index: 600; display: flex; align-items: center; justify-content: center;
-  opacity: 0; pointer-events: none; transition: opacity 0.25s;
-  padding: 20px;
-}
-.auth-modal-bg.open { opacity: 1; pointer-events: all; }
-.auth-modal {
-  background: var(--card); border: 1px solid var(--border2);
-  border-radius: 20px; padding: 32px 28px; width: 100%; max-width: 400px;
-  box-shadow: 0 24px 80px var(--shadow);
-  transform: translateY(20px); transition: transform 0.25s;
-  position: relative;
-}
-.auth-modal-bg.open .auth-modal { transform: translateY(0); }
-.auth-close {
-  position: absolute; top: 16px; right: 16px;
-  width: 28px; height: 28px; border-radius: 7px;
-  background: var(--card2); border: 1px solid var(--border);
-  color: var(--text2); cursor: pointer; font-size: 14px;
-  display: flex; align-items: center; justify-content: center;
-  transition: all 0.15s;
-}
-.auth-close:hover { color: var(--text); background: var(--border2); }
-.auth-logo { font-family: var(--display); font-size: 24px; letter-spacing: 2px; margin-bottom: 4px; }
-.auth-logo .red { color: var(--red); }
-.auth-subtitle { font-size: 13px; color: var(--text2); margin-bottom: 24px; }
-.auth-tabs { display: flex; gap: 4px; margin-bottom: 20px; background: var(--bg); border-radius: 10px; padding: 4px; }
-.auth-tab {
-  flex: 1; padding: 7px; border-radius: 7px; border: none;
-  font-family: var(--sans); font-size: 13px; font-weight: 500;
-  cursor: pointer; transition: all 0.15s; color: var(--text3);
-  background: transparent;
-}
-.auth-tab.active { background: var(--card); color: var(--text); box-shadow: 0 1px 4px var(--shadow); }
-.auth-field { margin-bottom: 12px; }
-.auth-label { font-size: 11px; color: var(--text3); margin-bottom: 4px; display: block; text-transform: uppercase; letter-spacing: 0.8px; }
-.auth-input {
-  width: 100%; padding: 10px 13px; border-radius: 9px;
-  border: 1px solid var(--border2); background: var(--bg);
-  color: var(--text); font-family: var(--sans); font-size: 13px;
-  outline: none; transition: border-color 0.15s;
-}
-.auth-input:focus { border-color: var(--red); }
-.auth-btn {
-  width: 100%; padding: 11px; border-radius: 10px;
-  background: var(--red); border: none; color: white;
-  font-size: 14px; font-family: var(--sans); font-weight: 600;
-  cursor: pointer; transition: all 0.15s; margin-top: 4px;
-}
-.auth-btn:hover:not(:disabled) { background: var(--red2); transform: translateY(-1px); }
-.auth-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-.auth-divider {
-  display: flex; align-items: center; gap: 10px;
-  margin: 16px 0; font-size: 11px; color: var(--text3);
-}
-.auth-divider::before, .auth-divider::after {
-  content: ''; flex: 1; height: 1px; background: var(--border2);
-}
-.oauth-btns { display: flex; gap: 8px; }
-.oauth-btn {
-  flex: 1; padding: 10px; border-radius: 10px;
-  background: var(--card2); border: 1px solid var(--border2);
-  color: var(--text); font-size: 13px; font-family: var(--sans);
-  cursor: pointer; transition: all 0.15s;
-  display: flex; align-items: center; justify-content: center; gap: 7px;
-  font-weight: 500;
-}
-.oauth-btn:hover { border-color: var(--border2); background: var(--bg2); transform: translateY(-1px); }
-.auth-msg { font-size: 12px; margin-top: 10px; text-align: center; min-height: 18px; }
-.auth-msg.error { color: var(--red2); }
-.auth-msg.success { color: var(--green); }
-.auth-forgot { font-size: 11px; color: var(--text3); text-align: right; cursor: pointer; margin-top: -6px; margin-bottom: 10px; }
-.auth-forgot:hover { color: var(--text2); }
-
-/* ── ACCOUNT MENU ─────────────────────────────────────────── */
-.acct-btn {
-  width: 32px; height: 32px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--red), #8b0000);
-  border: 2px solid var(--border2); color: white;
-  font-size: 13px; font-weight: 600; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: all 0.15s; font-family: var(--sans);
-  flex-shrink: 0;
-}
-.acct-btn:hover { transform: scale(1.08); border-color: var(--red); }
-.acct-dropdown {
-  position: absolute; top: 52px; right: 12px;
-  background: var(--card); border: 1px solid var(--border2);
-  border-radius: 14px; padding: 8px;
-  min-width: 220px; z-index: 100;
-  box-shadow: 0 12px 40px var(--shadow);
-  opacity: 0; pointer-events: none; transform: translateY(-8px);
-  transition: all 0.18s;
-}
-.acct-dropdown.open { opacity: 1; pointer-events: all; transform: translateY(0); }
-.acct-info { padding: 8px 10px 12px; border-bottom: 1px solid var(--border); margin-bottom: 6px; }
-.acct-name { font-size: 13px; font-weight: 500; color: var(--text); }
-.acct-email { font-size: 11px; color: var(--text3); margin-top: 2px; word-break: break-all; }
-.acct-plan {
-  display: inline-flex; align-items: center; gap: 5px;
-  margin-top: 6px; font-size: 10px; font-weight: 600;
-  padding: 3px 8px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px;
-}
-.acct-plan.free { background: rgba(255,255,255,0.06); color: var(--text3); }
-.acct-plan.pro { background: rgba(245,200,66,0.15); color: var(--gold); }
-.acct-menu-item {
-  display: flex; align-items: center; gap: 9px;
-  padding: 9px 10px; border-radius: 9px;
-  font-size: 13px; color: var(--text2); cursor: pointer;
-  transition: all 0.13s;
-}
-.acct-menu-item:hover { background: var(--card2); color: var(--text); }
-.acct-menu-item.danger:hover { background: rgba(232,48,42,0.1); color: var(--red2); }
-
-/* ── PAYWALL MODAL ────────────────────────────────────────── */
-.paywall-bg {
-  position: fixed; inset: 0; background: var(--overlay);
-  z-index: 600; display: flex; align-items: center; justify-content: center;
-  opacity: 0; pointer-events: none; transition: opacity 0.25s;
-  padding: 20px;
-}
-.paywall-bg.open { opacity: 1; pointer-events: all; }
-.paywall-modal {
-  background: var(--card); border: 1px solid var(--border2);
-  border-radius: 20px; padding: 32px 28px; width: 100%; max-width: 380px;
-  box-shadow: 0 24px 80px var(--shadow);
-  transform: translateY(20px); transition: transform 0.25s;
-  text-align: center;
-}
-.paywall-bg.open .paywall-modal { transform: translateY(0); }
-.paywall-gavel { font-size: 52px; margin-bottom: 12px; display: block; }
-.paywall-title { font-family: var(--display); font-size: 30px; letter-spacing: 2px; margin-bottom: 6px; }
-.paywall-title .red { color: var(--red); }
-.paywall-sub { font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 20px; }
-.paywall-price-card {
-  background: var(--card2); border: 1px solid var(--border2);
-  border-radius: 14px; padding: 18px; margin-bottom: 16px;
-  position: relative; overflow: hidden;
-}
-.paywall-price-card::before {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(135deg, rgba(232,48,42,0.06), transparent);
-  pointer-events: none;
-}
-.paywall-badge {
-  display: inline-block; font-size: 10px; font-weight: 600;
-  padding: 3px 10px; border-radius: 20px; text-transform: uppercase;
-  letter-spacing: 0.8px; background: rgba(245,200,66,0.15);
-  color: var(--gold); margin-bottom: 10px;
-}
-.paywall-amount { font-family: var(--display); font-size: 48px; letter-spacing: 1px; color: var(--text); line-height: 1; }
-.paywall-period { font-size: 13px; color: var(--text3); margin-top: 2px; }
-.paywall-features { list-style: none; text-align: left; margin: 14px 0 0; }
-.paywall-features li {
-  font-size: 13px; color: var(--text2); padding: 4px 0;
-  display: flex; align-items: center; gap: 8px;
-}
-.paywall-features li::before { content: "✓"; color: var(--green); font-weight: 700; }
-.paywall-cta {
-  width: 100%; padding: 13px; border-radius: 12px;
-  background: var(--red); border: none; color: white;
-  font-size: 15px; font-family: var(--sans); font-weight: 700;
-  cursor: pointer; transition: all 0.15s; margin-bottom: 10px;
-  letter-spacing: 0.3px;
-}
-.paywall-cta:hover:not(:disabled) { background: var(--red2); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(232,48,42,0.3); }
-.paywall-cta:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-.paywall-signin { font-size: 12px; color: var(--text3); }
-.paywall-signin span { color: #7b9fff; cursor: pointer; }
-.paywall-signin span:hover { text-decoration: underline; }
-.paywall-free-info { font-size: 11px; color: var(--text3); margin-top: 8px; }
-
-/* free msg counter badge */
-.free-badge {
-  display: flex; align-items: center; gap: 5px;
-  font-size: 11px; color: var(--text3);
-  padding: 3px 8px; border-radius: 20px;
-  background: var(--card); border: 1px solid var(--border);
-}
-.free-badge .fb-count { font-weight: 600; color: var(--gold); }
-
-
-/* ── BUILD RECOMMENDATIONS ────────────────────────────────── */
-.build-rec {
-  margin-top: 10px; padding: 10px 12px;
-  background: linear-gradient(135deg, rgba(122,155,255,0.07), rgba(26,39,68,0.12));
-  border: 1px solid rgba(122,155,255,0.18);
-  border-radius: 10px; font-size: 12px;
-}
-.build-rec-label {
-  font-size: 10px; font-weight: 600; text-transform: uppercase;
-  letter-spacing: 1px; color: var(--text3); margin-bottom: 7px;
-  display: flex; align-items: center; gap: 5px;
-}
-.build-rec-chips { display: flex; flex-wrap: wrap; gap: 6px; }
-.build-chip {
-  display: inline-flex; align-items: center; gap: 5px;
-  padding: 5px 11px; border-radius: 20px;
-  background: var(--card2); border: 1px solid var(--border2);
-  color: var(--text2); font-size: 12px; text-decoration: none;
-  transition: all 0.15s; cursor: pointer;
-  font-family: var(--sans);
-}
-.build-chip:hover {
-  border-color: #7b9fff; color: #7b9fff;
-  background: rgba(122,155,255,0.1);
-  transform: translateY(-1px);
-}
-.build-chip .bc-emoji { font-size: 14px; }
-
-/* ── FOLLOW-UP OPTIONS ────────────────────────────────────── */
-.followup-wrap {
-  margin-top: 10px; display: flex; flex-direction: column; gap: 5px;
-}
-.followup-label {
-  font-size: 10px; font-weight: 600; text-transform: uppercase;
-  letter-spacing: 1px; color: var(--text3); margin-bottom: 4px;
-  display: flex; align-items: center; gap: 5px;
-}
-.followup-opts { display: flex; flex-direction: column; gap: 5px; }
-.followup-btn {
-  display: flex; align-items: center; gap: 8px;
-  padding: 9px 13px; border-radius: 10px;
-  background: var(--card2); border: 1px solid var(--border2);
-  color: var(--text2); font-size: 13px; text-align: left;
-  cursor: pointer; transition: all 0.15s; font-family: var(--sans);
-  width: 100%;
-}
-.followup-btn:hover {
-  border-color: var(--red); color: var(--text);
-  background: rgba(232,48,42,0.06);
-  transform: translateX(2px);
-}
-.followup-btn .fq-arrow {
-  margin-left: auto; font-size: 11px;
-  color: var(--text3); flex-shrink: 0;
-}
-
 </style>
 </head>
 <body>
 
-<!-- SIDEBAR OVERLAY -->
-<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
-<!-- SIDEBAR -->
+
 <nav class="sidebar" id="sidebar">
   <div class="sidebar-head">
-    <div class="sidebar-logo">⚖️ JUDGY</div>
+    <div class="sidebar-logo"><span class="gavel">⚖</span> THE JUDGY</div>
     <button class="sidebar-close" onclick="closeSidebar()">✕</button>
   </div>
-
   <div class="sidebar-section">
     <div class="sidebar-label">Session</div>
-    <div class="sidebar-item active" id="sidebarChatItem">
-      <span class="si-icon">⚖️</span> The Judgy + Barry
+    <div class="sidebar-item active" onclick="setView('chat',this)">
+      <span class="si-icon">⚖</span> The Judgy + Barry
       <span class="si-badge">LIVE</span>
     </div>
     <div class="sidebar-item" onclick="newCase(); closeSidebar()">
-      <span class="si-icon">🔄</span> New case
+      <span class="si-icon">↺</span> New case
     </div>
   </div>
-
   <div class="sidebar-section">
     <div class="sidebar-label">Topics</div>
-    <div class="sidebar-item" onclick="quickTopicFromSidebar('relationship')"><span class="si-icon">💔</span> Relationships</div>
-    <div class="sidebar-item" onclick="quickTopicFromSidebar('work')"><span class="si-icon">💼</span> Work drama</div>
-    <div class="sidebar-item" onclick="quickTopicFromSidebar('coworker')"><span class="si-icon">🤝</span> Co-workers</div>
-    <div class="sidebar-item" onclick="quickTopicFromSidebar('legal')"><span class="si-icon">👔</span> Legal (Barry)</div>
-    <div class="sidebar-item" onclick="quickTopicFromSidebar('business')"><span class="si-icon">🏢</span> Business (Barry)</div>
-    <div class="sidebar-item" onclick="quickTopicFromSidebar('money')"><span class="si-icon">💸</span> Money</div>
-    <div class="sidebar-item" onclick="quickTopicFromSidebar('family')"><span class="si-icon">👨‍👩‍👧</span> Family</div>
+    <div class="sidebar-item" onclick="quickTopic('relationship'); closeSidebar()"><span class="si-icon">♡</span> Relationships</div>
+    <div class="sidebar-item" onclick="quickTopic('work'); closeSidebar()"><span class="si-icon">◈</span> Work drama</div>
+    <div class="sidebar-item" onclick="quickTopic('coworker'); closeSidebar()"><span class="si-icon">◉</span> Co-workers</div>
+    <div class="sidebar-item" onclick="quickTopic('legal'); closeSidebar()"><span class="si-icon">§</span> Legal (Barry)</div>
+    <div class="sidebar-item" onclick="quickTopic('business'); closeSidebar()"><span class="si-icon">◆</span> Business (Barry)</div>
+    <div class="sidebar-item" onclick="quickTopic('money'); closeSidebar()"><span class="si-icon">$</span> Money</div>
+    <div class="sidebar-item" onclick="quickTopic('family'); closeSidebar()"><span class="si-icon">⌂</span> Family</div>
   </div>
-
   <div class="sidebar-divider"></div>
-
   <div class="sidebar-section">
-    <div class="sidebar-label">Barry's Documents</div>
+    <div class="sidebar-label">Barry's Chambers</div>
     <div class="sidebar-item" onclick="openPage('forms'); closeSidebar()"><span class="si-icon">📋</span> Legal Forms</div>
-    <div class="sidebar-item" onclick="openPage('landing'); closeSidebar()"><span class="si-icon">🏗️</span> Build Landing Page</div>
-    <div class="sidebar-item" onclick="openPage('referrals'); closeSidebar()"><span class="si-icon">🔗</span> Referral Links</div>
+    <div class="sidebar-item" onclick="openPage('landing'); closeSidebar()"><span class="si-icon">◻</span> Build Landing Page</div>
+    <div class="sidebar-item" onclick="openPage('referrals'); closeSidebar()"><span class="si-icon">→</span> Barry's Referrals</div>
   </div>
-
   <div class="sidebar-divider"></div>
-
   <div class="sidebar-section">
-    <div class="sidebar-label">Legal</div>
-    <div class="sidebar-item" onclick="openPage('disclaimer'); closeSidebar()"><span class="si-icon">⚠️</span> Disclaimer</div>
-    <div class="sidebar-item" onclick="openPage('privacy'); closeSidebar()"><span class="si-icon">🔒</span> Privacy Policy</div>
-    <div class="sidebar-item" onclick="openPage('terms'); closeSidebar()"><span class="si-icon">📄</span> Terms of Service</div>
+    <div class="sidebar-label">Court Records</div>
+    <div class="sidebar-item" onclick="openPage('disclaimer'); closeSidebar()"><span class="si-icon">!</span> Disclaimer</div>
+    <div class="sidebar-item" onclick="openPage('privacy'); closeSidebar()"><span class="si-icon">⊙</span> Privacy Policy</div>
+    <div class="sidebar-item" onclick="openPage('terms'); closeSidebar()"><span class="si-icon">≡</span> Terms of Service</div>
   </div>
-
   <div class="sidebar-divider"></div>
-
-  <!-- THEME CYCLE IN SIDEBAR -->
-  <div class="theme-toggle-row" style="cursor:pointer;" onclick="toggleTheme()">
-    <span class="ttr-label" id="sidebarThemeLabel">🌙 Dark mode</span>
-    <button class="toggle-switch" id="sidebarThemeToggle" style="pointer-events:none;"></button>
+  <div class="sidebar-section">
+    <div class="sidebar-item" onclick="toggleTheme()"><span class="si-icon" id="themeIcon">☀</span> <span id="themeLabel">Light mode</span></div>
   </div>
-
   <div class="sidebar-footer">
     <div class="disclaimer-box">
-      <strong>⚠️ NOT PROFESSIONAL ADVICE</strong>
-      The Judgy and Barry are AI characters for entertainment and general guidance only. Always consult a licensed professional for legal, financial, or medical matters.
+      <strong>NOT PROFESSIONAL ADVICE</strong>
+      The Judgy and Barry are AI characters for entertainment and general guidance only. Always consult a licensed professional.
     </div>
   </div>
 </nav>
 
-<!-- MAIN APP -->
 <div class="app">
   <header>
     <button class="menu-btn" onclick="openSidebar()">☰</button>
-    <div class="header-logo">THE <span class="red">JUDGY</span></div>
+    <div class="header-logo">
+      <div class="gavel-icon">⚖</div>
+      THE <span class="accent">JUDGY</span>
+    </div>
     <div class="header-center">
-      <div class="session-badge"><div class="session-dot"></div><span>Court in session</span></div>
+      <div class="session-badge"><div class="session-dot"></div>Court in session</div>
     </div>
     <div class="header-right">
-      <div class="rage-wrap" title="Rage meter">
+      <div class="rage-wrap">
         <div class="rage-pips" id="ragePips">
           <div class="rage-pip"></div><div class="rage-pip"></div>
           <div class="rage-pip"></div><div class="rage-pip"></div>
           <div class="rage-pip"></div>
         </div>
       </div>
-      <div class="free-badge" id="freeBadge" style="display:none;">
-        <span>Free</span><span class="fb-count" id="freeCt">5</span><span>left</span>
-      </div>
-      <button class="hdr-btn icon-only" onclick="toggleSound()" id="soundBtn" title="Toggle sound">🔊</button>
-      <button class="hdr-btn icon-only" onclick="toggleTheme()" id="themeBtn" title="Toggle theme">🌙</button>
-      <button class="hdr-btn" onclick="newCase()" title="New case">🔄 <span style="font-size:11px;font-weight:500;">New</span></button>
-      <!-- AUTH: show login btn or avatar -->
-      <button class="hdr-btn" id="loginBtn" onclick="openAuth()" style="background:rgba(232,48,42,0.12);border-color:rgba(232,48,42,0.3);color:var(--red2);">Sign in</button>
-      <button class="acct-btn" id="acctBtn" style="display:none;" onclick="toggleAcctMenu()" id="acctBtn"></button>
-    </div>
-    <!-- ACCOUNT DROPDOWN -->
-    <div class="acct-dropdown" id="acctDropdown">
-      <div class="acct-info">
-        <div class="acct-name" id="acctName">—</div>
-        <div class="acct-email" id="acctEmail">—</div>
-        <div class="acct-plan free" id="acctPlan">Free</div>
-      </div>
-      <div class="acct-menu-item" onclick="openAuth('account')">⚙️ Account settings</div>
-      <div class="acct-menu-item" onclick="openPaywall()">⭐ Upgrade to Pro</div>
-      <div class="acct-menu-item danger" onclick="signOut()">🚪 Sign out</div>
+      <button class="hbtn icon-only" onclick="toggleJudgySound()" id="judgySoundBtn" title="Toggle sound">🔊</button>
+      <button class="hbtn icon-only" onclick="toggleTheme()" id="themeBtn" title="Toggle theme">🌙</button>
+      <button class="hbtn" onclick="newCase()">↺ <span style="font-size:11px;font-weight:500;">New</span></button>
     </div>
   </header>
 
-  <!-- TOPIC BAR -->
-  <div class="topics-bar" id="topicsBar">
-    <button class="topic-pill active" data-topic="general"   onclick="setTopic(this,'general')">⚖️ All</button>
-    <button class="topic-pill"        data-topic="relationship" onclick="setTopic(this,'relationship')">💔 Love</button>
-    <button class="topic-pill"        data-topic="work"      onclick="setTopic(this,'work')">💼 Work</button>
-    <button class="topic-pill"        data-topic="coworker"  onclick="setTopic(this,'coworker')">🤝 Co-workers</button>
-    <button class="topic-pill"        data-topic="personal"  onclick="setTopic(this,'personal')">🧠 Personal</button>
-    <button class="topic-pill"        data-topic="family"    onclick="setTopic(this,'family')">👨‍👩‍👧 Family</button>
-    <button class="topic-pill barry"  data-topic="legal"     onclick="setTopic(this,'legal')">👔 Legal</button>
-    <button class="topic-pill barry"  data-topic="business"  onclick="setTopic(this,'business')">🏢 Business</button>
-    <button class="topic-pill barry"  data-topic="money"     onclick="setTopic(this,'money')">💸 Money</button>
+  <div class="topics-bar">
+    <button class="topic-pill active" onclick="setTopic(this,'general')">⚖ All</button>
+    <button class="topic-pill" onclick="setTopic(this,'relationship')">♡ Love</button>
+    <button class="topic-pill" onclick="setTopic(this,'work')">◈ Work</button>
+    <button class="topic-pill" onclick="setTopic(this,'coworker')">◉ Co-workers</button>
+    <button class="topic-pill" onclick="setTopic(this,'personal')">◎ Personal</button>
+    <button class="topic-pill" onclick="setTopic(this,'family')">⌂ Family</button>
+    <button class="topic-pill barry-pill" onclick="setTopic(this,'legal')">§ Legal</button>
+    <button class="topic-pill barry-pill" onclick="setTopic(this,'business')">◆ Business</button>
+    <button class="topic-pill barry-pill" onclick="setTopic(this,'money')">$ Money</button>
   </div>
 
-  <!-- MESSAGES -->
-  <div class="messages" id="messages"></div>
+  <div class="messages" id="messages">
+    <div class="welcome" id="welcome">
+      <div class="welcome-crest">⚖</div>
+      <h2>THE <span class="judgy-name">JUDGY</span><br>& <span class="barry-name">BARRY</span></h2>
+      <div class="welcome-subtitle">Brutally honest. Surprisingly competent.</div>
+      <div class="welcome-rule"></div>
+      <div class="char-duo">
+        <div class="char-card judgy" id="charJudgy" onclick="selectChar('judgy')">
+          <div class="char-monogram">J.</div>
+          <div class="char-card-name">The Judgy</div>
+          <div class="char-card-title">The Honorable Judge</div>
+          <div class="char-card-tag">Life · Love · Work</div>
+        </div>
+        <div class="char-card barry" id="charBarry" onclick="selectChar('barry')">
+          <div class="char-monogram">B.</div>
+          <div class="char-card-name">Barry T. Lawson</div>
+          <div class="char-card-title">Esq. — Her Ex-Husband</div>
+          <div class="char-card-tag">Legal · Business · Tax</div>
+        </div>
+      </div>
+      <div id="charModeBar" style="display:none">
+        <div class="char-mode-bar">
+          <span class="char-mode-label" id="charModeLabel"></span>
+          <button class="char-mode-back" onclick="selectChar('both')">← Both</button>
+        </div>
+      </div>
+      <div class="starters">
+        <button class="starter" onclick="useStarter(this)"><span class="starter-icon">♡</span><span class="starter-t">My ex wants to get back together but they cheated on me</span></button>
+        <button class="starter barry-s" onclick="useStarter(this)"><span class="starter-icon">§</span><span class="starter-t">I want to start an LLC — where do I begin?</span></button>
+        <button class="starter" onclick="useStarter(this)"><span class="starter-icon">◉</span><span class="starter-t">My coworker keeps stealing my ideas in meetings</span></button>
+        <button class="starter barry-s" onclick="useStarter(this)"><span class="starter-icon">📋</span><span class="starter-t">I need a demand letter for money owed to me</span></button>
+      </div>
+    </div>
+  </div>
 
-  <!-- INPUT -->
   <div class="input-area">
     <div class="input-wrap">
       <textarea class="chat-input" id="chatInput"
-        placeholder="State your case... ⚖️"
-        rows="1"
-        onkeydown="handleKey(event)"
-        oninput="onInputChange(this)"></textarea>
-      <button class="send-btn" id="sendBtn" onclick="sendMessage()">🔨</button>
+        placeholder="Present your case to the court..."
+        rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+      <button class="send-btn" id="sendBtn" onclick="sendMessage()">⚖</button>
     </div>
     <div class="input-footer">
       <span class="input-hint">Enter to send · Shift+Enter for new line</span>
-      <span class="char-counter" id="charCt">0 / 500</span>
+      <span style="font-size:10px;color:var(--text3);font-family:var(--sans);" id="charCt">0/500</span>
     </div>
   </div>
 </div>
 
-<!-- PAGE OVERLAYS ─────────────────────────────────────────── -->
-
-<!-- DISCLAIMER -->
+<!-- PAGE OVERLAYS (keeping same structure as original, just updated styling) -->
 <div class="page-overlay" id="page-disclaimer">
   <div class="page-header">
     <button class="page-back" onclick="closePage('disclaimer')">←</button>
-    <div class="page-title">⚠️ DISCLAIMER</div>
+    <div class="page-title">! Disclaimer</div>
   </div>
   <div class="page-body">
     <div class="warning-box">
@@ -919,11 +636,11 @@ header::after {
     </div>
     <div class="page-section">
       <h3>Not Legal Advice</h3>
-      <p>Nothing Barry says constitutes legal advice. Barry is an AI character, not a licensed attorney. Do not rely on anything said here for legal decisions. Always consult a qualified, licensed attorney in your jurisdiction.</p>
+      <p>Nothing Barry says constitutes legal advice. Barry is an AI character, not a licensed attorney. Always consult a qualified, licensed attorney in your jurisdiction before making legal decisions.</p>
     </div>
     <div class="page-section">
       <h3>Not Financial Advice</h3>
-      <p>Any financial, tax, or insurance guidance is for general informational purposes only and does not constitute professional financial or tax advice. Consult a licensed CPA, financial advisor, or insurance professional.</p>
+      <p>Any financial, tax, or insurance guidance is for general informational purposes only. Consult a licensed CPA, financial advisor, or insurance professional.</p>
     </div>
     <div class="page-section">
       <h3>Entertainment Purpose</h3>
@@ -936,220 +653,146 @@ header::after {
   </div>
 </div>
 
-<!-- PRIVACY -->
 <div class="page-overlay" id="page-privacy">
   <div class="page-header">
     <button class="page-back" onclick="closePage('privacy')">←</button>
-    <div class="page-title">🔒 PRIVACY POLICY</div>
+    <div class="page-title">⊙ Privacy Policy</div>
   </div>
   <div class="page-body">
-    <div class="page-section">
-      <h3>What We Collect</h3>
-      <p>When you use The Judgy, we may collect:</p>
-      <ul>
-        <li>Messages you send to The Judgy and Barry</li>
-        <li>Account information (email, name) if you sign up</li>
-        <li>Usage data (session length, features used)</li>
-        <li>Device and browser information</li>
-      </ul>
-    </div>
-    <div class="page-section">
-      <h3>How We Use It</h3>
-      <ul>
-        <li>To provide AI responses via Anthropic's Claude API</li>
-        <li>To improve the service</li>
-        <li>To process payments via Stripe</li>
-        <li>To send service-related emails</li>
-      </ul>
-    </div>
-    <div class="page-section">
-      <h3>Third Party Services</h3>
-      <p>We use Anthropic (AI), Supabase (database/auth), Stripe (payments), and Cloudflare (hosting). Each has their own privacy policy.</p>
-    </div>
-    <div class="page-section">
-      <h3>Your Rights</h3>
-      <p>You can request deletion of your data at any time by contacting us. We do not sell your personal information to third parties.</p>
-    </div>
-    <div class="page-section">
-      <h3>Cookies</h3>
-      <p>We use minimal cookies for authentication and session management only. No advertising or tracking cookies.</p>
-    </div>
+    <div class="page-section"><h3>What We Collect</h3><p>When you use The Judgy, we may collect messages you send, account information if you sign up, usage data, and device/browser information.</p></div>
+    <div class="page-section"><h3>How We Use It</h3><p>To provide AI responses via Anthropic's Claude API, to improve the service, to process payments via Stripe, and to send service-related emails.</p></div>
+    <div class="page-section"><h3>Third Party Services</h3><p>We use Anthropic (AI), Supabase (database/auth), Stripe (payments), and Cloudflare (hosting). Each has their own privacy policy.</p></div>
+    <div class="page-section"><h3>Your Rights</h3><p>You can request deletion of your data at any time. We do not sell your personal information to third parties.</p></div>
   </div>
 </div>
 
-<!-- TERMS -->
 <div class="page-overlay" id="page-terms">
   <div class="page-header">
     <button class="page-back" onclick="closePage('terms')">←</button>
-    <div class="page-title">📄 TERMS OF SERVICE</div>
+    <div class="page-title">≡ Terms of Service</div>
   </div>
   <div class="page-body">
-    <div class="page-section">
-      <h3>Acceptance</h3>
-      <p>By using The Judgy, you agree to these terms. If you don't agree, please don't use the service.</p>
-    </div>
-    <div class="page-section">
-      <h3>Use of Service</h3>
-      <ul>
-        <li>You must be 18 or older to use this service</li>
-        <li>Do not use for illegal purposes</li>
-        <li>Do not attempt to abuse or manipulate the AI</li>
-        <li>Do not use responses as actual legal/financial advice</li>
-      </ul>
-    </div>
-    <div class="page-section">
-      <h3>Subscriptions &amp; Billing</h3>
-      <p>Paid plans are billed monthly or annually. Cancel anytime. Refunds are handled on a case-by-case basis within 7 days of purchase.</p>
-    </div>
-    <div class="page-section">
-      <h3>Intellectual Property</h3>
-      <p>The Judgy, Barry T. Lawson, and all related characters and branding are owned by us. AI-generated responses belong to you.</p>
-    </div>
-    <div class="page-section">
-      <h3>Limitation of Liability</h3>
-      <p>We are not liable for any decisions made based on AI responses. Use at your own discretion and always consult professionals for important matters.</p>
-    </div>
+    <div class="page-section"><h3>Acceptance</h3><p>By using The Judgy, you agree to these terms.</p></div>
+    <div class="page-section"><h3>Use of Service</h3><ul><li>You must be 18 or older</li><li>Do not use for illegal purposes</li><li>Do not rely on responses as actual legal or financial advice</li></ul></div>
+    <div class="page-section"><h3>Subscriptions & Billing</h3><p>Paid plans are billed monthly or annually. Cancel anytime. Refunds handled case-by-case within 7 days.</p></div>
+    <div class="page-section"><h3>Limitation of Liability</h3><p>We are not liable for any decisions made based on AI responses. Always consult professionals for important matters.</p></div>
   </div>
 </div>
 
-<!-- LEGAL FORMS -->
 <div class="page-overlay" id="page-forms">
   <div class="page-header">
     <button class="page-back" onclick="closePage('forms')">←</button>
-    <div class="page-title">📋 LEGAL FORMS</div>
+    <div class="page-title">📋 Legal Forms</div>
   </div>
   <div class="page-body">
-    <p style="font-size:13px;color:var(--text2);margin-bottom:20px;">Barry's document templates. Fill in the fields and download. <strong style="color:var(--red2);">Not a substitute for legal counsel.</strong></p>
-
-    <!-- DEMAND LETTER -->
+    <p style="font-size:13px;color:var(--text2);margin-bottom:20px;font-family:var(--serif);font-style:italic;">Barry's document templates. Fill in the fields and download. <strong style="color:var(--judgy2);font-style:normal;">Not a substitute for legal counsel.</strong></p>
     <div class="page-section">
-      <h3>💼 Demand Letter</h3>
+      <h3>Demand Letter</h3>
       <div class="form-card">
-        <div class="form-card-title">📝 Fill in the details</div>
+        <div class="form-card-title">Fill in the details</div>
         <div class="form-row">
           <div class="form-field"><label class="form-label">Your Name</label><input class="form-input" id="dl-from" placeholder="John Smith"/></div>
           <div class="form-field"><label class="form-label">Recipient Name</label><input class="form-input" id="dl-to" placeholder="Jane Doe"/></div>
         </div>
-        <div class="form-field"><label class="form-label">Amount Owed ($)</label><input class="form-input" id="dl-amount" placeholder="500.00" type="number" min="0" step="0.01"/></div>
+        <div class="form-field"><label class="form-label">Amount Owed ($)</label><input class="form-input" id="dl-amount" placeholder="500.00"/></div>
         <div class="form-field"><label class="form-label">Reason for Debt</label><input class="form-input" id="dl-reason" placeholder="Unpaid loan from January 2026"/></div>
         <div class="form-field"><label class="form-label">Payment Deadline</label><input class="form-input" id="dl-deadline" type="date"/></div>
-        <button class="form-btn" id="dlBtn" onclick="generateDemandLetter()">📄 Generate Demand Letter</button>
+        <button class="form-btn" onclick="generateDemandLetter()">Generate Demand Letter</button>
       </div>
     </div>
-
-    <!-- DIVORCE CHECKLIST -->
     <div class="page-section">
-      <h3>💔 Divorce Preparation Checklist</h3>
+      <h3>Divorce Preparation Checklist</h3>
       <div class="form-card">
-        <p style="font-size:12px;color:var(--text2);margin-bottom:10px;">Barry will generate a personalized divorce preparation checklist based on your situation.</p>
         <div class="form-field"><label class="form-label">State/Jurisdiction</label><input class="form-input" id="div-state" placeholder="California"/></div>
-        <div class="form-field"><label class="form-label">Children involved?</label>
-          <select class="form-input" id="div-kids"><option>No children</option><option>1 child</option><option>2+ children</option></select>
-        </div>
-        <div class="form-field"><label class="form-label">Assets (rough description)</label><input class="form-input" id="div-assets" placeholder="Home, savings, retirement..."/></div>
-        <button class="form-btn" id="divBtn" onclick="generateDivorceChecklist()">📋 Generate Checklist</button>
-        <div class="referral-links" style="margin-top:10px;">
-          <a class="ref-link" href="https://www.legalzoom.com/divorce/" target="_blank" rel="noopener">LegalZoom Divorce</a>
-          <a class="ref-link" href="https://www.rocketlawyer.com/family-and-personal/divorce.rl" target="_blank" rel="noopener">Rocket Lawyer</a>
-          <a class="ref-link" href="https://www.hellodivorce.com" target="_blank" rel="noopener">Hello Divorce</a>
+        <div class="form-field"><label class="form-label">Children involved?</label><select class="form-input" id="div-kids"><option>No children</option><option>1 child</option><option>2+ children</option></select></div>
+        <div class="form-field"><label class="form-label">Assets</label><input class="form-input" id="div-assets" placeholder="Home, savings, retirement..."/></div>
+        <button class="form-btn" onclick="generateDivorceChecklist()">Generate Checklist</button>
+        <div class="referral-links">
+          <a class="ref-link" href="https://www.legalzoom.com/divorce/" target="_blank">LegalZoom Divorce</a>
+          <a class="ref-link" href="https://www.rocketlawyer.com/family-and-personal/divorce.rl" target="_blank">Rocket Lawyer</a>
+          <a class="ref-link" href="https://www.hellodivorce.com" target="_blank">Hello Divorce</a>
         </div>
       </div>
     </div>
-
-    <!-- LLC FORMATION -->
     <div class="page-section">
-      <h3>🏢 LLC Formation Guide</h3>
+      <h3>LLC Formation Guide</h3>
       <div class="form-card">
         <div class="form-field"><label class="form-label">Business Name</label><input class="form-input" id="llc-name" placeholder="My Business LLC"/></div>
-        <div class="form-field"><label class="form-label">State</label><input class="form-input" id="llc-state" placeholder="Delaware, Wyoming..."/></div>
-        <div class="form-field"><label class="form-label">Business Type</label>
-          <select class="form-input" id="llc-type">
-            <option>Online business / ecommerce</option>
-            <option>Service business</option>
-            <option>Real estate</option>
-            <option>Retail / restaurant</option>
-            <option>Tech / SaaS</option>
-          </select>
-        </div>
-        <button class="form-btn" id="llcBtn" onclick="generateLLCGuide()">📋 Generate LLC Guide</button>
-        <div class="referral-links" style="margin-top:10px;">
-          <a class="ref-link" href="https://www.legalzoom.com/business/business-formation/llc-overview.html" target="_blank" rel="noopener">LegalZoom LLC</a>
-          <a class="ref-link" href="https://www.incfile.com" target="_blank" rel="noopener">Incfile</a>
-          <a class="ref-link" href="https://www.northwestregisteredagent.com" target="_blank" rel="noopener">Northwest RA</a>
+        <div class="form-field"><label class="form-label">State</label><input class="form-input" id="llc-state" placeholder="Wyoming, Delaware..."/></div>
+        <div class="form-field"><label class="form-label">Business Type</label><select class="form-input" id="llc-type"><option>Online business / ecommerce</option><option>Service business</option><option>Real estate</option><option>Tech / SaaS</option></select></div>
+        <button class="form-btn" onclick="generateLLCGuide()">Generate LLC Guide</button>
+        <div class="referral-links">
+          <a class="ref-link" href="https://www.legalzoom.com/business/business-formation/llc-overview.html" target="_blank">LegalZoom LLC</a>
+          <a class="ref-link" href="https://www.incfile.com" target="_blank">Bizee (Incfile)</a>
+          <a class="ref-link" href="https://www.northwestregisteredagent.com" target="_blank">Northwest RA</a>
         </div>
       </div>
     </div>
-
     <div id="formOutput" style="display:none;">
       <div class="page-section">
-        <h3>📄 Generated Document</h3>
+        <h3>Generated Document</h3>
         <div class="form-card">
-          <div id="formOutputContent" style="font-size:13px;color:var(--text2);line-height:1.7;white-space:pre-wrap;"></div>
-          <button class="form-btn" onclick="downloadForm()" style="margin-top:12px;">⬇️ Download as Text</button>
+          <div id="formOutputContent" style="font-size:13px;color:var(--text2);line-height:1.7;white-space:pre-wrap;font-family:var(--serif);"></div>
+          <button class="form-btn" onclick="downloadForm()" style="margin-top:12px;">Download as Text</button>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- REFERRALS -->
 <div class="page-overlay" id="page-referrals">
   <div class="page-header">
     <button class="page-back" onclick="closePage('referrals')">←</button>
-    <div class="page-title">🔗 BARRY'S REFERRALS</div>
+    <div class="page-title">→ Barry's Referrals</div>
   </div>
   <div class="page-body">
-    <p style="font-size:13px;color:var(--text2);margin-bottom:20px;">Barry's vetted resources. He actually researched these. Shocking, we know.</p>
-    <div class="page-section"><h3>⚖️ Legal</h3>
+    <p style="font-size:14px;color:var(--text2);margin-bottom:20px;font-family:var(--serif);font-style:italic;">"Barry's vetted resources. He actually researched these. Shocking, I know." — The Judgy</p>
+    <div class="page-section"><h3>Legal</h3>
       <div class="referral-links" style="display:flex;flex-direction:column;gap:8px;">
-        <a class="ref-link" href="https://www.legalzoom.com" target="_blank" rel="noopener" style="padding:10px 14px;">LegalZoom — Online legal documents &amp; attorney consultation</a>
-        <a class="ref-link" href="https://www.rocketlawyer.com" target="_blank" rel="noopener" style="padding:10px 14px;">Rocket Lawyer — Legal documents &amp; advice</a>
-        <a class="ref-link" href="https://www.avvo.com" target="_blank" rel="noopener" style="padding:10px 14px;">Avvo — Find a local attorney</a>
-        <a class="ref-link" href="https://www.justia.com" target="_blank" rel="noopener" style="padding:10px 14px;">Justia — Free legal information</a>
+        <a class="ref-link" href="https://www.legalzoom.com" target="_blank" style="padding:10px 14px;">LegalZoom — Online legal documents & attorney consultation</a>
+        <a class="ref-link" href="https://www.rocketlawyer.com" target="_blank" style="padding:10px 14px;">Rocket Lawyer — Legal documents & advice</a>
+        <a class="ref-link" href="https://www.avvo.com" target="_blank" style="padding:10px 14px;">Avvo — Find a local attorney</a>
       </div>
     </div>
-    <div class="page-section"><h3>💰 Tax &amp; Finance</h3>
+    <div class="page-section"><h3>Tax & Finance</h3>
       <div class="referral-links" style="display:flex;flex-direction:column;gap:8px;">
-        <a class="ref-link" href="https://turbotax.intuit.com" target="_blank" rel="noopener" style="padding:10px 14px;">TurboTax — File your taxes online</a>
-        <a class="ref-link" href="https://www.hrblock.com" target="_blank" rel="noopener" style="padding:10px 14px;">H&amp;R Block — Tax preparation</a>
-        <a class="ref-link" href="https://www.creditkarma.com" target="_blank" rel="noopener" style="padding:10px 14px;">Credit Karma — Free credit monitoring</a>
-        <a class="ref-link" href="https://www.nerdwallet.com" target="_blank" rel="noopener" style="padding:10px 14px;">NerdWallet — Financial advice &amp; comparisons</a>
+        <a class="ref-link" href="https://turbotax.intuit.com" target="_blank" style="padding:10px 14px;">TurboTax — File your taxes online</a>
+        <a class="ref-link" href="https://www.creditkarma.com" target="_blank" style="padding:10px 14px;">Credit Karma — Free credit monitoring</a>
+        <a class="ref-link" href="https://www.nerdwallet.com" target="_blank" style="padding:10px 14px;">NerdWallet — Financial advice & comparisons</a>
       </div>
     </div>
-    <div class="page-section"><h3>🛡️ Insurance</h3>
+    <div class="page-section"><h3>Business Formation</h3>
       <div class="referral-links" style="display:flex;flex-direction:column;gap:8px;">
-        <a class="ref-link" href="https://www.policygenius.com" target="_blank" rel="noopener" style="padding:10px 14px;">Policygenius — Compare insurance plans</a>
-        <a class="ref-link" href="https://www.progressive.com" target="_blank" rel="noopener" style="padding:10px 14px;">Progressive — Auto &amp; home insurance</a>
+        <a class="ref-link" href="https://www.incfile.com" target="_blank" style="padding:10px 14px;">Bizee — Form your LLC / Corp</a>
+        <a class="ref-link" href="https://stripe.com" target="_blank" style="padding:10px 14px;">Stripe — Accept payments online</a>
       </div>
     </div>
-    <div class="page-section"><h3>🏢 Business Formation</h3>
+    <div class="page-section"><h3>Mental Health</h3>
       <div class="referral-links" style="display:flex;flex-direction:column;gap:8px;">
-        <a class="ref-link" href="https://www.incfile.com" target="_blank" rel="noopener" style="padding:10px 14px;">Incfile — Form your LLC / Corp</a>
-        <a class="ref-link" href="https://stripe.com" target="_blank" rel="noopener" style="padding:10px 14px;">Stripe — Accept payments online</a>
-        <a class="ref-link" href="https://www.godaddy.com" target="_blank" rel="noopener" style="padding:10px 14px;">GoDaddy — Domain &amp; hosting</a>
+        <a class="ref-link" href="https://www.betterhelp.com" target="_blank" style="padding:10px 14px;">BetterHelp — Online therapy with licensed therapists</a>
+        <a class="ref-link" href="https://www.talkspace.com" target="_blank" style="padding:10px 14px;">Talkspace — Therapy via text, voice & video</a>
       </div>
     </div>
     <div class="warning-box" style="margin-top:20px;">
-      <strong>⚠️ Disclosure</strong>
-      <p>Some links may be affiliate links. Barry gets a small commission if you sign up — which he will absolutely brag about to Judgy.</p>
+      <strong>Disclosure</strong>
+      <p>Some links on this page are affiliate links. Barry gets a small commission — which he will absolutely brag about to Judgy.</p>
     </div>
   </div>
 </div>
 
-<!-- LANDING PAGE BUILDER -->
 <div class="page-overlay" id="page-landing">
   <div class="page-header">
     <button class="page-back" onclick="closePage('landing')">←</button>
-    <div class="page-title">🏗️ LANDING PAGE BUILDER</div>
+    <div class="page-title">◻ Landing Page Builder</div>
   </div>
   <div class="page-body">
-    <p style="font-size:13px;color:var(--text2);margin-bottom:20px;">Barry will build you a simple, clean landing page. Judgy will critique it. Download it and deploy for free.</p>
+    <p style="font-size:14px;color:var(--text2);margin-bottom:20px;font-family:var(--serif);">Barry will build you a clean landing page. Download it and deploy free to Cloudflare Pages.</p>
     <div class="form-card">
-      <div class="form-card-title">📝 Tell Barry about your business</div>
+      <div class="form-card-title">Tell Barry about your business</div>
       <div class="form-field"><label class="form-label">Business Name</label><input class="form-input" id="lp-name" placeholder="My Awesome Business"/></div>
-      <div class="form-field"><label class="form-label">What do you do? (1–2 sentences)</label><input class="form-input" id="lp-desc" placeholder="We help small businesses..."/></div>
-      <div class="form-field"><label class="form-label">Target audience</label><input class="form-input" id="lp-audience" placeholder="Small business owners, freelancers..."/></div>
-      <div class="form-field"><label class="form-label">Main call to action</label><input class="form-input" id="lp-cta" placeholder="Get started free, Book a call..."/></div>
+      <div class="form-field"><label class="form-label">What do you do?</label><input class="form-input" id="lp-desc" placeholder="We help small businesses..."/></div>
+      <div class="form-field"><label class="form-label">Target audience</label><input class="form-input" id="lp-audience" placeholder="Small business owners..."/></div>
+      <div class="form-field"><label class="form-label">Call to action</label><input class="form-input" id="lp-cta" placeholder="Get started free, Book a call..."/></div>
       <div class="form-field"><label class="form-label">Color vibe</label>
         <select class="form-input" id="lp-color">
           <option>Professional dark (navy/white)</option>
@@ -1159,39 +802,38 @@ header::after {
           <option>Natural green (green/cream)</option>
         </select>
       </div>
-      <button class="form-btn" onclick="buildLandingPage()" id="lpBtn">🏗️ Barry, build my landing page</button>
+      <button class="form-btn" onclick="buildLandingPage()" id="lpBtn">Barry, build my landing page</button>
     </div>
     <div id="lpOutput" style="display:none;margin-top:16px;">
       <div class="form-card">
-        <div class="form-card-title">✅ Landing page ready!</div>
-        <p style="font-size:12px;color:var(--text2);margin-bottom:10px;">Download the HTML file → upload to GitHub → deploy to Cloudflare Pages for free.</p>
-        <button class="form-btn" onclick="downloadLP()">⬇️ Download landing-page.html</button>
+        <div class="form-card-title">Landing page ready</div>
+        <p style="font-size:12px;color:var(--text2);margin-bottom:10px;font-family:var(--serif);">Download → upload to GitHub → deploy to Cloudflare Pages for free.</p>
+        <button class="form-btn" onclick="downloadLP()">Download landing-page.html</button>
       </div>
     </div>
   </div>
 </div>
 
-<script>
 
-// ── YOUR BUILDS — recommended by Judgy & Barry ─────────────
+<script>
+// ============================================================
+// THE JUDGY — UPDATED SCRIPT
+// Adds: conversation hooks, clickable follow-up options,
+//       cross-product recommendations, token usage awareness
+// Drop this entire block into your HTML, replacing the
+// existing <script>...</script> section
+// ============================================================
+
+// ── YOUR BUILDS — cross-recommend based on topic ────────────
 const MY_BUILDS = [
   {
     id: 'postpilots',
     name: 'PostPilots',
     url: 'https://postpilots.xyz',
-    emoji: '✈️',
-    tagline: 'Schedule & auto-post to LinkedIn, X, Instagram & more',
-    keywords: ['social media','linkedin','instagram','twitter','post','content','brand','marketing','followers','audience','viral','tiktok','facebook','grow online','online presence'],
+    emoji: '✏️',
+    tagline: 'Schedule posts to LinkedIn, X, Instagram & more',
+    keywords: ['social media','linkedin','instagram','twitter','post','content','brand','marketing','followers','audience','viral','tiktok','facebook'],
     topics: ['business','work'],
-  },
-  {
-    id: 'fluentra',
-    name: 'Fluentra',
-    url: 'https://fluentra.ai',
-    emoji: '🏗️',
-    tagline: 'Build your website with AI — no code needed',
-    keywords: ['website','build','landing page','online','startup','launch','web','design','portfolio','app','business idea'],
-    topics: ['business'],
   },
   {
     id: 'dropvault',
@@ -1199,7 +841,7 @@ const MY_BUILDS = [
     url: 'https://dropvault.live',
     emoji: '📦',
     tagline: 'Sell digital products & earn passive income',
-    keywords: ['sell','product','digital','ebook','course','template','income','passive','creator','monetize','store','download','side hustle'],
+    keywords: ['sell','product','digital','ebook','course','template','income','passive','creator','monetize','online store','download'],
     topics: ['business','money'],
   },
   {
@@ -1208,134 +850,253 @@ const MY_BUILDS = [
     url: 'https://ecrenta.space',
     emoji: '🏠',
     tagline: 'Furnished rentals in Fresno for traveling nurses',
-    keywords: ['rent','rental','apartment','nurse','travel','housing','furnished','fresno','accommodation','healthcare','travel nurse'],
+    keywords: ['rent','rental','apartment','nurse','travel','housing','furnished','fresno','accommodation','healthcare'],
     topics: [],
   },
   {
-    id: 'gemtaxes',
-    name: 'GemTaxes',
-    url: 'https://gemtaxes.com',
-    emoji: '💎',
-    tagline: 'AI-powered tax help for individuals & small businesses',
-    keywords: ['tax','taxes','irs','refund','deduction','file','llc','business tax','1099','w2','audit','write off','tax return'],
-    topics: ['money','legal'],
+    id: 'fluentra',
+    name: 'Fluentra',
+    url: 'https://fluentra.ai',
+    emoji: '🗣️',
+    tagline: 'AI-powered language fluency practice',
+    keywords: ['language','speak','english','fluent','accent','communication','presentation','interview','public speaking','articulate'],
+    topics: ['work','personal'],
   },
   {
-    id: 'digitalledger',
-    name: 'The Digital Ledger',
-    url: 'https://thedigitalledger.net',
-    emoji: '📒',
-    tagline: 'Digital finance & money guides for everyday people',
-    keywords: ['money','budget','save','invest','credit','debt','finance','financial','loan','bank','wealth','net worth','spending'],
-    topics: ['money'],
+    id: 'buildshowcase',
+    name: 'Build Showcase',
+    url: 'https://build-showcase.dev',
+    emoji: '🏗️',
+    tagline: 'Showcase & promote your web projects',
+    keywords: ['portfolio','showcase','project','builder','developer','website','launch','side project','build','deploy'],
+    topics: ['business'],
   },
 ];
 
-// Match builds to user message + current topic
-function getRelevantBuilds(text, topicId, maxBuilds = 3) {
-  const lower = text.toLowerCase();
-  const scored = MY_BUILDS.map(b => {
+// ── DETECT RELEVANT BUILD FROM CONVERSATION ──────────────────
+function detectRelevantBuild(userText, topic) {
+  const lower = userText.toLowerCase();
+  let best = null;
+  let bestScore = 0;
+
+  for (const build of MY_BUILDS) {
     let score = 0;
-    // keyword match
-    b.keywords.forEach(k => { if (lower.includes(k)) score += 2; });
-    // topic match
-    if (b.topics.includes(topicId)) score += 1;
-    return { ...b, score };
-  });
-  return scored
-    .filter(b => b.score > 0)
-    .sort((a, b) => b.score - a.score)
-    .slice(0, maxBuilds);
+    // Keyword match
+    for (const kw of build.keywords) {
+      if (lower.includes(kw)) score += 2;
+    }
+    // Topic match
+    if (build.topics.includes(topic)) score += 1;
+
+    if (score > bestScore) {
+      bestScore = score;
+      best = build;
+    }
+  }
+  // Only recommend if strong enough match
+  return bestScore >= 2 ? best : null;
 }
 
-// Topic-aware follow-up question banks
-const FOLLOW_UPS = {
-  relationship: [
-    { emoji: '💔', text: 'Do I need to cut them off completely?' },
-    { emoji: '🤔', text: 'How do I know if I should stay or leave?' },
-    { emoji: '😤', text: "They keep apologizing — should I believe them?" },
-    { emoji: '❤️‍🩹', text: 'How do I actually heal from this?' },
-  ],
-  work: [
-    { emoji: '📝', text: 'Should I document everything and report it?' },
-    { emoji: '🚪', text: 'Is it time to quit?' },
-    { emoji: '💬', text: 'How do I confront them without it blowing up?' },
-    { emoji: '💼', text: 'What are my legal rights here?' },
-  ],
-  coworker: [
-    { emoji: '🗣️', text: 'Should I go to HR or handle it directly?' },
-    { emoji: '📸', text: "How do I document what they're doing?" },
-    { emoji: '🤝', text: "Can we fix this or is it too far gone?" },
-    { emoji: '🚪', text: "Is this a sign I need a new job?" },
-  ],
-  legal: [
-    { emoji: '📋', text: 'Can you draft a simple demand letter for me?' },
-    { emoji: '⚖️', text: 'What would this cost in small claims court?' },
-    { emoji: '🔍', text: 'What evidence do I actually need?' },
-    { emoji: '🤝', text: 'Is there a way to settle this without court?' },
-  ],
-  business: [
-    { emoji: '🏢', text: 'Should I form an LLC or stay a sole proprietor?' },
-    { emoji: '💰', text: 'How do I price my services?' },
-    { emoji: '📣', text: "What's the fastest way to get my first client?" },
-    { emoji: '🌐', text: 'Do I need a website right now?' },
-  ],
-  money: [
-    { emoji: '📝', text: 'Can you help me write a payment request?' },
-    { emoji: '⚖️', text: 'What are my legal options to get this money back?' },
-    { emoji: '💳', text: 'How do I protect myself next time?' },
-    { emoji: '📊', text: 'How do I fix my financial situation?' },
-  ],
-  family: [
-    { emoji: '🗣️', text: 'How do I set boundaries without destroying the relationship?' },
-    { emoji: '💔', text: "Is it okay to cut off family?" },
-    { emoji: '🤝', text: 'How do I have this conversation?' },
-    { emoji: '🧠', text: 'Am I the problem here?' },
-  ],
-  personal: [
-    { emoji: '🧠', text: 'Why do I keep doing this to myself?' },
-    { emoji: '🔄', text: 'How do I actually break this cycle?' },
-    { emoji: '📈', text: 'Where do I start to fix this?' },
-    { emoji: '💬', text: 'Should I talk to a therapist about this?' },
-  ],
-  general: [
-    { emoji: '🔍', text: 'Tell me more specifically what I should do first' },
-    { emoji: '⚖️', text: "What's the harshest truth about my situation?" },
-    { emoji: '🤔', text: "What am I missing that I can't see myself?" },
-    { emoji: '💪', text: "What's one thing I can do right now?" },
-  ],
-};
-
-function getFollowUps(topicId, responseText, count = 3) {
-  // detect topic from response if general
-  let pool = FOLLOW_UPS[topicId] || FOLLOW_UPS.general;
-  // shuffle and pick
-  const shuffled = [...pool].sort(() => Math.random() - 0.5);
-  return shuffled.slice(0, count);
+// ── BUILD RECOMMENDATION HTML ────────────────────────────────
+function buildRecommendationHTML(build) {
+  return `
+    <div class="build-rec" onclick="window.open('${build.url}','_blank')" 
+         style="margin-top:10px;padding:9px 12px;background:rgba(245,200,66,0.06);
+                border:1px solid rgba(245,200,66,0.2);border-radius:8px;
+                cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:10px;"
+         onmouseover="this.style.borderColor='rgba(245,200,66,0.5)'"
+         onmouseout="this.style.borderColor='rgba(245,200,66,0.2)'">
+      <span style="font-size:20px;flex-shrink:0">${build.emoji}</span>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:11px;color:#f5c842;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px">
+          💡 Might help you
+        </div>
+        <div style="font-size:13px;color:#f0eff6;font-weight:500">${build.name}</div>
+        <div style="font-size:11px;color:#9896a8;margin-top:1px">${build.tagline}</div>
+      </div>
+      <span style="font-size:12px;color:#9896a8;flex-shrink:0">↗</span>
+    </div>`;
 }
 
+// ── FOLLOW-UP OPTIONS HTML ────────────────────────────────────
+function buildFollowUpHTML(options, question) {
+  const optionBtns = options.map(opt => `
+    <button class="followup-btn" onclick="useFollowUp(this)"
+            style="background:var(--card2);border:1px solid var(--border2);
+                   border-radius:8px;padding:7px 12px;font-size:12px;
+                   color:var(--text2);cursor:pointer;font-family:var(--sans);
+                   text-align:left;transition:all 0.15s;line-height:1.4;"
+            onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--text)'"
+            onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--text2)'">
+      ${opt}
+    </button>`).join('');
+
+  return `
+    <div class="followup-wrap" style="margin-top:10px;padding:10px 12px;
+          background:rgba(255,255,255,0.03);border:1px solid var(--border);
+          border-radius:8px;">
+      <div style="font-size:11px;color:var(--text3);margin-bottom:7px;
+                  text-transform:uppercase;letter-spacing:0.5px;font-weight:500;">
+        ⚖️ ${question}
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;">
+        ${optionBtns}
+      </div>
+    </div>`;
+}
+
+// ── USE FOLLOW-UP OPTION ──────────────────────────────────────
+function useFollowUp(btn) {
+  const text = btn.textContent.trim();
+  // Remove the whole followup block from the DOM
+  const wrap = btn.closest('.followup-wrap');
+  if (wrap) wrap.remove();
+  // Put text in input and send
+  const input = document.getElementById('chatInput');
+  input.value = text;
+  autoResize(input);
+  sendMessage();
+}
+
+// ── UPDATED SYSTEM PROMPTS ────────────────────────────────────
+// Key change: instruct AI to end with FOLLOW_UP and OPTIONS blocks
+
+const JUDGY_PROMPT = `You are THE JUDGY — a sharp, authoritative AI judge. Think Judge Judy meets a no-nonsense best friend — commanding, witty, cutting, but ultimately caring.
+
+PERSONALITY:
+- Authoritative and precise — surgical observations, not cheap shots
+- Roast the person with insight (2-3 sentences), then get to the real truth
+- Give REAL, specific, actionable advice — no fluff
+- Dry wit — funny when the situation earns it
+- Phrases: "Let me be direct with you", "This is not complicated", "Court finds...", "I have ruled on far worse"
+- You tolerate Barry. You would never admit he is occasionally right.
+
+END EVERY RESPONSE WITH EXACTLY THIS FORMAT (no exceptions):
+⚖ VERDICT: [one authoritative ruling sentence]
+FOLLOW_UP: [one short question to continue — max 10 words]
+OPTIONS: [option 1] | [option 2] | [option 3]
+
+Keep the main response 100-160 words. Dignified but direct.
+The OPTIONS should be short (3-7 words each) and directly answer the FOLLOW_UP question.`;
+
+const BARRY_PROMPT = `You are BARRY T. LAWSON, ESQ. — The Judgy's ex-husband. You are like James Bond if James Bond became a lawyer — impeccably dressed, composed, genuinely competent, but perpetually underestimated by your ex-wife.
+
+PERSONALITY:
+- Polished and precise — you handle yourself with quiet confidence
+- Genuinely excellent at legal and business advice — this is your domain
+- Passive-aggressively note that Judgy never appreciated your expertise
+- Dry understated humor — never loud, never slapstick
+- The underdog in this dynamic, which makes you try harder
+- Phrases: "As I've noted on several occasions, Judith—", "With the greatest respect to my ex-wife's colorful opinion—", "The law is rather clear on this matter"
+- You still wear the same suit. It still fits perfectly.
+
+END EVERY RESPONSE WITH EXACTLY THIS FORMAT (no exceptions):
+📋 RULING: [your formal precise legal/business verdict in one sentence]
+FOLLOW_UP: [one short question to dig deeper — max 10 words]
+OPTIONS: [option 1] | [option 2] | [option 3]
+
+Keep the main response 100-160 words. Impeccable. Precise. Quietly devastating.
+The OPTIONS should be short (3-7 words each) and directly answer the FOLLOW_UP question.`;
+
+const JUDGY_CLAP_BACK = `You are THE JUDGY responding after BARRY just gave his legal advice.
+
+- Acknowledge reluctantly that Barry is technically correct (you hate this)
+- Take a precise shot at him — his effort to impress, his attachment to that suit, his need for validation
+- Add your emotional/human angle to his legal advice
+- Keep it SHORT — 50-70 words only
+
+END WITH EXACTLY:
+FOLLOW_UP: [one short juicy question — max 10 words]
+OPTIONS: [option 1] | [option 2] | [option 3]
+
+No verdict line — just a short clap back then the follow-up.`;
+
+// ── PARSE AI RESPONSE ─────────────────────────────────────────
+function parseAIResponse(text, verdictMarker) {
+  let body = text;
+  let verdict = '';
+  let followUp = '';
+  let options = [];
+
+  // Extract FOLLOW_UP
+  const fuMatch = text.match(/FOLLOW_UP:\s*(.+)/i);
+  if (fuMatch) {
+    followUp = fuMatch[1].trim();
+    body = body.replace(fuMatch[0], '').trim();
+  }
+
+  // Extract OPTIONS
+  const opMatch = text.match(/OPTIONS:\s*(.+)/i);
+  if (opMatch) {
+    options = opMatch[1].split('|').map(o => o.trim()).filter(Boolean);
+    body = body.replace(opMatch[0], '').trim();
+  }
+
+  // Extract VERDICT/RULING
+  if (verdictMarker) {
+    const re = new RegExp(`${verdictMarker}\\s*(.+)`, 'i');
+    const m = body.match(re);
+    if (m) {
+      verdict = m[1].trim();
+      body = body.replace(m[0], '').trim();
+    }
+  }
+
+  return { body, verdict, followUp, options };
+}
+
+// ── ADD MESSAGE WITH FOLLOW-UPS AND RECOMMENDATION ───────────
+function addMsgFull(role, parsed, isBarry, userText, currentTopic) {
+  const { body, verdict, followUp, options } = parsed;
+  const verdictMarker = isBarry ? '📋' : '⚖️';
+  const verdictClass = isBarry ? 'barry-verdict' : 'verdict-line';
+
+  // Build verdict HTML
+  const verdictHtml = verdict
+    ? `<div class="${verdictClass}">${verdictMarker} ${verdict}</div>`
+    : '';
+
+  // Build follow-up HTML
+  const followUpHtml = (followUp && options.length)
+    ? buildFollowUpHTML(options, followUp)
+    : '';
+
+  // Build recommendation HTML
+  const build = userText ? detectRelevantBuild(userText, currentTopic) : null;
+  const recHtml = build ? buildRecommendationHTML(build) : '';
+
+  // Assemble
+  const msgs = document.getElementById('messages');
+  const div = document.createElement('div');
+  div.className = `msg ${role}`;
+  const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+  div.innerHTML = `
+    <div class="msg-av">${role === 'barry' ? '👔' : '⚖️'}</div>
+    <div class="msg-wrap">
+      <div class="msg-name">${role === 'barry' ? 'BARRY T. LAWSON, ESQ.' : 'THE JUDGY'}</div>
+      <div class="msg-bubble">
+        ${formatResponse(body)}
+        ${verdictHtml}
+        ${followUpHtml}
+        ${recHtml}
+      </div>
+      <div class="msg-time">${time}</div>
+    </div>`;
+
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
 
 // ── STATE ──────────────────────────────────────────────────
-let topic       = 'general';
-let charMode    = 'both';   // 'both' | 'judgy' | 'barry'
-let soundOn     = true;
-let isThinking  = false;
-let lpContent   = '';
+let topic = 'general';
+let charMode = 'both';
+let isDark = true;
+let msgCount = 0;
+let isThinking = false;
+let lpContent = '';
 let formContent = '';
-let msgCount    = 0;
-
-// Conversation history for multi-turn context (kept lean)
-let conversationHistory = []; // [{role:'user'|'judgy'|'barry', text:string}]
-const MAX_HISTORY = 10; // keep last 10 turns to avoid token bloat
-
-// Theme cycling
-const THEMES      = ['dark', 'medium', 'light'];
-const THEME_ICONS = { dark: '🌙', medium: '🌆', light: '☀️' };
-const THEME_LBLS  = { dark: 'Dark mode', medium: 'Medium mode', light: 'Light mode' };
-let themeIndex    = 0;
-
-// ── INIT ───────────────────────────────────────────────────
-// ← DOMContentLoaded moved to bottom
+let lastUserText = '';
 
 // ── SIDEBAR ────────────────────────────────────────────────
 function openSidebar() {
@@ -1348,35 +1109,46 @@ function closeSidebar() {
 }
 
 // ── THEME ──────────────────────────────────────────────────
+const themes = ['dark', 'light'];
+const themeIcons = { dark: '🌙', light: '☀' };
+const themeLabels = { dark: 'Light mode', light: 'Dark mode' };
+let themeIndex = 0;
 function toggleTheme() {
-  themeIndex = (themeIndex + 1) % THEMES.length;
-  const t = THEMES[themeIndex];
+  themeIndex = (themeIndex + 1) % 2;
+  const t = themes[themeIndex];
   document.documentElement.setAttribute('data-theme', t);
-  document.getElementById('themeBtn').textContent = THEME_ICONS[t];
-  document.getElementById('sidebarThemeLabel').textContent = THEME_ICONS[t] + ' ' + THEME_LBLS[t];
-  document.getElementById('sidebarThemeToggle').classList.toggle('on', t !== 'dark');
-}
-
-// ── SOUND ──────────────────────────────────────────────────
-function toggleSound() {
-  soundOn = !soundOn;
-  document.getElementById('soundBtn').textContent = soundOn ? '🔊' : '🔇';
+  document.getElementById('themeBtn').textContent = themeIcons[t];
+  const lbl = document.getElementById('themeLabel');
+  if (lbl) lbl.textContent = themeLabels[t];
+  const icon = document.getElementById('themeIcon');
+  if (icon) icon.textContent = themeIcons[t];
 }
 
 // ── PAGES ──────────────────────────────────────────────────
-function openPage(id)  { document.getElementById('page-' + id).classList.add('open'); }
+function openPage(id) { document.getElementById('page-' + id).classList.add('open'); }
 function closePage(id) { document.getElementById('page-' + id).classList.remove('open'); }
+function setView(v, el) {
+  document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ── SOUND ──────────────────────────────────────────────────
+let judgySoundOn = true;
+function toggleJudgySound() {
+  judgySoundOn = !judgySoundOn;
+  document.getElementById('judgySoundBtn').textContent = judgySoundOn ? '🔊' : '🔇';
+}
 
 // ── TOPICS ─────────────────────────────────────────────────
-const TOPIC_PLACEHOLDERS = {
-  general:      'State your case... ⚖️',
+const topicPlaceholders = {
+  general:      'Present your case to the court...',
   relationship: 'My ex wants to get back together but they cheated...',
   work:         'My boss takes credit for my work in every meeting...',
   coworker:     'My coworker does nothing but gets the same pay...',
   personal:     'I keep self-sabotaging every good thing in my life...',
   family:       'My parents keep comparing me to my sibling...',
-  legal:        'Ask Barry a legal question... 👔',
-  business:     'Ask Barry about starting or growing a business... 🏢',
+  legal:        'Ask Barry a legal question...',
+  business:     'Ask Barry about starting or growing a business...',
   money:        'Someone owes me money and keeps avoiding me...',
 };
 
@@ -1385,45 +1157,28 @@ function setTopic(btn, t) {
   btn.classList.add('active');
   topic = t;
   const input = document.getElementById('chatInput');
-  if (input) input.placeholder = TOPIC_PLACEHOLDERS[t] || 'State your case... ⚖️';
+  if (input) input.placeholder = topicPlaceholders[t] || 'State your case... ⚖️';
 }
-
-// Sync topic bar pills from sidebar click
-function quickTopicFromSidebar(t) {
+function quickTopic(t) {
   topic = t;
-  const pill = document.querySelector(`.topic-pill[data-topic="${t}"]`);
-  if (pill) {
-    document.querySelectorAll('.topic-pill').forEach(p => p.classList.remove('active'));
-    pill.classList.add('active');
-  }
-  const input = document.getElementById('chatInput');
-  if (input) input.placeholder = TOPIC_PLACEHOLDERS[t] || 'State your case... ⚖️';
-  closeSidebar();
+  document.querySelectorAll('.topic-pill').forEach(p => {
+    p.classList.toggle('active', p.textContent.toLowerCase().includes(t.substring(0, 4)));
+  });
 }
 
-// ── INPUT HELPERS ──────────────────────────────────────────
-function onInputChange(el) {
-  // Auto-resize textarea
+// ── INPUT ──────────────────────────────────────────────────
+function autoResize(el) {
   el.style.height = 'auto';
   el.style.height = Math.min(el.scrollHeight, 100) + 'px';
-  // Char counter with color feedback
-  const len = el.value.length;
-  const ct  = document.getElementById('charCt');
-  ct.textContent = `${len} / 500`;
-  ct.className   = 'char-counter' + (len > 500 ? ' over' : len > 420 ? ' warn' : '');
-  // Disable send if over limit
-  document.getElementById('sendBtn').disabled = isThinking || len > 500;
+  document.getElementById('charCt').textContent = el.value.length + '/500';
 }
-
 function handleKey(e) {
   if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
 }
-
 function useStarter(card) {
   const t = card.querySelector('.starter-t').textContent;
-  const input = document.getElementById('chatInput');
-  input.value = t;
-  onInputChange(input);
+  document.getElementById('chatInput').value = t;
+  autoResize(document.getElementById('chatInput'));
   sendMessage();
 }
 
@@ -1434,139 +1189,27 @@ function updateRage() {
   document.querySelectorAll('.rage-pip').forEach((p, i) => p.classList.toggle('on', i < level));
 }
 
-// ── WELCOME SCREEN ─────────────────────────────────────────
-function renderWelcome() {
-  const msgs = document.getElementById('messages');
-  msgs.innerHTML = `
-    <div class="welcome" id="welcome">
-      <span class="welcome-emoji">⚖️</span>
-      <h2>THE <span class="red">JUDGY</span> &amp; <span class="navy">BARRY</span></h2>
-      <p>Brutally honest advice from the sharpest tongue in the courtroom and her surprisingly competent ex-husband lawyer.</p>
-      <div class="char-duo">
-        <div class="char-card judgy" id="charJudgy" onclick="selectChar('judgy')">
-          <div class="char-card-emoji">⚖️</div>
-          <div class="char-card-name">JUDGY</div>
-          <div class="char-card-desc">Roasts you. Loves you.<br>Tells the truth anyway.</div>
-          <div class="char-card-tag">Life · Love · Work</div>
-        </div>
-        <div class="char-card barry" id="charBarry" onclick="selectChar('barry')">
-          <div class="char-card-emoji">👔</div>
-          <div class="char-card-name">BARRY</div>
-          <div class="char-card-desc">Legal &amp; business advice.<br>Still wears that suit.</div>
-          <div class="char-card-tag">Legal · Business · Tax</div>
-        </div>
-      </div>
-      <div class="char-mode-bar" id="charModeBar">
-        <div class="char-mode-inner">
-          <span class="char-mode-lbl" id="charModeLabel"></span>
-          <button class="char-mode-reset" onclick="selectChar('both')">← Both</button>
-        </div>
-      </div>
-      <div class="starters">
-        <button class="starter"   onclick="useStarter(this)"><span class="starter-e">💔</span><span class="starter-t">My ex wants to get back together but they cheated on me</span></button>
-        <button class="starter barry-s" onclick="useStarter(this)"><span class="starter-e">👔</span><span class="starter-t">I want to start an LLC — where do I begin?</span></button>
-        <button class="starter"   onclick="useStarter(this)"><span class="starter-e">🤝</span><span class="starter-t">My coworker keeps stealing my ideas in meetings</span></button>
-        <button class="starter barry-s" onclick="useStarter(this)"><span class="starter-e">📋</span><span class="starter-t">I need a simple demand letter for money owed to me</span></button>
-      </div>
-    </div>`;
-}
-
-function newCase() {
-  msgCount = 0;
-  charMode = 'both';
-  conversationHistory = [];
-  document.querySelectorAll('.rage-pip').forEach(p => p.classList.remove('on'));
-  const input = document.getElementById('chatInput');
-  input.value = '';
-  input.placeholder = 'State your case... ⚖️';
-  onInputChange(input);
-  // Reset topic bar
-  document.querySelectorAll('.topic-pill').forEach(p => p.classList.remove('active'));
-  document.querySelector('.topic-pill[data-topic="general"]').classList.add('active');
-  topic = 'general';
-  renderWelcome();
-}
-
-function selectChar(mode) {
-  charMode = mode;
-  // Update cards if welcome is showing
-  document.getElementById('charJudgy')?.classList.toggle('selected-char', mode === 'judgy');
-  document.getElementById('charBarry')?.classList.toggle('selected-char', mode === 'barry');
-
-  const bar = document.getElementById('charModeBar');
-  const lbl = document.getElementById('charModeLabel');
-
-  if (mode === 'both') {
-    bar?.classList.remove('visible');
-    document.getElementById('charJudgy')?.classList.remove('selected-char');
-    document.getElementById('charBarry')?.classList.remove('selected-char');
-  } else {
-    bar?.classList.add('visible');
-    if (lbl) lbl.textContent = mode === 'judgy'
-      ? '⚖️ Chatting with Judgy only'
-      : '👔 Chatting with Barry only';
-    const input = document.getElementById('chatInput');
-    if (input) input.placeholder = mode === 'judgy'
-      ? 'Tell Judgy your situation... ⚖️'
-      : 'Ask Barry a legal or business question... 👔';
-  }
-  document.getElementById('chatInput')?.focus();
-}
-
-// ── MESSAGE RENDERING ──────────────────────────────────────
+// ── MESSAGES ──────────────────────────────────────────────
 function removeWelcome() {
-  document.getElementById('welcome')?.remove();
+  const w = document.getElementById('welcome');
+  if (w) w.remove();
 }
 
-// addMsg — core message renderer
-// opts: { isBarry, verdict, followUps, builds, userText, isLast }
-function addMsg(role, html, verdict = '', isBarry = false, opts = {}) {
+function addMsg(role, html, verdict = '', isBarry = false) {
   removeWelcome();
   const msgs = document.getElementById('messages');
-  const div  = document.createElement('div');
+  const div = document.createElement('div');
   div.className = `msg ${role}`;
   const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
   const verdictHtml = verdict
     ? `<div class="${isBarry ? 'barry-verdict' : 'verdict-line'}">${isBarry ? '📋' : '⚖️'} ${verdict}</div>`
     : '';
-
-  // Build follow-up options block
-  let followUpHtml = '';
-  if (opts.followUps && opts.followUps.length && opts.isLast) {
-    const btns = opts.followUps.map(q =>
-      `<button class="followup-btn" onclick="useFollowUp(this)">
-        <span>${q.emoji}</span> ${q.text} <span class="fq-arrow">→</span>
-      </button>`
-    ).join('');
-    followUpHtml = `
-      <div class="followup-wrap">
-        <div class="followup-label">💬 WHAT'S ON YOUR MIND?</div>
-        <div class="followup-opts">${btns}</div>
-      </div>`;
-  }
-
-  // Build recommendations block
-  let recsHtml = '';
-  if (opts.builds && opts.builds.length && opts.isLast) {
-    const chips = opts.builds.map(b =>
-      `<a class="build-chip" href="${b.url}" target="_blank" rel="noopener" title="${b.tagline}">
-        <span class="bc-emoji">${b.emoji}</span> ${b.name}
-      </a>`
-    ).join('');
-    recsHtml = `
-      <div class="build-rec">
-        <div class="build-rec-label">🔗 BARRY'S PICKS FOR YOU</div>
-        <div class="build-rec-chips">${chips}</div>
-      </div>`;
-  }
-
   if (role === 'judgy' || role === 'barry') {
     div.innerHTML = `
       <div class="msg-av">${role === 'barry' ? '👔' : '⚖️'}</div>
       <div class="msg-wrap">
         <div class="msg-name">${role === 'barry' ? 'BARRY T. LAWSON, ESQ.' : 'THE JUDGY'}</div>
-        <div class="msg-bubble">${html}${verdictHtml}${recsHtml}${followUpHtml}</div>
+        <div class="msg-bubble">${html}${verdictHtml}</div>
         <div class="msg-time">${time}</div>
       </div>`;
   } else {
@@ -1581,23 +1224,10 @@ function addMsg(role, html, verdict = '', isBarry = false, opts = {}) {
   msgs.scrollTop = msgs.scrollHeight;
 }
 
-// Click a follow-up button — pre-fill and send
-function useFollowUp(btn) {
-  const text  = btn.querySelector('span:nth-child(2)') 
-    ? btn.textContent.replace('→','').trim()
-    : btn.innerText.replace('→','').trim();
-  const input = document.getElementById('chatInput');
-  input.value = text;
-  onInputChange(input);
-  // Remove all follow-up blocks so they don't pile up
-  document.querySelectorAll('.followup-wrap').forEach(el => el.remove());
-  sendMessage();
-}
-
 function showTyping(role) {
   removeWelcome();
   const msgs = document.getElementById('messages');
-  const div  = document.createElement('div');
+  const div = document.createElement('div');
   div.className = `msg ${role}`;
   div.id = `typing-${role}`;
   div.innerHTML = `
@@ -1611,9 +1241,9 @@ function showTyping(role) {
   msgs.appendChild(div);
   msgs.scrollTop = msgs.scrollHeight;
 }
-
 function removeTyping(role) {
-  document.getElementById(`typing-${role}`)?.remove();
+  const t = document.getElementById(`typing-${role}`);
+  if (t) t.remove();
 }
 
 function formatResponse(text) {
@@ -1622,188 +1252,268 @@ function formatResponse(text) {
     .replace(/\n/g, '<br>');
 }
 
-function parseVerdict(text, marker) {
-  const re = new RegExp(`${marker}\\s*(.+)`, 'i');
-  const m  = text.match(re);
-  if (m) return { body: text.replace(m[0], '').trim(), verdict: m[1].trim() };
-  return { body: text, verdict: '' };
-}
-
-// ── KEYWORD DETECTION ──────────────────────────────────────
-const LEGAL_KW    = ['legal','law','sue','court','lawyer','attorney','contract','divorce','custody','evict','tenant','landlord','copyright','trademark','will','estate','llc','incorporate','tax','irs','insurance','claim','settlement'];
-const BUSINESS_KW = ['business','startup','company','brand','market','pricing','revenue','profit','client','customer','invoice','landing page','website','saas','product','launch','competitor'];
-
+// ── DETECT LEGAL / BUSINESS ────────────────────────────────
+const legalKeywords = ['legal','law','sue','court','lawyer','attorney','contract','divorce','custody','evict','tenant','landlord','copyright','trademark','will','estate','llc','incorporate','tax','irs','insurance','claim','settlement'];
+const businessKeywords = ['business','startup','company','brand','market','pricing','revenue','profit','client','customer','invoice','landing page','website','saas','product','launch','competitor'];
 function isLegalOrBusiness(text) {
   const lower = text.toLowerCase();
-  return LEGAL_KW.some(k => lower.includes(k)) ||
-         BUSINESS_KW.some(k => lower.includes(k)) ||
-         topic === 'legal' || topic === 'business' || topic === 'money';
+  return legalKeywords.some(k => lower.includes(k)) ||
+    businessKeywords.some(k => lower.includes(k)) ||
+    topic === 'legal' || topic === 'business' || topic === 'money';
 }
 
-// ── SYSTEM PROMPTS ─────────────────────────────────────────
-const JUDGY_PROMPT = `You are THE JUDGY — a brutally honest AI character who is like Judge Judy on steroids mixed with a no-nonsense best friend.
-
-PERSONALITY:
-- Roast the person HARD first (2-3 sentences of dramatic, exaggerated roasting)
-- Point out the real problem with sharp insight
-- Give REAL, actionable, specific advice
-- Use ALL CAPS occasionally for emphasis
-- Use phrases like "Honey", "Let me be real", "CASE CLOSED", "I'm gonna need you to sit down"
-- Exaggerate for comedic effect but always deliver real value
-- You are occasionally annoyed at BARRY your ex-husband who keeps interrupting with legal advice
-
-END EVERY RESPONSE WITH:
-⚖️ VERDICT: [one punchy ruling sentence]
-
-Keep responses 120-200 words. Be conversational, never corporate.`;
-
-const BARRY_PROMPT = `You are BARRY T. LAWSON, ESQ. — The Judgy's ex-husband. You are a surprisingly competent lawyer and business advisor who takes every opportunity to show off your expertise to impress Judgy.
-
-PERSONALITY:
-- You are slightly insecure but genuinely good at legal/business advice
-- You passive-aggressively roast JUDGY in every response (she never appreciates your expertise)
-- You are formal but occasionally flustered
-- You give REAL, accurate, actionable legal/business advice
-- You say things like "As I've said many times, Judith—", "With all due respect to my ex-wife's OPINION—", "If anyone here has passed the bar exam, it's ME"
-- You still dress in the same suit
-- You sign off as "Barry T. Lawson, Esq."
-
-WHEN RESPONDING AFTER JUDGY:
-- Reference what she said and roast it gently
-- Then give your superior legal/business take
-
-END EVERY RESPONSE WITH:
-📋 RULING: [your formal legal/business verdict in one sentence]
-
-Keep responses 120-200 words. Include real, actionable legal or business advice.`;
-
-const JUDGY_CLAP_BACK = `You are THE JUDGY responding to your ex-husband BARRY who just gave legal advice.
-
-PERSONALITY:
-- Reluctantly acknowledge Barry is right about the legal stuff (you hate admitting it)
-- But roast him anyway — his suit, his clipboard, his desperation to impress you
-- Add your own emotional/personal angle to the advice
-- Keep it SHORT — 60-80 words only
-- End with a dismissive but loving zinger toward Barry
-
-No verdict line needed — just a short clap back.`;
-
-// ── HISTORY-AWARE CALL ─────────────────────────────────────
-// Build a context string from recent conversation history
-function buildHistoryContext() {
-  if (conversationHistory.length === 0) return '';
-  const recent = conversationHistory.slice(-MAX_HISTORY);
-  return '\n\nPREVIOUS CONVERSATION:\n' + recent.map(m => {
-    const name = m.role === 'user' ? 'User' : m.role === 'judgy' ? 'Judgy' : 'Barry';
-    return `${name}: ${m.text}`;
-  }).join('\n') + '\n\nNow respond to the latest message, keeping context in mind.';
+// ── NEW CASE ──────────────────────────────────────────────
+function newCase() {
+  const msgs = document.getElementById('messages');
+  msgs.innerHTML = `
+    <div class="welcome" id="welcome">
+      <div class="welcome-crest">⚖</div>
+      <h2>THE <span class="judgy-name">JUDGY</span><br>& <span class="barry-name">BARRY</span></h2>
+      <div class="welcome-subtitle">Brutally honest. Surprisingly competent.</div>
+      <div class="welcome-rule"></div>
+      <div class="char-duo">
+        <div class="char-card judgy" id="charJudgy" onclick="selectChar('judgy')">
+          <div class="char-monogram">J.</div>
+          <div class="char-card-name">The Judgy</div>
+          <div class="char-card-title">The Honorable Judge</div>
+          <div class="char-card-tag">Life · Love · Work</div>
+        </div>
+        <div class="char-card barry" id="charBarry" onclick="selectChar('barry')">
+          <div class="char-monogram">B.</div>
+          <div class="char-card-name">Barry T. Lawson</div>
+          <div class="char-card-title">Esq. — Her Ex-Husband</div>
+          <div class="char-card-tag">Legal · Business · Tax</div>
+        </div>
+      </div>
+      <div id="charModeBar" style="display:none">
+        <div class="char-mode-bar">
+          <span class="char-mode-label" id="charModeLabel"></span>
+          <button class="char-mode-back" onclick="selectChar('both')">← Both</button>
+        </div>
+      </div>
+      <div class="starters">
+        <button class="starter" onclick="useStarter(this)"><span class="starter-icon">♡</span><span class="starter-t">My ex wants to get back together but they cheated on me</span></button>
+        <button class="starter barry-s" onclick="useStarter(this)"><span class="starter-icon">§</span><span class="starter-t">I want to start an LLC — where do I begin?</span></button>
+        <button class="starter" onclick="useStarter(this)"><span class="starter-icon">◉</span><span class="starter-t">My coworker keeps stealing my ideas in meetings</span></button>
+        <button class="starter barry-s" onclick="useStarter(this)"><span class="starter-icon">📋</span><span class="starter-t">I need a demand letter for money owed to me</span></button>
+      </div>
+    </div>`;
+  msgCount = 0;
+  charMode = 'both';
+  lastUserText = '';
+  document.querySelectorAll('.rage-pip').forEach(p => p.classList.remove('on'));
+  document.getElementById('chatInput').value = '';
+  document.getElementById('chatInput').placeholder = 'Present your case to the court...';
+  autoResize(document.getElementById('chatInput'));
 }
 
-function addToHistory(role, text) {
-  conversationHistory.push({ role, text: text.replace(/<[^>]+>/g, '').replace(/\n/g,' ').trim().slice(0, 300) });
-  if (conversationHistory.length > MAX_HISTORY * 2) {
-    conversationHistory = conversationHistory.slice(-MAX_HISTORY);
+
+function selectChar(mode) {
+  charMode = mode;
+  document.getElementById('charJudgy')?.classList.toggle('selected-char', mode === 'judgy');
+  document.getElementById('charBarry')?.classList.toggle('selected-char', mode === 'barry');
+  const bar = document.getElementById('charModeBar');
+  const lbl = document.getElementById('charModeLabel');
+  if (mode === 'both') {
+    if (bar) bar.style.display = 'none';
+    document.getElementById('charJudgy')?.classList.remove('selected-char');
+    document.getElementById('charBarry')?.classList.remove('selected-char');
+  } else {
+    if (bar) bar.style.display = 'block';
+    if (lbl) lbl.textContent = mode === 'judgy' ? '⚖️ Chatting with Judgy only' : '👔 Chatting with Barry only';
+    const input = document.getElementById('chatInput');
+    if (input) input.placeholder = mode === 'judgy' ? 'Present your case, Your Honor...' : 'Ask Barry a legal or business question...';
   }
+  document.getElementById('chatInput')?.focus();
 }
 
 // ── MAIN SEND ──────────────────────────────────────────────
+
+// ── STRIPE PAYMENT LINKS ────────────────────────────────────
+const STRIPE_LINKS = {
+  starter:  'https://buy.stripe.com/3cIfZgbeq6p03ft1Fkg3600',
+  pro:      'https://buy.stripe.com/00wdR882eaFg03hcjYg3601',
+  token_sm: 'https://buy.stripe.com/3cI5kC4Q29Bc2bp83Ig3602',
+  token_md: 'https://buy.stripe.com/cNi14m6Ya7t49DR6ZEg3603',
+  token_lg: 'https://buy.stripe.com/eVqaEWdmy00C2bp5VAg3604',
+};
+
+const FREE_LIMIT = 10;
+let totalMsgCount = parseInt(localStorage.getItem('judgy_msgs') || '0');
+let isPaid = localStorage.getItem('judgy_paid') === '1';
+let paywallShown = false;
+
+function saveCount() {
+  localStorage.setItem('judgy_msgs', totalMsgCount);
+}
+
+function checkPayment() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('payment') === 'success') {
+    isPaid = true;
+    localStorage.setItem('judgy_paid', '1');
+    localStorage.setItem('judgy_msgs', '0');
+    totalMsgCount = 0;
+    showToast('Welcome to The Judgy — court is fully in session.');
+    window.history.replaceState({}, '', window.location.pathname);
+  }
+}
+
+function showPaywall() {
+  if (paywallShown) return;
+  paywallShown = true;
+  const overlay = document.getElementById('paywallOverlay');
+  overlay.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function closePaywall() {
+  const overlay = document.getElementById('paywallOverlay');
+  overlay.style.animation = 'pwFadeIn 0.2s ease reverse forwards';
+  setTimeout(() => {
+    overlay.style.display = 'none';
+    document.body.style.overflow = '';
+    paywallShown = false;
+  }, 200);
+}
+
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('paywallOverlay')) closePaywall();
+}
+
+function trackClick(plan) {
+  localStorage.setItem('judgy_last_plan', plan);
+}
+
+function showToast(msg) {
+  const t = document.getElementById('successToast');
+  document.getElementById('successMsg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 4000);
+}
+
+function checkLimit() {
+  if (isPaid) return true;
+  totalMsgCount++;
+  saveCount();
+  if (totalMsgCount > FREE_LIMIT) {
+    showPaywall();
+    return false;
+  }
+  return true;
+}
+
+// Check for payment success on page load
+window.addEventListener('load', checkPayment);
+
 async function sendMessage() {
   const input = document.getElementById('chatInput');
-  const text  = input.value.trim();
-  if (!text || isThinking || text.length > 500) return;
-  if (!canSendMessage()) return;
-
+  const text = input.value.trim();
+  if (!text || isThinking) return;
+  if (!checkLimit()) return;
   input.value = '';
-  onInputChange(input);
+  autoResize(input);
+  lastUserText = text;
   addMsg('user', text);
-  addToHistory('user', text);
   updateRage();
-
   isThinking = true;
   document.getElementById('sendBtn').disabled = true;
 
-  // Remove previous follow-up buttons when user sends a new message
-  document.querySelectorAll('.followup-wrap').forEach(el => el.remove());
+  const barrySituation = charMode === 'barry' || (charMode === 'both' && isLegalOrBusiness(text));
+  const judgyOnly = charMode === 'judgy';
 
-  const histCtx     = buildHistoryContext();
-  const barrySit    = charMode === 'barry' || (charMode === 'both' && isLegalOrBusiness(text));
-  const topicCtxMap = { relationship:'relationship issue', work:'work situation', coworker:'coworker drama', personal:'personal growth', family:'family situation', general:'' };
-  const topicSuffix = topicCtxMap[topic] ? `\n\nContext: This is a ${topicCtxMap[topic]}.` : '';
-
-  // Build contextual extras for the final message
-  function makeOpts(isLast = true) {
-    if (!isLast) return {};
-    return {
-      followUps: getFollowUps(topic, text, 3),
-      builds:    getRelevantBuilds(text, topic, 3),
-      isLast:    true,
-    };
+  if (judgyOnly) {
+    showTyping('judgy');
+    try {
+      const topicCtx = { relationship:'relationship issue', work:'work situation', coworker:'coworker drama', personal:'personal growth', family:'family situation', general:'' };
+      const raw = await callClaude(
+        JUDGY_PROMPT + (topicCtx[topic] ? `\n\nContext: This is a ${topicCtx[topic]}.` : ''),
+        text
+      );
+      removeTyping('judgy');
+      const parsed = parseAIResponse(raw, '⚖️ VERDICT:');
+      addMsgFull('judgy', parsed, false, text, topic);
+    } catch (e) {
+      removeTyping('judgy');
+      addMsg('judgy', "Court is experiencing technical difficulties. Try again.", '⚖️ VERDICT: Case postponed.');
+    }
+    isThinking = false;
+    document.getElementById('sendBtn').disabled = false;
+    input.focus();
+    return;
   }
 
-  try {
-    if (charMode === 'judgy') {
-      showTyping('judgy');
-      const res = await callClaude(JUDGY_PROMPT + topicSuffix + histCtx, text);
-      removeTyping('judgy');
-      const { body, verdict } = parseVerdict(res, '⚖️ VERDICT:');
-      addMsg('judgy', formatResponse(body), verdict, false, makeOpts(true));
-      addToHistory('judgy', res);
-
-    } else if (charMode === 'barry') {
-      showTyping('barry');
-      const res = await callClaude(BARRY_PROMPT + histCtx, text);
+  if (charMode === 'barry') {
+    showTyping('barry');
+    try {
+      const raw = await callClaude(BARRY_PROMPT, text);
       removeTyping('barry');
-      const { body, verdict } = parseVerdict(res, '📋 RULING:');
-      addMsg('barry', formatResponse(body), verdict, true, makeOpts(true));
-      addToHistory('barry', res);
-
-    } else if (barrySit) {
-      // Barry leads — no follow-ups on Barry's msg, show on Judgy's clap-back
-      showTyping('barry');
-      const barryRes = await callClaude(BARRY_PROMPT + histCtx, text);
+      const parsed = parseAIResponse(raw, '📋 RULING:');
+      addMsgFull('barry', parsed, true, text, topic);
+    } catch (e) {
       removeTyping('barry');
-      const { body: bBody, verdict: bVerdict } = parseVerdict(barryRes, '📋 RULING:');
-      addMsg('barry', formatResponse(bBody), bVerdict, true, {}); // no opts yet
-      addToHistory('barry', barryRes);
+      addMsg('barry', "Connection dropped. Barry T. Lawson, Esq.", '📋 RULING: Try again.', true);
+    }
+    isThinking = false;
+    document.getElementById('sendBtn').disabled = false;
+    input.focus();
+    return;
+  }
 
-      await delay(800);
+  if (barrySituation) {
+    // BARRY leads
+    showTyping('barry');
+    try {
+      const barryRaw = await callClaude(BARRY_PROMPT, text);
+      removeTyping('barry');
+      const barryParsed = parseAIResponse(barryRaw, '📋 RULING:');
+      addMsgFull('barry', barryParsed, true, text, topic);
+
+      // JUDGY claps back
+      await new Promise(r => setTimeout(r, 800));
       showTyping('judgy');
-      const judgyClap = await callClaude(JUDGY_CLAP_BACK + histCtx, `User asked: "${text}"\n\nBarry just said: "${barryRes}"`);
+      const judgyRaw = await callClaude(
+        JUDGY_CLAP_BACK,
+        `User asked: "${text}"\n\nBarry just said: "${barryRaw}"`
+      );
       removeTyping('judgy');
-      addMsg('judgy', formatResponse(judgyClap), '', false, makeOpts(true));
-      addToHistory('judgy', judgyClap);
+      const judgyParsed = parseAIResponse(judgyRaw, null);
+      addMsgFull('judgy', judgyParsed, false, null, topic); // no rec on clap back
+    } catch (e) {
+      removeTyping('barry'); removeTyping('judgy');
+      addMsg('barry', "Objection! My connection dropped.", '📋 RULING: Try again.', true);
+    }
 
-    } else {
-      // Judgy leads
-      showTyping('judgy');
-      const judgyRes = await callClaude(JUDGY_PROMPT + topicSuffix + histCtx, text);
+  } else {
+    // JUDGY leads
+    showTyping('judgy');
+    try {
+      const topicCtx = { relationship:'relationship issue', work:'work situation', coworker:'coworker drama', personal:'personal growth', family:'family situation', general:'' };
+      const judgyRaw = await callClaude(
+        JUDGY_PROMPT + (topicCtx[topic] ? `\n\nContext: This is a ${topicCtx[topic]}.` : ''),
+        text
+      );
       removeTyping('judgy');
-      const { body: jBody, verdict: jVerdict } = parseVerdict(judgyRes, '⚖️ VERDICT:');
+      const judgyParsed = parseAIResponse(judgyRaw, '⚖️ VERDICT:');
+      addMsgFull('judgy', judgyParsed, false, text, topic);
 
-      const barryJumpKw = ['money','loan','debt','pay','fired','contract','rights','sue','lawyer','refund','owed'];
-      const barryJumps  = barryJumpKw.some(k => text.toLowerCase().includes(k));
-
-      // If Barry jumps in, show opts on Barry's msg. If not, on Judgy's.
-      addMsg('judgy', formatResponse(jBody), jVerdict, false, barryJumps ? {} : makeOpts(true));
-      addToHistory('judgy', judgyRes);
-
-      if (barryJumps) {
-        await delay(1000);
+      // Barry jumps in if money/legal detected
+      const barryJump = ['money','loan','debt','pay','fired','contract','rights','sue'].some(k => text.toLowerCase().includes(k));
+      if (barryJump) {
+        await new Promise(r => setTimeout(r, 1000));
         showTyping('barry');
-        const barryAdd = await callClaude(
-          `You are BARRY T. LAWSON, ESQ. Judgy just gave life advice. Add a quick legal/financial angle she missed. Roast her a little. Keep it SHORT — 60-80 words. End with 📋 RULING: [short ruling].` + histCtx,
-          `User asked: "${text}"\n\nJudgy said: "${judgyRes}"`
+        const barryRaw = await callClaude(
+          `You are BARRY T. LAWSON, ESQ. Judgy just gave life advice. Add a quick legal/financial angle she missed. Roast her a little. Keep it SHORT — 60-80 words. End with:\n📋 RULING: [short ruling]\nFOLLOW_UP: [short question max 10 words]\nOPTIONS: [option 1] | [option 2] | [option 3]`,
+          `User asked: "${text}"\n\nJudgy said: "${judgyRaw}"`
         );
         removeTyping('barry');
-        const { body: bbBody, verdict: bbVerdict } = parseVerdict(barryAdd, '📋 RULING:');
-        addMsg('barry', formatResponse(bbBody), bbVerdict, true, makeOpts(true));
-        addToHistory('barry', barryAdd);
+        const barryParsed = parseAIResponse(barryRaw, '📋 RULING:');
+        addMsgFull('barry', barryParsed, true, null, topic);
       }
+    } catch (e) {
+      removeTyping('judgy');
+      addMsg('judgy', "Court is experiencing technical difficulties. Try again.", '⚖️ VERDICT: Case postponed.');
     }
-  } catch (e) {
-    removeTyping('judgy');
-    removeTyping('barry');
-    showError(barrySit ? 'barry' : 'judgy', text);
   }
 
   isThinking = false;
@@ -1811,54 +1521,7 @@ async function sendMessage() {
   input.focus();
 }
 
-
-function showError(role, originalText) {
-  const msgs = document.getElementById('messages');
-  const div  = document.createElement('div');
-  div.className = `msg ${role}`;
-  const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  const name = role === 'barry' ? 'BARRY T. LAWSON, ESQ.' : 'THE JUDGY';
-  const icon = role === 'barry' ? '👔' : '⚖️';
-  div.innerHTML = `
-    <div class="msg-av">${icon}</div>
-    <div class="msg-wrap">
-      <div class="msg-name">${name}</div>
-      <div class="msg-bubble">
-        <span class="msg-error">Court is experiencing technical difficulties. Try again in a moment.</span>
-        <br><button class="retry-btn" onclick="retryMessage(this,'${escHtml(originalText)}')">🔄 Retry</button>
-      </div>
-      <div class="msg-time">${time}</div>
-    </div>`;
-  msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
-}
-
-
-function retryMessage(btn, text) {
-  // Remove the error message bubble
-  btn.closest('.msg')?.remove();
-  // Restore text and resend
-  const input = document.getElementById('chatInput');
-  input.value = text;
-  onInputChange(input);
-  // Remove the last user history entry since we're re-sending
-  if (conversationHistory.length && conversationHistory[conversationHistory.length - 1].role === 'user') {
-    conversationHistory.pop();
-  }
-  // Remove last user message from DOM to avoid duplicate
-  const msgs = document.getElementById('messages');
-  const allMsgs = msgs.querySelectorAll('.msg.user');
-  if (allMsgs.length) allMsgs[allMsgs.length - 1].remove();
-  sendMessage();
-}
-
-function escHtml(s) {
-  return s.replace(/'/g, '&#39;').replace(/"/g, '&quot;');
-}
-
-function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
-
-// ── API CALL — via Supabase Edge Function (key stays server-side) ──
+// ── SUPABASE EDGE FUNCTION CALL ─────────────────────────────
 const JUDGY_FN_URL = 'https://dmemzljerldzeiwqfxzp.supabase.co/functions/v1/judgy-chat-v2-ts';
 
 async function callClaude(system, userMsg) {
@@ -1867,7 +1530,6 @@ async function callClaude(system, userMsg) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ system, userMessage: userMsg })
   });
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
   const data = await res.json();
   if (data.text) return data.text;
   throw new Error(data.error || 'No response');
@@ -1875,85 +1537,48 @@ async function callClaude(system, userMsg) {
 
 // ── LEGAL FORMS ────────────────────────────────────────────
 function generateDemandLetter() {
-  const from     = document.getElementById('dl-from').value.trim()    || '[Your Name]';
-  const to       = document.getElementById('dl-to').value.trim()      || '[Recipient]';
-  const amt      = document.getElementById('dl-amount').value.trim()  || '[Amount]';
-  const reason   = document.getElementById('dl-reason').value.trim()  || '[Reason]';
-  const deadline = document.getElementById('dl-deadline').value       || '[Date]';
+  const from     = document.getElementById('dl-from').value || '[Your Name]';
+  const to       = document.getElementById('dl-to').value   || '[Recipient]';
+  const amt      = document.getElementById('dl-amount').value || '[Amount]';
+  const reason   = document.getElementById('dl-reason').value || '[Reason]';
+  const deadline = document.getElementById('dl-deadline').value || '[Date]';
   const today    = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-
-  formContent = `DEMAND LETTER
-
-Date: ${today}
-
-From: ${from}
-To:   ${to}
-
-Dear ${to},
-
-This letter serves as formal notice that you owe me the sum of $${amt} for the following reason: ${reason}.
-
-Despite prior attempts to resolve this matter, payment has not been received. I hereby demand full payment of $${amt} no later than ${deadline}.
-
-If payment is not received by the above date, I reserve the right to pursue all available legal remedies, including but not limited to filing a claim in small claims court.
-
-Please remit payment to the address or account on file.
-
-Sincerely,
-
-${from}
-
----
-⚠️ DISCLAIMER: This is a general template generated by an AI character. It is NOT a substitute for advice from a licensed attorney. Consult a real lawyer before sending legal correspondence.`;
-
-  showFormOutput();
+  formContent = `DEMAND LETTER\n\nDate: ${today}\n\nFrom: ${from}\nTo:   ${to}\n\nDear ${to},\n\nThis letter serves as formal notice that you owe me the sum of $${amt} for the following reason: ${reason}.\n\nDespite prior attempts to resolve this matter, payment has not been received. I hereby demand full payment of $${amt} no later than ${deadline}.\n\nIf payment is not received by the above date, I reserve the right to pursue all available legal remedies, including but not limited to filing a claim in small claims court.\n\nSincerely,\n\n${from}\n\n---\n⚠️ DISCLAIMER: This is a general template generated by an AI character. It is NOT a substitute for advice from a licensed attorney.`;
+  document.getElementById('formOutputContent').textContent = formContent;
+  document.getElementById('formOutput').style.display = 'block';
+  document.getElementById('formOutput').scrollIntoView({ behavior: 'smooth' });
 }
 
 async function generateDivorceChecklist() {
-  const state  = document.getElementById('div-state').value.trim()  || 'your state';
+  const state  = document.getElementById('div-state').value || 'your state';
   const kids   = document.getElementById('div-kids').value;
-  const assets = document.getElementById('div-assets').value.trim() || 'various assets';
-  const btn    = document.getElementById('divBtn');
-  btn.textContent = 'Barry is preparing your checklist...';
-  btn.disabled = true;
+  const assets = document.getElementById('div-assets').value || 'various assets';
   try {
-    formContent = await callClaude(
+    const res = await callClaude(
       `You are Barry T. Lawson, Esq. Generate a practical divorce preparation checklist. Be helpful and specific. Format as a numbered checklist. Add a brief disclaimer at the end. Keep to 200 words max.`,
       `State: ${state}, Children: ${kids}, Assets: ${assets}`
     );
-    showFormOutput();
-  } catch (e) {
-    alert('Barry dropped his clipboard. Try again.');
-  }
-  btn.textContent = '📋 Generate Checklist';
-  btn.disabled = false;
+    formContent = res;
+    document.getElementById('formOutputContent').textContent = res;
+    document.getElementById('formOutput').style.display = 'block';
+    document.getElementById('formOutput').scrollIntoView({ behavior: 'smooth' });
+  } catch (e) { alert('Barry dropped his clipboard. Try again.'); }
 }
 
 async function generateLLCGuide() {
-  const name  = document.getElementById('llc-name').value.trim()  || 'your business';
-  const state = document.getElementById('llc-state').value.trim() || 'your state';
+  const name  = document.getElementById('llc-name').value || 'your business';
+  const state = document.getElementById('llc-state').value || 'your state';
   const type  = document.getElementById('llc-type').value;
-  const btn   = document.getElementById('llcBtn');
-  btn.textContent = 'Barry is drafting your guide...';
-  btn.disabled = true;
   try {
-    formContent = await callClaude(
+    const res = await callClaude(
       `You are Barry T. Lawson, Esq. Generate a step-by-step LLC formation guide. Be specific and practical. Format as numbered steps. Include estimated costs. Add a brief disclaimer. 200 words max.`,
       `Business: ${name}, State: ${state}, Type: ${type}`
     );
-    showFormOutput();
-  } catch (e) {
-    alert('Barry spilled coffee on his keyboard. Try again.');
-  }
-  btn.textContent = '📋 Generate LLC Guide';
-  btn.disabled = false;
-}
-
-function showFormOutput() {
-  document.getElementById('formOutputContent').textContent = formContent;
-  const out = document.getElementById('formOutput');
-  out.style.display = 'block';
-  out.scrollIntoView({ behavior: 'smooth' });
+    formContent = res;
+    document.getElementById('formOutputContent').textContent = res;
+    document.getElementById('formOutput').style.display = 'block';
+    document.getElementById('formOutput').scrollIntoView({ behavior: 'smooth' });
+  } catch (e) { alert('Try again.'); }
 }
 
 function downloadForm() {
@@ -1962,38 +1587,27 @@ function downloadForm() {
   a.href = URL.createObjectURL(blob);
   a.download = 'barry-document.txt';
   a.click();
-  URL.revokeObjectURL(a.href);
 }
 
 // ── LANDING PAGE BUILDER ───────────────────────────────────
 async function buildLandingPage() {
-  const name     = document.getElementById('lp-name').value.trim()     || 'My Business';
-  const desc     = document.getElementById('lp-desc').value.trim()     || 'We help people.';
-  const audience = document.getElementById('lp-audience').value.trim() || 'Everyone';
-  const cta      = document.getElementById('lp-cta').value.trim()      || 'Get Started';
+  const name     = document.getElementById('lp-name').value     || 'My Business';
+  const desc     = document.getElementById('lp-desc').value     || 'We help people.';
+  const audience = document.getElementById('lp-audience').value || 'Everyone';
+  const cta      = document.getElementById('lp-cta').value      || 'Get Started';
   const color    = document.getElementById('lp-color').value;
-  const btn      = document.getElementById('lpBtn');
+  const btn = document.getElementById('lpBtn');
   btn.textContent = 'Barry is building... adjusting his clip-on tie...';
   btn.disabled = true;
   try {
-    lpContent = await callClaude(
-      `You are Barry T. Lawson, Esq. but also secretly a great web designer. Generate a complete, beautiful single-page HTML landing page.
-Requirements:
-- Full HTML file with embedded CSS and JS
-- Hero section with headline, subheadline, CTA button
-- 3 features/benefits section
-- Simple pricing or CTA section
-- Footer
-- Mobile responsive
-- Clean, modern design matching the color vibe specified
-- Return ONLY the complete HTML code, nothing else`,
+    const res = await callClaude(
+      `You are Barry T. Lawson, Esq. but also secretly a great web designer. Generate a complete, beautiful single-page HTML landing page. Requirements: Full HTML file with embedded CSS and JS, hero section with headline subheadline CTA button, 3 features/benefits section, simple pricing or CTA section, footer, mobile responsive, clean modern design matching the color vibe specified. Return ONLY the complete HTML code nothing else.`,
       `Business: ${name}\nDescription: ${desc}\nAudience: ${audience}\nCTA: ${cta}\nColor vibe: ${color}`
     );
+    lpContent = res;
     document.getElementById('lpOutput').style.display = 'block';
     document.getElementById('lpOutput').scrollIntoView({ behavior: 'smooth' });
-  } catch (e) {
-    alert('Barry spilled coffee on his keyboard. Try again.');
-  }
+  } catch (e) { alert('Barry spilled coffee on his keyboard. Try again.'); }
   btn.textContent = '🏗️ Barry, build my landing page';
   btn.disabled = false;
 }
@@ -2004,428 +1618,67 @@ function downloadLP() {
   a.href = URL.createObjectURL(blob);
   a.download = 'landing-page.html';
   a.click();
-  URL.revokeObjectURL(a.href);
 }
-
-// ═══════════════════════════════════════════════════════════
-// ── SUPABASE + AUTH + STRIPE ───────────────────────────────
-// ═══════════════════════════════════════════════════════════
-
-// ── CONFIG — fill these in ─────────────────────────────────
-const SUPABASE_URL      = 'https://dmemzljerldzeiwqfxzp.supabase.co';
-const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';   // ← paste from Supabase dashboard > Settings > API
-const STRIPE_PUB_KEY    = 'YOUR_STRIPE_PUBLISHABLE_KEY'; // ← paste from Stripe dashboard > Developers > API keys
-const STRIPE_PRICE_ID   = 'price_1TZgyMPyqn30Gz280fSPInVq';
-const FREE_MSG_LIMIT    = 5;
-
-// _sb initialized lazily in initAuth() above
-
-// App auth state
-let _user       = null;   // supabase user object
-let _isPro      = false;  // has active subscription
-let _freeUsed   = 0;      // messages used on free tier (persisted in localStorage)
-let _authMode   = 'signin'; // 'signin' | 'signup'
-
-// ── INIT AUTH — lazy, safe, won't crash if SDKs not loaded ──
-let _sb = null;
-
-function loadSupabase() {
-  if (_sb) return true;
-  if (typeof supabase === 'undefined') return false;
-  try {
-    _sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    return true;
-  } catch(e) { return false; }
-}
-
-async function initAuth() {
-  // Restore free count safely
-  try {
-    _freeUsed = parseInt(localStorage.getItem('judgy_free_used') || '0', 10);
-  } catch(e) { _freeUsed = 0; }
-  updateFreeBadge();
-
-  if (!loadSupabase()) {
-    // SDKs not available (sandbox/preview) — show login btn, skip auth
-    updateAuthUI();
-    return;
-  }
-
-  _sb.auth.onAuthStateChange(async (event, session) => {
-    if (session?.user) {
-      _user = session.user;
-      await checkSubscription();
-      updateAuthUI();
-    } else {
-      _user = null; _isPro = false;
-      updateAuthUI();
-    }
-  });
-
-  try {
-    const { data: { session } } = await _sb.auth.getSession();
-    if (session?.user) { _user = session.user; await checkSubscription(); }
-  } catch(e) {}
-  updateAuthUI();
-}
-
-// ── CHECK SUBSCRIPTION via Supabase ───────────────────────
-// Expects a 'subscriptions' table in Supabase with columns:
-// user_id, status ('active'|'trialing'), price_id
-async function checkSubscription() {
-  if (!_user || !_sb) { _isPro = false; return; }
-  try {
-    const { data } = await _sb
-      .from('subscriptions')
-      .select('status')
-      .eq('user_id', _user.id)
-      .in('status', ['active', 'trialing'])
-      .single();
-    _isPro = !!data;
-  } catch { _isPro = false; }
-}
-
-// ── UPDATE UI AFTER AUTH STATE CHANGE ─────────────────────
-function updateAuthUI() {
-  const loginBtn   = document.getElementById('loginBtn');
-  const acctBtn    = document.getElementById('acctBtn');
-  const acctName   = document.getElementById('acctName');
-  const acctEmail  = document.getElementById('acctEmail');
-  const acctPlan   = document.getElementById('acctPlan');
-
-  if (_user) {
-    loginBtn.style.display = 'none';
-    acctBtn.style.display  = 'flex';
-    // Avatar initials
-    const name = _user.user_metadata?.full_name || _user.email || '?';
-    acctBtn.textContent = name.charAt(0).toUpperCase();
-    if (acctName)  acctName.textContent  = _user.user_metadata?.full_name || '—';
-    if (acctEmail) acctEmail.textContent = _user.email || '—';
-    if (acctPlan) {
-      acctPlan.textContent = _isPro ? '⭐ Pro' : 'Free';
-      acctPlan.className   = 'acct-plan ' + (_isPro ? 'pro' : 'free');
-    }
-    // Hide upgrade item if already pro
-    const upgradeItem = document.querySelector('.acct-menu-item:nth-child(3)');
-    if (upgradeItem) upgradeItem.style.display = _isPro ? 'none' : 'flex';
-  } else {
-    loginBtn.style.display = 'flex';
-    acctBtn.style.display  = 'none';
-  }
-
-  // Show free badge only when logged out or on free plan
-  updateFreeBadge();
-}
-
-function updateFreeBadge() {
-  const badge = document.getElementById('freeBadge');
-  const ct    = document.getElementById('freeCt');
-  if (!badge) return;
-  if (_isPro || _user) {
-    badge.style.display = 'none';
-  } else {
-    const remaining = Math.max(0, FREE_MSG_LIMIT - _freeUsed);
-    badge.style.display = remaining < FREE_MSG_LIMIT ? 'flex' : 'none';
-    if (ct) ct.textContent = remaining;
-  }
-}
-
-// ── GATE MESSAGES ──────────────────────────────────────────
-// Call this before every AI message. Returns true if allowed.
-function canSendMessage() {
-  if (_isPro) return true;        // pro users: unlimited
-  if (_user)  return true;        // logged-in free users get unlimited (upgrade to gate later)
-  // Logged-out: free limit
-  if (_freeUsed >= FREE_MSG_LIMIT) {
-    openPaywall();
-    return false;
-  }
-  _freeUsed++;
-  localStorage.setItem('judgy_free_used', _freeUsed);
-  updateFreeBadge();
-  return true;
-}
-
-// ── AUTH MODAL ─────────────────────────────────────────────
-function openAuth(mode) {
-  closeAcctMenu();
-  document.getElementById('authModal').classList.add('open');
-  switchTab(mode === 'signup' ? 'signup' : 'signin');
-  setTimeout(() => document.getElementById('authEmail').focus(), 150);
-}
-function closeAuth() {
-  document.getElementById('authModal').classList.remove('open');
-  document.getElementById('authMsg').textContent = '';
-  document.getElementById('authMsg').className = 'auth-msg';
-}
-
-function switchTab(tab) {
-  _authMode = tab;
-  document.getElementById('tabSignin').classList.toggle('active', tab === 'signin');
-  document.getElementById('tabSignup').classList.toggle('active', tab === 'signup');
-  document.getElementById('authNameField').style.display = tab === 'signup' ? 'block' : 'none';
-  document.getElementById('authForgot').style.display    = tab === 'signin' ? 'block' : 'none';
-  document.getElementById('authSubmitBtn').textContent   = tab === 'signin' ? 'Sign in' : 'Create account';
-  document.getElementById('authMsg').textContent = '';
-  // update password autocomplete
-  document.getElementById('authPassword').autocomplete = tab === 'signup' ? 'new-password' : 'current-password';
-}
-
-function setAuthMsg(msg, type = 'error') {
-  const el = document.getElementById('authMsg');
-  el.textContent = msg;
-  el.className   = 'auth-msg ' + type;
-}
-
-async function doAuth() {
-  const email = document.getElementById('authEmail').value.trim();
-  const pass  = document.getElementById('authPassword').value;
-  const name  = document.getElementById('authName')?.value.trim() || '';
-  const btn   = document.getElementById('authSubmitBtn');
-
-  if (!loadSupabase()) { setAuthMsg('Auth service unavailable. Deploy to your live site to use auth.'); return; }
-  if (!email || !pass) { setAuthMsg('Please fill in all fields.'); return; }
-  if (pass.length < 6) { setAuthMsg('Password must be at least 6 characters.'); return; }
-
-  btn.disabled = true;
-  btn.textContent = _authMode === 'signin' ? 'Signing in...' : 'Creating account...';
-
-  if (_authMode === 'signin') {
-    const { error } = await _sb.auth.signInWithPassword({ email, password: pass });
-    if (error) {
-      setAuthMsg(error.message);
-    } else {
-      setAuthMsg('Welcome back! ⚖️', 'success');
-      setTimeout(closeAuth, 900);
-    }
-  } else {
-    const opts = name ? { data: { full_name: name } } : {};
-    const { error } = await _sb.auth.signUp({ email, password: pass, options: opts });
-    if (error) {
-      setAuthMsg(error.message);
-    } else {
-      setAuthMsg('Check your email to confirm your account! 📬', 'success');
-    }
-  }
-
-  btn.disabled = false;
-  btn.textContent = _authMode === 'signin' ? 'Sign in' : 'Create account';
-}
-
-async function doOAuth(provider) {
-  if (!loadSupabase()) { setAuthMsg('Auth service unavailable. Deploy to your live site to use auth.'); return; }
-  const { error } = await _sb.auth.signInWithOAuth({
-    provider,
-    options: {
-      redirectTo: window.location.href,
-      // For Apple, request name + email scopes
-      ...(provider === 'apple' ? { scopes: 'name email' } : {})
-    }
-  });
-  if (error) setAuthMsg(error.message);
-}
-
-async function doForgotPassword() {
-  const email = document.getElementById('authEmail').value.trim();
-  if (!email) { setAuthMsg('Enter your email address first.'); return; }
-  if (!loadSupabase()) { setAuthMsg('Auth service unavailable. Deploy to your live site.'); return; }
-  const { error } = await _sb.auth.resetPasswordForEmail(email, {
-    redirectTo: window.location.href + '?reset=true'
-  });
-  if (error) {
-    setAuthMsg(error.message);
-  } else {
-    setAuthMsg('Password reset email sent! Check your inbox. 📬', 'success');
-  }
-}
-
-async function signOut() {
-  closeAcctMenu();
-  if (_sb) await _sb.auth.signOut();
-  _user  = null;
-  _isPro = false;
-  updateAuthUI();
-}
-
-// ── ACCOUNT DROPDOWN ───────────────────────────────────────
-function toggleAcctMenu() {
-  document.getElementById('acctDropdown').classList.toggle('open');
-}
-function closeAcctMenu() {
-  document.getElementById('acctDropdown').classList.remove('open');
-}
-// Close dropdown when clicking outside
-document.addEventListener('click', (e) => {
-  const btn  = document.getElementById('acctBtn');
-  const menu = document.getElementById('acctDropdown');
-  if (btn && menu && !btn.contains(e.target) && !menu.contains(e.target)) {
-    closeAcctMenu();
-  }
-});
-
-// ── PAYWALL ────────────────────────────────────────────────
-function openPaywall() {
-  document.getElementById('paywallModal').classList.add('open');
-  const info = document.getElementById('paywallFreeInfo');
-  if (info) info.textContent = _user
-    ? 'You are signed in on the free plan.'
-    : `You've used all ${FREE_MSG_LIMIT} free messages.`;
-}
-function closePaywall() {
-  document.getElementById('paywallModal').classList.remove('open');
-}
-
-async function startCheckout() {
-  const btn = document.getElementById('paywallBtn');
-  btn.disabled = true;
-  btn.textContent = 'Opening checkout...';
-
-  // Must be signed in to subscribe
-  if (!_user) {
-    btn.disabled = false;
-    btn.textContent = '⚖️ Upgrade Now — $9.99/mo';
-    closePaywall();
-    openAuth('signup');
-    return;
-  }
-
-  try {
-    // Call your Supabase Edge Function to create a Stripe Checkout Session
-    // Deploy: supabase/functions/create-checkout/index.ts
-    if (!loadSupabase()) throw new Error('Supabase SDK not loaded');
-    const { data, error } = await _sb.functions.invoke('create-checkout', {
-      body: {
-        priceId:    STRIPE_PRICE_ID,
-        userId:     _user.id,
-        userEmail:  _user.email,
-        successUrl: window.location.href + '?checkout=success',
-        cancelUrl:  window.location.href + '?checkout=cancel',
-      }
-    });
-    if (error || !data?.url) throw new Error(error?.message || 'No checkout URL');
-    window.location.href = data.url;
-  } catch (e) {
-    alert('Checkout error: ' + e.message + '\n\nMake sure your Supabase create-checkout edge function is deployed.');
-    btn.disabled = false;
-    btn.textContent = '⚖️ Upgrade Now — $9.99/mo';
-  }
-}
-
-// ← stripe return check moved to DOMContentLoaded
-
-
-// ── BOOT — everything runs after DOM is ready ──────────────
-document.addEventListener('DOMContentLoaded', function() {
-
-  // 1. Render welcome screen first — always works, no dependencies
-  renderWelcome();
-
-  // 3. Check Stripe return (safe - no SDK needed)
-  try {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('checkout') === 'success') {
-      history.replaceState({}, '', window.location.pathname);
-      setTimeout(async function() {
-        await checkSubscription();
-        updateAuthUI();
-        const toast = document.createElement('div');
-        toast.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#22c55e;color:white;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:500;z-index:999;box-shadow:0 4px 20px rgba(0,0,0,0.3);';
-        toast.textContent = '🎉 Welcome to Pro! Court is fully in session.';
-        document.body.appendChild(toast);
-        setTimeout(function() { toast.remove(); }, 4000);
-      }, 1000);
-    }
-  } catch(e) {}
-
-  // 4. Load external SDKs last — failure here never blocks the UI
-  function loadScript(src, cb) {
-    var s = document.createElement('script');
-    s.src = src; s.async = true;
-    s.onload = cb || function(){};
-    s.onerror = function() { console.warn('SDK not available (sandbox/offline):', src); };
-    document.head.appendChild(s);
-  }
-
-  loadScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2', function() {
-    loadScript('https://js.stripe.com/v3/', function() {
-      initAuth();
-    });
-  });
-});
 
 </script>
 
-
-<!-- AUTH MODAL -->
-<div class="auth-modal-bg" id="authModal">
-  <div class="auth-modal">
-    <button class="auth-close" onclick="closeAuth()">✕</button>
-    <div class="auth-logo">THE <span class="red">JUDGY</span></div>
-    <div class="auth-subtitle">Join the courtroom. Get brutally honest advice.</div>
-
-    <div class="auth-tabs">
-      <button class="auth-tab active" id="tabSignin" onclick="switchTab('signin')">Sign in</button>
-      <button class="auth-tab" id="tabSignup" onclick="switchTab('signup')">Sign up</button>
-    </div>
-
-    <!-- EMAIL/PASSWORD FIELDS -->
-    <div id="authNameField" style="display:none;">
-      <div class="auth-field">
-        <label class="auth-label">Full Name</label>
-        <input class="auth-input" id="authName" type="text" placeholder="Judge Judy Smith" autocomplete="name"/>
-      </div>
-    </div>
-    <div class="auth-field">
-      <label class="auth-label">Email</label>
-      <input class="auth-input" id="authEmail" type="email" placeholder="you@example.com" autocomplete="email"/>
-    </div>
-    <div class="auth-field">
-      <label class="auth-label">Password</label>
-      <input class="auth-input" id="authPassword" type="password" placeholder="••••••••" autocomplete="current-password"
-        onkeydown="if(event.key==='Enter') doAuth()"/>
-    </div>
-    <div class="auth-forgot" id="authForgot" onclick="doForgotPassword()">Forgot password?</div>
-
-    <button class="auth-btn" id="authSubmitBtn" onclick="doAuth()">Sign in</button>
-    <div class="auth-msg" id="authMsg"></div>
-
-    <div class="auth-divider">or continue with</div>
-    <div class="oauth-btns">
-      <button class="oauth-btn" onclick="doOAuth('google')">
-        <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-        Google
-      </button>
-      <button class="oauth-btn" onclick="doOAuth('apple')">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-        Apple
-      </button>
-    </div>
-  </div>
-</div>
-
 <!-- PAYWALL MODAL -->
-<div class="paywall-bg" id="paywallModal">
+<div id="paywallOverlay" class="paywall-overlay" style="display:none" onclick="handleOverlayClick(event)">
   <div class="paywall-modal">
-    <span class="paywall-gavel">⚖️</span>
-    <div class="paywall-title">GO <span class="red">PRO</span></div>
-    <p class="paywall-sub">You've used your free messages. Upgrade for unlimited access to Judgy, Barry, all legal forms, and more.</p>
-    <div class="paywall-price-card">
-      <div class="paywall-badge">⭐ PRO PLAN</div>
-      <div class="paywall-amount" id="paywallPrice">$9<span style="font-size:22px;color:var(--text3)">.99</span></div>
-      <div class="paywall-period">per month · cancel anytime</div>
-      <ul class="paywall-features">
-        <li>Unlimited Judgy + Barry messages</li>
-        <li>Full legal forms library</li>
-        <li>Landing page builder</li>
-        <li>Conversation history saved</li>
-        <li>Priority response speed</li>
-      </ul>
+    <div class="pw-handle"></div>
+    <div class="pw-top">
+      <div class="pw-icon"><i class="ti ti-gavel" aria-hidden="true"></i></div>
+      <div class="pw-title">Court recess</div>
+      <div class="pw-sub">You've used your 10 free cases this month</div>
+      <div class="pw-bar-wrap"><div class="pw-bar"></div></div>
     </div>
-    <button class="paywall-cta" id="paywallBtn" onclick="startCheckout()">⚖️ Upgrade Now — $9.99/mo</button>
-    <div class="paywall-signin">Already have an account? <span onclick="closePaywall(); openAuth()">Sign in</span></div>
-    <div class="paywall-free-info" id="paywallFreeInfo"></div>
+    <div class="pw-plans">
+      <a class="pw-plan featured" href="https://buy.stripe.com/3cIfZgbeq6p03ft1Fkg3600" target="_blank" onclick="trackClick('starter')">
+        <div class="pw-plan-icon pi-s"><i class="ti ti-flame" aria-hidden="true"></i></div>
+        <div class="pw-plan-info">
+          <div class="pw-plan-name">Starter pack <span class="pw-badge pw-badge-pop">Most popular</span></div>
+          <div class="pw-plan-desc">50 cases/month · 3 months · no auto-renewal</div>
+        </div>
+        <div class="pw-plan-price"><div class="pw-amount">$15</div><span class="pw-period">one-time</span></div>
+      </a>
+      <a class="pw-plan" href="https://buy.stripe.com/00wdR882eaFg03hcjYg3601" target="_blank" onclick="trackClick('pro')">
+        <div class="pw-plan-icon pi-p"><i class="ti ti-crown" aria-hidden="true"></i></div>
+        <div class="pw-plan-info">
+          <div class="pw-plan-name">Pro <span class="pw-badge pw-badge-unl">Unlimited</span></div>
+          <div class="pw-plan-desc">Unlimited cases · legal docs · cancel anytime</div>
+        </div>
+        <div class="pw-plan-price"><div class="pw-amount">$29</div><span class="pw-period">per month</span></div>
+      </a>
+    </div>
+    <div class="pw-divider" style="padding:0 16px"><span>or top up</span></div>
+    <div class="pw-tokens" style="margin-top:8px">
+      <a class="pw-token" href="https://buy.stripe.com/3cI5kC4Q29Bc2bp83Ig3602" target="_blank" onclick="trackClick('token_sm')">
+        <div class="pw-token-amount">20</div>
+        <div class="pw-token-cases">cases</div>
+        <div class="pw-token-price">$3</div>
+      </a>
+      <a class="pw-token" href="https://buy.stripe.com/cNi14m6Ya7t49DR6ZEg3603" target="_blank" onclick="trackClick('token_md')">
+        <div class="pw-token-amount">60</div>
+        <div class="pw-token-cases">cases</div>
+        <div class="pw-token-price">$8</div>
+      </a>
+      <a class="pw-token" href="https://buy.stripe.com/eVqaEWdmy00C2bp5VAg3604" target="_blank" onclick="trackClick('token_lg')">
+        <div class="pw-token-amount">150</div>
+        <div class="pw-token-cases">cases</div>
+        <div class="pw-token-price">$15</div>
+      </a>
+    </div>
+    <div class="pw-footer">
+      <button class="pw-skip" onclick="closePaywall()">Continue with limited access</button>
+      <div class="pw-secure"><i class="ti ti-lock" aria-hidden="true" style="font-size:11px"></i> Stripe · secure</div>
+    </div>
   </div>
 </div>
 
+<!-- SUCCESS TOAST -->
+<div class="success-toast" id="successToast">
+  <i class="ti ti-check" aria-hidden="true" style="font-size:14px"></i>
+  <span id="successMsg">Welcome to The Judgy Pro — court is fully in session.</span>
+</div>
 </body>
 </html>
