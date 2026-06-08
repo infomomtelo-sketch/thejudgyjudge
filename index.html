@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
-<head> 
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>The Judgy — Brutally Honest AI Advice</title>
@@ -365,31 +365,20 @@ header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px
         <button class="starter" onclick="useStarter(this)"><span class="starter-icon">◉</span><span class="starter-t">My coworker keeps stealing my ideas in meetings</span></button>
         <button class="starter barry-s" onclick="useStarter(this)"><span class="starter-icon">📋</span><span class="starter-t">I need a demand letter for money owed to me</span></button>
       </div>
-   <div style="max-width:500px;margin:16px auto 0">
-      <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;text-align:center">— What brings you to court? —</div>
-      <div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:12px">
-        <button class="crisis-chip" style="border-color:rgba(196,160,80,0.3);color:var(--gold2)" onclick="fireChip('My ex wants to get back together but they cheated on me.')">♡ Love</button>
-        <button class="crisis-chip" style="border-color:rgba(196,160,80,0.3);color:var(--gold2)" onclick="fireChip('I do not know which career path is right for me.')">◈ Career</button>
-        <button class="crisis-chip" style="border-color:rgba(196,160,80,0.3);color:var(--gold2)" onclick="fireChip('My coworker keeps stealing my ideas in meetings.')">◉ Work drama</button>
-        <button class="crisis-chip" style="border-color:rgba(42,61,110,0.5);color:#7b9fff" onclick="fireChip('I want to start an LLC — where do I begin?')">§ Legal</button>
-        <button class="crisis-chip" style="border-color:rgba(42,61,110,0.5);color:#7b9fff" onclick="fireChip('I have no idea how to handle my taxes as a freelancer.')">$ Money</button>
-      </div>
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-        <div style="flex:1;height:1px;background:var(--border)"></div>
-        <span style="font-size:10px;color:var(--text3);letter-spacing:1px;text-transform:uppercase">or something real</span>
-        <div style="flex:1;height:1px;background:var(--border)"></div>
-      </div>
-      <div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center">
-        <button class="crisis-chip" onclick="useCrisisChip('gambling','I am struggling with gambling and it is affecting my life in serious ways.')">🎰 Gambling</button>
-        <button class="crisis-chip" onclick="useCrisisChip('drugs','I am struggling with drugs or alcohol and need honest perspective.')">💊 Drugs / Alcohol</button>
-        <button class="crisis-chip" onclick="useCrisisChip('relationships','I am in a relationship that I think is hurting me.')">💔 Toxic Relationship</button>
-        <button class="crisis-chip" onclick="useCrisisChip('money','I am in a serious financial situation. Debt, no savings, scared.')">💸 Financial Crisis</button>
-        <button class="crisis-chip" onclick="useCrisisChip('anxiety','I have been struggling with anxiety or depression.')">🌀 Anxiety / Depression</button>
-        <button class="crisis-chip" onclick="useCrisisChip('family','I am dealing with serious family dysfunction.')">🏚 Family Problems</button>
-        <button class="crisis-chip" onclick="useCrisisChip('anger','I have anger problems I cannot control.')">🔥 Anger Issues</button>
-        <button class="crisis-chip" onclick="useCrisisChip('loneliness','I feel completely alone and disconnected from everyone.')">🌑 Loneliness</button>
-        <button class="crisis-chip" onclick="useCrisisChip('selfworth','I have deep problems with how I see myself.')">🪞 Self-Worth</button>
-        <button class="crisis-chip" onclick="useCrisisChip('stuck','I feel completely stuck in life and cannot move forward.')">🎯 Completely Stuck</button>
+      <div class="crisis-section">
+        <div class="crisis-label">— Dealing with something real? —</div>
+        <div class="crisis-chips">
+          <button class="crisis-chip" onclick="useCrisisChip('gambling','I am struggling with gambling and it is affecting my life in serious ways. I need honest guidance and to know what real help looks like.')">🎰 Gambling</button>
+          <button class="crisis-chip" onclick="useCrisisChip('drugs','I am struggling with drugs or alcohol and I need honest perspective on what I am doing to myself and what steps I can actually take.')">💊 Drugs / Alcohol</button>
+          <button class="crisis-chip" onclick="useCrisisChip('relationships','I am in a relationship that I think is hurting me. I need someone to be straight with me about what I should do.')">💔 Toxic Relationship</button>
+          <button class="crisis-chip" onclick="useCrisisChip('money','I am in a serious financial situation. Debt, no savings, scared. I need real guidance not just platitudes.')">💸 Financial Crisis</button>
+          <button class="crisis-chip" onclick="useCrisisChip('anxiety','I have been struggling with anxiety or depression and it is affecting everything in my life. I need honest support.')">🌀 Anxiety / Depression</button>
+          <button class="crisis-chip" onclick="useCrisisChip('family','I am dealing with serious family dysfunction and I need someone to help me see it clearly and figure out what to do.')">🏚 Family Problems</button>
+          <button class="crisis-chip" onclick="useCrisisChip('anger','I have anger problems I cannot control and it is ruining my relationships. I need real help.')">🔥 Anger Issues</button>
+          <button class="crisis-chip" onclick="useCrisisChip('loneliness','I feel completely alone and disconnected from everyone. I do not know how to fix it or where to start.')">🌑 Loneliness</button>
+          <button class="crisis-chip" onclick="useCrisisChip('selfworth','I have deep problems with how I see myself. I sabotage good things and do not know why.')">🪞 Self-Worth</button>
+          <button class="crisis-chip" onclick="useCrisisChip('stuck','I feel completely stuck in life and cannot move forward. I need someone to tell me the truth about why.')">🎯 Completely Stuck</button>
+        </div>
       </div>
     </div>
   </div>
@@ -754,93 +743,47 @@ const businessKeywords=['business','startup','company','brand','market','pricing
 function isLegalOrBusiness(text){const lower=text.toLowerCase();return legalKeywords.some(k=>lower.includes(k))||businessKeywords.some(k=>lower.includes(k))||topic==='legal'||topic==='business'||topic==='money';}
 
 // ── NEW CASE ─────────────────────────────────────────────────
-function newCase(){
-  const msgs=document.getElementById('messages');
-  msgs.innerHTML=`
-  <div class="welcome" id="welcome">
-    <div class="welcome-crest">⚖</div>
-    <h2>THE <span class="judgy-name">JUDGY</span><br>&amp; <span class="barry-name">BARRY</span></h2>
-    <div class="welcome-subtitle">Brutally honest. Surprisingly competent.</div>
-    <div class="welcome-rule"></div>
-    <div class="char-duo">
-      <div class="char-card judgy" id="charJudgy" onclick="selectChar('judgy')"><div class="char-monogram">J.</div><div class="char-card-name">The Judgy</div><div class="char-card-title">The Honorable Judge</div><div class="char-card-tag">Life · Love · Work</div></div>
-      <div class="char-card barry" id="charBarry" onclick="selectChar('barry')"><div class="char-monogram">B.</div><div class="char-card-name">Barry T. Lawson</div><div class="char-card-title">Esq. — Her Ex-Husband</div><div class="char-card-tag">Legal · Business · Tax</div></div>
-    </div>
-    <div id="charModeBar" style="display:none"><div class="char-mode-bar"><span class="char-mode-label" id="charModeLabel"></span><button class="char-mode-back" onclick="selectChar('both')">← Both</button></div></div>
-    <div style="max-width:500px;margin:16px auto 0">
-      <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;text-align:center">— What brings you to court? —</div>
-      <div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:12px">
-        <button class="crisis-chip" style="border-color:rgba(196,160,80,0.3);color:var(--gold2)" onclick="fireChip('My ex wants to get back together but they cheated on me.')">♡ Love</button>
-        <button class="crisis-chip" style="border-color:rgba(196,160,80,0.3);color:var(--gold2)" onclick="fireChip('I do not know which career path is right for me.')">◈ Career</button>
-        <button class="crisis-chip" style="border-color:rgba(196,160,80,0.3);color:var(--gold2)" onclick="fireChip('My coworker keeps stealing my ideas in meetings.')">◉ Work drama</button>
-        <button class="crisis-chip" style="border-color:rgba(42,61,110,0.5);color:#7b9fff" onclick="fireChip('I want to start an LLC — where do I begin?')">§ Legal</button>
-        <button class="crisis-chip" style="border-color:rgba(42,61,110,0.5);color:#7b9fff" onclick="fireChip('I have no idea how to handle my taxes as a freelancer.')">$ Money</button>
-      </div>
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-        <div style="flex:1;height:1px;background:var(--border)"></div>
-        <span style="font-size:10px;color:var(--text3);letter-spacing:1px;text-transform:uppercase">or something real</span>
-        <div style="flex:1;height:1px;background:var(--border)"></div>
-      </div>
-      <div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center">
-        <button class="crisis-chip" onclick="useCrisisChip('gambling','I am struggling with gambling and it is affecting my life in serious ways.')">🎰 Gambling</button>
-        <button class="crisis-chip" onclick="useCrisisChip('drugs','I am struggling with drugs or alcohol and need honest perspective.')">💊 Drugs / Alcohol</button>
-        <button class="crisis-chip" onclick="useCrisisChip('relationships','I am in a relationship that I think is hurting me.')">💔 Toxic Relationship</button>
-        <button class="crisis-chip" onclick="useCrisisChip('money','I am in a serious financial situation. Debt, no savings, scared.')">💸 Financial Crisis</button>
-        <button class="crisis-chip" onclick="useCrisisChip('anxiety','I have been struggling with anxiety or depression.')">🌀 Anxiety / Depression</button>
-        <button class="crisis-chip" onclick="useCrisisChip('family','I am dealing with serious family dysfunction.')">🏚 Family Problems</button>
-        <button class="crisis-chip" onclick="useCrisisChip('anger','I have anger problems I cannot control.')">🔥 Anger Issues</button>
-        <button class="crisis-chip" onclick="useCrisisChip('loneliness','I feel completely alone and disconnected from everyone.')">🌑 Loneliness</button>
-        <button class="crisis-chip" onclick="useCrisisChip('selfworth','I have deep problems with how I see myself.')">🪞 Self-Worth</button>
-        <button class="crisis-chip" onclick="useCrisisChip('stuck','I feel completely stuck in life and cannot move forward.')">🎯 Completely Stuck</button>
-      </div>
-    </div>
-  </div>`;
-  msgCount=0;charMode='both';lastUserText='';
-  document.querySelectorAll('.rage-pip').forEach(p=>p.classList.remove('on'));
-  document.getElementById('chatInput').value='';
-  autoResize(document.getElementById('chatInput'));
-}
+function newCase(){const msgs=document.getElementById('messages');msgs.innerHTML=`<div class="welcome" id="welcome"><div class="welcome-crest">⚖</div><h2>THE <span class="judgy-name">JUDGY</span><br>&amp; <span class="barry-name">BARRY</span></h2><div class="welcome-subtitle">Brutally honest. Surprisingly competent.</div><div class="welcome-rule"></div><div class="char-duo"><div class="char-card judgy" id="charJudgy" onclick="selectChar('judgy')"><div class="char-monogram">J.</div><div class="char-card-name">The Judgy</div><div class="char-card-title">The Honorable Judge</div><div class="char-card-tag">Life · Love · Work</div></div><div class="char-card barry" id="charBarry" onclick="selectChar('barry')"><div class="char-monogram">B.</div><div class="char-card-name">Barry T. Lawson</div><div class="char-card-title">Esq. — Her Ex-Husband</div><div class="char-card-tag">Legal · Business · Tax</div></div></div><div id="charModeBar" style="display:none"><div class="char-mode-bar"><span class="char-mode-label" id="charModeLabel"></span><button class="char-mode-back" onclick="selectChar('both')">← Both</button></div></div><div class="starters"><button class="starter" onclick="useStarter(this)"><span class="starter-icon">♡</span><span class="starter-t">My ex wants to get back together but they cheated on me</span></button><button class="starter barry-s" onclick="useStarter(this)"><span class="starter-icon">§</span><span class="starter-t">I want to start an LLC — where do I begin?</span></button><button class="starter" onclick="useStarter(this)"><span class="starter-icon">◉</span><span class="starter-t">My coworker keeps stealing my ideas in meetings</span></button><button class="starter barry-s" onclick="useStarter(this)"><span class="starter-icon">📋</span><span class="starter-t">I need a demand letter for money owed to me</span></button></div><div class="crisis-section"><div class="crisis-label">— Dealing with something real? —</div><div class="crisis-chips"><button class="crisis-chip" onclick="useCrisisChip('gambling','I am struggling with gambling and it is affecting my life in serious ways.')">🎰 Gambling</button><button class="crisis-chip" onclick="useCrisisChip('drugs','I am struggling with drugs or alcohol and need honest perspective.')">💊 Drugs / Alcohol</button><button class="crisis-chip" onclick="useCrisisChip('relationships','I am in a relationship that I think is hurting me.')">💔 Toxic Relationship</button><button class="crisis-chip" onclick="useCrisisChip('money','I am in a serious financial situation. Debt, no savings, scared.')">💸 Financial Crisis</button><button class="crisis-chip" onclick="useCrisisChip('anxiety','I have been struggling with anxiety or depression.')">🌀 Anxiety / Depression</button><button class="crisis-chip" onclick="useCrisisChip('family','I am dealing with serious family dysfunction.')">🏚 Family Problems</button><button class="crisis-chip" onclick="useCrisisChip('anger','I have anger problems I cannot control.')">🔥 Anger Issues</button><button class="crisis-chip" onclick="useCrisisChip('loneliness','I feel completely alone and disconnected from everyone.')">🌑 Loneliness</button><button class="crisis-chip" onclick="useCrisisChip('selfworth','I have deep problems with how I see myself.')">🪞 Self-Worth</button><button class="crisis-chip" onclick="useCrisisChip('stuck','I feel completely stuck in life and cannot move forward.')">🎯 Completely Stuck</button></div></div></div>`;msgCount=0;charMode='both';lastUserText='';document.querySelectorAll('.rage-pip').forEach(p=>p.classList.remove('on'));document.getElementById('chatInput').value='';autoResize(document.getElementById('chatInput'));}
 
-// ADD THIS RIGHT AFTER newCase()
-function fireChip(prompt){
-  removeWelcome();
-  addMsg('user',prompt);
-  updateRage();
-  isThinking=true;
-  document.getElementById('sendBtn').disabled=true;
-  const barrySituation=isLegalOrBusiness(prompt);
-  if(barrySituation){
-    showTyping('barry');
-    callClaude(BARRY_PROMPT,prompt).then(raw=>{
-      removeTyping('barry');
-      const parsed=parseAIResponse(raw,'📋 RULING:');
-      addMsgFull('barry',parsed,true,prompt,topic);
-      isThinking=false;
-      document.getElementById('sendBtn').disabled=false;
-      document.getElementById('chatInput').focus();
-    }).catch(()=>{
-      removeTyping('barry');
-      addMsg('barry','Connection dropped. Try again.','📋 RULING: Try again.',true);
-      isThinking=false;
-      document.getElementById('sendBtn').disabled=false;
-    });
-  } else {
-    showTyping('judgy');
-    callClaude(JUDGY_PROMPT,prompt).then(raw=>{
-      removeTyping('judgy');
-      const parsed=parseAIResponse(raw,'⚖️ VERDICT:');
-      addMsgFull('judgy',parsed,false,prompt,topic);
-      isThinking=false;
-      document.getElementById('sendBtn').disabled=false;
-      document.getElementById('chatInput').focus();
-    }).catch(()=>{
-      removeTyping('judgy');
-      addMsg('judgy','Court is experiencing difficulties. Try again.','⚖️ VERDICT: Case postponed.');
-      isThinking=false;
-      document.getElementById('sendBtn').disabled=false;
-    });
-  }
-}
+function selectChar(mode){charMode=mode;document.getElementById('charJudgy')?.classList.toggle('selected-char',mode==='judgy');document.getElementById('charBarry')?.classList.toggle('selected-char',mode==='barry');const bar=document.getElementById('charModeBar');const lbl=document.getElementById('charModeLabel');if(mode==='both'){if(bar)bar.style.display='none';document.getElementById('charJudgy')?.classList.remove('selected-char');document.getElementById('charBarry')?.classList.remove('selected-char');}else{if(bar)bar.style.display='block';if(lbl)lbl.textContent=mode==='judgy'?'⚖️ Chatting with Judgy only':'👔 Chatting with Barry only';const input=document.getElementById('chatInput');if(input)input.placeholder=mode==='judgy'?'Present your case, Your Honor...':'Ask Barry a legal or business question...';}document.getElementById('chatInput')?.focus();}
+
+// ── STRIPE ───────────────────────────────────────────────────
+const FREE_LIMIT=10;let totalMsgCount=parseInt(localStorage.getItem('judgy_msgs')||'0');let isPaid=localStorage.getItem('judgy_paid')==='1';let paywallShown=false;
+function saveCount(){localStorage.setItem('judgy_msgs',totalMsgCount);}
+function checkPayment(){const params=new URLSearchParams(window.location.search);if(params.get('payment')==='success'){isPaid=true;localStorage.setItem('judgy_paid','1');localStorage.setItem('judgy_msgs','0');totalMsgCount=0;showToast('Welcome to The Judgy — court is fully in session.');updatePlanUI();window.history.replaceState({},'',window.location.pathname);}}
+function updatePlanUI(){const val=document.getElementById('sidebarPlanValue');const btn=document.getElementById('upgradeHeaderBtn');if(isPaid){if(val)val.textContent='Pro — unlimited';if(btn){btn.textContent='⚖ Pro';btn.classList.add('paid');btn.onclick=null;}}else{const remaining=Math.max(0,FREE_LIMIT-totalMsgCount);if(val)val.textContent=`Free — ${remaining} cases left`;if(btn){btn.textContent='⚖ Upgrade';btn.classList.remove('paid');btn.onclick=()=>showPaywall();}}}
+function showPaywall(){if(paywallShown)return;paywallShown=true;document.getElementById('paywallOverlay').style.display='flex';document.body.style.overflow='hidden';}
+function closePaywall(){const overlay=document.getElementById('paywallOverlay');overlay.style.animation='pwFadeIn 0.2s ease reverse forwards';setTimeout(()=>{overlay.style.display='none';document.body.style.overflow='';paywallShown=false;},200);}
+function handleOverlayClick(e){if(e.target===document.getElementById('paywallOverlay'))closePaywall();}
+function trackClick(plan){localStorage.setItem('judgy_last_plan',plan);}
+function showToast(msg){const t=document.getElementById('successToast');document.getElementById('successMsg').textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),4000);}
+function checkLimit(){if(isPaid)return true;totalMsgCount++;saveCount();updatePlanUI();if(totalMsgCount>FREE_LIMIT){showPaywall();return false;}return true;}
+window.addEventListener('load',()=>{checkPayment();updatePlanUI();renderChips();});
+
+// ── MAIN SEND ─────────────────────────────────────────────────
+async function sendMessage(){const input=document.getElementById('chatInput');const text=input.value.trim();if(!text||isThinking)return;if(!checkLimit())return;input.value='';autoResize(input);lastUserText=text;addMsg('user',text);updateRage();isThinking=true;document.getElementById('sendBtn').disabled=true;const barrySituation=charMode==='barry'||(charMode==='both'&&isLegalOrBusiness(text));const judgyOnly=charMode==='judgy';
+if(judgyOnly){showTyping('judgy');try{const topicCtx={relationship:'relationship issue',work:'work situation',coworker:'coworker drama',personal:'personal growth',family:'family situation',general:''};const raw=await callClaude(JUDGY_PROMPT+(topicCtx[topic]?`\n\nContext: This is a ${topicCtx[topic]}.`:''),text);removeTyping('judgy');const parsed=parseAIResponse(raw,'⚖️ VERDICT:');addMsgFull('judgy',parsed,false,text,topic);}catch{removeTyping('judgy');addMsg('judgy','Court is experiencing technical difficulties. Try again.','⚖️ VERDICT: Case postponed.');}isThinking=false;document.getElementById('sendBtn').disabled=false;input.focus();return;}
+if(charMode==='barry'){showTyping('barry');try{const raw=await callClaude(BARRY_PROMPT,text);removeTyping('barry');const parsed=parseAIResponse(raw,'📋 RULING:');addMsgFull('barry',parsed,true,text,topic);}catch{removeTyping('barry');addMsg('barry','Connection dropped. Barry T. Lawson, Esq.','📋 RULING: Try again.',true);}isThinking=false;document.getElementById('sendBtn').disabled=false;input.focus();return;}
+if(barrySituation){showTyping('barry');try{const barryRaw=await callClaude(BARRY_PROMPT,text);removeTyping('barry');const barryParsed=parseAIResponse(barryRaw,'📋 RULING:');addMsgFull('barry',barryParsed,true,text,topic);await new Promise(r=>setTimeout(r,800));showTyping('judgy');const judgyRaw=await callClaude(JUDGY_CLAP_BACK,`User asked: "${text}"\n\nBarry just said: "${barryRaw}"`);removeTyping('judgy');const judgyParsed=parseAIResponse(judgyRaw,null);addMsgFull('judgy',judgyParsed,false,null,topic);}catch{removeTyping('barry');removeTyping('judgy');addMsg('barry','Objection! My connection dropped.','📋 RULING: Try again.',true);}}
+else{showTyping('judgy');try{const topicCtx={relationship:'relationship issue',work:'work situation',coworker:'coworker drama',personal:'personal growth',family:'family situation',general:''};const judgyRaw=await callClaude(JUDGY_PROMPT+(topicCtx[topic]?`\n\nContext: This is a ${topicCtx[topic]}.`:''),text);removeTyping('judgy');const judgyParsed=parseAIResponse(judgyRaw,'⚖️ VERDICT:');addMsgFull('judgy',judgyParsed,false,text,topic);const barryJump=['money','loan','debt','pay','fired','contract','rights','sue'].some(k=>text.toLowerCase().includes(k));if(barryJump){await new Promise(r=>setTimeout(r,1000));showTyping('barry');const barryRaw=await callClaude(`You are BARRY T. LAWSON, ESQ. Judgy just gave life advice. Add a quick legal/financial angle she missed. Roast her a little. Keep it SHORT — 60-80 words. End with:\n📋 RULING: [short ruling]\nFOLLOW_UP: [short question max 10 words]\nOPTIONS: [option 1] | [option 2] | [option 3]`,`User asked: "${text}"\n\nJudgy said: "${judgyRaw}"`);removeTyping('barry');const barryParsed=parseAIResponse(barryRaw,'📋 RULING:');addMsgFull('barry',barryParsed,true,null,topic);}}catch{removeTyping('judgy');addMsg('judgy','Court is experiencing technical difficulties. Try again.','⚖️ VERDICT: Case postponed.');}}
+isThinking=false;document.getElementById('sendBtn').disabled=false;input.focus();renderChips();}
+
+// ── SUPABASE EDGE FUNCTION ────────────────────────────────────
+const JUDGY_FN_URL='https://dmemzljerldzeiwqfxzp.supabase.co/functions/v1/judgy-chat-v2-ts';
+async function callClaude(system,userMsg){const res=await fetch(JUDGY_FN_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system,userMessage:userMsg})});const data=await res.json();if(data.text)return data.text;throw new Error(data.error||'No response');}
+
+// ── LEGAL FORMS ───────────────────────────────────────────────
+function generateDemandLetter(){const from=document.getElementById('dl-from').value||'[Your Name]',to=document.getElementById('dl-to').value||'[Recipient]',amt=document.getElementById('dl-amount').value||'[Amount]',reason=document.getElementById('dl-reason').value||'[Reason]',deadline=document.getElementById('dl-deadline').value||'[Date]';const today=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});formContent=`DEMAND LETTER\n\nDate: ${today}\n\nFrom: ${from}\nTo:   ${to}\n\nDear ${to},\n\nThis letter serves as formal notice that you owe me the sum of $${amt} for the following reason: ${reason}.\n\nDespite prior attempts to resolve this matter, payment has not been received. I hereby demand full payment of $${amt} no later than ${deadline}.\n\nIf payment is not received by the above date, I reserve the right to pursue all available legal remedies, including but not limited to filing a claim in small claims court.\n\nSincerely,\n\n${from}\n\n---\n⚠️ DISCLAIMER: This is a general template generated by an AI character. It is NOT a substitute for advice from a licensed attorney.`;document.getElementById('formOutputContent').textContent=formContent;document.getElementById('formOutput').style.display='block';document.getElementById('formOutput').scrollIntoView({behavior:'smooth'});}
+
+async function generateDivorceChecklist(){const state=document.getElementById('div-state').value||'your state',kids=document.getElementById('div-kids').value,assets=document.getElementById('div-assets').value||'various assets';document.getElementById('formOutput').style.display='none';try{const res=await callClaude(`You are Barry T. Lawson, Esq. Generate a practical divorce preparation checklist. Be helpful and specific. Format as a numbered checklist. Add a brief disclaimer at the end. Keep to 200 words max.`,`State: ${state}, Children: ${kids}, Assets: ${assets}`);formContent=res;document.getElementById('formOutputContent').textContent=res;document.getElementById('formOutput').style.display='block';document.getElementById('formOutput').scrollIntoView({behavior:'smooth'});}catch{document.getElementById('formOutputContent').textContent='Barry is having technical difficulties. Please try again.';document.getElementById('formOutput').style.display='block';}document.querySelectorAll('#page-forms .form-btn').forEach(b=>b.disabled=false);}
+
+async function generateLLCGuide(){const name=document.getElementById('llc-name').value||'your business',state=document.getElementById('llc-state').value||'your state',type=document.getElementById('llc-type').value;try{const res=await callClaude(`You are Barry T. Lawson, Esq. Generate a step-by-step LLC formation guide. Be specific and practical. Format as numbered steps. Include estimated costs. Add a brief disclaimer. 200 words max.`,`Business: ${name}, State: ${state}, Type: ${type}`);formContent=res;document.getElementById('formOutputContent').textContent=res;document.getElementById('formOutput').style.display='block';document.getElementById('formOutput').scrollIntoView({behavior:'smooth'});}catch{document.getElementById('formOutputContent').textContent='Barry is unavailable right now. Please try again.';document.getElementById('formOutput').style.display='block';}}
+
+function downloadForm(){const blob=new Blob([formContent],{type:'text/plain'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='barry-document.txt';a.click();}
+
+async function buildLandingPage(){const name=document.getElementById('lp-name').value||'My Business',desc=document.getElementById('lp-desc').value||'We help people.',audience=document.getElementById('lp-audience').value||'Everyone',cta=document.getElementById('lp-cta').value||'Get Started',color=document.getElementById('lp-color').value;const btn=document.getElementById('lpBtn');btn.textContent='Barry is building... adjusting his clip-on tie...';btn.disabled=true;try{const res=await callClaude(`You are Barry T. Lawson, Esq. but also secretly a great web designer. Generate a complete, beautiful single-page HTML landing page. Requirements: Full HTML file with embedded CSS and JS, hero section with headline subheadline CTA button, 3 features/benefits section, simple pricing or CTA section, footer, mobile responsive, clean modern design matching the color vibe specified. Return ONLY the complete HTML code nothing else.`,`Business: ${name}\nDescription: ${desc}\nAudience: ${audience}\nCTA: ${cta}\nColor vibe: ${color}`);lpContent=res;document.getElementById('lpOutput').style.display='block';document.getElementById('lpOutput').scrollIntoView({behavior:'smooth'});}catch{alert('Barry spilled coffee on his keyboard. Try again.');}btn.textContent='Barry, build my landing page';btn.disabled=false;}
+
+function downloadLP(){const blob=new Blob([lpContent],{type:'text/html'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='landing-page.html';a.click();}
 </script>
 </body>
 </html>
