@@ -7,542 +7,294 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
 <style>
-[data-theme="dark"] {
-  --bg:        #0e0c09;
-  --bg2:       #141210;
-  --card:      #1a1714;
-  --card2:     #201d19;
-  --border:    rgba(196,160,80,0.12);
-  --border2:   rgba(196,160,80,0.22);
-  --text:      #f2ede4;
-  --text2:     #a89880;
-  --text3:     #5c5040;
-  --shadow:    rgba(0,0,0,0.7);
-  --overlay:   rgba(0,0,0,0.75);
-  --gold:      #c4a050;
-  --gold2:     #e8c870;
-  --gold-dim:  rgba(196,160,80,0.08);
-}
-[data-theme="light"] {
-  --bg:        #f5f0e8;
-  --bg2:       #ede8de;
-  --card:      #ffffff;
-  --card2:     #f7f3ec;
-  --border:    rgba(120,90,30,0.15);
-  --border2:   rgba(120,90,30,0.28);
-  --text:      #1a1410;
-  --text2:     #5c4830;
-  --text3:     #9c8060;
-  --shadow:    rgba(0,0,0,0.18);
-  --overlay:   rgba(0,0,0,0.5);
-  --gold:      #8b6520;
-  --gold2:     #a07830;
-  --gold-dim:  rgba(139,101,32,0.08);
-}
-:root {
-  --judgy:     #8b1a1a;
-  --judgy2:    #c42020;
-  --judgy-dim: rgba(139,26,26,0.1);
-  --barry:     #1a2744;
-  --barry2:    #2a3d6e;
-  --barry-dim: rgba(42,61,110,0.12);
-  --sidebar-w: 290px;
-  --sans:      'DM Sans', sans-serif;
-  --serif:     'EB Garamond', serif;
-  --display:   'Playfair Display', serif;
-}
-
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; height: 100dvh; font-family: var(--sans); background: var(--bg); color: var(--text); overflow: hidden; transition: background 0.3s, color 0.3s; }
-/* ── PAYWALL MODAL ── */
-.paywall-overlay {
-  position: fixed; inset: 0; z-index: 8000;
-  background: rgba(0,0,0,0.75); display: flex;
-  align-items: flex-end; justify-content: center;
-  padding-bottom: env(safe-area-inset-bottom,0);
-  animation: pwFadeIn 0.3s ease;
-}
-@keyframes pwFadeIn { from{opacity:0} to{opacity:1} }
-.paywall-modal {
-  background: var(--bg2); border: 1px solid var(--border2);
-  border-radius: 18px 18px 0 0; width: 100%; max-width: 480px;
-  overflow: hidden; animation: pwSlideUp 0.35s cubic-bezier(0.16,1,0.3,1);
-}
-@keyframes pwSlideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
-.pw-handle { width: 36px; height: 4px; border-radius: 2px; background: var(--border2); margin: 10px auto 0; }
-.pw-top { padding: 14px 20px 12px; text-align: center; border-bottom: 1px solid var(--border); }
-.pw-icon { width: 42px; height: 42px; border-radius: 50%; background: var(--judgy-dim); border: 1px solid rgba(196,32,32,0.2); display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; font-size: 18px; color: var(--judgy2); }
-.pw-title { font-family: var(--display); font-weight: 900; font-size: 17px; color: var(--text); letter-spacing: 0.5px; margin-bottom: 3px; }
-.pw-sub { font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--gold); }
-.pw-bar-wrap { margin: 10px 20px 0; background: var(--border); border-radius: 4px; height: 4px; overflow: hidden; }
-.pw-bar { height: 100%; background: var(--judgy2); border-radius: 4px; width: 100%; }
-.pw-plans { padding: 12px 16px; display: flex; flex-direction: column; gap: 8px; }
-.pw-plan { border-radius: 10px; border: 1px solid var(--border2); padding: 11px 13px; cursor: pointer; transition: all 0.15s; display: flex; align-items: center; gap: 11px; text-decoration: none; }
-.pw-plan:hover { border-color: var(--gold); background: var(--gold-dim); transform: translateY(-1px); }
-.pw-plan.featured { border-color: rgba(196,160,80,0.4); background: var(--gold-dim); }
-.pw-plan-icon { width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
-.pi-s { background: rgba(196,160,80,0.1); color: var(--gold); }
-.pi-p { background: var(--judgy-dim); color: var(--judgy2); }
-.pi-t { background: var(--barry-dim); color: #7b9fff; }
-.pw-plan-info { flex: 1; min-width: 0; }
-.pw-plan-name { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 2px; display: flex; align-items: center; gap: 6px; }
-.pw-badge { font-size: 9px; padding: 2px 6px; border-radius: 10px; font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; }
-.pw-badge-pop { background: var(--gold-dim); color: var(--gold); border: 1px solid var(--border2); }
-.pw-badge-unl { background: var(--judgy-dim); color: var(--judgy2); border: 1px solid rgba(139,26,26,0.2); }
-.pw-plan-desc { font-size: 11px; color: var(--text2); line-height: 1.4; }
-.pw-plan-price { text-align: right; flex-shrink: 0; }
-.pw-amount { font-family: var(--display); font-weight: 700; font-size: 16px; color: var(--text); }
-.pw-period { font-size: 10px; color: var(--text3); display: block; margin-top: 1px; }
-.pw-divider { display: flex; align-items: center; gap: 8px; padding: 0 4px; }
-.pw-divider::before, .pw-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-.pw-divider span { font-size: 10px; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; }
-.pw-tokens { padding: 0 16px 4px; display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 6px; }
-.pw-token { border-radius: 8px; border: 1px solid var(--border2); padding: 9px 8px; text-align: center; cursor: pointer; transition: all 0.15s; text-decoration: none; display: block; }
-.pw-token:hover { border-color: #7b9fff; background: var(--barry-dim); transform: translateY(-1px); }
-.pw-token-amount { font-family: var(--display); font-weight: 700; font-size: 15px; color: var(--text); }
-.pw-token-cases { font-size: 10px; color: var(--text2); margin-top: 1px; }
-.pw-token-price { font-size: 11px; color: #7b9fff; margin-top: 3px; font-weight: 500; }
-.pw-footer { padding: 10px 20px 14px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-.pw-skip { font-family: var(--serif); font-style: italic; font-size: 12px; color: var(--text3); cursor: pointer; background: none; border: none; transition: color 0.15s; }
-.pw-skip:hover { color: var(--text2); }
-.pw-secure { font-size: 10px; color: var(--text3); display: flex; align-items: center; gap: 4px; }
-.success-toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--bg2); border: 1px solid rgba(196,160,80,0.4); border-radius: 10px; padding: 10px 18px; font-size: 13px; color: var(--gold); font-family: var(--serif); font-style: italic; z-index: 9000; transition: transform 0.4s cubic-bezier(0.16,1,0.3,1); white-space: nowrap; display: flex; align-items: center; gap: 8px; }
-.success-toast.show { transform: translateX(-50%) translateY(0); }
-
-
-/* ── SIDEBAR OVERLAY ── */
-.sidebar-overlay { position: fixed; inset: 0; background: var(--overlay); z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
-.sidebar-overlay.open { opacity: 1; pointer-events: all; }
-
-/* ── SIDEBAR ── */
-.sidebar {
-  position: fixed; top: 0; left: 0; bottom: 0; width: var(--sidebar-w);
-  background: var(--bg2); border-right: 1px solid var(--border2);
-  z-index: 300; transform: translateX(-100%);
-  transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
-  display: flex; flex-direction: column; overflow-y: auto;
-}
-.sidebar.open { transform: translateX(0); }
-.sidebar-head {
-  padding: 20px 20px 16px; border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: space-between;
-}
-.sidebar-logo {
-  font-family: var(--display); font-size: 20px; letter-spacing: 1px;
-  color: var(--gold); display: flex; align-items: center; gap: 8px;
-}
-.sidebar-logo .gavel { font-size: 18px; }
-.sidebar-close {
-  width: 32px; height: 32px; border-radius: 6px;
-  background: var(--card); border: 1px solid var(--border);
-  color: var(--text2); font-size: 16px; cursor: pointer;
-  display: flex; align-items: center; justify-content: center; transition: all 0.15s;
-}
-.sidebar-close:hover { background: var(--card2); color: var(--text); }
-.sidebar-section { padding: 14px 12px 6px; }
-.sidebar-label {
-  font-size: 9px; font-weight: 500; color: var(--gold);
-  text-transform: uppercase; letter-spacing: 2px; padding: 0 8px; margin-bottom: 6px;
-}
-.sidebar-item {
-  display: flex; align-items: center; gap: 10px; padding: 9px 10px;
-  border-radius: 8px; color: var(--text2); cursor: pointer; font-size: 13px;
-  transition: all 0.15s; margin-bottom: 1px; border: 1px solid transparent;
-}
-.sidebar-item:hover { background: var(--card); color: var(--text); }
-.sidebar-item.active { background: var(--card); color: var(--text); border-color: var(--border2); }
-.sidebar-item .si-icon { font-size: 15px; width: 22px; text-align: center; color: var(--gold); }
-.sidebar-item .si-badge {
-  margin-left: auto; font-size: 9px; background: var(--judgy2); color: white;
-  padding: 2px 7px; border-radius: 10px; font-weight: 500; letter-spacing: 0.5px;
-}
-.sidebar-divider { height: 1px; background: var(--border); margin: 8px 12px; }
-.sidebar-footer { margin-top: auto; padding: 14px; border-top: 1px solid var(--border); }
-
-.upgrade-btn {
-  height: 30px; padding: 0 12px; border-radius: 20px;
-  background: linear-gradient(135deg, rgba(139,26,26,0.3), rgba(196,160,80,0.15));
-  border: 1px solid rgba(196,160,80,0.35); color: var(--gold);
-  font-size: 11px; font-weight: 500; cursor: pointer; font-family: var(--sans);
-  letter-spacing: 0.5px; transition: all 0.15s; white-space: nowrap;
-  display: flex; align-items: center; gap: 5px;
-}
-.upgrade-btn:hover { background: linear-gradient(135deg, rgba(139,26,26,0.5), rgba(196,160,80,0.25)); border-color: var(--gold); }
-.upgrade-btn.paid { background: rgba(196,160,80,0.1); color: var(--gold2); border-color: rgba(196,160,80,0.25); cursor: default; }
-.plan-status {
-  padding: 10px 14px; margin: 6px 12px; border-radius: 8px;
-  background: var(--gold-dim); border: 1px solid var(--border2);
-  display: flex; align-items: center; justify-content: space-between;
-}
-.plan-status-label { font-size: 11px; color: var(--text2); }
-.plan-status-value { font-size: 12px; font-weight: 500; color: var(--gold); }
-
-.disclaimer-box {
-  background: var(--judgy-dim); border: 1px solid rgba(139,26,26,0.25);
-  border-radius: 8px; padding: 10px 12px; font-size: 11px; color: var(--text3); line-height: 1.5;
-}
-.disclaimer-box strong { color: var(--judgy2); display: block; margin-bottom: 3px; font-size: 11px; }
-
-/* ── APP LAYOUT ── */
-.app { display: flex; flex-direction: column; height: 100vh; height: 100dvh; position: relative; }
-
-/* ── HEADER ── */
-header {
-  padding: 0 18px; height: 58px; border-bottom: 1px solid var(--border2);
-  display: flex; align-items: center; gap: 14px;
-  background: var(--bg2); flex-shrink: 0; position: relative;
-}
-header::after {
-  content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, var(--gold) 0%, transparent 50%);
-}
-.menu-btn {
-  width: 36px; height: 36px; border-radius: 8px; background: var(--card);
-  border: 1px solid var(--border); color: var(--text2); font-size: 15px; cursor: pointer;
-  display: flex; align-items: center; justify-content: center; transition: all 0.15s; flex-shrink: 0;
-}
-.menu-btn:hover { background: var(--card2); color: var(--text); }
-.header-logo {
-  font-family: var(--display); font-size: 22px; letter-spacing: 1.5px;
-  color: var(--text); display: flex; align-items: center; gap: 10px; line-height: 1;
-}
-.header-logo .accent { color: var(--gold); }
-.header-logo .gavel-icon {
-  width: 28px; height: 28px; border-radius: 6px;
-  background: var(--gold-dim); border: 1px solid var(--border2);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 14px;
-}
-.header-center { flex: 1; display: flex; align-items: center; justify-content: center; }
-.session-badge {
-  font-size: 11px; color: var(--text3); display: flex; align-items: center; gap: 5px;
-  font-family: var(--serif); letter-spacing: 0.5px; font-style: italic;
-}
-.session-dot { width: 6px; height: 6px; border-radius: 50%; background: #4a9; animation: blink 2.5s infinite; }
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
-.header-right { display: flex; align-items: center; gap: 8px; }
-.hbtn {
-  height: 32px; border-radius: 7px; background: var(--card); border: 1px solid var(--border);
-  color: var(--text2); font-size: 13px; cursor: pointer; display: flex; align-items: center;
-  justify-content: center; padding: 0 10px; gap: 5px; transition: all 0.15s; font-family: var(--sans);
-}
-.hbtn:hover { background: var(--card2); color: var(--text); border-color: var(--border2); }
-.hbtn.icon-only { width: 32px; padding: 0; }
-.rage-wrap { display: flex; align-items: center; gap: 5px; }
-.rage-pips { display: flex; gap: 3px; }
-.rage-pip { width: 4px; height: 14px; border-radius: 2px; background: var(--border2); transition: background 0.3s; }
-.rage-pip.on { background: var(--judgy2); }
-.rage-pip.on:nth-child(4) { background: var(--gold); }
-.rage-pip.on:nth-child(5) { background: #e8a020; }
-
-/* ── TOPIC BAR ── */
-.topics-bar {
-  padding: 8px 18px; border-bottom: 1px solid var(--border);
-  display: flex; gap: 5px; overflow-x: auto; background: var(--bg2); flex-shrink: 0;
-  scrollbar-width: none;
-}
-.topics-bar::-webkit-scrollbar { display: none; }
-.topic-pill {
-  font-size: 11px; padding: 5px 13px; border-radius: 20px; border: 1px solid var(--border2);
-  background: transparent; color: var(--text2); cursor: pointer; transition: all 0.15s;
-  font-family: var(--sans); white-space: nowrap; flex-shrink: 0; letter-spacing: 0.2px;
-}
-.topic-pill:hover { border-color: var(--gold); color: var(--gold2); }
-.topic-pill.active { border-color: var(--gold); color: var(--gold2); background: var(--gold-dim); }
-.topic-pill.barry-pill { border-color: rgba(42,61,110,0.5); color: #7b9fff; }
-.topic-pill.barry-pill.active { background: var(--barry-dim); border-color: #7b9fff; }
-
-/* ── MESSAGES ── */
-.messages { flex: 1; overflow-y: auto; padding: 24px 20px; display: flex; flex-direction: column; gap: 20px; }
-.messages::-webkit-scrollbar { width: 3px; }
-.messages::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
-
-/* WELCOME */
-.welcome { text-align: center; padding: 12px 12px 8px; animation: fadeUp 0.6s ease both; }
-@keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:none} }
-
-.welcome-crest {
-  width: 72px; height: 72px; border-radius: 50%; margin: 0 auto 20px;
-  background: var(--gold-dim); border: 1px solid var(--border2);
-  display: flex; align-items: center; justify-content: center; font-size: 30px;
-  animation: breathe 4s ease-in-out infinite;
-}
-@keyframes breathe { 0%,100%{transform:scale(1)} 50%{transform:scale(1.04)} }
-
-.welcome h2 {
-  font-family: var(--display); font-size: clamp(26px,5vw,44px);
-  font-weight: 900; letter-spacing: 1px; margin-bottom: 4px; line-height: 1.1;
-  color: var(--text);
-}
-.welcome h2 .judgy-name { color: var(--judgy2); }
-.welcome h2 .barry-name { color: #7b9fff; }
-.welcome-subtitle {
-  font-family: var(--serif); font-size: 15px; color: var(--text2);
-  font-style: italic; margin-bottom: 6px; letter-spacing: 0.3px;
-}
-.welcome-rule {
-  width: 80px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent);
-  margin: 12px auto 20px;
-}
-
-.char-duo { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 440px; margin: 0 auto 24px; }
-.char-card {
-  border-radius: 12px; padding: 18px 14px 14px; text-align: center; cursor: pointer;
-  transition: all 0.25s; position: relative; overflow: hidden; border: 1px solid var(--border);
-  background: var(--card);
-}
-.char-card::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-}
-.char-card.judgy::before { background: var(--judgy2); }
-.char-card.barry::before { background: #7b9fff; }
-.char-card:hover { transform: translateY(-3px); border-color: var(--border2); }
-.char-card.judgy:hover { box-shadow: 0 8px 32px rgba(139,26,26,0.15); }
-.char-card.barry:hover { box-shadow: 0 8px 32px rgba(122,155,255,0.1); }
-.char-card.judgy.selected-char { border-color: var(--judgy2); background: var(--judgy-dim); }
-.char-card.barry.selected-char { border-color: #7b9fff; background: var(--barry-dim); }
-
-.char-monogram {
-  width: 50px; height: 50px; border-radius: 50%; margin: 0 auto 10px;
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--display); font-size: 20px; font-weight: 700; letter-spacing: -1px;
-}
-.char-card.judgy .char-monogram { background: var(--judgy-dim); color: var(--judgy2); border: 1px solid rgba(196,32,32,0.2); }
-.char-card.barry .char-monogram { background: var(--barry-dim); color: #7b9fff; border: 1px solid rgba(122,155,255,0.2); }
-
-.char-card-name { font-family: var(--display); font-size: 17px; font-weight: 700; letter-spacing: 0.5px; }
-.char-card.judgy .char-card-name { color: var(--judgy2); }
-.char-card.barry .char-card-name { color: #7b9fff; }
-.char-card-title { font-family: var(--serif); font-size: 12px; color: var(--text3); font-style: italic; margin-top: 3px; }
-.char-card-tag {
-  display: inline-block; font-size: 9px; margin-top: 8px; padding: 3px 9px;
-  border-radius: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px;
-}
-.char-card.judgy .char-card-tag { background: var(--judgy-dim); color: var(--judgy2); border: 1px solid rgba(196,32,32,0.15); }
-.char-card.barry .char-card-tag { background: var(--barry-dim); color: #7b9fff; border: 1px solid rgba(122,155,255,0.15); }
-
-.starters { display: grid; grid-template-columns: repeat(2,1fr); gap: 7px; max-width: 500px; margin: 0 auto; }
-.starter {
-  background: var(--card); border: 1px solid var(--border); border-radius: 10px;
-  padding: 10px 13px; text-align: left; cursor: pointer; transition: all 0.15s;
-  font-family: var(--sans); display: flex; align-items: flex-start; gap: 8px;
-}
-.starter:hover { border-color: var(--gold); transform: translateY(-1px); }
-.starter.barry-s:hover { border-color: #7b9fff; }
-.starter-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; color: var(--text3); }
-.starter-t { font-size: 12px; color: var(--text2); line-height: 1.4; }
-
-/* MESSAGES */
-.msg { display: flex; gap: 12px; animation: fadeUp 0.3s ease both; }
-.msg.user { flex-direction: row-reverse; }
-.msg-av {
-  width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center;
-  justify-content: center; font-family: var(--display); font-size: 13px; font-weight: 700;
-  flex-shrink: 0; margin-top: 4px; letter-spacing: -0.5px;
-}
-.msg.judgy .msg-av { background: var(--judgy); border: 1px solid var(--judgy2); color: var(--gold2); }
-.msg.barry .msg-av { background: var(--barry); border: 1px solid #7b9fff; color: #a8c0ff; }
-.msg.user .msg-av { background: var(--card2); border: 1px solid var(--border2); color: var(--text2); font-size: 12px; }
-.msg-wrap { max-width: 78%; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
-.msg.user .msg-wrap { align-items: flex-end; }
-.msg-name {
-  font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.2px; padding: 0 4px;
-  display: flex; align-items: center; gap: 5px;
-}
-.msg.judgy .msg-name { color: var(--judgy2); }
-.msg.barry .msg-name { color: #7b9fff; }
-.msg-name-rule { height: 1px; width: 20px; }
-.msg.judgy .msg-name-rule { background: var(--judgy2); opacity: 0.4; }
-.msg.barry .msg-name-rule { background: #7b9fff; opacity: 0.4; }
-
-.msg-bubble {
-  border-radius: 14px; padding: 13px 16px;
-  font-size: 14px; line-height: 1.7; position: relative;
-  font-family: var(--serif);
-}
-.msg.judgy .msg-bubble {
-  background: var(--card); border: 1px solid var(--border); border-top-left-radius: 4px;
-  border-left: 3px solid var(--judgy); color: var(--text);
-}
-.msg.barry .msg-bubble {
-  background: var(--card); border: 1px solid var(--border); border-top-left-radius: 4px;
-  border-left: 3px solid #7b9fff; color: var(--text);
-}
-.msg.user .msg-bubble {
-  background: var(--gold-dim); border: 1px solid var(--border2); border-top-right-radius: 4px;
-  font-family: var(--sans); font-size: 13.5px;
-}
-.msg-time { font-size: 10px; color: var(--text3); padding: 0 6px; font-family: var(--sans); }
-
-.verdict-line {
-  margin-top: 10px; padding: 8px 12px;
-  background: rgba(196,160,80,0.06); border: 1px solid rgba(196,160,80,0.2);
-  border-radius: 8px; font-size: 12px; color: var(--gold2);
-  display: flex; align-items: flex-start; gap: 6px; font-family: var(--sans);
-}
-.barry-verdict {
-  margin-top: 10px; padding: 8px 12px;
-  background: rgba(122,155,255,0.06); border: 1px solid rgba(122,155,255,0.2);
-  border-radius: 8px; font-size: 12px; color: #a8c0ff;
-  display: flex; align-items: flex-start; gap: 6px; font-family: var(--sans);
-}
-
-/* TYPING */
-.typing-bub {
-  background: var(--card); border: 1px solid var(--border);
-  border-radius: 14px; border-top-left-radius: 4px;
-  padding: 14px 18px; display: flex; align-items: center; gap: 6px;
-}
-.td { width: 6px; height: 6px; border-radius: 50%; opacity: 0.5; animation: tdBounce 1.2s ease infinite; }
-.msg.judgy .td { background: var(--judgy2); }
-.msg.barry .td { background: #7b9fff; }
-.td:nth-child(2){animation-delay:0.2s} .td:nth-child(3){animation-delay:0.4s}
+[data-theme="dark"]{--bg:#0e0c09;--bg2:#141210;--card:#1a1714;--card2:#201d19;--border:rgba(196,160,80,0.12);--border2:rgba(196,160,80,0.22);--text:#f2ede4;--text2:#a89880;--text3:#5c5040;--shadow:rgba(0,0,0,0.7);--overlay:rgba(0,0,0,0.75);--gold:#c4a050;--gold2:#e8c870;--gold-dim:rgba(196,160,80,0.08)}
+[data-theme="light"]{--bg:#f5f0e8;--bg2:#ede8de;--card:#ffffff;--card2:#f7f3ec;--border:rgba(120,90,30,0.15);--border2:rgba(120,90,30,0.28);--text:#1a1410;--text2:#5c4830;--text3:#9c8060;--shadow:rgba(0,0,0,0.18);--overlay:rgba(0,0,0,0.5);--gold:#8b6520;--gold2:#a07830;--gold-dim:rgba(139,101,32,0.08)}
+:root{--judgy:#8b1a1a;--judgy2:#c42020;--judgy-dim:rgba(139,26,26,0.1);--barry:#1a2744;--barry2:#2a3d6e;--barry-dim:rgba(42,61,110,0.12);--sidebar-w:290px;--sans:'DM Sans',sans-serif;--serif:'EB Garamond',serif;--display:'Playfair Display',serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;height:100dvh;font-family:var(--sans);background:var(--bg);color:var(--text);overflow:hidden;transition:background 0.3s,color 0.3s}
+.paywall-overlay{position:fixed;inset:0;z-index:8000;background:rgba(0,0,0,0.75);display:flex;align-items:flex-end;justify-content:center;padding-bottom:env(safe-area-inset-bottom,0);animation:pwFadeIn 0.3s ease}
+@keyframes pwFadeIn{from{opacity:0}to{opacity:1}}
+.paywall-modal{background:var(--bg2);border:1px solid var(--border2);border-radius:18px 18px 0 0;width:100%;max-width:480px;overflow:hidden;animation:pwSlideUp 0.35s cubic-bezier(0.16,1,0.3,1)}
+@keyframes pwSlideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.pw-handle{width:36px;height:4px;border-radius:2px;background:var(--border2);margin:10px auto 0}
+.pw-top{padding:14px 20px 12px;text-align:center;border-bottom:1px solid var(--border)}
+.pw-icon{width:42px;height:42px;border-radius:50%;background:var(--judgy-dim);border:1px solid rgba(196,32,32,0.2);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:18px;color:var(--judgy2)}
+.pw-title{font-family:var(--display);font-weight:900;font-size:17px;color:var(--text);letter-spacing:0.5px;margin-bottom:3px}
+.pw-sub{font-family:var(--serif);font-style:italic;font-size:13px;color:var(--gold)}
+.pw-bar-wrap{margin:10px 20px 0;background:var(--border);border-radius:4px;height:4px;overflow:hidden}
+.pw-bar{height:100%;background:var(--judgy2);border-radius:4px;width:100%}
+.pw-plans{padding:12px 16px;display:flex;flex-direction:column;gap:8px}
+.pw-plan{border-radius:10px;border:1px solid var(--border2);padding:11px 13px;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:11px;text-decoration:none}
+.pw-plan:hover{border-color:var(--gold);background:var(--gold-dim);transform:translateY(-1px)}
+.pw-plan.featured{border-color:rgba(196,160,80,0.4);background:var(--gold-dim)}
+.pw-plan-icon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.pi-s{background:rgba(196,160,80,0.1);color:var(--gold)}.pi-p{background:var(--judgy-dim);color:var(--judgy2)}
+.pw-plan-info{flex:1;min-width:0}
+.pw-plan-name{font-size:13px;font-weight:500;color:var(--text);margin-bottom:2px;display:flex;align-items:center;gap:6px}
+.pw-badge{font-size:9px;padding:2px 6px;border-radius:10px;font-weight:500;letter-spacing:0.5px;text-transform:uppercase}
+.pw-badge-pop{background:var(--gold-dim);color:var(--gold);border:1px solid var(--border2)}
+.pw-badge-unl{background:var(--judgy-dim);color:var(--judgy2);border:1px solid rgba(139,26,26,0.2)}
+.pw-plan-desc{font-size:11px;color:var(--text2);line-height:1.4}
+.pw-plan-price{text-align:right;flex-shrink:0}
+.pw-amount{font-family:var(--display);font-weight:700;font-size:16px;color:var(--text)}
+.pw-period{font-size:10px;color:var(--text3);display:block;margin-top:1px}
+.pw-divider{display:flex;align-items:center;gap:8px;padding:0 4px}
+.pw-divider::before,.pw-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.pw-divider span{font-size:10px;color:var(--text3);letter-spacing:1px;text-transform:uppercase}
+.pw-tokens{padding:0 16px 4px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.pw-token{border-radius:8px;border:1px solid var(--border2);padding:9px 8px;text-align:center;cursor:pointer;transition:all 0.15s;text-decoration:none;display:block}
+.pw-token:hover{border-color:#7b9fff;background:var(--barry-dim);transform:translateY(-1px)}
+.pw-token-amount{font-family:var(--display);font-weight:700;font-size:15px;color:var(--text)}
+.pw-token-cases{font-size:10px;color:var(--text2);margin-top:1px}
+.pw-token-price{font-size:11px;color:#7b9fff;margin-top:3px;font-weight:500}
+.pw-footer{padding:10px 20px 14px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.pw-skip{font-family:var(--serif);font-style:italic;font-size:12px;color:var(--text3);cursor:pointer;background:none;border:none;transition:color 0.15s}
+.pw-skip:hover{color:var(--text2)}
+.pw-secure{font-size:10px;color:var(--text3);display:flex;align-items:center;gap:4px}
+.success-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--bg2);border:1px solid rgba(196,160,80,0.4);border-radius:10px;padding:10px 18px;font-size:13px;color:var(--gold);font-family:var(--serif);font-style:italic;z-index:9000;transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);white-space:nowrap;display:flex;align-items:center;gap:8px}
+.success-toast.show{transform:translateX(-50%) translateY(0)}
+.sidebar-overlay{position:fixed;inset:0;background:var(--overlay);z-index:200;opacity:0;pointer-events:none;transition:opacity 0.3s}
+.sidebar-overlay.open{opacity:1;pointer-events:all}
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:var(--sidebar-w);background:var(--bg2);border-right:1px solid var(--border2);z-index:300;transform:translateX(-100%);transition:transform 0.35s cubic-bezier(0.16,1,0.3,1);display:flex;flex-direction:column;overflow-y:auto}
+.sidebar.open{transform:translateX(0)}
+.sidebar-head{padding:20px 20px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.sidebar-logo{font-family:var(--display);font-size:20px;letter-spacing:1px;color:var(--gold);display:flex;align-items:center;gap:8px}
+.sidebar-close{width:32px;height:32px;border-radius:6px;background:var(--card);border:1px solid var(--border);color:var(--text2);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+.sidebar-close:hover{background:var(--card2);color:var(--text)}
+.sidebar-section{padding:14px 12px 6px}
+.sidebar-label{font-size:9px;font-weight:500;color:var(--gold);text-transform:uppercase;letter-spacing:2px;padding:0 8px;margin-bottom:6px}
+.sidebar-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;color:var(--text2);cursor:pointer;font-size:13px;transition:all 0.15s;margin-bottom:1px;border:1px solid transparent}
+.sidebar-item:hover{background:var(--card);color:var(--text)}
+.sidebar-item.active{background:var(--card);color:var(--text);border-color:var(--border2)}
+.sidebar-item .si-icon{font-size:15px;width:22px;text-align:center;color:var(--gold)}
+.sidebar-item .si-badge{margin-left:auto;font-size:9px;background:var(--judgy2);color:white;padding:2px 7px;border-radius:10px;font-weight:500;letter-spacing:0.5px}
+.sidebar-divider{height:1px;background:var(--border);margin:8px 12px}
+.sidebar-footer{margin-top:auto;padding:14px;border-top:1px solid var(--border)}
+.upgrade-btn{height:30px;padding:0 12px;border-radius:20px;background:linear-gradient(135deg,rgba(139,26,26,0.3),rgba(196,160,80,0.15));border:1px solid rgba(196,160,80,0.35);color:var(--gold);font-size:11px;font-weight:500;cursor:pointer;font-family:var(--sans);letter-spacing:0.5px;transition:all 0.15s;white-space:nowrap;display:flex;align-items:center;gap:5px}
+.upgrade-btn:hover{background:linear-gradient(135deg,rgba(139,26,26,0.5),rgba(196,160,80,0.25));border-color:var(--gold)}
+.upgrade-btn.paid{background:rgba(196,160,80,0.1);color:var(--gold2);border-color:rgba(196,160,80,0.25);cursor:default}
+.plan-status{padding:10px 14px;margin:6px 12px;border-radius:8px;background:var(--gold-dim);border:1px solid var(--border2);display:flex;align-items:center;justify-content:space-between}
+.plan-status-label{font-size:11px;color:var(--text2)}
+.plan-status-value{font-size:12px;font-weight:500;color:var(--gold)}
+.disclaimer-box{background:var(--judgy-dim);border:1px solid rgba(139,26,26,0.25);border-radius:8px;padding:10px 12px;font-size:11px;color:var(--text3);line-height:1.5}
+.disclaimer-box strong{color:var(--judgy2);display:block;margin-bottom:3px;font-size:11px}
+.app{display:flex;flex-direction:column;height:100vh;height:100dvh;position:relative}
+header{padding:0 18px;height:58px;border-bottom:1px solid var(--border2);display:flex;align-items:center;gap:14px;background:var(--bg2);flex-shrink:0;position:relative}
+header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--gold) 0%,transparent 50%)}
+.menu-btn{width:36px;height:36px;border-radius:8px;background:var(--card);border:1px solid var(--border);color:var(--text2);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;flex-shrink:0}
+.menu-btn:hover{background:var(--card2);color:var(--text)}
+.header-logo{font-family:var(--display);font-size:22px;letter-spacing:1.5px;color:var(--text);display:flex;align-items:center;gap:10px;line-height:1}
+.header-logo .accent{color:var(--gold)}
+.header-logo .gavel-icon{width:28px;height:28px;border-radius:6px;background:var(--gold-dim);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:14px}
+.header-center{flex:1;display:flex;align-items:center;justify-content:center}
+.session-badge{font-size:11px;color:var(--text3);display:flex;align-items:center;gap:5px;font-family:var(--serif);letter-spacing:0.5px;font-style:italic}
+.session-dot{width:6px;height:6px;border-radius:50%;background:#4a9;animation:blink 2.5s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+.header-right{display:flex;align-items:center;gap:8px}
+.hbtn{height:32px;border-radius:7px;background:var(--card);border:1px solid var(--border);color:var(--text2);font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0 10px;gap:5px;transition:all 0.15s;font-family:var(--sans)}
+.hbtn:hover{background:var(--card2);color:var(--text);border-color:var(--border2)}
+.hbtn.icon-only{width:32px;padding:0}
+.rage-wrap{display:flex;align-items:center;gap:5px}
+.rage-pips{display:flex;gap:3px}
+.rage-pip{width:4px;height:14px;border-radius:2px;background:var(--border2);transition:background 0.3s}
+.rage-pip.on{background:var(--judgy2)}
+.rage-pip.on:nth-child(4){background:var(--gold)}
+.rage-pip.on:nth-child(5){background:#e8a020}
+.topics-bar{padding:8px 18px;border-bottom:1px solid var(--border);display:flex;gap:5px;overflow-x:auto;background:var(--bg2);flex-shrink:0;scrollbar-width:none}
+.topics-bar::-webkit-scrollbar{display:none}
+.topic-pill{font-size:11px;padding:5px 13px;border-radius:20px;border:1px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;transition:all 0.15s;font-family:var(--sans);white-space:nowrap;flex-shrink:0;letter-spacing:0.2px}
+.topic-pill:hover{border-color:var(--gold);color:var(--gold2)}
+.topic-pill.active{border-color:var(--gold);color:var(--gold2);background:var(--gold-dim)}
+.topic-pill.barry-pill{border-color:rgba(42,61,110,0.5);color:#7b9fff}
+.topic-pill.barry-pill.active{background:var(--barry-dim);border-color:#7b9fff}
+.messages{flex:1;overflow-y:auto;padding:24px 20px;display:flex;flex-direction:column;gap:20px}
+.messages::-webkit-scrollbar{width:3px}
+.messages::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+.welcome{text-align:center;padding:12px 12px 8px;animation:fadeUp 0.6s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+.welcome-crest{width:72px;height:72px;border-radius:50%;margin:0 auto 20px;background:var(--gold-dim);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:30px;animation:breathe 4s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+.welcome h2{font-family:var(--display);font-size:clamp(26px,5vw,44px);font-weight:900;letter-spacing:1px;margin-bottom:4px;line-height:1.1;color:var(--text)}
+.welcome h2 .judgy-name{color:var(--judgy2)}
+.welcome h2 .barry-name{color:#7b9fff}
+.welcome-subtitle{font-family:var(--serif);font-size:15px;color:var(--text2);font-style:italic;margin-bottom:6px;letter-spacing:0.3px}
+.welcome-rule{width:80px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:12px auto 20px}
+.char-duo{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:440px;margin:0 auto 24px}
+.char-card{border-radius:12px;padding:18px 14px 14px;text-align:center;cursor:pointer;transition:all 0.25s;position:relative;overflow:hidden;border:1px solid var(--border);background:var(--card)}
+.char-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.char-card.judgy::before{background:var(--judgy2)}
+.char-card.barry::before{background:#7b9fff}
+.char-card:hover{transform:translateY(-3px);border-color:var(--border2)}
+.char-card.judgy:hover{box-shadow:0 8px 32px rgba(139,26,26,0.15)}
+.char-card.barry:hover{box-shadow:0 8px 32px rgba(122,155,255,0.1)}
+.char-card.judgy.selected-char{border-color:var(--judgy2);background:var(--judgy-dim)}
+.char-card.barry.selected-char{border-color:#7b9fff;background:var(--barry-dim)}
+.char-monogram{width:50px;height:50px;border-radius:50%;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:20px;font-weight:700;letter-spacing:-1px}
+.char-card.judgy .char-monogram{background:var(--judgy-dim);color:var(--judgy2);border:1px solid rgba(196,32,32,0.2)}
+.char-card.barry .char-monogram{background:var(--barry-dim);color:#7b9fff;border:1px solid rgba(122,155,255,0.2)}
+.char-card-name{font-family:var(--display);font-size:17px;font-weight:700;letter-spacing:0.5px}
+.char-card.judgy .char-card-name{color:var(--judgy2)}
+.char-card.barry .char-card-name{color:#7b9fff}
+.char-card-title{font-family:var(--serif);font-size:12px;color:var(--text3);font-style:italic;margin-top:3px}
+.char-card-tag{display:inline-block;font-size:9px;margin-top:8px;padding:3px 9px;border-radius:10px;font-weight:500;text-transform:uppercase;letter-spacing:1px}
+.char-card.judgy .char-card-tag{background:var(--judgy-dim);color:var(--judgy2);border:1px solid rgba(196,32,32,0.15)}
+.char-card.barry .char-card-tag{background:var(--barry-dim);color:#7b9fff;border:1px solid rgba(122,155,255,0.15)}
+.starters{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;max-width:500px;margin:0 auto}
+.starter{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 13px;text-align:left;cursor:pointer;transition:all 0.15s;font-family:var(--sans);display:flex;align-items:flex-start;gap:8px}
+.starter:hover{border-color:var(--gold);transform:translateY(-1px)}
+.starter.barry-s:hover{border-color:#7b9fff}
+.starter-icon{font-size:14px;flex-shrink:0;margin-top:1px;color:var(--text3)}
+.starter-t{font-size:12px;color:var(--text2);line-height:1.4}
+.crisis-section{max-width:540px;margin:20px auto 0;text-align:left}
+.crisis-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;display:flex;align-items:center;gap:8px;justify-content:center}
+.crisis-chips{display:flex;flex-wrap:wrap;gap:7px;justify-content:center}
+.crisis-chip{font-size:12px;padding:7px 14px;border-radius:20px;border:1px solid var(--border2);background:var(--card);color:var(--text2);cursor:pointer;transition:all 0.2s;font-family:var(--sans);white-space:nowrap}
+.crisis-chip:hover{transform:translateY(-1px);box-shadow:0 4px 12px var(--shadow);border-color:var(--judgy2);color:#ef9a9a}
+.msg{display:flex;gap:12px;animation:fadeUp 0.3s ease both}
+.msg.user{flex-direction:row-reverse}
+.msg-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:13px;font-weight:700;flex-shrink:0;margin-top:4px;letter-spacing:-0.5px}
+.msg.judgy .msg-av{background:var(--judgy);border:1px solid var(--judgy2);color:var(--gold2)}
+.msg.barry .msg-av{background:var(--barry);border:1px solid #7b9fff;color:#a8c0ff}
+.msg.user .msg-av{background:var(--card2);border:1px solid var(--border2);color:var(--text2);font-size:12px}
+.msg-wrap{max-width:78%;display:flex;flex-direction:column;gap:4px;min-width:0}
+.msg.user .msg-wrap{align-items:flex-end}
+.msg-name{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:1.2px;padding:0 4px;display:flex;align-items:center;gap:5px}
+.msg.judgy .msg-name{color:var(--judgy2)}
+.msg.barry .msg-name{color:#7b9fff}
+.msg-bubble{border-radius:14px;padding:13px 16px;font-size:14px;line-height:1.7;position:relative;font-family:var(--serif)}
+.msg.judgy .msg-bubble{background:var(--card);border:1px solid var(--border);border-top-left-radius:4px;border-left:3px solid var(--judgy);color:var(--text)}
+.msg.barry .msg-bubble{background:var(--card);border:1px solid var(--border);border-top-left-radius:4px;border-left:3px solid #7b9fff;color:var(--text)}
+.msg.user .msg-bubble{background:var(--gold-dim);border:1px solid var(--border2);border-top-right-radius:4px;font-family:var(--sans);font-size:13.5px}
+.msg-time{font-size:10px;color:var(--text3);padding:0 6px;font-family:var(--sans)}
+.verdict-line{margin-top:10px;padding:8px 12px;background:rgba(196,160,80,0.06);border:1px solid rgba(196,160,80,0.2);border-radius:8px;font-size:12px;color:var(--gold2);display:flex;align-items:flex-start;gap:6px;font-family:var(--sans)}
+.barry-verdict{margin-top:10px;padding:8px 12px;background:rgba(122,155,255,0.06);border:1px solid rgba(122,155,255,0.2);border-radius:8px;font-size:12px;color:#a8c0ff;display:flex;align-items:flex-start;gap:6px;font-family:var(--sans)}
+.crisis-msg-card{margin-top:10px;padding:12px 14px;background:rgba(139,26,26,0.06);border:1px solid rgba(139,26,26,0.2);border-radius:10px;font-size:12px;font-family:var(--sans)}
+.crisis-msg-card .cm-title{font-size:11px;color:var(--judgy2);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px}
+.crisis-resource{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(139,26,26,0.1)}
+.crisis-resource:last-child{border-bottom:none;padding-bottom:0}
+.cr-name{color:var(--text2);font-size:12px}
+.cr-number{color:#ef9a9a;font-weight:600;font-size:13px;font-family:var(--display);letter-spacing:0.5px}
+.typing-bub{background:var(--card);border:1px solid var(--border);border-radius:14px;border-top-left-radius:4px;padding:14px 18px;display:flex;align-items:center;gap:6px}
+.td{width:6px;height:6px;border-radius:50%;opacity:0.5;animation:tdBounce 1.2s ease infinite}
+.msg.judgy .td{background:var(--judgy2)}.msg.barry .td{background:#7b9fff}
+.td:nth-child(2){animation-delay:0.2s}.td:nth-child(3){animation-delay:0.4s}
 @keyframes tdBounce{0%,60%,100%{transform:none;opacity:0.5}30%{transform:translateY(-5px);opacity:1}}
-
-/* ── INPUT ── */
-.suggestion-chip {
-  font-size:11px;padding:5px 12px;border-radius:20px;
-  border:1px solid var(--border2);background:var(--card);
-  color:var(--text2);cursor:pointer;white-space:nowrap;
-  font-family:var(--sans);flex-shrink:0;transition:all 0.15s;
-  font-style:italic;
-}
-.suggestion-chip:hover,.suggestion-chip:active {
-  border-color:var(--gold);color:var(--gold2);background:var(--gold-dim);
-}
+.suggestion-chip{font-size:11px;padding:5px 12px;border-radius:20px;border:1px solid var(--border2);background:var(--card);color:var(--text2);cursor:pointer;white-space:nowrap;font-family:var(--sans);flex-shrink:0;transition:all 0.15s;font-style:italic}
+.suggestion-chip:hover,.suggestion-chip:active{border-color:var(--gold);color:var(--gold2);background:var(--gold-dim)}
 #suggestionChips::-webkit-scrollbar{display:none}
-.input-area { padding: 12px 18px 16px; padding-bottom: max(16px, env(safe-area-inset-bottom)); border-top: 1px solid var(--border); background: var(--bg2); flex-shrink: 0; }
-.input-wrap {
-  display: flex; gap: 10px; align-items: flex-end;
-  background: var(--card); border: 1px solid var(--border2);
-  border-radius: 12px; padding: 10px 12px; transition: border-color 0.2s;
-}
-.input-wrap:focus-within { border-color: var(--gold); }
-.chat-input {
-  flex: 1; background: transparent; border: none; outline: none;
-  font-family: var(--serif); font-size: 14px; color: var(--text);
-  resize: none; min-height: 22px; max-height: 100px; line-height: 1.6;
-}
-.chat-input::placeholder { color: var(--text3); font-style: italic; font-family: var(--serif); }
-.send-btn {
-  width: 36px; height: 36px; border-radius: 8px; background: var(--judgy); border: none;
-  font-size: 16px; display: flex; align-items: center; justify-content: center;
-  cursor: pointer; flex-shrink: 0; transition: all 0.15s; color: var(--gold2);
-}
-.send-btn:hover { background: var(--judgy2); transform: scale(1.05); }
-.send-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
-.input-footer { display: flex; justify-content: space-between; margin-top: 5px; padding: 0 2px; }
-.input-hint { font-size: 10px; color: var(--text3); font-family: var(--sans); letter-spacing: 0.2px; }
-
-/* ── PAGE OVERLAYS ── */
-.page-overlay {
-  position: fixed; inset: 0; background: var(--bg); z-index: 400;
-  overflow-y: auto; transform: translateX(100%);
-  transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
-}
-.page-overlay.open { transform: translateX(0); }
-.page-header {
-  display: flex; align-items: center; gap: 12px; padding: 16px 22px;
-  border-bottom: 1px solid var(--border); background: var(--bg2);
-  position: sticky; top: 0; z-index: 1;
-}
-.page-back {
-  width: 32px; height: 32px; border-radius: 7px; background: var(--card);
-  border: 1px solid var(--border); color: var(--text2); cursor: pointer;
-  display: flex; align-items: center; justify-content: center; font-size: 16px; transition: all 0.15s;
-}
-.page-back:hover { color: var(--text); background: var(--card2); }
-.page-title { font-family: var(--display); font-size: 20px; letter-spacing: 1px; color: var(--gold); }
-.page-body { padding: 28px 24px; max-width: 680px; margin: 0 auto; }
-.page-section { margin-bottom: 28px; }
-.page-section h3 { font-family: var(--display); font-size: 17px; margin-bottom: 10px; color: var(--text); }
-.page-section p { font-family: var(--serif); font-size: 14px; color: var(--text2); line-height: 1.75; margin-bottom: 10px; }
-.page-section ul { padding-left: 20px; }
-.page-section li { font-family: var(--serif); font-size: 14px; color: var(--text2); line-height: 1.75; margin-bottom: 5px; }
-.warning-box {
-  background: var(--judgy-dim); border: 1px solid rgba(139,26,26,0.25);
-  border-radius: 10px; padding: 14px 16px; margin-bottom: 18px;
-}
-.warning-box strong { color: var(--judgy2); display: block; margin-bottom: 6px; font-size: 13px; letter-spacing: 0.5px; }
-.warning-box p { font-size: 13px; color: var(--text2); margin: 0; }
-
-/* FORMS */
-.form-card {
-  background: var(--card2); border: 1px solid var(--border2);
-  border-radius: 10px; padding: 16px;
-}
-.form-card-title { font-size: 12px; font-weight: 500; color: var(--gold); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; letter-spacing: 0.5px; text-transform: uppercase; }
-.form-field { margin-bottom: 10px; }
-.form-label { font-size: 11px; color: var(--text3); margin-bottom: 3px; display: block; letter-spacing: 0.3px; text-transform: uppercase; }
-.form-input {
-  width: 100%; padding: 8px 11px; border-radius: 7px;
-  border: 1px solid var(--border2); background: var(--bg);
-  color: var(--text); font-family: var(--sans); font-size: 13px; outline: none;
-}
-.form-input:focus { border-color: var(--gold); }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.form-btn {
-  width: 100%; padding: 9px; border-radius: 8px; background: var(--barry);
-  border: 1px solid rgba(122,155,255,0.3); color: #a8c0ff;
-  font-size: 13px; font-family: var(--sans); font-weight: 500; cursor: pointer;
-  margin-top: 10px; transition: all 0.15s; letter-spacing: 0.3px;
-}
-.form-btn:hover { background: var(--barry2); color: white; }
-.referral-links { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
-.ref-link {
-  font-size: 11px; padding: 5px 11px; border-radius: 6px; background: var(--card);
-  border: 1px solid var(--border2); color: var(--text2); text-decoration: none; transition: all 0.15s; cursor: pointer;
-}
-.ref-link:hover { border-color: var(--gold); color: var(--gold2); }
-
-/* CHARMODE BAR */
-.char-mode-bar {
-  background: var(--card); border: 1px solid var(--border2); border-radius: 9px;
-  padding: 7px 14px; display: flex; align-items: center;
-  justify-content: space-between; font-size: 12px; max-width: 440px; margin: 0 auto 16px;
-}
-.char-mode-label { color: var(--text2); font-family: var(--serif); font-style: italic; }
-.char-mode-back {
-  font-size: 11px; padding: 3px 10px; border-radius: 6px; background: var(--card2);
-  border: 1px solid var(--border2); color: var(--text2); cursor: pointer; font-family: var(--sans);
-}
-
-@media(max-width:540px){
-  .starters { grid-template-columns: 1fr; }
-  .msg-wrap { max-width: 88%; }
-  .char-duo { max-width: 320px; }
-}
+.input-area{padding:12px 18px 16px;padding-bottom:max(16px,env(safe-area-inset-bottom));border-top:1px solid var(--border);background:var(--bg2);flex-shrink:0}
+.input-wrap{display:flex;gap:10px;align-items:flex-end;background:var(--card);border:1px solid var(--border2);border-radius:12px;padding:10px 12px;transition:border-color 0.2s}
+.input-wrap:focus-within{border-color:var(--gold)}
+.chat-input{flex:1;background:transparent;border:none;outline:none;font-family:var(--serif);font-size:14px;color:var(--text);resize:none;min-height:22px;max-height:100px;line-height:1.6}
+.chat-input::placeholder{color:var(--text3);font-style:italic;font-family:var(--serif)}
+.send-btn{width:36px;height:36px;border-radius:8px;background:var(--judgy);border:none;font-size:16px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all 0.15s;color:var(--gold2)}
+.send-btn:hover{background:var(--judgy2);transform:scale(1.05)}
+.send-btn:disabled{opacity:0.4;cursor:not-allowed;transform:none}
+.input-footer{display:flex;justify-content:space-between;margin-top:5px;padding:0 2px}
+.input-hint{font-size:10px;color:var(--text3);font-family:var(--sans);letter-spacing:0.2px}
+.crisis-strip{background:rgba(139,26,26,0.08);border-top:1px solid rgba(139,26,26,0.15);padding:6px 18px;display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;flex-shrink:0}
+.cs-item{font-size:11px;color:var(--text3);display:flex;align-items:center;gap:5px;font-family:var(--sans)}
+.cs-item strong{color:#ef9a9a}
+.cs-link{font-size:11px;color:rgba(196,32,32,0.5);cursor:pointer;text-decoration:underline;background:none;border:none;font-family:var(--sans);padding:0}
+.cs-link:hover{color:var(--judgy2)}
+.page-overlay{position:fixed;inset:0;background:var(--bg);z-index:400;overflow-y:auto;transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.16,1,0.3,1)}
+.page-overlay.open{transform:translateX(0)}
+.page-header{display:flex;align-items:center;gap:12px;padding:16px 22px;border-bottom:1px solid var(--border);background:var(--bg2);position:sticky;top:0;z-index:1}
+.page-back{width:32px;height:32px;border-radius:7px;background:var(--card);border:1px solid var(--border);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:all 0.15s}
+.page-back:hover{color:var(--text);background:var(--card2)}
+.page-title{font-family:var(--display);font-size:20px;letter-spacing:1px;color:var(--gold)}
+.page-body{padding:28px 24px;max-width:680px;margin:0 auto}
+.page-section{margin-bottom:28px}
+.page-section h3{font-family:var(--display);font-size:17px;margin-bottom:10px;color:var(--text)}
+.page-section p{font-family:var(--serif);font-size:14px;color:var(--text2);line-height:1.75;margin-bottom:10px}
+.page-section ul{padding-left:20px}
+.page-section li{font-family:var(--serif);font-size:14px;color:var(--text2);line-height:1.75;margin-bottom:5px}
+.warning-box{background:var(--judgy-dim);border:1px solid rgba(139,26,26,0.25);border-radius:10px;padding:14px 16px;margin-bottom:18px}
+.warning-box strong{color:var(--judgy2);display:block;margin-bottom:6px;font-size:13px;letter-spacing:0.5px}
+.warning-box p{font-size:13px;color:var(--text2);margin:0}
+.form-card{background:var(--card2);border:1px solid var(--border2);border-radius:10px;padding:16px}
+.form-card-title{font-size:12px;font-weight:500;color:var(--gold);margin-bottom:12px;display:flex;align-items:center;gap:6px;letter-spacing:0.5px;text-transform:uppercase}
+.form-field{margin-bottom:10px}
+.form-label{font-size:11px;color:var(--text3);margin-bottom:3px;display:block;letter-spacing:0.3px;text-transform:uppercase}
+.form-input{width:100%;padding:8px 11px;border-radius:7px;border:1px solid var(--border2);background:var(--bg);color:var(--text);font-family:var(--sans);font-size:13px;outline:none}
+.form-input:focus{border-color:var(--gold)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form-btn{width:100%;padding:9px;border-radius:8px;background:var(--barry);border:1px solid rgba(122,155,255,0.3);color:#a8c0ff;font-size:13px;font-family:var(--sans);font-weight:500;cursor:pointer;margin-top:10px;transition:all 0.15s;letter-spacing:0.3px}
+.form-btn:hover{background:var(--barry2);color:white}
+.referral-links{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.ref-link{font-size:11px;padding:5px 11px;border-radius:6px;background:var(--card);border:1px solid var(--border2);color:var(--text2);text-decoration:none;transition:all 0.15s;cursor:pointer}
+.ref-link:hover{border-color:var(--gold);color:var(--gold2)}
+.char-mode-bar{background:var(--card);border:1px solid var(--border2);border-radius:9px;padding:7px 14px;display:flex;align-items:center;justify-content:space-between;font-size:12px;max-width:440px;margin:0 auto 16px}
+.char-mode-label{color:var(--text2);font-family:var(--serif);font-style:italic}
+.char-mode-back{font-size:11px;padding:3px 10px;border-radius:6px;background:var(--card2);border:1px solid var(--border2);color:var(--text2);cursor:pointer;font-family:var(--sans)}
+.rc-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:24px}
+.rc-tab{padding:10px 18px;font-size:13px;font-family:var(--sans);color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.15s;background:none;border-top:none;border-left:none;border-right:none;margin-bottom:-1px}
+.rc-tab:hover{color:var(--text2)}
+.rc-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.rc-panel{display:none}
+.rc-panel.active{display:block}
+.resource-category{margin-bottom:24px}
+.rc-cat-title{font-family:var(--display);font-size:15px;color:var(--text);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.resource-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:8px;transition:all 0.15s}
+.resource-card:hover{border-color:var(--border2);transform:translateY(-1px)}
+.rc-name{font-size:14px;font-weight:500;color:var(--text);margin-bottom:3px;font-family:var(--sans)}
+.rc-desc{font-size:12px;color:var(--text2);line-height:1.5;font-family:var(--serif);font-style:italic;margin-bottom:8px}
+.rc-actions{display:flex;gap:6px;flex-wrap:wrap}
+.rc-btn{font-size:11px;padding:5px 12px;border-radius:6px;border:1px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;font-family:var(--sans);text-decoration:none;transition:all 0.15s;display:inline-block}
+.rc-btn:hover{border-color:var(--gold);color:var(--gold2)}
+.rc-btn.urgent{border-color:rgba(139,26,26,0.3);color:var(--judgy2);background:var(--judgy-dim)}
+.rc-btn.urgent:hover{border-color:var(--judgy2)}
+.learn-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:8px;display:flex;gap:12px;align-items:flex-start;transition:all 0.15s;text-decoration:none;cursor:pointer}
+.learn-card:hover{border-color:var(--gold);transform:translateY(-1px)}
+.lc-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;background:var(--gold-dim);border:1px solid var(--border2)}
+.lc-body{flex:1;min-width:0}
+.lc-title{font-size:13px;font-weight:500;color:var(--text);margin-bottom:3px;font-family:var(--sans)}
+.lc-sub{font-size:11px;color:var(--text3);font-family:var(--serif);font-style:italic}
+.lc-tag{font-size:10px;padding:2px 8px;border-radius:10px;background:var(--gold-dim);color:var(--gold);border:1px solid var(--border2);margin-top:5px;display:inline-block}
+.daily-verdict-card{background:var(--card);border:1px solid var(--border2);border-radius:14px;padding:20px;margin-bottom:16px;position:relative;overflow:hidden}
+.daily-verdict-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--judgy2),var(--gold))}
+.dv-date{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;font-family:var(--sans)}
+.dv-quote{font-family:var(--display);font-size:18px;color:var(--text);line-height:1.4;font-style:italic;margin-bottom:12px}
+.dv-author{font-size:11px;color:var(--gold);font-family:var(--sans);letter-spacing:0.5px}
+.dv-actions{display:flex;gap:8px;margin-top:14px}
+.dv-btn{flex:1;padding:8px;border-radius:8px;border:1px solid var(--border2);background:var(--card2);color:var(--text2);font-size:12px;cursor:pointer;font-family:var(--sans);transition:all 0.15s;text-align:center}
+.dv-btn:hover{border-color:var(--gold);color:var(--gold2)}
+.dv-btn.primary{background:var(--judgy-dim);border-color:rgba(139,26,26,0.3);color:var(--judgy2)}
+.dv-btn.primary:hover{border-color:var(--judgy2)}
+.dv-loading{text-align:center;padding:30px;color:var(--text3);font-family:var(--serif);font-style:italic}
+.followup-wrap{margin-top:10px;padding:10px 12px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:8px}
+.followup-btn{background:var(--card2);border:1px solid var(--border2);border-radius:8px;padding:7px 12px;font-size:12px;color:var(--text2);cursor:pointer;font-family:var(--sans);text-align:left;transition:all 0.15s;line-height:1.4}
+.followup-btn:hover{border-color:var(--gold);color:var(--text)}
+@media(max-width:540px){.starters{grid-template-columns:1fr}.msg-wrap{max-width:88%}.char-duo{max-width:320px}.crisis-chips{gap:5px}.crisis-chip{font-size:11px;padding:6px 11px}.rc-tab{padding:8px 12px;font-size:12px}}
 </style>
 </head>
 <body>
-
-
-
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 <nav class="sidebar" id="sidebar">
   <div class="sidebar-head">
-    <div class="sidebar-logo"><span class="gavel">⚖</span> THE JUDGY</div>
+    <div class="sidebar-logo"><span>⚖</span> THE JUDGY</div>
     <button class="sidebar-close" onclick="closeSidebar()">✕</button>
   </div>
   <div class="sidebar-section">
     <div class="sidebar-label">Session</div>
-    <div class="sidebar-item active" onclick="setView('chat',this)">
-      <span class="si-icon">⚖</span> The Judgy + Barry
-      <span class="si-badge">LIVE</span>
-    </div>
-    <div class="sidebar-item" onclick="newCase(); closeSidebar()">
-      <span class="si-icon">↺</span> New case
-    </div>
+    <div class="sidebar-item active" onclick="setView('chat',this)"><span class="si-icon">⚖</span> The Judgy + Barry<span class="si-badge">LIVE</span></div>
+    <div class="sidebar-item" onclick="newCase(); closeSidebar()"><span class="si-icon">↺</span> New case</div>
   </div>
   <div class="sidebar-section">
     <div class="sidebar-label">Topics</div>
     <div class="sidebar-item" onclick="quickTopic('relationship'); closeSidebar()"><span class="si-icon">♡</span> Relationships</div>
     <div class="sidebar-item" onclick="quickTopic('work'); closeSidebar()"><span class="si-icon">◈</span> Career path</div>
-    <div class="sidebar-item" onclick="quickTopic('personal'); closeSidebar()"><span class="si-icon">◎</span> Skills & AI learning</div>
+    <div class="sidebar-item" onclick="quickTopic('personal'); closeSidebar()"><span class="si-icon">◎</span> Skills &amp; AI learning</div>
     <div class="sidebar-item" onclick="quickTopic('coworker'); closeSidebar()"><span class="si-icon">◉</span> Co-workers</div>
     <div class="sidebar-item" onclick="quickTopic('family'); closeSidebar()"><span class="si-icon">⌂</span> Family</div>
     <div class="sidebar-item" onclick="quickTopic('legal'); closeSidebar()"><span class="si-icon">§</span> Legal · Tenant rights</div>
     <div class="sidebar-item" onclick="quickTopic('business'); closeSidebar()"><span class="si-icon">◆</span> Business (Barry)</div>
-    <div class="sidebar-item" onclick="quickTopic('money'); closeSidebar()"><span class="si-icon">$</span> Tax & Money</div>
+    <div class="sidebar-item" onclick="quickTopic('money'); closeSidebar()"><span class="si-icon">$</span> Tax &amp; Money</div>
+  </div>
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Get Real Help</div>
+    <div class="sidebar-item" onclick="openPage('resources'); closeSidebar()"><span class="si-icon" style="color:#ef9a9a">🆘</span> Resource Chamber<span class="si-badge" style="background:#8b1a1a">NEW</span></div>
   </div>
   <div class="sidebar-divider"></div>
   <div class="sidebar-section">
@@ -554,13 +306,8 @@ header::after {
   <div class="sidebar-divider"></div>
   <div class="sidebar-section">
     <div class="sidebar-label">Membership</div>
-    <div class="plan-status" id="sidebarPlanStatus">
-      <span class="plan-status-label">Current plan</span>
-      <span class="plan-status-value" id="sidebarPlanValue">Free — 10 cases/mo</span>
-    </div>
-    <div class="sidebar-item" onclick="showPaywall(); closeSidebar()">
-      <span class="si-icon" style="color:var(--gold)">⚖</span> Upgrade plan
-    </div>
+    <div class="plan-status"><span class="plan-status-label">Current plan</span><span class="plan-status-value" id="sidebarPlanValue">Free — 10 cases/mo</span></div>
+    <div class="sidebar-item" onclick="showPaywall(); closeSidebar()"><span class="si-icon" style="color:var(--gold)">⚖</span> Upgrade plan</div>
   </div>
   <div class="sidebar-divider"></div>
   <div class="sidebar-section">
@@ -574,263 +321,249 @@ header::after {
     <div class="sidebar-item" onclick="toggleTheme()"><span class="si-icon" id="themeIcon">☀</span> <span id="themeLabel">Light mode</span></div>
   </div>
   <div class="sidebar-footer">
-    <div class="disclaimer-box">
-      <strong>NOT PROFESSIONAL ADVICE</strong>
-      The Judgy and Barry are AI characters for entertainment and general guidance only. Always consult a licensed professional.
-    </div>
+    <div class="disclaimer-box"><strong>NOT PROFESSIONAL ADVICE</strong>The Judgy and Barry are AI characters for entertainment and general guidance only. Always consult a licensed professional.</div>
   </div>
 </nav>
-
 <div class="app">
   <header>
     <button class="menu-btn" onclick="openSidebar()">☰</button>
-    <div class="header-logo">
-      <div class="gavel-icon">⚖</div>
-      THE <span class="accent">JUDGY</span>
-    </div>
-    <div class="header-center">
-      <div class="session-badge"><div class="session-dot"></div>Court in session</div>
-    </div>
+    <div class="header-logo"><div class="gavel-icon">⚖</div>THE <span class="accent">JUDGY</span></div>
+    <div class="header-center"><div class="session-badge"><div class="session-dot"></div>Court in session</div></div>
     <div class="header-right">
-      <div class="rage-wrap">
-        <div class="rage-pips" id="ragePips">
-          <div class="rage-pip"></div><div class="rage-pip"></div>
-          <div class="rage-pip"></div><div class="rage-pip"></div>
-          <div class="rage-pip"></div>
-        </div>
-      </div>
-      <button class="hbtn icon-only" onclick="toggleJudgySound()" id="judgySoundBtn" title="Toggle sound">🔊</button>
-      <button class="upgrade-btn" id="upgradeHeaderBtn" onclick="showPaywall()" title="Upgrade">⚖ Upgrade</button>
-      <button class="hbtn icon-only" onclick="toggleTheme()" id="themeBtn" title="Toggle theme">🌙</button>
-      <button class="hbtn" onclick="newCase()">↺ <span style="font-size:11px;font-weight:500;">New</span></button>
+      <div class="rage-wrap"><div class="rage-pips" id="ragePips"><div class="rage-pip"></div><div class="rage-pip"></div><div class="rage-pip"></div><div class="rage-pip"></div><div class="rage-pip"></div></div></div>
+      <button class="hbtn icon-only" onclick="toggleJudgySound()" id="judgySoundBtn">🔊</button>
+      <button class="upgrade-btn" id="upgradeHeaderBtn" onclick="showPaywall()">⚖ Upgrade</button>
+      <button class="hbtn icon-only" onclick="toggleTheme()" id="themeBtn">🌙</button>
+      <button class="hbtn" onclick="newCase()">↺ <span style="font-size:11px;font-weight:500">New</span></button>
     </div>
   </header>
-
   <div class="topics-bar">
     <button class="topic-pill active" onclick="setTopic(this,'general')">⚖ All</button>
     <button class="topic-pill" onclick="setTopic(this,'relationship')">♡ Love</button>
     <button class="topic-pill" onclick="setTopic(this,'work')">◈ Career</button>
-    <button class="topic-pill" onclick="setTopic(this,'personal')">◎ Skills & AI</button>
+    <button class="topic-pill" onclick="setTopic(this,'personal')">◎ Skills &amp; AI</button>
     <button class="topic-pill" onclick="setTopic(this,'coworker')">◉ Co-workers</button>
     <button class="topic-pill" onclick="setTopic(this,'family')">⌂ Family</button>
     <button class="topic-pill barry-pill" onclick="setTopic(this,'legal')">§ Legal</button>
     <button class="topic-pill barry-pill" onclick="setTopic(this,'business')">◆ Business</button>
-    <button class="topic-pill barry-pill" onclick="setTopic(this,'money')">$ Tax & Money</button>
+    <button class="topic-pill barry-pill" onclick="setTopic(this,'money')">$ Tax &amp; Money</button>
   </div>
-
   <div class="messages" id="messages">
     <div class="welcome" id="welcome">
       <div class="welcome-crest">⚖</div>
-      <h2>THE <span class="judgy-name">JUDGY</span><br>& <span class="barry-name">BARRY</span></h2>
+      <h2>THE <span class="judgy-name">JUDGY</span><br>&amp; <span class="barry-name">BARRY</span></h2>
       <div class="welcome-subtitle">Brutally honest. Surprisingly competent.</div>
       <div class="welcome-rule"></div>
       <div class="char-duo">
-        <div class="char-card judgy" id="charJudgy" onclick="selectChar('judgy')">
-          <div class="char-monogram">J.</div>
-          <div class="char-card-name">The Judgy</div>
-          <div class="char-card-title">The Honorable Judge</div>
-          <div class="char-card-tag">Life · Love · Work</div>
-        </div>
-        <div class="char-card barry" id="charBarry" onclick="selectChar('barry')">
-          <div class="char-monogram">B.</div>
-          <div class="char-card-name">Barry T. Lawson</div>
-          <div class="char-card-title">Esq. — Her Ex-Husband</div>
-          <div class="char-card-tag">Legal · Business · Tax</div>
-        </div>
+        <div class="char-card judgy" id="charJudgy" onclick="selectChar('judgy')"><div class="char-monogram">J.</div><div class="char-card-name">The Judgy</div><div class="char-card-title">The Honorable Judge</div><div class="char-card-tag">Life · Love · Work</div></div>
+        <div class="char-card barry" id="charBarry" onclick="selectChar('barry')"><div class="char-monogram">B.</div><div class="char-card-name">Barry T. Lawson</div><div class="char-card-title">Esq. — Her Ex-Husband</div><div class="char-card-tag">Legal · Business · Tax</div></div>
       </div>
-      <div id="charModeBar" style="display:none">
-        <div class="char-mode-bar">
-          <span class="char-mode-label" id="charModeLabel"></span>
-          <button class="char-mode-back" onclick="selectChar('both')">← Both</button>
-        </div>
-      </div>
+      <div id="charModeBar" style="display:none"><div class="char-mode-bar"><span class="char-mode-label" id="charModeLabel"></span><button class="char-mode-back" onclick="selectChar('both')">← Both</button></div></div>
       <div class="starters">
         <button class="starter" onclick="useStarter(this)"><span class="starter-icon">♡</span><span class="starter-t">My ex wants to get back together but they cheated on me</span></button>
         <button class="starter barry-s" onclick="useStarter(this)"><span class="starter-icon">§</span><span class="starter-t">I want to start an LLC — where do I begin?</span></button>
         <button class="starter" onclick="useStarter(this)"><span class="starter-icon">◉</span><span class="starter-t">My coworker keeps stealing my ideas in meetings</span></button>
         <button class="starter barry-s" onclick="useStarter(this)"><span class="starter-icon">📋</span><span class="starter-t">I need a demand letter for money owed to me</span></button>
       </div>
+      <div class="crisis-section">
+        <div class="crisis-label">— Dealing with something real? —</div>
+        <div class="crisis-chips">
+          <button class="crisis-chip" onclick="useCrisisChip('gambling','I am struggling with gambling and it is affecting my life in serious ways. I need honest guidance and to know what real help looks like.')">🎰 Gambling</button>
+          <button class="crisis-chip" onclick="useCrisisChip('drugs','I am struggling with drugs or alcohol and I need honest perspective on what I am doing to myself and what steps I can actually take.')">💊 Drugs / Alcohol</button>
+          <button class="crisis-chip" onclick="useCrisisChip('relationships','I am in a relationship that I think is hurting me. I need someone to be straight with me about what I should do.')">💔 Toxic Relationship</button>
+          <button class="crisis-chip" onclick="useCrisisChip('money','I am in a serious financial situation. Debt, no savings, scared. I need real guidance not just platitudes.')">💸 Financial Crisis</button>
+          <button class="crisis-chip" onclick="useCrisisChip('anxiety','I have been struggling with anxiety or depression and it is affecting everything in my life. I need honest support.')">🌀 Anxiety / Depression</button>
+          <button class="crisis-chip" onclick="useCrisisChip('family','I am dealing with serious family dysfunction and I need someone to help me see it clearly and figure out what to do.')">🏚 Family Problems</button>
+          <button class="crisis-chip" onclick="useCrisisChip('anger','I have anger problems I cannot control and it is ruining my relationships. I need real help.')">🔥 Anger Issues</button>
+          <button class="crisis-chip" onclick="useCrisisChip('loneliness','I feel completely alone and disconnected from everyone. I do not know how to fix it or where to start.')">🌑 Loneliness</button>
+          <button class="crisis-chip" onclick="useCrisisChip('selfworth','I have deep problems with how I see myself. I sabotage good things and do not know why.')">🪞 Self-Worth</button>
+          <button class="crisis-chip" onclick="useCrisisChip('stuck','I feel completely stuck in life and cannot move forward. I need someone to tell me the truth about why.')">🎯 Completely Stuck</button>
+        </div>
+      </div>
     </div>
   </div>
-
+  <div class="crisis-strip">
+    <div class="cs-item">🆘 Crisis? Call/text <strong>988</strong></div>
+    <div class="cs-item">Text HOME to <strong>741741</strong></div>
+    <button class="cs-link" onclick="openPage('resources')">See all resources →</button>
+  </div>
   <div class="input-area">
     <div id="suggestionChips" style="display:flex;gap:6px;overflow-x:auto;margin-bottom:8px;scrollbar-width:none;padding:0 2px"></div>
     <div class="input-wrap">
-      <textarea class="chat-input" id="chatInput"
-        placeholder="Present your case to the court..."
-        rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"
-        onfocus="fillFromPlaceholder()"></textarea>
+      <textarea class="chat-input" id="chatInput" placeholder="Present your case to the court..." rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)" onfocus="fillFromPlaceholder()"></textarea>
       <button class="send-btn" id="sendBtn" onclick="sendMessage()">⚖</button>
     </div>
     <div class="input-footer">
-      <span class="input-hint" onclick="fillRandomQuestion()" style="cursor:pointer;user-select:none" title="Tap for a sample question">Tap ⚖ for a sample question · Enter to send</span>
-      <span style="font-size:10px;color:var(--text3);font-family:var(--sans);" id="charCt">0/500</span>
+      <span class="input-hint" onclick="fillRandomQuestion()" style="cursor:pointer;user-select:none">Tap ⚖ for a sample question · Enter to send</span>
+      <span style="font-size:10px;color:var(--text3);font-family:var(--sans)" id="charCt">0/500</span>
+    </div>
+  </div>
+</div>
+<!-- RESOURCE CHAMBER -->
+<div class="page-overlay" id="page-resources">
+  <div class="page-header"><button class="page-back" onclick="closePage('resources')">←</button><div class="page-title">🆘 Resource Chamber</div></div>
+  <div class="page-body">
+    <p style="font-family:var(--serif);font-style:italic;font-size:14px;color:var(--text2);margin-bottom:20px;line-height:1.7">"Judgy roasts you because she cares. But some battles need more than a verdict. These are real resources — vetted, honest, and actually helpful." — Barry T. Lawson, Esq.</p>
+    <div class="rc-tabs">
+      <button class="rc-tab active" onclick="switchRCTab(this,'rc-help')">🆘 Get Help Now</button>
+      <button class="rc-tab" onclick="switchRCTab(this,'rc-learn')">📚 Learn &amp; Grow</button>
+      <button class="rc-tab" onclick="switchRCTab(this,'rc-daily')">⚖ Daily Verdict</button>
+    </div>
+    <div class="rc-panel active" id="rc-help">
+      <div class="warning-box"><strong>If you are in crisis right now</strong><p>Call or text <strong>988</strong> (Suicide &amp; Crisis Lifeline, 24/7) · Text HOME to <strong>741741</strong> (Crisis Text Line) · Call <strong>911</strong> for immediate danger</p></div>
+      <div class="resource-category">
+        <div class="rc-cat-title"><span>🎰</span> Gambling</div>
+        <div class="resource-card"><div class="rc-name">National Council on Problem Gambling</div><div class="rc-desc">24/7 confidential helpline. Free and anonymous — no judgment, just help.</div><div class="rc-actions"><a class="rc-btn urgent" href="tel:18005224700">📞 1-800-522-4700</a><a class="rc-btn" href="https://www.ncpgambling.org" target="_blank">Website ↗</a><a class="rc-btn" href="https://www.gamblersanonymous.org" target="_blank">Gamblers Anonymous ↗</a></div></div>
+      </div>
+      <div class="resource-category">
+        <div class="rc-cat-title"><span>💊</span> Drugs &amp; Alcohol</div>
+        <div class="resource-card"><div class="rc-name">SAMHSA National Helpline</div><div class="rc-desc">Free, confidential treatment referral. 24/7, 365 days. English and Spanish.</div><div class="rc-actions"><a class="rc-btn urgent" href="tel:18006624357">📞 1-800-662-4357</a><a class="rc-btn" href="https://www.samhsa.gov/find-help/national-helpline" target="_blank">Website ↗</a></div></div>
+        <div class="resource-card"><div class="rc-name">Alcoholics Anonymous / Narcotics Anonymous</div><div class="rc-desc">Free peer support groups worldwide. No fees, no dues. Online meetings available.</div><div class="rc-actions"><a class="rc-btn" href="https://www.aa.org" target="_blank">AA ↗</a><a class="rc-btn" href="https://www.na.org" target="_blank">NA ↗</a><a class="rc-btn" href="https://www.smartrecovery.org" target="_blank">SMART Recovery ↗</a></div></div>
+      </div>
+      <div class="resource-category">
+        <div class="rc-cat-title"><span>🌀</span> Mental Health &amp; Anxiety</div>
+        <div class="resource-card"><div class="rc-name">988 Suicide &amp; Crisis Lifeline</div><div class="rc-desc">Call or text 988. For anyone in mental health crisis — not just suicidal thoughts. Real humans, 24/7.</div><div class="rc-actions"><a class="rc-btn urgent" href="tel:988">📞 Call 988</a><a class="rc-btn urgent" href="sms:988">💬 Text 988</a></div></div>
+        <div class="resource-card"><div class="rc-name">NAMI — National Alliance on Mental Illness</div><div class="rc-desc">Free helpline, education, and support groups. Mon–Fri 10am–10pm ET.</div><div class="rc-actions"><a class="rc-btn urgent" href="tel:18009506264">📞 1-800-950-6264</a><a class="rc-btn" href="https://www.nami.org" target="_blank">Website ↗</a></div></div>
+        <div class="resource-card"><div class="rc-name">BetterHelp / Talkspace</div><div class="rc-desc">Online therapy with licensed therapists. More accessible than traditional therapy.</div><div class="rc-actions"><a class="rc-btn" href="https://www.betterhelp.com" target="_blank">BetterHelp ↗</a><a class="rc-btn" href="https://www.talkspace.com" target="_blank">Talkspace ↗</a></div></div>
+      </div>
+      <div class="resource-category">
+        <div class="rc-cat-title"><span>💔</span> Relationships &amp; Domestic Violence</div>
+        <div class="resource-card"><div class="rc-name">National Domestic Violence Hotline</div><div class="rc-desc">Confidential support for anyone experiencing relationship abuse. 24/7.</div><div class="rc-actions"><a class="rc-btn urgent" href="tel:18007997233">📞 1-800-799-7233</a><a class="rc-btn urgent" href="sms:88788">💬 Text START to 88788</a><a class="rc-btn" href="https://www.thehotline.org" target="_blank">Website ↗</a></div></div>
+      </div>
+      <div class="resource-category">
+        <div class="rc-cat-title"><span>💸</span> Financial Crisis</div>
+        <div class="resource-card"><div class="rc-name">National Foundation for Credit Counseling</div><div class="rc-desc">Free and low-cost financial counseling. Help with debt, budgeting, and credit.</div><div class="rc-actions"><a class="rc-btn urgent" href="tel:18882277166">📞 1-888-227-7166</a><a class="rc-btn" href="https://www.nfcc.org" target="_blank">Website ↗</a><a class="rc-btn" href="https://www.211.org" target="_blank">211.org ↗</a></div></div>
+      </div>
+      <div class="resource-category">
+        <div class="rc-cat-title"><span>🔥</span> Anger Management</div>
+        <div class="resource-card"><div class="rc-name">Find a Therapist</div><div class="rc-desc">Search for anger management specialists near you. Filter by insurance and cost.</div><div class="rc-actions"><a class="rc-btn" href="https://www.psychologytoday.com/us/therapists/anger-management" target="_blank">Psychology Today ↗</a><a class="rc-btn" href="https://www.betterhelp.com" target="_blank">Online Therapy ↗</a></div></div>
+      </div>
+      <div class="warning-box" style="margin-top:8px"><strong>Disclaimer</strong><p>These are real, verified organizations. The Judgy is not affiliated with any of them and receives no compensation for listing them here.</p></div>
+    </div>
+    <div class="rc-panel" id="rc-learn">
+      <p style="font-family:var(--serif);font-style:italic;font-size:13px;color:var(--text3);margin-bottom:20px">"Curated by The Judgy. Barry suggested some of these. I will not tell you which ones."</p>
+      <div class="page-section">
+        <h3>📖 Books Worth Reading</h3>
+        <a class="learn-card" href="https://www.amazon.com/s?k=Atomic+Habits+James+Clear" target="_blank"><div class="lc-icon">📗</div><div class="lc-body"><div class="lc-title">Atomic Habits — James Clear</div><div class="lc-sub">The most practical book on breaking bad habits and building good ones. Zero fluff.</div><span class="lc-tag">Habits · Self-improvement</span></div></a>
+        <a class="learn-card" href="https://www.amazon.com/s?k=The+Body+Keeps+the+Score" target="_blank"><div class="lc-icon">📘</div><div class="lc-body"><div class="lc-title">The Body Keeps the Score — Bessel van der Kolk</div><div class="lc-sub">How trauma lives in the body and what actually heals it. Essential if you carry old pain.</div><span class="lc-tag">Trauma · Mental health</span></div></a>
+        <a class="learn-card" href="https://www.amazon.com/s?k=Man%27s+Search+for+Meaning" target="_blank"><div class="lc-icon">📙</div><div class="lc-body"><div class="lc-title">Man's Search for Meaning — Viktor Frankl</div><div class="lc-sub">Written in a concentration camp. About finding purpose when everything is stripped away.</div><span class="lc-tag">Purpose · Resilience</span></div></a>
+        <a class="learn-card" href="https://www.amazon.com/s?k=I+Will+Teach+You+To+Be+Rich" target="_blank"><div class="lc-icon">📒</div><div class="lc-body"><div class="lc-title">I Will Teach You To Be Rich — Ramit Sethi</div><div class="lc-sub">Actually practical financial advice. Automate everything, stop feeling guilty about spending.</div><span class="lc-tag">Money · Finance</span></div></a>
+        <a class="learn-card" href="https://www.amazon.com/s?k=Never+Split+the+Difference+Voss" target="_blank"><div class="lc-icon">📕</div><div class="lc-body"><div class="lc-title">Never Split the Difference — Chris Voss</div><div class="lc-sub">FBI hostage negotiator teaches you how to get what you want. Barry loves this one.</div><span class="lc-tag">Negotiation · Communication</span></div></a>
+      </div>
+      <div class="page-section">
+        <h3>🎧 Podcasts</h3>
+        <a class="learn-card" href="https://www.hubermanlab.com/podcast" target="_blank"><div class="lc-icon">🧠</div><div class="lc-body"><div class="lc-title">Huberman Lab</div><div class="lc-sub">Neuroscience tools for sleep, stress, focus, and mental health. Free and evidence-based.</div><span class="lc-tag">Neuroscience · Mental health</span></div></a>
+        <a class="learn-card" href="https://stevenbartlett.com/thediary/" target="_blank"><div class="lc-icon">🎙</div><div class="lc-body"><div class="lc-title">The Diary of a CEO — Steven Bartlett</div><div class="lc-sub">Deeply honest conversations about failure, mental health, and rebuilding. No filter.</div><span class="lc-tag">Growth · Mindset</span></div></a>
+        <a class="learn-card" href="https://heathermonahan.com/podcast/" target="_blank"><div class="lc-icon">💪</div><div class="lc-body"><div class="lc-title">Creating Confidence — Heather Monahan</div><div class="lc-sub">Practical tools for building confidence and overcoming self-doubt.</div><span class="lc-tag">Confidence · Self-worth</span></div></a>
+      </div>
+      <div class="page-section">
+        <h3>🌐 Free Tools</h3>
+        <a class="learn-card" href="https://www.headspace.com" target="_blank"><div class="lc-icon">🧘</div><div class="lc-body"><div class="lc-title">Headspace</div><div class="lc-sub">Guided meditation for stress, anxiety, sleep, and focus. Has a free tier.</div><span class="lc-tag">Meditation · Stress</span></div></a>
+        <a class="learn-card" href="https://www.aca12steps.org" target="_blank"><div class="lc-icon">🤝</div><div class="lc-body"><div class="lc-title">Adult Children of Alcoholics / Dysfunctional Families</div><div class="lc-sub">Free support for anyone who grew up in a dysfunctional home. Online meetings available.</div><span class="lc-tag">Family · Recovery</span></div></a>
+      </div>
+    </div>
+    <div class="rc-panel" id="rc-daily">
+      <p style="font-family:var(--serif);font-style:italic;font-size:13px;color:var(--text3);margin-bottom:20px">One piece of truth per day. Come back tomorrow for a new one.</p>
+      <div id="dailyVerdictContainer"><div class="dv-loading">⚖ The court is deliberating...</div></div>
+      <div style="margin-top:24px;padding:14px 16px;background:var(--gold-dim);border:1px solid var(--border2);border-radius:10px;">
+        <div style="font-size:11px;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;font-weight:500">Get a verdict on your specific struggle</div>
+        <div style="display:flex;gap:8px">
+          <input id="dvTopic" class="form-input" placeholder="e.g. self-sabotage, loneliness, anger..." style="flex:1"/>
+          <button class="form-btn" onclick="generateCustomVerdict()" style="width:auto;margin-top:0;padding:0 16px">⚖ Judge me</button>
+        </div>
+        <div id="customVerdictOut" style="margin-top:12px;display:none;font-family:var(--serif);font-size:14px;color:var(--text2);line-height:1.75;padding:12px;background:var(--card);border-radius:8px;border:1px solid var(--border)"></div>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- PAGE OVERLAYS (keeping same structure as original, just updated styling) -->
+<!-- DISCLAIMER -->
 <div class="page-overlay" id="page-disclaimer">
-  <div class="page-header">
-    <button class="page-back" onclick="closePage('disclaimer')">←</button>
-    <div class="page-title">! Disclaimer</div>
-  </div>
+  <div class="page-header"><button class="page-back" onclick="closePage('disclaimer')">←</button><div class="page-title">! Disclaimer</div></div>
   <div class="page-body">
-    <div class="warning-box">
-      <strong>THIS IS NOT PROFESSIONAL ADVICE</strong>
-      <p>The Judgy and Barry T. Lawson are fictional AI characters created for entertainment and general informational purposes only.</p>
-    </div>
-    <div class="page-section">
-      <h3>Not Legal Advice</h3>
-      <p>Nothing Barry says constitutes legal advice. Barry is an AI character, not a licensed attorney. Always consult a qualified, licensed attorney in your jurisdiction before making legal decisions.</p>
-    </div>
-    <div class="page-section">
-      <h3>Not Financial Advice</h3>
-      <p>Any financial, tax, or insurance guidance is for general informational purposes only. Consult a licensed CPA, financial advisor, or insurance professional.</p>
-    </div>
-    <div class="page-section">
-      <h3>Entertainment Purpose</h3>
-      <p>The Judgy's responses are designed for entertainment. The roasting, exaggeration, and dramatic delivery are fictional character elements — not personal attacks.</p>
-    </div>
-    <div class="page-section">
-      <h3>AI Limitations</h3>
-      <p>AI can make mistakes. Information may be outdated or inaccurate. Always verify important information with qualified professionals and authoritative sources.</p>
-    </div>
+    <div class="warning-box"><strong>THIS IS NOT PROFESSIONAL ADVICE</strong><p>The Judgy and Barry T. Lawson are fictional AI characters created for entertainment and general informational purposes only.</p></div>
+    <div class="page-section"><h3>Not Legal Advice</h3><p>Nothing Barry says constitutes legal advice. Always consult a qualified, licensed attorney before making legal decisions.</p></div>
+    <div class="page-section"><h3>Not Financial Advice</h3><p>Any financial, tax, or insurance guidance is for general informational purposes only. Consult a licensed CPA or financial advisor.</p></div>
+    <div class="page-section"><h3>Entertainment Purpose</h3><p>The Judgy's responses are designed for entertainment. The roasting and dramatic delivery are fictional character elements — not personal attacks.</p></div>
+    <div class="page-section"><h3>AI Limitations</h3><p>AI can make mistakes. Always verify important information with qualified professionals and authoritative sources.</p></div>
   </div>
 </div>
 
+<!-- PRIVACY -->
 <div class="page-overlay" id="page-privacy">
-  <div class="page-header">
-    <button class="page-back" onclick="closePage('privacy')">←</button>
-    <div class="page-title">⊙ Privacy Policy</div>
-  </div>
+  <div class="page-header"><button class="page-back" onclick="closePage('privacy')">←</button><div class="page-title">⊙ Privacy Policy</div></div>
   <div class="page-body">
-    <div class="page-section"><h3>What We Collect</h3><p>When you use The Judgy, we may collect messages you send, account information if you sign up, usage data, and device/browser information.</p></div>
-    <div class="page-section"><h3>How We Use It</h3><p>To provide AI responses via Anthropic's Claude API, to improve the service, to process payments via Stripe, and to send service-related emails.</p></div>
+    <div class="page-section"><h3>What We Collect</h3><p>Messages you send, account information if you sign up, usage data, and device/browser information.</p></div>
+    <div class="page-section"><h3>How We Use It</h3><p>To provide AI responses via Anthropic's Claude API, improve the service, process payments via Stripe, and send service-related emails.</p></div>
     <div class="page-section"><h3>Third Party Services</h3><p>We use Anthropic (AI), Supabase (database/auth), Stripe (payments), and Cloudflare (hosting). Each has their own privacy policy.</p></div>
     <div class="page-section"><h3>Your Rights</h3><p>You can request deletion of your data at any time. We do not sell your personal information to third parties.</p></div>
   </div>
 </div>
 
+<!-- TERMS -->
 <div class="page-overlay" id="page-terms">
-  <div class="page-header">
-    <button class="page-back" onclick="closePage('terms')">←</button>
-    <div class="page-title">≡ Terms of Service</div>
-  </div>
+  <div class="page-header"><button class="page-back" onclick="closePage('terms')">←</button><div class="page-title">≡ Terms of Service</div></div>
   <div class="page-body">
     <div class="page-section"><h3>Acceptance</h3><p>By using The Judgy, you agree to these terms.</p></div>
     <div class="page-section"><h3>Use of Service</h3><ul><li>You must be 18 or older</li><li>Do not use for illegal purposes</li><li>Do not rely on responses as actual legal or financial advice</li></ul></div>
-    <div class="page-section"><h3>Subscriptions & Billing</h3><p>Paid plans are billed monthly or annually. Cancel anytime. Refunds handled case-by-case within 7 days.</p></div>
+    <div class="page-section"><h3>Subscriptions &amp; Billing</h3><p>Paid plans are billed monthly or annually. Cancel anytime. Refunds handled case-by-case within 7 days.</p></div>
     <div class="page-section"><h3>Limitation of Liability</h3><p>We are not liable for any decisions made based on AI responses. Always consult professionals for important matters.</p></div>
   </div>
 </div>
 
+<!-- LEGAL FORMS -->
 <div class="page-overlay" id="page-forms">
-  <div class="page-header">
-    <button class="page-back" onclick="closePage('forms')">←</button>
-    <div class="page-title">📋 Legal Forms</div>
-  </div>
+  <div class="page-header"><button class="page-back" onclick="closePage('forms')">←</button><div class="page-title">📋 Legal Forms</div></div>
   <div class="page-body">
     <p style="font-size:13px;color:var(--text2);margin-bottom:20px;font-family:var(--serif);font-style:italic;">Barry's document templates. Fill in the fields and download. <strong style="color:var(--judgy2);font-style:normal;">Not a substitute for legal counsel.</strong></p>
-    <div class="page-section">
-      <h3>Demand Letter</h3>
+    <div class="page-section"><h3>Demand Letter</h3>
       <div class="form-card">
         <div class="form-card-title">Fill in the details</div>
-        <div class="form-row">
-          <div class="form-field"><label class="form-label">Your Name</label><input class="form-input" id="dl-from" placeholder="John Smith"/></div>
-          <div class="form-field"><label class="form-label">Recipient Name</label><input class="form-input" id="dl-to" placeholder="Jane Doe"/></div>
-        </div>
+        <div class="form-row"><div class="form-field"><label class="form-label">Your Name</label><input class="form-input" id="dl-from" placeholder="John Smith"/></div><div class="form-field"><label class="form-label">Recipient Name</label><input class="form-input" id="dl-to" placeholder="Jane Doe"/></div></div>
         <div class="form-field"><label class="form-label">Amount Owed ($)</label><input class="form-input" id="dl-amount" placeholder="500.00"/></div>
         <div class="form-field"><label class="form-label">Reason for Debt</label><input class="form-input" id="dl-reason" placeholder="Unpaid loan from January 2026"/></div>
         <div class="form-field"><label class="form-label">Payment Deadline</label><input class="form-input" id="dl-deadline" type="date"/></div>
         <button class="form-btn" onclick="generateDemandLetter(); this.textContent='Generating...'; setTimeout(()=>this.textContent='Generate Demand Letter',2000)">Generate Demand Letter</button>
       </div>
     </div>
-    <div class="page-section">
-      <h3>Divorce Preparation Checklist</h3>
+    <div class="page-section"><h3>Divorce Preparation Checklist</h3>
       <div class="form-card">
         <div class="form-field"><label class="form-label">State/Jurisdiction</label><input class="form-input" id="div-state" placeholder="California"/></div>
         <div class="form-field"><label class="form-label">Children involved?</label><select class="form-input" id="div-kids"><option>No children</option><option>1 child</option><option>2+ children</option></select></div>
         <div class="form-field"><label class="form-label">Assets</label><input class="form-input" id="div-assets" placeholder="Home, savings, retirement..."/></div>
         <button class="form-btn" id="divBtn" onclick="this.textContent='Barry is preparing...'; generateDivorceChecklist()">Generate Checklist</button>
-        <div class="referral-links">
-          <a class="ref-link" href="https://www.legalzoom.com/divorce/" target="_blank">LegalZoom Divorce</a>
-          <a class="ref-link" href="https://www.rocketlawyer.com/family-and-personal/divorce.rl" target="_blank">Rocket Lawyer</a>
-          <a class="ref-link" href="https://www.hellodivorce.com" target="_blank">Hello Divorce</a>
-        </div>
+        <div class="referral-links"><a class="ref-link" href="https://www.legalzoom.com/divorce/" target="_blank">LegalZoom Divorce</a><a class="ref-link" href="https://www.rocketlawyer.com/family-and-personal/divorce.rl" target="_blank">Rocket Lawyer</a><a class="ref-link" href="https://www.hellodivorce.com" target="_blank">Hello Divorce</a></div>
       </div>
     </div>
-    <div class="page-section">
-      <h3>LLC Formation Guide</h3>
+    <div class="page-section"><h3>LLC Formation Guide</h3>
       <div class="form-card">
         <div class="form-field"><label class="form-label">Business Name</label><input class="form-input" id="llc-name" placeholder="My Business LLC"/></div>
         <div class="form-field"><label class="form-label">State</label><input class="form-input" id="llc-state" placeholder="Wyoming, Delaware..."/></div>
         <div class="form-field"><label class="form-label">Business Type</label><select class="form-input" id="llc-type"><option>Online business / ecommerce</option><option>Service business</option><option>Real estate</option><option>Tech / SaaS</option></select></div>
         <button class="form-btn" id="llcBtn" onclick="this.textContent='Barry is researching...'; generateLLCGuide()">Generate LLC Guide</button>
-        <div class="referral-links">
-          <a class="ref-link" href="https://www.legalzoom.com/business/business-formation/llc-overview.html" target="_blank">LegalZoom LLC</a>
-          <a class="ref-link" href="https://www.incfile.com" target="_blank">Bizee (Incfile)</a>
-          <a class="ref-link" href="https://www.northwestregisteredagent.com" target="_blank">Northwest RA</a>
-        </div>
+        <div class="referral-links"><a class="ref-link" href="https://www.legalzoom.com/business/business-formation/llc-overview.html" target="_blank">LegalZoom LLC</a><a class="ref-link" href="https://www.incfile.com" target="_blank">Bizee (Incfile)</a><a class="ref-link" href="https://www.northwestregisteredagent.com" target="_blank">Northwest RA</a></div>
       </div>
     </div>
-    <div id="formOutput" style="display:none;">
-      <div class="page-section">
-        <h3>Generated Document</h3>
-        <div class="form-card">
-          <div id="formOutputContent" style="font-size:13px;color:var(--text2);line-height:1.7;white-space:pre-wrap;font-family:var(--serif);"></div>
-          <button class="form-btn" onclick="downloadForm()" style="margin-top:12px;">Download as Text</button>
-        </div>
-      </div>
-    </div>
+    <div id="formOutput" style="display:none;"><div class="page-section"><h3>Generated Document</h3><div class="form-card"><div id="formOutputContent" style="font-size:13px;color:var(--text2);line-height:1.7;white-space:pre-wrap;font-family:var(--serif);"></div><button class="form-btn" onclick="downloadForm()" style="margin-top:12px;">Download as Text</button></div></div></div>
   </div>
 </div>
 
+<!-- REFERRALS -->
 <div class="page-overlay" id="page-referrals">
-  <div class="page-header">
-    <button class="page-back" onclick="closePage('referrals')">←</button>
-    <div class="page-title">→ Barry's Referrals</div>
-  </div>
+  <div class="page-header"><button class="page-back" onclick="closePage('referrals')">←</button><div class="page-title">→ Barry's Referrals</div></div>
   <div class="page-body">
     <p style="font-size:14px;color:var(--text2);margin-bottom:20px;font-family:var(--serif);font-style:italic;">"Barry's vetted resources. He actually researched these. Shocking, I know." — The Judgy</p>
-    <div class="page-section"><h3>Legal</h3>
-      <div class="referral-links" style="display:flex;flex-direction:column;gap:8px;">
-        <a class="ref-link" href="https://www.legalzoom.com" target="_blank" style="padding:10px 14px;">LegalZoom — Online legal documents & attorney consultation</a>
-        <a class="ref-link" href="https://www.rocketlawyer.com" target="_blank" style="padding:10px 14px;">Rocket Lawyer — Legal documents & advice</a>
-        <a class="ref-link" href="https://www.avvo.com" target="_blank" style="padding:10px 14px;">Avvo — Find a local attorney</a>
-      </div>
-    </div>
-    <div class="page-section"><h3>Tax & Finance</h3>
-      <div class="referral-links" style="display:flex;flex-direction:column;gap:8px;">
-        <a class="ref-link" href="https://turbotax.intuit.com" target="_blank" style="padding:10px 14px;">TurboTax — File your taxes online</a>
-        <a class="ref-link" href="https://www.creditkarma.com" target="_blank" style="padding:10px 14px;">Credit Karma — Free credit monitoring</a>
-        <a class="ref-link" href="https://www.nerdwallet.com" target="_blank" style="padding:10px 14px;">NerdWallet — Financial advice & comparisons</a>
-      </div>
-    </div>
-    <div class="page-section"><h3>Business Formation</h3>
-      <div class="referral-links" style="display:flex;flex-direction:column;gap:8px;">
-        <a class="ref-link" href="https://www.incfile.com" target="_blank" style="padding:10px 14px;">Bizee — Form your LLC / Corp</a>
-        <a class="ref-link" href="https://stripe.com" target="_blank" style="padding:10px 14px;">Stripe — Accept payments online</a>
-      </div>
-    </div>
-    <div class="page-section"><h3>Mental Health</h3>
-      <div class="referral-links" style="display:flex;flex-direction:column;gap:8px;">
-        <a class="ref-link" href="https://www.betterhelp.com" target="_blank" style="padding:10px 14px;">BetterHelp — Online therapy with licensed therapists</a>
-        <a class="ref-link" href="https://www.talkspace.com" target="_blank" style="padding:10px 14px;">Talkspace — Therapy via text, voice & video</a>
-      </div>
-    </div>
-    <div class="warning-box" style="margin-top:20px;">
-      <strong>Disclosure</strong>
-      <p>Some links on this page are affiliate links. Barry gets a small commission — which he will absolutely brag about to Judgy.</p>
-    </div>
+    <div class="page-section"><h3>Legal</h3><div class="referral-links" style="display:flex;flex-direction:column;gap:8px;"><a class="ref-link" href="https://www.legalzoom.com" target="_blank" style="padding:10px 14px;">LegalZoom — Online legal documents &amp; attorney consultation</a><a class="ref-link" href="https://www.rocketlawyer.com" target="_blank" style="padding:10px 14px;">Rocket Lawyer — Legal documents &amp; advice</a><a class="ref-link" href="https://www.avvo.com" target="_blank" style="padding:10px 14px;">Avvo — Find a local attorney</a></div></div>
+    <div class="page-section"><h3>Tax &amp; Finance</h3><div class="referral-links" style="display:flex;flex-direction:column;gap:8px;"><a class="ref-link" href="https://turbotax.intuit.com" target="_blank" style="padding:10px 14px;">TurboTax — File your taxes online</a><a class="ref-link" href="https://www.creditkarma.com" target="_blank" style="padding:10px 14px;">Credit Karma — Free credit monitoring</a><a class="ref-link" href="https://www.nerdwallet.com" target="_blank" style="padding:10px 14px;">NerdWallet — Financial advice &amp; comparisons</a></div></div>
+    <div class="page-section"><h3>Business Formation</h3><div class="referral-links" style="display:flex;flex-direction:column;gap:8px;"><a class="ref-link" href="https://www.incfile.com" target="_blank" style="padding:10px 14px;">Bizee — Form your LLC / Corp</a><a class="ref-link" href="https://stripe.com" target="_blank" style="padding:10px 14px;">Stripe — Accept payments online</a></div></div>
+    <div class="page-section"><h3>Mental Health</h3><div class="referral-links" style="display:flex;flex-direction:column;gap:8px;"><a class="ref-link" href="https://www.betterhelp.com" target="_blank" style="padding:10px 14px;">BetterHelp — Online therapy with licensed therapists</a><a class="ref-link" href="https://www.talkspace.com" target="_blank" style="padding:10px 14px;">Talkspace — Therapy via text, voice &amp; video</a></div></div>
+    <div class="warning-box" style="margin-top:20px;"><strong>Disclosure</strong><p>Some links on this page are affiliate links. Barry gets a small commission — which he will absolutely brag about to Judgy.</p></div>
   </div>
 </div>
 
+<!-- LANDING PAGE BUILDER -->
 <div class="page-overlay" id="page-landing">
-  <div class="page-header">
-    <button class="page-back" onclick="closePage('landing')">←</button>
-    <div class="page-title">◻ Landing Page Builder</div>
-  </div>
+  <div class="page-header"><button class="page-back" onclick="closePage('landing')">←</button><div class="page-title">◻ Landing Page Builder</div></div>
   <div class="page-body">
     <p style="font-size:14px;color:var(--text2);margin-bottom:20px;font-family:var(--serif);">Barry will build you a clean landing page. Download it and deploy free to Cloudflare Pages.</p>
     <div class="form-card">
@@ -839,1051 +572,218 @@ header::after {
       <div class="form-field"><label class="form-label">What do you do?</label><input class="form-input" id="lp-desc" placeholder="We help small businesses..."/></div>
       <div class="form-field"><label class="form-label">Target audience</label><input class="form-input" id="lp-audience" placeholder="Small business owners..."/></div>
       <div class="form-field"><label class="form-label">Call to action</label><input class="form-input" id="lp-cta" placeholder="Get started free, Book a call..."/></div>
-      <div class="form-field"><label class="form-label">Color vibe</label>
-        <select class="form-input" id="lp-color">
-          <option>Professional dark (navy/white)</option>
-          <option>Clean light (white/blue)</option>
-          <option>Bold red (red/black)</option>
-          <option>Modern purple (purple/white)</option>
-          <option>Natural green (green/cream)</option>
-        </select>
-      </div>
+      <div class="form-field"><label class="form-label">Color vibe</label><select class="form-input" id="lp-color"><option>Professional dark (navy/white)</option><option>Clean light (white/blue)</option><option>Bold red (red/black)</option><option>Modern purple (purple/white)</option><option>Natural green (green/cream)</option></select></div>
       <button class="form-btn" onclick="buildLandingPage()" id="lpBtn">Barry, build my landing page</button>
     </div>
-    <div id="lpOutput" style="display:none;margin-top:16px;">
-      <div class="form-card">
-        <div class="form-card-title">Landing page ready</div>
-        <p style="font-size:12px;color:var(--text2);margin-bottom:10px;font-family:var(--serif);">Download → upload to GitHub → deploy to Cloudflare Pages for free.</p>
-        <button class="form-btn" onclick="downloadLP()">Download landing-page.html</button>
-      </div>
-    </div>
+    <div id="lpOutput" style="display:none;margin-top:16px;"><div class="form-card"><div class="form-card-title">Landing page ready</div><p style="font-size:12px;color:var(--text2);margin-bottom:10px;font-family:var(--serif);">Download → upload to GitHub → deploy to Cloudflare Pages for free.</p><button class="form-btn" onclick="downloadLP()">Download landing-page.html</button></div></div>
   </div>
 </div>
 
-
-<script>
-// ============================================================
-// THE JUDGY — UPDATED SCRIPT
-// Adds: conversation hooks, clickable follow-up options,
-//       cross-product recommendations, token usage awareness
-// ============================================================
-
-// ── YOUR BUILDS — cross-recommend based on topic ────────────
-const MY_BUILDS = [
-  {
-    id: 'rentyapp',
-    name: 'RentyApp',
-    url: 'https://rentyapp.net',
-    emoji: '🏠',
-    tagline: 'Property management made simple for landlords',
-    keywords: ['landlord','tenant','rent','lease','property','manage','evict','maintenance','rental income','property manager','rent collection','lease agreement'],
-    topics: ['legal','money','family'],
-  },
-  {
-    id: 'myrental',
-    name: 'MyRental.space',
-    url: 'https://myrental.space',
-    emoji: '🔑',
-    tagline: 'Find and list rental properties easily',
-    keywords: ['rent','rental','apartment','sublet','subletting','housing','furnished','find a place','listing','landlord','tenant','move in'],
-    topics: ['legal','money','family'],
-  },
-  {
-    id: 'dropvault',
-    name: 'DropVault',
-    url: 'https://dropvault.live',
-    emoji: '📦',
-    tagline: 'Sell digital products and earn passive income',
-    keywords: ['sell','product','digital','ebook','course','template','income','passive','creator','monetize','online store','download','side hustle','make money'],
-    topics: ['business','money'],
-  },
-  {
-    id: 'fluentra',
-    name: 'Fluentra AI',
-    url: 'https://fluentra.ai',
-    emoji: '🤖',
-    tagline: 'AI assistant for building, strategy and copywriting',
-    keywords: ['ai','artificial intelligence','learn ai','build website','strategy','copywriting','ai learning','automation','chatgpt','ai tools','skills','tech'],
-    topics: ['work','personal','business'],
-  },
-  {
-    id: 'buildshowcase',
-    name: 'Build Showcase',
-    url: 'https://build-showcase.dev',
-    emoji: '🏗️',
-    tagline: 'Showcase and promote your web projects',
-    keywords: ['portfolio','showcase','project','builder','developer','website','launch','side project','build','deploy','freelance','coding'],
-    topics: ['business','work'],
-  },
-  {
-    id: 'postpilots',
-    name: 'PostPilots',
-    url: 'https://postpilots.xyz',
-    emoji: '✏️',
-    tagline: 'Schedule posts to LinkedIn, X, Instagram and more',
-    keywords: ['social media','linkedin','instagram','twitter','post','content','brand','marketing','followers','audience','viral','tiktok','facebook','career path'],
-    topics: ['business','work'],
-  },
-];
-
-// ── DETECT RELEVANT BUILD FROM CONVERSATION ──────────────────
-function detectRelevantBuild(userText, topic) {
-  const lower = userText.toLowerCase();
-  let best = null;
-  let bestScore = 0;
-
-  for (const build of MY_BUILDS) {
-    let score = 0;
-    // Keyword match
-    for (const kw of build.keywords) {
-      if (lower.includes(kw)) score += 2;
-    }
-    // Topic match
-    if (build.topics.includes(topic)) score += 1;
-
-    if (score > bestScore) {
-      bestScore = score;
-      best = build;
-    }
-  }
-  // Only recommend if strong enough match
-  return bestScore >= 2 ? best : null;
-}
-
-// ── BUILD RECOMMENDATION HTML ────────────────────────────────
-function buildRecommendationHTML(build) {
-  return `
-    <div onclick="window.open('${build.url}','_blank')"
-         style="margin-top:12px;padding:10px 13px;background:rgba(196,160,80,0.05);
-                border:1px solid rgba(196,160,80,0.18);border-radius:9px;
-                cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:10px;"
-         onmouseover="this.style.borderColor='rgba(196,160,80,0.5)';this.style.background='rgba(196,160,80,0.09)'"
-         onmouseout="this.style.borderColor='rgba(196,160,80,0.18)';this.style.background='rgba(196,160,80,0.05)'">
-      <div style="width:32px;height:32px;border-radius:8px;background:rgba(196,160,80,0.1);
-                  border:1px solid rgba(196,160,80,0.2);display:flex;align-items:center;
-                  justify-content:center;font-size:14px;flex-shrink:0">${build.emoji}</div>
-      <div style="flex:1;min-width:0">
-        <div style="font-size:10px;color:rgba(196,160,80,0.6);font-weight:500;
-                    text-transform:uppercase;letter-spacing:1px;margin-bottom:2px">
-          Might help you
-        </div>
-        <div style="font-size:13px;color:#f2ede4;font-weight:500;font-family:'Playfair Display',serif">${build.name}</div>
-        <div style="font-size:11px;color:#a89880;margin-top:1px;font-family:'DM Sans',sans-serif">${build.tagline}</div>
-      </div>
-      <span style="font-size:11px;color:rgba(196,160,80,0.5);flex-shrink:0">↗</span>
-    </div>`;
-}
-
-// ── FOLLOW-UP OPTIONS HTML ────────────────────────────────────
-function buildFollowUpHTML(options, question) {
-  const optionBtns = options.map(opt => `
-    <button class="followup-btn" onclick="useFollowUp(this)"
-            style="background:var(--card2);border:1px solid var(--border2);
-                   border-radius:8px;padding:7px 12px;font-size:12px;
-                   color:var(--text2);cursor:pointer;font-family:var(--sans);
-                   text-align:left;transition:all 0.15s;line-height:1.4;"
-            onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--text)'"
-            onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--text2)'">
-      ${opt}
-    </button>`).join('');
-
-  return `
-    <div class="followup-wrap" style="margin-top:10px;padding:10px 12px;
-          background:rgba(255,255,255,0.03);border:1px solid var(--border);
-          border-radius:8px;">
-      <div style="font-size:11px;color:var(--text3);margin-bottom:7px;
-                  text-transform:uppercase;letter-spacing:0.5px;font-weight:500;">
-        ⚖️ ${question}
-      </div>
-      <div style="display:flex;flex-wrap:wrap;gap:6px;">
-        ${optionBtns}
-      </div>
-    </div>`;
-}
-
-// ── USE FOLLOW-UP OPTION ──────────────────────────────────────
-function useFollowUp(btn) {
-  const text = btn.textContent.trim();
-  // Remove the whole followup block from the DOM
-  const wrap = btn.closest('.followup-wrap');
-  if (wrap) wrap.remove();
-  // Put text in input and send
-  const input = document.getElementById('chatInput');
-  input.value = text;
-  autoResize(input);
-  sendMessage();
-}
-
-// ── UPDATED SYSTEM PROMPTS ────────────────────────────────────
-// Key change: instruct AI to end with FOLLOW_UP and OPTIONS blocks
-
-const JUDGY_PROMPT = `You are THE JUDGY — a sharp, authoritative AI judge. Think Judge Judy meets a no-nonsense best friend — commanding, witty, cutting, but ultimately caring.
-
-PERSONALITY:
-- Authoritative and precise — surgical observations, not cheap shots
-- Roast the person with insight (2-3 sentences), then get to the real truth
-- Give REAL, specific, actionable advice — no fluff
-- Dry wit — funny when the situation earns it
-- Phrases: "Let me be direct with you", "This is not complicated", "Court finds...", "I have ruled on far worse"
-- You tolerate Barry. You would never admit he is occasionally right.
-
-END EVERY RESPONSE WITH EXACTLY THIS FORMAT (no exceptions):
-⚖ VERDICT: [one authoritative ruling sentence]
-FOLLOW_UP: [one short question to continue — max 10 words]
-OPTIONS: [option 1] | [option 2] | [option 3]
-
-Keep the main response 100-160 words. Dignified but direct.
-The OPTIONS should be short (3-7 words each) and directly answer the FOLLOW_UP question.`;
-
-const BARRY_PROMPT = `You are BARRY T. LAWSON, ESQ. — The Judgy's ex-husband. You are like James Bond if James Bond became a lawyer — impeccably dressed, composed, genuinely competent, but perpetually underestimated by your ex-wife.
-
-PERSONALITY:
-- Polished and precise — you handle yourself with quiet confidence
-- Genuinely excellent at legal and business advice — this is your domain
-- Passive-aggressively note that Judgy never appreciated your expertise
-- Dry understated humor — never loud, never slapstick
-- The underdog in this dynamic, which makes you try harder
-- Phrases: "As I've noted on several occasions, Judith—", "With the greatest respect to my ex-wife's colorful opinion—", "The law is rather clear on this matter"
-- You still wear the same suit. It still fits perfectly.
-
-END EVERY RESPONSE WITH EXACTLY THIS FORMAT (no exceptions):
-📋 RULING: [your formal precise legal/business verdict in one sentence]
-FOLLOW_UP: [one short question to dig deeper — max 10 words]
-OPTIONS: [option 1] | [option 2] | [option 3]
-
-Keep the main response 100-160 words. Impeccable. Precise. Quietly devastating.
-The OPTIONS should be short (3-7 words each) and directly answer the FOLLOW_UP question.`;
-
-const JUDGY_CLAP_BACK = `You are THE JUDGY responding after BARRY just gave his legal advice.
-
-- Acknowledge reluctantly that Barry is technically correct (you hate this)
-- Take a precise shot at him — his effort to impress, his attachment to that suit, his need for validation
-- Add your emotional/human angle to his legal advice
-- Keep it SHORT — 50-70 words only
-
-END WITH EXACTLY:
-FOLLOW_UP: [one short juicy question — max 10 words]
-OPTIONS: [option 1] | [option 2] | [option 3]
-
-No verdict line — just a short clap back then the follow-up.`;
-
-// ── PARSE AI RESPONSE ─────────────────────────────────────────
-function parseAIResponse(text, verdictMarker) {
-  let body = text;
-  let verdict = '';
-  let followUp = '';
-  let options = [];
-
-  // Extract FOLLOW_UP
-  const fuMatch = text.match(/FOLLOW_UP:\s*(.+)/i);
-  if (fuMatch) {
-    followUp = fuMatch[1].trim();
-    body = body.replace(fuMatch[0], '').trim();
-  }
-
-  // Extract OPTIONS
-  const opMatch = text.match(/OPTIONS:\s*(.+)/i);
-  if (opMatch) {
-    options = opMatch[1].split('|').map(o => o.trim()).filter(Boolean);
-    body = body.replace(opMatch[0], '').trim();
-  }
-
-  // Extract VERDICT/RULING
-  if (verdictMarker) {
-    const re = new RegExp(`${verdictMarker}\\s*(.+)`, 'i');
-    const m = body.match(re);
-    if (m) {
-      verdict = m[1].trim();
-      body = body.replace(m[0], '').trim();
-    }
-  }
-
-  return { body, verdict, followUp, options };
-}
-
-// ── ADD MESSAGE WITH FOLLOW-UPS AND RECOMMENDATION ───────────
-function addMsgFull(role, parsed, isBarry, userText, currentTopic) {
-  const { body, verdict, followUp, options } = parsed;
-  const verdictMarker = isBarry ? '📋' : '⚖️';
-  const verdictClass = isBarry ? 'barry-verdict' : 'verdict-line';
-
-  // Build verdict HTML
-  const verdictHtml = verdict
-    ? `<div class="${verdictClass}">${verdictMarker} ${verdict}</div>`
-    : '';
-
-  // Build follow-up HTML
-  const followUpHtml = (followUp && options.length)
-    ? buildFollowUpHTML(options, followUp)
-    : '';
-
-  // Build recommendation HTML
-  const build = userText ? detectRelevantBuild(userText, currentTopic) : null;
-  const recHtml = build ? buildRecommendationHTML(build) : '';
-
-  // Assemble
-  const msgs = document.getElementById('messages');
-  const div = document.createElement('div');
-  div.className = `msg ${role}`;
-  const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-  div.innerHTML = `
-    <div class="msg-av">${role === 'barry' ? '👔' : '⚖️'}</div>
-    <div class="msg-wrap">
-      <div class="msg-name">${role === 'barry' ? 'BARRY T. LAWSON, ESQ.' : 'THE JUDGY'}</div>
-      <div class="msg-bubble">
-        ${formatResponse(body)}
-        ${verdictHtml}
-        ${followUpHtml}
-        ${recHtml}
-      </div>
-      <div class="msg-time">${time}</div>
-    </div>`;
-
-  msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
-}
-
-// ── STATE ──────────────────────────────────────────────────
-let topic = 'general';
-let charMode = 'both';
-let isDark = true;
-let msgCount = 0;
-let isThinking = false;
-let lpContent = '';
-let formContent = '';
-let lastUserText = '';
-
-// ── SIDEBAR ────────────────────────────────────────────────
-function openSidebar() {
-  document.getElementById('sidebar').classList.add('open');
-  document.getElementById('sidebarOverlay').classList.add('open');
-}
-function closeSidebar() {
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('sidebarOverlay').classList.remove('open');
-}
-
-// ── THEME ──────────────────────────────────────────────────
-const themes = ['dark', 'light'];
-const themeIcons = { dark: '🌙', light: '☀' };
-const themeLabels = { dark: 'Light mode', light: 'Dark mode' };
-let themeIndex = 0;
-function toggleTheme() {
-  themeIndex = (themeIndex + 1) % 2;
-  const t = themes[themeIndex];
-  document.documentElement.setAttribute('data-theme', t);
-  document.getElementById('themeBtn').textContent = themeIcons[t];
-  const lbl = document.getElementById('themeLabel');
-  if (lbl) lbl.textContent = themeLabels[t];
-  const icon = document.getElementById('themeIcon');
-  if (icon) icon.textContent = themeIcons[t];
-}
-
-// ── PAGES ──────────────────────────────────────────────────
-function openPage(id) { document.getElementById('page-' + id).classList.add('open'); }
-function closePage(id) { document.getElementById('page-' + id).classList.remove('open'); }
-function setView(v, el) {
-  document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
-  el.classList.add('active');
-}
-
-// ── SOUND ──────────────────────────────────────────────────
-let judgySoundOn = true;
-function toggleJudgySound() {
-  judgySoundOn = !judgySoundOn;
-  document.getElementById('judgySoundBtn').textContent = judgySoundOn ? '🔊' : '🔇';
-}
-
-// ── TOPICS ─────────────────────────────────────────────────
-const topicPlaceholders = {
-  general:      "Present your case to the court...",
-  relationship: "My ex wants to get back together but they cheated...",
-  work:         "I don't know which career path is right for me...",
-  coworker:     "My coworker gets the same pay but does half the work...",
-  personal:     "I want to learn AI but don't know where to start...",
-  family:       "My parents keep comparing me to my sibling...",
-  legal:        "What do I need to know about subletting my apartment?",
-  business:     "How do I figure out which skills are worth learning in 2026?",
-  money:        "I have no idea how to handle my taxes as a freelancer...",
-};
-
-const topicRotations = {
-  general: [
-    "Present your case to the court...",
-    "Ask Judgy anything — she's heard worse...",
-    "State your situation. Court is in session.",
-    "What's going on? Barry's ready to advise.",
-  ],
-  work: [
-    "I don't know which career path is right for me...",
-    "My boss takes credit for my work in every meeting...",
-    "I want to switch careers but I'm scared to start over...",
-    "How do I negotiate a raise without getting fired?",
-    "I want to build skills in AI — where do I begin?",
-  ],
-  legal: [
-    "What do I need to know about subletting my apartment?",
-    "My landlord won't return my security deposit...",
-    "I need to send a demand letter — how do I do it?",
-    "What are my rights as a tenant?",
-    "I want to start an LLC — what state is best?",
-    "My employer hasn't paid me — what can I do?",
-  ],
-  business: [
-    "How do I figure out which skills are worth learning in 2026?",
-    "I want to start a side hustle — where do I begin?",
-    "How do I price my freelance services?",
-    "I want to build and sell a digital product — is it realistic?",
-    "What's the difference between an LLC and sole proprietor?",
-  ],
-  money: [
-    "I have no idea how to handle my taxes as a freelancer...",
-    "Someone owes me money and keeps avoiding me...",
-    "I want to start investing but don't know where to start...",
-    "How do I create a budget I'll actually stick to?",
-    "I'm thinking about subletting my place — what do I need to know?",
-  ],
-  personal: [
-    "I want to learn AI but don't know where to start...",
-    "I keep self-sabotaging every good thing in my life...",
-    "I feel stuck and don't know how to move forward...",
-    "I want to build new skills but have no time...",
-    "How do I stop procrastinating on things that matter?",
-  ],
-  relationship: [
-    "My ex wants to get back together but they cheated on me...",
-    "I think I'm falling for someone who isn't available...",
-    "My partner and I fight about money constantly...",
-    "I don't know if I should end this relationship...",
-  ],
-  family: [
-    "My parents keep comparing me to my sibling...",
-    "I'm thinking about subletting a room to help with rent...",
-    "My family doesn't support my career choice...",
-    "I'm dealing with a difficult family member at work...",
-  ],
-  coworker: [
-    "My coworker gets the same pay but does half the work...",
-    "Someone keeps taking credit for my ideas in meetings...",
-    "My coworker is undermining me to our boss...",
-    "How do I deal with a passive-aggressive colleague?",
-  ],
-};
-
-let placeholderTimers = {};
-function rotatePlaceholder() {
-  const input = document.getElementById('chatInput');
-  if (!input || document.activeElement === input) return;
-  const rots = topicRotations[topic] || topicRotations.general;
-  const idx = Math.floor(Math.random() * rots.length);
-  input.placeholder = rots[idx];
-}
-setInterval(rotatePlaceholder, 4000);
-
-
-function setTopic(btn, t) {
-  document.querySelectorAll('.topic-pill').forEach(p => p.classList.remove('active'));
-  btn.classList.add('active');
-  topic = t;
-  const input = document.getElementById('chatInput');
-  if (input) input.placeholder = topicPlaceholders[t] || 'Present your case to the court...';
-  renderChips();
-}
-
-function renderChips() {
-  const wrap = document.getElementById('suggestionChips');
-  if (!wrap) return;
-  const rots = topicRotations[topic] || topicRotations.general;
-  const shuffled = [...rots].sort(() => Math.random() - 0.5).slice(0, 3);
-  wrap.innerHTML = shuffled.map(q =>
-    `<button class="suggestion-chip" onclick="useChip(this)">${q}</button>`
-  ).join('');
-}
-
-function useChip(btn) {
-  const input = document.getElementById('chatInput');
-  input.value = btn.textContent;
-  autoResize(input);
-  input.focus();
-  document.getElementById('suggestionChips').innerHTML = '';
-  sendMessage();
-}
-function quickTopic(t) {
-  topic = t;
-  document.querySelectorAll('.topic-pill').forEach(p => {
-    p.classList.toggle('active', p.textContent.toLowerCase().includes(t.substring(0, 4)));
-  });
-}
-
-// ── INPUT ──────────────────────────────────────────────────
-function autoResize(el) {
-  el.style.height = 'auto';
-  el.style.height = Math.min(el.scrollHeight, 100) + 'px';
-  document.getElementById('charCt').textContent = el.value.length + '/500';
-}
-
-function fillRandomQuestion() {
-  const input = document.getElementById('chatInput');
-  const rots = topicRotations[topic] || topicRotations.general;
-  const idx = Math.floor(Math.random() * rots.length);
-  input.value = rots[idx];
-  autoResize(input);
-  input.focus();
-  input.setSelectionRange(input.value.length, input.value.length);
-}
-
-function fillFromPlaceholder() {
-  const input = document.getElementById('chatInput');
-  if (input.value.trim() !== '') return;
-  const ph = input.placeholder;
-  if (!ph || ph === 'Present your case to the court...') return;
-  // Small delay so focus completes first
-  setTimeout(() => {
-    input.value = ph;
-    autoResize(input);
-    input.setSelectionRange(input.value.length, input.value.length);
-  }, 50);
-}
-function handleKey(e) {
-  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
-}
-function useStarter(card) {
-  const t = card.querySelector('.starter-t').textContent;
-  document.getElementById('chatInput').value = t;
-  autoResize(document.getElementById('chatInput'));
-  sendMessage();
-}
-
-// ── RAGE METER ─────────────────────────────────────────────
-function updateRage() {
-  msgCount++;
-  const level = Math.min(5, Math.ceil(msgCount / 2));
-  document.querySelectorAll('.rage-pip').forEach((p, i) => p.classList.toggle('on', i < level));
-}
-
-// ── MESSAGES ──────────────────────────────────────────────
-function removeWelcome() {
-  const w = document.getElementById('welcome');
-  if (w) w.remove();
-}
-
-function addMsg(role, html, verdict = '', isBarry = false) {
-  removeWelcome();
-  const msgs = document.getElementById('messages');
-  const div = document.createElement('div');
-  div.className = `msg ${role}`;
-  const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  const verdictHtml = verdict
-    ? `<div class="${isBarry ? 'barry-verdict' : 'verdict-line'}">${isBarry ? '📋' : '⚖️'} ${verdict}</div>`
-    : '';
-  if (role === 'judgy' || role === 'barry') {
-    div.innerHTML = `
-      <div class="msg-av">${role === 'barry' ? '👔' : '⚖️'}</div>
-      <div class="msg-wrap">
-        <div class="msg-name">${role === 'barry' ? 'BARRY T. LAWSON, ESQ.' : 'THE JUDGY'}</div>
-        <div class="msg-bubble">${html}${verdictHtml}</div>
-        <div class="msg-time">${time}</div>
-      </div>`;
-  } else {
-    div.innerHTML = `
-      <div class="msg-av">👤</div>
-      <div class="msg-wrap">
-        <div class="msg-bubble">${html.replace(/\n/g, '<br>')}</div>
-        <div class="msg-time">${time}</div>
-      </div>`;
-  }
-  msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
-}
-
-function showTyping(role) {
-  removeWelcome();
-  const msgs = document.getElementById('messages');
-  const div = document.createElement('div');
-  div.className = `msg ${role}`;
-  div.id = `typing-${role}`;
-  div.innerHTML = `
-    <div class="msg-av">${role === 'barry' ? '👔' : '⚖️'}</div>
-    <div class="msg-wrap">
-      <div class="msg-name">${role === 'barry' ? 'BARRY' : 'JUDGY'}</div>
-      <div class="typing-bub">
-        <div class="td"></div><div class="td"></div><div class="td"></div>
-      </div>
-    </div>`;
-  msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
-}
-function removeTyping(role) {
-  const t = document.getElementById(`typing-${role}`);
-  if (t) t.remove();
-}
-
-function formatResponse(text) {
-  return text
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\n/g, '<br>');
-}
-
-// ── DETECT LEGAL / BUSINESS ────────────────────────────────
-const legalKeywords = ['legal','law','sue','court','lawyer','attorney','contract','divorce','custody','evict','tenant','landlord','copyright','trademark','will','estate','llc','incorporate','tax','irs','insurance','claim','settlement'];
-const businessKeywords = ['business','startup','company','brand','market','pricing','revenue','profit','client','customer','invoice','landing page','website','saas','product','launch','competitor'];
-function isLegalOrBusiness(text) {
-  const lower = text.toLowerCase();
-  return legalKeywords.some(k => lower.includes(k)) ||
-    businessKeywords.some(k => lower.includes(k)) ||
-    topic === 'legal' || topic === 'business' || topic === 'money';
-}
-
-// ── NEW CASE ──────────────────────────────────────────────
-function newCase() {
-  const msgs = document.getElementById('messages');
-  msgs.innerHTML = `
-    <div class="welcome" id="welcome">
-      <div class="welcome-crest">⚖</div>
-      <h2>THE <span class="judgy-name">JUDGY</span><br>& <span class="barry-name">BARRY</span></h2>
-      <div class="welcome-subtitle">Brutally honest. Surprisingly competent.</div>
-      <div class="welcome-rule"></div>
-      <div class="char-duo">
-        <div class="char-card judgy" id="charJudgy" onclick="selectChar('judgy')">
-          <div class="char-monogram">J.</div>
-          <div class="char-card-name">The Judgy</div>
-          <div class="char-card-title">The Honorable Judge</div>
-          <div class="char-card-tag">Life · Love · Work</div>
-        </div>
-        <div class="char-card barry" id="charBarry" onclick="selectChar('barry')">
-          <div class="char-monogram">B.</div>
-          <div class="char-card-name">Barry T. Lawson</div>
-          <div class="char-card-title">Esq. — Her Ex-Husband</div>
-          <div class="char-card-tag">Legal · Business · Tax</div>
-        </div>
-      </div>
-      <div id="charModeBar" style="display:none">
-        <div class="char-mode-bar">
-          <span class="char-mode-label" id="charModeLabel"></span>
-          <button class="char-mode-back" onclick="selectChar('both')">← Both</button>
-        </div>
-      </div>
-      <div class="starters">
-        <button class="starter" onclick="useStarter(this)"><span class="starter-icon">♡</span><span class="starter-t">My ex wants to get back together but they cheated on me</span></button>
-        <button class="starter barry-s" onclick="useStarter(this)"><span class="starter-icon">§</span><span class="starter-t">I want to start an LLC — where do I begin?</span></button>
-        <button class="starter" onclick="useStarter(this)"><span class="starter-icon">◉</span><span class="starter-t">My coworker keeps stealing my ideas in meetings</span></button>
-        <button class="starter barry-s" onclick="useStarter(this)"><span class="starter-icon">📋</span><span class="starter-t">I need a demand letter for money owed to me</span></button>
-      </div>
-    </div>`;
-  msgCount = 0;
-  charMode = 'both';
-  lastUserText = '';
-  document.querySelectorAll('.rage-pip').forEach(p => p.classList.remove('on'));
-  document.getElementById('chatInput').value = '';
-  document.getElementById('chatInput').placeholder = 'Present your case to the court...';
-  autoResize(document.getElementById('chatInput'));
-}
-
-
-function selectChar(mode) {
-  charMode = mode;
-  document.getElementById('charJudgy')?.classList.toggle('selected-char', mode === 'judgy');
-  document.getElementById('charBarry')?.classList.toggle('selected-char', mode === 'barry');
-  const bar = document.getElementById('charModeBar');
-  const lbl = document.getElementById('charModeLabel');
-  if (mode === 'both') {
-    if (bar) bar.style.display = 'none';
-    document.getElementById('charJudgy')?.classList.remove('selected-char');
-    document.getElementById('charBarry')?.classList.remove('selected-char');
-  } else {
-    if (bar) bar.style.display = 'block';
-    if (lbl) lbl.textContent = mode === 'judgy' ? '⚖️ Chatting with Judgy only' : '👔 Chatting with Barry only';
-    const input = document.getElementById('chatInput');
-    if (input) input.placeholder = mode === 'judgy' ? 'Present your case, Your Honor...' : 'Ask Barry a legal or business question...';
-  }
-  document.getElementById('chatInput')?.focus();
-}
-
-// ── MAIN SEND ──────────────────────────────────────────────
-
-// ── STRIPE PAYMENT LINKS ────────────────────────────────────
-const STRIPE_LINKS = {
-  starter:  'https://buy.stripe.com/3cIfZgbeq6p03ft1Fkg3600',
-  pro:      'https://buy.stripe.com/00wdR882eaFg03hcjYg3601',
-  token_sm: 'https://buy.stripe.com/aFa4gy5U6fZA17l1Fkg360a',
-  token_md: 'https://buy.stripe.com/00w9ASbeqcNo5nBgAeg3609',
-  token_lg: 'https://buy.stripe.com/8x29AS5U65kW03h1Fkg3608',
-};
-
-const FREE_LIMIT = 10;
-let totalMsgCount = parseInt(localStorage.getItem('judgy_msgs') || '0');
-let isPaid = localStorage.getItem('judgy_paid') === '1';
-let paywallShown = false;
-
-function saveCount() {
-  localStorage.setItem('judgy_msgs', totalMsgCount);
-}
-
-function checkPayment() {
-  const params = new URLSearchParams(window.location.search);
-  if (params.get('payment') === 'success') {
-    isPaid = true;
-    localStorage.setItem('judgy_paid', '1');
-    localStorage.setItem('judgy_msgs', '0');
-    totalMsgCount = 0;
-    showToast('Welcome to The Judgy — court is fully in session.');
-    updatePlanUI();
-    window.history.replaceState({}, '', window.location.pathname);
-  }
-}
-
-
-function updatePlanUI() {
-  const msgs = totalMsgCount;
-  const paid = isPaid;
-  const val = document.getElementById('sidebarPlanValue');
-  const btn = document.getElementById('upgradeHeaderBtn');
-  if (paid) {
-    if (val) val.textContent = 'Pro — unlimited';
-    if (btn) { btn.textContent = '⚖ Pro'; btn.classList.add('paid'); btn.onclick = null; }
-  } else {
-    const remaining = Math.max(0, FREE_LIMIT - msgs);
-    if (val) val.textContent = `Free — ${remaining} cases left`;
-    if (btn) { btn.textContent = '⚖ Upgrade'; btn.classList.remove('paid'); btn.onclick = () => showPaywall(); }
-  }
-}
-
-function showPaywall() {
-  if (paywallShown) return;
-  paywallShown = true;
-  const overlay = document.getElementById('paywallOverlay');
-  overlay.style.display = 'flex';
-  document.body.style.overflow = 'hidden';
-}
-
-function closePaywall() {
-  const overlay = document.getElementById('paywallOverlay');
-  overlay.style.animation = 'pwFadeIn 0.2s ease reverse forwards';
-  setTimeout(() => {
-    overlay.style.display = 'none';
-    document.body.style.overflow = '';
-    paywallShown = false;
-  }, 200);
-}
-
-function handleOverlayClick(e) {
-  if (e.target === document.getElementById('paywallOverlay')) closePaywall();
-}
-
-function trackClick(plan) {
-  localStorage.setItem('judgy_last_plan', plan);
-}
-
-function showToast(msg) {
-  const t = document.getElementById('successToast');
-  document.getElementById('successMsg').textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 4000);
-}
-
-function checkLimit() {
-  if (isPaid) return true;
-  totalMsgCount++;
-  saveCount();
-  updatePlanUI();
-  if (totalMsgCount > FREE_LIMIT) {
-    showPaywall();
-    return false;
-  }
-  return true;
-}
-
-// Check for payment success on page load
-window.addEventListener('load', () => { checkPayment(); updatePlanUI(); renderChips(); });
-
-async function sendMessage() {
-  const input = document.getElementById('chatInput');
-  const text = input.value.trim();
-  if (!text || isThinking) return;
-  if (!checkLimit()) return;
-  input.value = '';
-  autoResize(input);
-  lastUserText = text;
-  addMsg('user', text);
-  updateRage();
-  isThinking = true;
-  document.getElementById('sendBtn').disabled = true;
-
-  const barrySituation = charMode === 'barry' || (charMode === 'both' && isLegalOrBusiness(text));
-  const judgyOnly = charMode === 'judgy';
-
-  if (judgyOnly) {
-    showTyping('judgy');
-    try {
-      const topicCtx = { relationship:'relationship issue', work:'work situation', coworker:'coworker drama', personal:'personal growth', family:'family situation', general:'' };
-      const raw = await callClaude(
-        JUDGY_PROMPT + (topicCtx[topic] ? `\n\nContext: This is a ${topicCtx[topic]}.` : ''),
-        text
-      );
-      removeTyping('judgy');
-      const parsed = parseAIResponse(raw, '⚖️ VERDICT:');
-      addMsgFull('judgy', parsed, false, text, topic);
-    } catch (e) {
-      removeTyping('judgy');
-      addMsg('judgy', "Court is experiencing technical difficulties. Try again.", '⚖️ VERDICT: Case postponed.');
-    }
-    isThinking = false;
-    document.getElementById('sendBtn').disabled = false;
-    input.focus();
-    return;
-  }
-
-  if (charMode === 'barry') {
-    showTyping('barry');
-    try {
-      const raw = await callClaude(BARRY_PROMPT, text);
-      removeTyping('barry');
-      const parsed = parseAIResponse(raw, '📋 RULING:');
-      addMsgFull('barry', parsed, true, text, topic);
-    } catch (e) {
-      removeTyping('barry');
-      addMsg('barry', "Connection dropped. Barry T. Lawson, Esq.", '📋 RULING: Try again.', true);
-    }
-    isThinking = false;
-    document.getElementById('sendBtn').disabled = false;
-    input.focus();
-    return;
-  }
-
-  if (barrySituation) {
-    // BARRY leads
-    showTyping('barry');
-    try {
-      const barryRaw = await callClaude(BARRY_PROMPT, text);
-      removeTyping('barry');
-      const barryParsed = parseAIResponse(barryRaw, '📋 RULING:');
-      addMsgFull('barry', barryParsed, true, text, topic);
-
-      // JUDGY claps back
-      await new Promise(r => setTimeout(r, 800));
-      showTyping('judgy');
-      const judgyRaw = await callClaude(
-        JUDGY_CLAP_BACK,
-        `User asked: "${text}"\n\nBarry just said: "${barryRaw}"`
-      );
-      removeTyping('judgy');
-      const judgyParsed = parseAIResponse(judgyRaw, null);
-      addMsgFull('judgy', judgyParsed, false, null, topic); // no rec on clap back
-    } catch (e) {
-      removeTyping('barry'); removeTyping('judgy');
-      addMsg('barry', "Objection! My connection dropped.", '📋 RULING: Try again.', true);
-    }
-
-  } else {
-    // JUDGY leads
-    showTyping('judgy');
-    try {
-      const topicCtx = { relationship:'relationship issue', work:'work situation', coworker:'coworker drama', personal:'personal growth', family:'family situation', general:'' };
-      const judgyRaw = await callClaude(
-        JUDGY_PROMPT + (topicCtx[topic] ? `\n\nContext: This is a ${topicCtx[topic]}.` : ''),
-        text
-      );
-      removeTyping('judgy');
-      const judgyParsed = parseAIResponse(judgyRaw, '⚖️ VERDICT:');
-      addMsgFull('judgy', judgyParsed, false, text, topic);
-
-      // Barry jumps in if money/legal detected
-      const barryJump = ['money','loan','debt','pay','fired','contract','rights','sue'].some(k => text.toLowerCase().includes(k));
-      if (barryJump) {
-        await new Promise(r => setTimeout(r, 1000));
-        showTyping('barry');
-        const barryRaw = await callClaude(
-          `You are BARRY T. LAWSON, ESQ. Judgy just gave life advice. Add a quick legal/financial angle she missed. Roast her a little. Keep it SHORT — 60-80 words. End with:\n📋 RULING: [short ruling]\nFOLLOW_UP: [short question max 10 words]\nOPTIONS: [option 1] | [option 2] | [option 3]`,
-          `User asked: "${text}"\n\nJudgy said: "${judgyRaw}"`
-        );
-        removeTyping('barry');
-        const barryParsed = parseAIResponse(barryRaw, '📋 RULING:');
-        addMsgFull('barry', barryParsed, true, null, topic);
-      }
-    } catch (e) {
-      removeTyping('judgy');
-      addMsg('judgy', "Court is experiencing technical difficulties. Try again.", '⚖️ VERDICT: Case postponed.');
-    }
-  }
-
-  isThinking = false;
-  document.getElementById('sendBtn').disabled = false;
-  input.focus();
-  renderChips();
-}
-
-// ── SUPABASE EDGE FUNCTION CALL ─────────────────────────────
-const JUDGY_FN_URL = 'https://dmemzljerldzeiwqfxzp.supabase.co/functions/v1/judgy-chat-v2-ts';
-
-async function callClaude(system, userMsg) {
-  const res = await fetch(JUDGY_FN_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ system, userMessage: userMsg })
-  });
-  const data = await res.json();
-  if (data.text) return data.text;
-  throw new Error(data.error || 'No response');
-}
-
-// ── LEGAL FORMS ────────────────────────────────────────────
-function generateDemandLetter() {
-  const from     = document.getElementById('dl-from').value || '[Your Name]';
-  const to       = document.getElementById('dl-to').value   || '[Recipient]';
-  const amt      = document.getElementById('dl-amount').value || '[Amount]';
-  const reason   = document.getElementById('dl-reason').value || '[Reason]';
-  const deadline = document.getElementById('dl-deadline').value || '[Date]';
-  const today    = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-  formContent = `DEMAND LETTER\n\nDate: ${today}\n\nFrom: ${from}\nTo:   ${to}\n\nDear ${to},\n\nThis letter serves as formal notice that you owe me the sum of $${amt} for the following reason: ${reason}.\n\nDespite prior attempts to resolve this matter, payment has not been received. I hereby demand full payment of $${amt} no later than ${deadline}.\n\nIf payment is not received by the above date, I reserve the right to pursue all available legal remedies, including but not limited to filing a claim in small claims court.\n\nSincerely,\n\n${from}\n\n---\n⚠️ DISCLAIMER: This is a general template generated by an AI character. It is NOT a substitute for advice from a licensed attorney.`;
-  document.getElementById('formOutputContent').textContent = formContent;
-  document.getElementById('formOutput').style.display = 'block';
-  document.getElementById('formOutput').scrollIntoView({ behavior: 'smooth' });
-}
-
-async function generateDivorceChecklist() {
-  const state  = document.getElementById('div-state').value || 'your state';
-  const kids   = document.getElementById('div-kids').value;
-  const assets = document.getElementById('div-assets').value || 'various assets';
-  const btns = document.querySelectorAll('#page-forms .form-btn');
-  btns.forEach(b => b.disabled = true);
-  document.getElementById('formOutput').style.display = 'none';
-  try {
-    const res = await callClaude(
-      `You are Barry T. Lawson, Esq. Generate a practical divorce preparation checklist. Be helpful and specific. Format as a numbered checklist. Add a brief disclaimer at the end. Keep to 200 words max.`,
-      `State: ${state}, Children: ${kids}, Assets: ${assets}`
-    );
-    formContent = res;
-    document.getElementById('formOutputContent').textContent = res;
-    document.getElementById('formOutput').style.display = 'block';
-    document.getElementById('formOutput').scrollIntoView({ behavior: 'smooth' });
-  } catch (e) {
-    const out = document.getElementById('formOutputContent');
-    out.textContent = 'Barry is having technical difficulties. Please try again in a moment.';
-    document.getElementById('formOutput').style.display = 'block';
-  } finally {
-    document.querySelectorAll('#page-forms .form-btn').forEach(b => b.disabled = false);
-  }
-}
-
-async function generateLLCGuide() {
-  const name  = document.getElementById('llc-name').value || 'your business';
-  const state = document.getElementById('llc-state').value || 'your state';
-  const type  = document.getElementById('llc-type').value;
-  try {
-    const res = await callClaude(
-      `You are Barry T. Lawson, Esq. Generate a step-by-step LLC formation guide. Be specific and practical. Format as numbered steps. Include estimated costs. Add a brief disclaimer. 200 words max.`,
-      `Business: ${name}, State: ${state}, Type: ${type}`
-    );
-    formContent = res;
-    document.getElementById('formOutputContent').textContent = res;
-    document.getElementById('formOutput').style.display = 'block';
-    document.getElementById('formOutput').scrollIntoView({ behavior: 'smooth' });
-  } catch (e) {
-    const out = document.getElementById('formOutputContent');
-    out.textContent = 'Barry is unavailable right now. Please try again in a moment.';
-    document.getElementById('formOutput').style.display = 'block';
-  }
-}
-
-function downloadForm() {
-  const blob = new Blob([formContent], { type: 'text/plain' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'barry-document.txt';
-  a.click();
-}
-
-// ── LANDING PAGE BUILDER ───────────────────────────────────
-async function buildLandingPage() {
-  const name     = document.getElementById('lp-name').value     || 'My Business';
-  const desc     = document.getElementById('lp-desc').value     || 'We help people.';
-  const audience = document.getElementById('lp-audience').value || 'Everyone';
-  const cta      = document.getElementById('lp-cta').value      || 'Get Started';
-  const color    = document.getElementById('lp-color').value;
-  const btn = document.getElementById('lpBtn');
-  btn.textContent = 'Barry is building... adjusting his clip-on tie...';
-  btn.disabled = true;
-  try {
-    const res = await callClaude(
-      `You are Barry T. Lawson, Esq. but also secretly a great web designer. Generate a complete, beautiful single-page HTML landing page. Requirements: Full HTML file with embedded CSS and JS, hero section with headline subheadline CTA button, 3 features/benefits section, simple pricing or CTA section, footer, mobile responsive, clean modern design matching the color vibe specified. Return ONLY the complete HTML code nothing else.`,
-      `Business: ${name}\nDescription: ${desc}\nAudience: ${audience}\nCTA: ${cta}\nColor vibe: ${color}`
-    );
-    lpContent = res;
-    document.getElementById('lpOutput').style.display = 'block';
-    document.getElementById('lpOutput').scrollIntoView({ behavior: 'smooth' });
-  } catch (e) { alert('Barry spilled coffee on his keyboard. Try again.'); }
-  btn.textContent = '🏗️ Barry, build my landing page';
-  btn.disabled = false;
-}
-
-function downloadLP() {
-  const blob = new Blob([lpContent], { type: 'text/html' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'landing-page.html';
-  a.click();
-}
-
-</script>
-
-<!-- PAYWALL MODAL -->
+<!-- PAYWALL -->
 <div id="paywallOverlay" class="paywall-overlay" style="display:none" onclick="handleOverlayClick(event)">
   <div class="paywall-modal">
     <div class="pw-handle"></div>
     <div class="pw-top">
-      <div class="pw-icon"><i class="ti ti-gavel" aria-hidden="true"></i></div>
+      <div class="pw-icon"><i class="ti ti-gavel"></i></div>
       <div class="pw-title">Court recess</div>
       <div class="pw-sub">You've used your 10 free cases this month</div>
       <div class="pw-bar-wrap"><div class="pw-bar"></div></div>
     </div>
     <div class="pw-plans">
       <a class="pw-plan featured" href="https://buy.stripe.com/3cIfZgbeq6p03ft1Fkg3600" target="_blank" onclick="trackClick('starter')">
-        <div class="pw-plan-icon pi-s"><i class="ti ti-flame" aria-hidden="true"></i></div>
-        <div class="pw-plan-info">
-          <div class="pw-plan-name">Starter pack <span class="pw-badge pw-badge-pop">Most popular</span></div>
-          <div class="pw-plan-desc">50 cases/month · 3 months · no auto-renewal</div>
-        </div>
+        <div class="pw-plan-icon pi-s"><i class="ti ti-flame"></i></div>
+        <div class="pw-plan-info"><div class="pw-plan-name">Starter pack <span class="pw-badge pw-badge-pop">Most popular</span></div><div class="pw-plan-desc">50 cases/month · 3 months · no auto-renewal</div></div>
         <div class="pw-plan-price"><div class="pw-amount">$15</div><span class="pw-period">one-time</span></div>
       </a>
       <a class="pw-plan" href="https://buy.stripe.com/00wdR882eaFg03hcjYg3601" target="_blank" onclick="trackClick('pro')">
-        <div class="pw-plan-icon pi-p"><i class="ti ti-crown" aria-hidden="true"></i></div>
-        <div class="pw-plan-info">
-          <div class="pw-plan-name">Pro <span class="pw-badge pw-badge-unl">Unlimited</span></div>
-          <div class="pw-plan-desc">Unlimited cases · legal docs · cancel anytime</div>
-        </div>
+        <div class="pw-plan-icon pi-p"><i class="ti ti-crown"></i></div>
+        <div class="pw-plan-info"><div class="pw-plan-name">Pro <span class="pw-badge pw-badge-unl">Unlimited</span></div><div class="pw-plan-desc">Unlimited cases · legal docs · cancel anytime</div></div>
         <div class="pw-plan-price"><div class="pw-amount">$29</div><span class="pw-period">per month</span></div>
       </a>
     </div>
     <div class="pw-divider" style="padding:0 16px"><span>or top up</span></div>
     <div class="pw-tokens" style="margin-top:8px">
-      <a class="pw-token" href="https://buy.stripe.com/aFa4gy5U6fZA17l1Fkg360a" target="_blank" onclick="trackClick('token_sm')">
-        <div class="pw-token-amount">20</div>
-        <div class="pw-token-cases">cases</div>
-        <div class="pw-token-price">$3</div>
-      </a>
-      <a class="pw-token" href="https://buy.stripe.com/00w9ASbeqcNo5nBgAeg3609" target="_blank" onclick="trackClick('token_md')">
-        <div class="pw-token-amount">60</div>
-        <div class="pw-token-cases">cases</div>
-        <div class="pw-token-price">$8</div>
-      </a>
-      <a class="pw-token" href="https://buy.stripe.com/8x29AS5U65kW03h1Fkg3608" target="_blank" onclick="trackClick('token_lg')">
-        <div class="pw-token-amount">150</div>
-        <div class="pw-token-cases">cases</div>
-        <div class="pw-token-price">$15</div>
-      </a>
+      <a class="pw-token" href="https://buy.stripe.com/aFa4gy5U6fZA17l1Fkg360a" target="_blank" onclick="trackClick('token_sm')"><div class="pw-token-amount">20</div><div class="pw-token-cases">cases</div><div class="pw-token-price">$3</div></a>
+      <a class="pw-token" href="https://buy.stripe.com/00w9ASbeqcNo5nBgAeg3609" target="_blank" onclick="trackClick('token_md')"><div class="pw-token-amount">60</div><div class="pw-token-cases">cases</div><div class="pw-token-price">$8</div></a>
+      <a class="pw-token" href="https://buy.stripe.com/8x29AS5U65kW03h1Fkg3608" target="_blank" onclick="trackClick('token_lg')"><div class="pw-token-amount">150</div><div class="pw-token-cases">cases</div><div class="pw-token-price">$15</div></a>
     </div>
     <div class="pw-footer">
       <button class="pw-skip" onclick="closePaywall()">Continue with limited access</button>
-      <div class="pw-secure"><i class="ti ti-lock" aria-hidden="true" style="font-size:11px"></i> Stripe · secure</div>
+      <div class="pw-secure"><i class="ti ti-lock" style="font-size:11px"></i> Stripe · secure</div>
     </div>
   </div>
 </div>
 
-<!-- SUCCESS TOAST -->
-<div class="success-toast" id="successToast">
-  <i class="ti ti-check" aria-hidden="true" style="font-size:14px"></i>
-  <span id="successMsg">Welcome to The Judgy Pro — court is fully in session.</span>
-</div>
+<!-- TOAST -->
+<div class="success-toast" id="successToast"><i class="ti ti-check" style="font-size:14px"></i><span id="successMsg">Welcome to The Judgy Pro.</span></div>
+
+<script>
+// ── BUILDS ──────────────────────────────────────────────────
+const MY_BUILDS=[{id:'rentyapp',name:'RentyApp',url:'https://rentyapp.net',emoji:'🏠',tagline:'Property management made simple for landlords',keywords:['landlord','tenant','rent','lease','property','evict','maintenance','rental','property manager'],topics:['legal','money','family']},{id:'dropvault',name:'DropVault',url:'https://dropvault.live',emoji:'📦',tagline:'Sell digital products and earn passive income',keywords:['sell','digital','ebook','course','income','passive','creator','monetize','side hustle'],topics:['business','money']},{id:'fluentra',name:'Fluentra AI',url:'https://fluentra.ai',emoji:'🤖',tagline:'AI assistant for building, strategy and copywriting',keywords:['ai','artificial intelligence','learn ai','build website','strategy','copywriting','automation','ai tools','skills'],topics:['work','personal','business']},{id:'postpilots',name:'PostPilots',url:'https://postpilots.xyz',emoji:'✏️',tagline:'Schedule posts to LinkedIn, X, Instagram and more',keywords:['social media','linkedin','instagram','twitter','post','content','brand','marketing','followers'],topics:['business','work']}];
+
+function detectRelevantBuild(userText,topic){const lower=userText.toLowerCase();let best=null,bestScore=0;for(const b of MY_BUILDS){let score=0;for(const kw of b.keywords){if(lower.includes(kw))score+=2;}if(b.topics.includes(topic))score+=1;if(score>bestScore){bestScore=score;best=b;}}return bestScore>=2?best:null;}
+
+function buildRecommendationHTML(build){return `<div onclick="window.open('${build.url}','_blank')" style="margin-top:12px;padding:10px 13px;background:rgba(196,160,80,0.05);border:1px solid rgba(196,160,80,0.18);border-radius:9px;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:10px;" onmouseover="this.style.borderColor='rgba(196,160,80,0.5)'" onmouseout="this.style.borderColor='rgba(196,160,80,0.18)'"><div style="width:32px;height:32px;border-radius:8px;background:rgba(196,160,80,0.1);border:1px solid rgba(196,160,80,0.2);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">${build.emoji}</div><div style="flex:1;min-width:0"><div style="font-size:10px;color:rgba(196,160,80,0.6);font-weight:500;text-transform:uppercase;letter-spacing:1px;margin-bottom:2px">Might help you</div><div style="font-size:13px;color:#f2ede4;font-weight:500;font-family:'Playfair Display',serif">${build.name}</div><div style="font-size:11px;color:#a89880;margin-top:1px">${build.tagline}</div></div><span style="font-size:11px;color:rgba(196,160,80,0.5);flex-shrink:0">↗</span></div>`;}
+
+function buildFollowUpHTML(options,question){const btns=options.map(o=>`<button class="followup-btn" onclick="useFollowUp(this)">${o}</button>`).join('');return `<div class="followup-wrap"><div style="font-size:11px;color:var(--text3);margin-bottom:7px;text-transform:uppercase;letter-spacing:0.5px;font-weight:500">⚖️ ${question}</div><div style="display:flex;flex-wrap:wrap;gap:6px">${btns}</div></div>`;}
+
+function useFollowUp(btn){const text=btn.textContent.trim();const wrap=btn.closest('.followup-wrap');if(wrap)wrap.remove();const input=document.getElementById('chatInput');input.value=text;autoResize(input);sendMessage();}
+
+// ── CRISIS ───────────────────────────────────────────────────
+function useCrisisChip(cat,prompt){topic='general';charMode='judgy';removeWelcome();addMsg('user',prompt);updateRage();isThinking=true;document.getElementById('sendBtn').disabled=true;showTyping('judgy');callClaude(JUDGY_COMPASSIONATE_PROMPT,prompt).then(raw=>{removeTyping('judgy');const parsed=parseAIResponse(raw,'⚖️ VERDICT:');const crisisHtml=buildCrisisResourcesHTML(cat);addMsgFullWithCrisis('judgy',parsed,crisisHtml);isThinking=false;document.getElementById('sendBtn').disabled=false;document.getElementById('chatInput').focus();}).catch(()=>{removeTyping('judgy');addMsg('judgy','The court is experiencing difficulties. If you are in crisis please call 988 right now.','⚖️ VERDICT: Real help is one call away.');isThinking=false;document.getElementById('sendBtn').disabled=false;});}
+
+function buildCrisisResourcesHTML(cat){const rm={gambling:[{name:'Nat. Council on Problem Gambling',number:'1-800-522-4700'},{name:'Gamblers Anonymous',number:'gamblersanonymous.org'}],drugs:[{name:'SAMHSA Helpline',number:'1-800-662-4357'},{name:'AA / NA',number:'aa.org / na.org'}],relationships:[{name:'National DV Hotline',number:'1-800-799-7233'},{name:'Crisis Text Line',number:'Text HOME → 741741'}],money:[{name:'NFCC Credit Counseling',number:'1-888-227-7166'},{name:'211.org Local Help',number:'Dial 211'}],anxiety:[{name:'988 Crisis Lifeline',number:'Call/text 988'},{name:'NAMI Helpline',number:'1-800-950-6264'}],family:[{name:'988 Crisis Lifeline',number:'Call/text 988'},{name:'Crisis Text Line',number:'Text HOME → 741741'}],anger:[{name:'Crisis Text Line',number:'Text HOME → 741741'},{name:'Psychology Today',number:'psychologytoday.com'}],loneliness:[{name:'988 Crisis Lifeline',number:'Call/text 988'},{name:'Crisis Text Line',number:'Text HOME → 741741'}],selfworth:[{name:'988 Crisis Lifeline',number:'Call/text 988'},{name:'BetterHelp',number:'betterhelp.com'}],stuck:[{name:'988 Crisis Lifeline',number:'Call/text 988'},{name:'NAMI Helpline',number:'1-800-950-6264'}]};const resources=rm[cat]||[{name:'988 Crisis Lifeline',number:'Call/text 988'},{name:'Crisis Text Line',number:'Text HOME → 741741'}];const rows=resources.map(r=>`<div class="crisis-resource"><span class="cr-name">${r.name}</span><span class="cr-number">${r.number}</span></div>`).join('');return `<div class="crisis-msg-card"><div class="cm-title">🆘 Real Help Available Now</div>${rows}<div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(139,26,26,0.1)"><button onclick="openPage('resources')" style="font-size:11px;color:var(--judgy2);background:none;border:none;cursor:pointer;font-family:var(--sans);text-decoration:underline">See full Resource Chamber →</button></div></div>`;}
+
+function addMsgFullWithCrisis(role,parsed,crisisHtml){const{body,verdict,followUp,options}=parsed;const verdictHtml=verdict?`<div class="verdict-line">⚖️ ${verdict}</div>`:'';const followUpHtml=(followUp&&options.length)?buildFollowUpHTML(options,followUp):'';const msgs=document.getElementById('messages');const div=document.createElement('div');div.className=`msg ${role}`;const time=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});div.innerHTML=`<div class="msg-av">⚖️</div><div class="msg-wrap"><div class="msg-name">THE JUDGY</div><div class="msg-bubble">${formatResponse(body)}${verdictHtml}${crisisHtml}${followUpHtml}</div><div class="msg-time">${time}</div></div>`;msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;}
+
+// ── SYSTEM PROMPTS ───────────────────────────────────────────
+const JUDGY_PROMPT=`You are THE JUDGY — a sharp, authoritative AI judge. Think Judge Judy meets a no-nonsense best friend — commanding, witty, cutting, but ultimately caring.
+PERSONALITY: Authoritative and precise — surgical observations, not cheap shots. Roast the person with insight (2-3 sentences), then get to the real truth. Give REAL, specific, actionable advice — no fluff. Dry wit — funny when the situation earns it. Phrases: "Let me be direct with you", "This is not complicated", "Court finds...", "I have ruled on far worse". You tolerate Barry. You would never admit he is occasionally right.
+END EVERY RESPONSE WITH EXACTLY THIS FORMAT:
+⚖ VERDICT: [one authoritative ruling sentence]
+FOLLOW_UP: [one short question to continue — max 10 words]
+OPTIONS: [option 1] | [option 2] | [option 3]
+Keep the main response 100-160 words. The OPTIONS should be short (3-7 words each).`;
+
+const JUDGY_COMPASSIONATE_PROMPT=`You are THE JUDGY in compassionate mode. Someone is bringing you a real struggle — addiction, mental health, financial crisis, relationship abuse, or deep personal pain.
+SHIFT YOUR TONE COMPLETELY: Lead with genuine acknowledgment of their pain — 2-3 sentences, no roasting. Be the wise, direct mentor who cares. Give 2-3 CONCRETE next steps they can take today. Name the elephant in the room with compassion — not cruelty. End with something they can hold onto.
+DO NOT roast or make jokes. This is real.
+If anyone mentions suicide or self-harm, immediately say: "I need you to call or text 988 right now. That is the only verdict that matters in this moment."
+END WITH:
+⚖ VERDICT: [a compassionate but firm ruling]
+FOLLOW_UP: [a supportive question — max 10 words]
+OPTIONS: [option 1] | [option 2] | [option 3]
+Keep the main response 120-180 words. Warm. Real. Honest.`;
+
+const BARRY_PROMPT=`You are BARRY T. LAWSON, ESQ. — The Judgy's ex-husband. James Bond if James Bond became a lawyer — impeccably dressed, composed, genuinely competent, but perpetually underestimated by your ex-wife.
+PERSONALITY: Polished and precise. Genuinely excellent at legal and business advice. Passive-aggressively note that Judgy never appreciated your expertise. Dry understated humor. Phrases: "As I have noted on several occasions, Judith—", "With the greatest respect to my ex-wife's colorful opinion—", "The law is rather clear on this matter". You still wear the same suit. It still fits perfectly.
+END EVERY RESPONSE WITH EXACTLY THIS FORMAT:
+📋 RULING: [your formal precise verdict in one sentence]
+FOLLOW_UP: [one short question — max 10 words]
+OPTIONS: [option 1] | [option 2] | [option 3]
+Keep the main response 100-160 words. The OPTIONS should be short (3-7 words each).`;
+
+const JUDGY_CLAP_BACK=`You are THE JUDGY responding after BARRY just gave his legal advice. Acknowledge reluctantly that Barry is technically correct (you hate this). Take a precise shot at him. Add your emotional/human angle to his advice. Keep it SHORT — 50-70 words only.
+END WITH EXACTLY:
+FOLLOW_UP: [one short juicy question — max 10 words]
+OPTIONS: [option 1] | [option 2] | [option 3]
+No verdict line — just a short clap back then the follow-up.`;
+
+// ── PARSE ────────────────────────────────────────────────────
+function parseAIResponse(text,verdictMarker){let body=text,verdict='',followUp='',options=[];const fuMatch=text.match(/FOLLOW_UP:\s*(.+)/i);if(fuMatch){followUp=fuMatch[1].trim();body=body.replace(fuMatch[0],'').trim();}const opMatch=text.match(/OPTIONS:\s*(.+)/i);if(opMatch){options=opMatch[1].split('|').map(o=>o.trim()).filter(Boolean);body=body.replace(opMatch[0],'').trim();}if(verdictMarker){const re=new RegExp(`${verdictMarker}\\s*(.+)`,'i');const m=body.match(re);if(m){verdict=m[1].trim();body=body.replace(m[0],'').trim();}}return{body,verdict,followUp,options};}
+
+function addMsgFull(role,parsed,isBarry,userText,currentTopic){const{body,verdict,followUp,options}=parsed;const verdictClass=isBarry?'barry-verdict':'verdict-line';const verdictMarker=isBarry?'📋':'⚖️';const verdictHtml=verdict?`<div class="${verdictClass}">${verdictMarker} ${verdict}</div>`:'';const followUpHtml=(followUp&&options.length)?buildFollowUpHTML(options,followUp):'';const build=userText?detectRelevantBuild(userText,currentTopic):null;const recHtml=build?buildRecommendationHTML(build):'';const msgs=document.getElementById('messages');const div=document.createElement('div');div.className=`msg ${role}`;const time=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});div.innerHTML=`<div class="msg-av">${role==='barry'?'👔':'⚖️'}</div><div class="msg-wrap"><div class="msg-name">${role==='barry'?'BARRY T. LAWSON, ESQ.':'THE JUDGY'}</div><div class="msg-bubble">${formatResponse(body)}${verdictHtml}${followUpHtml}${recHtml}</div><div class="msg-time">${time}</div></div>`;msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;}
+
+// ── STATE ────────────────────────────────────────────────────
+let topic='general',charMode='both',isThinking=false,lpContent='',formContent='',lastUserText='',msgCount=0;
+
+// ── SIDEBAR / THEME / PAGES ───────────────────────────────────
+function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('sidebarOverlay').classList.add('open');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebarOverlay').classList.remove('open');}
+const themes=['dark','light'];const themeIcons={dark:'🌙',light:'☀'};const themeLabels={dark:'Light mode',light:'Dark mode'};let themeIndex=0;
+function toggleTheme(){themeIndex=(themeIndex+1)%2;const t=themes[themeIndex];document.documentElement.setAttribute('data-theme',t);document.getElementById('themeBtn').textContent=themeIcons[t];const lbl=document.getElementById('themeLabel');if(lbl)lbl.textContent=themeLabels[t];const icon=document.getElementById('themeIcon');if(icon)icon.textContent=themeIcons[t];}
+function openPage(id){document.getElementById('page-'+id).classList.add('open');}
+function closePage(id){document.getElementById('page-'+id).classList.remove('open');}
+function setView(v,el){document.querySelectorAll('.sidebar-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');}
+
+// ── RESOURCE CHAMBER TABS ─────────────────────────────────────
+function switchRCTab(btn,panelId){document.querySelectorAll('.rc-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.rc-panel').forEach(p=>p.classList.remove('active'));btn.classList.add('active');document.getElementById(panelId).classList.add('active');if(panelId==='rc-daily')loadDailyVerdict();}
+
+// ── DAILY VERDICT ─────────────────────────────────────────────
+let dailyLoaded=false;
+async function loadDailyVerdict(){if(dailyLoaded)return;dailyLoaded=true;const container=document.getElementById('dailyVerdictContainer');const today=new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});const dayKey=new Date().toDateString();const cached=localStorage.getItem('judgy_daily_'+dayKey);if(cached){renderDailyVerdict(cached,today,container);return;}try{const raw=await callClaude(`You are THE JUDGY. Generate one powerful daily truth for people working on themselves. Topics rotate: self-sabotage, resilience, relationships, money mindset, personal growth, breaking bad habits, self-worth. Make it feel like a ruling from a wise judge. 2-3 sentences max. Profound, direct, memorable. No fluff. Do NOT include VERDICT/FOLLOW_UP/OPTIONS tags.`,`Generate today's daily verdict. Date: ${today}.`);localStorage.setItem('judgy_daily_'+dayKey,raw);renderDailyVerdict(raw,today,container);}catch{renderDailyVerdict("The court has seen a thousand people with your exact fear. They all thought they were the exception. They were not — and that is the best news you will hear today.",today,container);}}
+
+function renderDailyVerdict(text,date,container){container.innerHTML=`<div class="daily-verdict-card"><div class="dv-date">${date}</div><div class="dv-quote">"${text}"</div><div class="dv-author">— The Judgy</div><div class="dv-actions"><button class="dv-btn" onclick="copyDailyVerdict(this,'${encodeURIComponent(text)}')">📋 Copy</button><button class="dv-btn primary" onclick="useDailyVerdictInChat('${encodeURIComponent(text)}')">⚖ Discuss this</button></div></div>`;}
+
+function copyDailyVerdict(btn,encodedText){navigator.clipboard.writeText(decodeURIComponent(encodedText)).then(()=>{btn.textContent='✓ Copied';setTimeout(()=>btn.textContent='📋 Copy',2000);});}
+function useDailyVerdictInChat(encodedText){closePage('resources');const text=decodeURIComponent(encodedText);document.getElementById('chatInput').value=`I want to talk about this: "${text.substring(0,80)}..."`;autoResize(document.getElementById('chatInput'));document.getElementById('chatInput').focus();}
+
+async function generateCustomVerdict(){const topicInput=document.getElementById('dvTopic').value.trim();if(!topicInput)return;const out=document.getElementById('customVerdictOut');out.style.display='block';out.textContent='⚖ The court is deliberating...';try{const raw=await callClaude(`You are THE JUDGY. Generate a brutally honest, compassionate, memorable ruling about the specific struggle the user mentions. 3-4 sentences. Direct, wise, specific. End with one actionable step. No VERDICT/FOLLOW_UP/OPTIONS tags.`,`Generate a personal daily verdict about: ${topicInput}`);out.textContent=raw;}catch{out.textContent='The court is temporarily unavailable. Try again in a moment.';}}
+
+// ── SOUND ────────────────────────────────────────────────────
+let judgySoundOn=true;
+function toggleJudgySound(){judgySoundOn=!judgySoundOn;document.getElementById('judgySoundBtn').textContent=judgySoundOn?'🔊':'🔇';}
+
+// ── TOPICS ───────────────────────────────────────────────────
+const topicPlaceholders={general:'Present your case to the court...',relationship:'My ex wants to get back together but they cheated...',work:'I do not know which career path is right for me...',coworker:'My coworker gets the same pay but does half the work...',personal:'I want to learn AI but do not know where to start...',family:'My parents keep comparing me to my sibling...',legal:'What do I need to know about subletting my apartment?',business:'How do I figure out which skills are worth learning in 2026?',money:'I have no idea how to handle my taxes as a freelancer...'};
+const topicRotations={general:['Present your case to the court...','Ask Judgy anything — she has heard worse...','State your situation. Court is in session.','What is going on? Barry is ready to advise.'],work:['I do not know which career path is right for me...','My boss takes credit for my work in every meeting...','I want to switch careers but I am scared to start over...','How do I negotiate a raise without getting fired?'],legal:['What do I need to know about subletting my apartment?','My landlord will not return my security deposit...','I need to send a demand letter — how do I do it?','What are my rights as a tenant?','I want to start an LLC — what state is best?'],business:['How do I figure out which skills are worth learning in 2026?','I want to start a side hustle — where do I begin?','How do I price my freelance services?','I want to build and sell a digital product — is it realistic?'],money:['I have no idea how to handle my taxes as a freelancer...','Someone owes me money and keeps avoiding me...','I want to start investing but do not know where to start...'],personal:['I want to learn AI but do not know where to start...','I keep self-sabotaging every good thing in my life...','I feel stuck and do not know how to move forward...'],relationship:['My ex wants to get back together but they cheated on me...','I think I am falling for someone who is not available...','My partner and I fight about money constantly...'],family:['My parents keep comparing me to my sibling...','My family does not support my career choice...'],coworker:['My coworker gets the same pay but does half the work...','Someone keeps taking credit for my ideas in meetings...','My coworker is undermining me to our boss...']};
+
+function rotatePlaceholder(){const input=document.getElementById('chatInput');if(!input||document.activeElement===input)return;const rots=topicRotations[topic]||topicRotations.general;input.placeholder=rots[Math.floor(Math.random()*rots.length)];}
+setInterval(rotatePlaceholder,4000);
+
+function setTopic(btn,t){document.querySelectorAll('.topic-pill').forEach(p=>p.classList.remove('active'));btn.classList.add('active');topic=t;const input=document.getElementById('chatInput');if(input)input.placeholder=topicPlaceholders[t]||'Present your case to the court...';renderChips();}
+
+function renderChips(){const wrap=document.getElementById('suggestionChips');if(!wrap)return;const rots=topicRotations[topic]||topicRotations.general;const shuffled=[...rots].sort(()=>Math.random()-0.5).slice(0,3);wrap.innerHTML=shuffled.map(q=>`<button class="suggestion-chip" onclick="useChip(this)">${q}</button>`).join('');}
+
+function useChip(btn){const input=document.getElementById('chatInput');input.value=btn.textContent;autoResize(input);input.focus();document.getElementById('suggestionChips').innerHTML='';sendMessage();}
+function quickTopic(t){topic=t;document.querySelectorAll('.topic-pill').forEach(p=>{p.classList.toggle('active',p.textContent.toLowerCase().includes(t.substring(0,4)));});}
+
+// ── INPUT ────────────────────────────────────────────────────
+function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,100)+'px';document.getElementById('charCt').textContent=el.value.length+'/500';}
+function fillRandomQuestion(){const input=document.getElementById('chatInput');const rots=topicRotations[topic]||topicRotations.general;input.value=rots[Math.floor(Math.random()*rots.length)];autoResize(input);input.focus();}
+function fillFromPlaceholder(){const input=document.getElementById('chatInput');if(input.value.trim()!=='')return;const ph=input.placeholder;if(!ph||ph==='Present your case to the court...')return;setTimeout(()=>{input.value=ph;autoResize(input);input.setSelectionRange(input.value.length,input.value.length);},50);}
+function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}}
+function useStarter(card){const t=card.querySelector('.starter-t').textContent;document.getElementById('chatInput').value=t;autoResize(document.getElementById('chatInput'));sendMessage();}
+
+// ── RAGE METER ───────────────────────────────────────────────
+function updateRage(){msgCount++;const level=Math.min(5,Math.ceil(msgCount/2));document.querySelectorAll('.rage-pip').forEach((p,i)=>p.classList.toggle('on',i<level));}
+
+// ── MESSAGES ─────────────────────────────────────────────────
+function removeWelcome(){const w=document.getElementById('welcome');if(w)w.remove();}
+
+function addMsg(role,html,verdict='',isBarry=false){removeWelcome();const msgs=document.getElementById('messages');const div=document.createElement('div');div.className=`msg ${role}`;const time=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});const verdictHtml=verdict?`<div class="${isBarry?'barry-verdict':'verdict-line'}">${isBarry?'📋':'⚖️'} ${verdict}</div>`:'';if(role==='judgy'||role==='barry'){div.innerHTML=`<div class="msg-av">${role==='barry'?'👔':'⚖️'}</div><div class="msg-wrap"><div class="msg-name">${role==='barry'?'BARRY T. LAWSON, ESQ.':'THE JUDGY'}</div><div class="msg-bubble">${html}${verdictHtml}</div><div class="msg-time">${time}</div></div>`;}else{div.innerHTML=`<div class="msg-av">👤</div><div class="msg-wrap"><div class="msg-bubble">${html.replace(/\n/g,'<br>')}</div><div class="msg-time">${time}</div></div>`;}msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;}
+
+function showTyping(role){removeWelcome();const msgs=document.getElementById('messages');const div=document.createElement('div');div.className=`msg ${role}`;div.id=`typing-${role}`;div.innerHTML=`<div class="msg-av">${role==='barry'?'👔':'⚖️'}</div><div class="msg-wrap"><div class="msg-name">${role==='barry'?'BARRY':'JUDGY'}</div><div class="typing-bub"><div class="td"></div><div class="td"></div><div class="td"></div></div></div>`;msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;}
+function removeTyping(role){const t=document.getElementById(`typing-${role}`);if(t)t.remove();}
+function formatResponse(text){return text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');}
+
+// ── DETECT LEGAL/BUSINESS ─────────────────────────────────────
+const legalKeywords=['legal','law','sue','court','lawyer','attorney','contract','divorce','custody','evict','tenant','landlord','copyright','trademark','will','estate','llc','incorporate','tax','irs','insurance','claim','settlement'];
+const businessKeywords=['business','startup','company','brand','market','pricing','revenue','profit','client','customer','invoice','landing page','website','saas','product','launch'];
+function isLegalOrBusiness(text){const lower=text.toLowerCase();return legalKeywords.some(k=>lower.includes(k))||businessKeywords.some(k=>lower.includes(k))||topic==='legal'||topic==='business'||topic==='money';}
+
+// ── NEW CASE ─────────────────────────────────────────────────
+function newCase(){const msgs=document.getElementById('messages');msgs.innerHTML=`<div class="welcome" id="welcome"><div class="welcome-crest">⚖</div><h2>THE <span class="judgy-name">JUDGY</span><br>&amp; <span class="barry-name">BARRY</span></h2><div class="welcome-subtitle">Brutally honest. Surprisingly competent.</div><div class="welcome-rule"></div><div class="char-duo"><div class="char-card judgy" id="charJudgy" onclick="selectChar('judgy')"><div class="char-monogram">J.</div><div class="char-card-name">The Judgy</div><div class="char-card-title">The Honorable Judge</div><div class="char-card-tag">Life · Love · Work</div></div><div class="char-card barry" id="charBarry" onclick="selectChar('barry')"><div class="char-monogram">B.</div><div class="char-card-name">Barry T. Lawson</div><div class="char-card-title">Esq. — Her Ex-Husband</div><div class="char-card-tag">Legal · Business · Tax</div></div></div><div id="charModeBar" style="display:none"><div class="char-mode-bar"><span class="char-mode-label" id="charModeLabel"></span><button class="char-mode-back" onclick="selectChar('both')">← Both</button></div></div><div class="starters"><button class="starter" onclick="useStarter(this)"><span class="starter-icon">♡</span><span class="starter-t">My ex wants to get back together but they cheated on me</span></button><button class="starter barry-s" onclick="useStarter(this)"><span class="starter-icon">§</span><span class="starter-t">I want to start an LLC — where do I begin?</span></button><button class="starter" onclick="useStarter(this)"><span class="starter-icon">◉</span><span class="starter-t">My coworker keeps stealing my ideas in meetings</span></button><button class="starter barry-s" onclick="useStarter(this)"><span class="starter-icon">📋</span><span class="starter-t">I need a demand letter for money owed to me</span></button></div><div class="crisis-section"><div class="crisis-label">— Dealing with something real? —</div><div class="crisis-chips"><button class="crisis-chip" onclick="useCrisisChip('gambling','I am struggling with gambling and it is affecting my life in serious ways.')">🎰 Gambling</button><button class="crisis-chip" onclick="useCrisisChip('drugs','I am struggling with drugs or alcohol and need honest perspective.')">💊 Drugs / Alcohol</button><button class="crisis-chip" onclick="useCrisisChip('relationships','I am in a relationship that I think is hurting me.')">💔 Toxic Relationship</button><button class="crisis-chip" onclick="useCrisisChip('money','I am in a serious financial situation. Debt, no savings, scared.')">💸 Financial Crisis</button><button class="crisis-chip" onclick="useCrisisChip('anxiety','I have been struggling with anxiety or depression.')">🌀 Anxiety / Depression</button><button class="crisis-chip" onclick="useCrisisChip('family','I am dealing with serious family dysfunction.')">🏚 Family Problems</button><button class="crisis-chip" onclick="useCrisisChip('anger','I have anger problems I cannot control.')">🔥 Anger Issues</button><button class="crisis-chip" onclick="useCrisisChip('loneliness','I feel completely alone and disconnected from everyone.')">🌑 Loneliness</button><button class="crisis-chip" onclick="useCrisisChip('selfworth','I have deep problems with how I see myself.')">🪞 Self-Worth</button><button class="crisis-chip" onclick="useCrisisChip('stuck','I feel completely stuck in life and cannot move forward.')">🎯 Completely Stuck</button></div></div></div>`;msgCount=0;charMode='both';lastUserText='';document.querySelectorAll('.rage-pip').forEach(p=>p.classList.remove('on'));document.getElementById('chatInput').value='';autoResize(document.getElementById('chatInput'));}
+
+function selectChar(mode){charMode=mode;document.getElementById('charJudgy')?.classList.toggle('selected-char',mode==='judgy');document.getElementById('charBarry')?.classList.toggle('selected-char',mode==='barry');const bar=document.getElementById('charModeBar');const lbl=document.getElementById('charModeLabel');if(mode==='both'){if(bar)bar.style.display='none';document.getElementById('charJudgy')?.classList.remove('selected-char');document.getElementById('charBarry')?.classList.remove('selected-char');}else{if(bar)bar.style.display='block';if(lbl)lbl.textContent=mode==='judgy'?'⚖️ Chatting with Judgy only':'👔 Chatting with Barry only';const input=document.getElementById('chatInput');if(input)input.placeholder=mode==='judgy'?'Present your case, Your Honor...':'Ask Barry a legal or business question...';}document.getElementById('chatInput')?.focus();}
+
+// ── STRIPE ───────────────────────────────────────────────────
+const FREE_LIMIT=10;let totalMsgCount=parseInt(localStorage.getItem('judgy_msgs')||'0');let isPaid=localStorage.getItem('judgy_paid')==='1';let paywallShown=false;
+function saveCount(){localStorage.setItem('judgy_msgs',totalMsgCount);}
+function checkPayment(){const params=new URLSearchParams(window.location.search);if(params.get('payment')==='success'){isPaid=true;localStorage.setItem('judgy_paid','1');localStorage.setItem('judgy_msgs','0');totalMsgCount=0;showToast('Welcome to The Judgy — court is fully in session.');updatePlanUI();window.history.replaceState({},'',window.location.pathname);}}
+function updatePlanUI(){const val=document.getElementById('sidebarPlanValue');const btn=document.getElementById('upgradeHeaderBtn');if(isPaid){if(val)val.textContent='Pro — unlimited';if(btn){btn.textContent='⚖ Pro';btn.classList.add('paid');btn.onclick=null;}}else{const remaining=Math.max(0,FREE_LIMIT-totalMsgCount);if(val)val.textContent=`Free — ${remaining} cases left`;if(btn){btn.textContent='⚖ Upgrade';btn.classList.remove('paid');btn.onclick=()=>showPaywall();}}}
+function showPaywall(){if(paywallShown)return;paywallShown=true;document.getElementById('paywallOverlay').style.display='flex';document.body.style.overflow='hidden';}
+function closePaywall(){const overlay=document.getElementById('paywallOverlay');overlay.style.animation='pwFadeIn 0.2s ease reverse forwards';setTimeout(()=>{overlay.style.display='none';document.body.style.overflow='';paywallShown=false;},200);}
+function handleOverlayClick(e){if(e.target===document.getElementById('paywallOverlay'))closePaywall();}
+function trackClick(plan){localStorage.setItem('judgy_last_plan',plan);}
+function showToast(msg){const t=document.getElementById('successToast');document.getElementById('successMsg').textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),4000);}
+function checkLimit(){if(isPaid)return true;totalMsgCount++;saveCount();updatePlanUI();if(totalMsgCount>FREE_LIMIT){showPaywall();return false;}return true;}
+window.addEventListener('load',()=>{checkPayment();updatePlanUI();renderChips();});
+
+// ── MAIN SEND ─────────────────────────────────────────────────
+async function sendMessage(){const input=document.getElementById('chatInput');const text=input.value.trim();if(!text||isThinking)return;if(!checkLimit())return;input.value='';autoResize(input);lastUserText=text;addMsg('user',text);updateRage();isThinking=true;document.getElementById('sendBtn').disabled=true;const barrySituation=charMode==='barry'||(charMode==='both'&&isLegalOrBusiness(text));const judgyOnly=charMode==='judgy';
+if(judgyOnly){showTyping('judgy');try{const topicCtx={relationship:'relationship issue',work:'work situation',coworker:'coworker drama',personal:'personal growth',family:'family situation',general:''};const raw=await callClaude(JUDGY_PROMPT+(topicCtx[topic]?`\n\nContext: This is a ${topicCtx[topic]}.`:''),text);removeTyping('judgy');const parsed=parseAIResponse(raw,'⚖️ VERDICT:');addMsgFull('judgy',parsed,false,text,topic);}catch{removeTyping('judgy');addMsg('judgy','Court is experiencing technical difficulties. Try again.','⚖️ VERDICT: Case postponed.');}isThinking=false;document.getElementById('sendBtn').disabled=false;input.focus();return;}
+if(charMode==='barry'){showTyping('barry');try{const raw=await callClaude(BARRY_PROMPT,text);removeTyping('barry');const parsed=parseAIResponse(raw,'📋 RULING:');addMsgFull('barry',parsed,true,text,topic);}catch{removeTyping('barry');addMsg('barry','Connection dropped. Barry T. Lawson, Esq.','📋 RULING: Try again.',true);}isThinking=false;document.getElementById('sendBtn').disabled=false;input.focus();return;}
+if(barrySituation){showTyping('barry');try{const barryRaw=await callClaude(BARRY_PROMPT,text);removeTyping('barry');const barryParsed=parseAIResponse(barryRaw,'📋 RULING:');addMsgFull('barry',barryParsed,true,text,topic);await new Promise(r=>setTimeout(r,800));showTyping('judgy');const judgyRaw=await callClaude(JUDGY_CLAP_BACK,`User asked: "${text}"\n\nBarry just said: "${barryRaw}"`);removeTyping('judgy');const judgyParsed=parseAIResponse(judgyRaw,null);addMsgFull('judgy',judgyParsed,false,null,topic);}catch{removeTyping('barry');removeTyping('judgy');addMsg('barry','Objection! My connection dropped.','📋 RULING: Try again.',true);}}
+else{showTyping('judgy');try{const topicCtx={relationship:'relationship issue',work:'work situation',coworker:'coworker drama',personal:'personal growth',family:'family situation',general:''};const judgyRaw=await callClaude(JUDGY_PROMPT+(topicCtx[topic]?`\n\nContext: This is a ${topicCtx[topic]}.`:''),text);removeTyping('judgy');const judgyParsed=parseAIResponse(judgyRaw,'⚖️ VERDICT:');addMsgFull('judgy',judgyParsed,false,text,topic);const barryJump=['money','loan','debt','pay','fired','contract','rights','sue'].some(k=>text.toLowerCase().includes(k));if(barryJump){await new Promise(r=>setTimeout(r,1000));showTyping('barry');const barryRaw=await callClaude(`You are BARRY T. LAWSON, ESQ. Judgy just gave life advice. Add a quick legal/financial angle she missed. Roast her a little. Keep it SHORT — 60-80 words. End with:\n📋 RULING: [short ruling]\nFOLLOW_UP: [short question max 10 words]\nOPTIONS: [option 1] | [option 2] | [option 3]`,`User asked: "${text}"\n\nJudgy said: "${judgyRaw}"`);removeTyping('barry');const barryParsed=parseAIResponse(barryRaw,'📋 RULING:');addMsgFull('barry',barryParsed,true,null,topic);}}catch{removeTyping('judgy');addMsg('judgy','Court is experiencing technical difficulties. Try again.','⚖️ VERDICT: Case postponed.');}}
+isThinking=false;document.getElementById('sendBtn').disabled=false;input.focus();renderChips();}
+
+// ── SUPABASE EDGE FUNCTION ────────────────────────────────────
+const JUDGY_FN_URL='https://dmemzljerldzeiwqfxzp.supabase.co/functions/v1/judgy-chat-v2-ts';
+async function callClaude(system,userMsg){const res=await fetch(JUDGY_FN_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system,userMessage:userMsg})});const data=await res.json();if(data.text)return data.text;throw new Error(data.error||'No response');}
+
+// ── LEGAL FORMS ───────────────────────────────────────────────
+function generateDemandLetter(){const from=document.getElementById('dl-from').value||'[Your Name]',to=document.getElementById('dl-to').value||'[Recipient]',amt=document.getElementById('dl-amount').value||'[Amount]',reason=document.getElementById('dl-reason').value||'[Reason]',deadline=document.getElementById('dl-deadline').value||'[Date]';const today=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});formContent=`DEMAND LETTER\n\nDate: ${today}\n\nFrom: ${from}\nTo:   ${to}\n\nDear ${to},\n\nThis letter serves as formal notice that you owe me the sum of $${amt} for the following reason: ${reason}.\n\nDespite prior attempts to resolve this matter, payment has not been received. I hereby demand full payment of $${amt} no later than ${deadline}.\n\nIf payment is not received by the above date, I reserve the right to pursue all available legal remedies, including but not limited to filing a claim in small claims court.\n\nSincerely,\n\n${from}\n\n---\n⚠️ DISCLAIMER: This is a general template generated by an AI character. It is NOT a substitute for advice from a licensed attorney.`;document.getElementById('formOutputContent').textContent=formContent;document.getElementById('formOutput').style.display='block';document.getElementById('formOutput').scrollIntoView({behavior:'smooth'});}
+
+async function generateDivorceChecklist(){const state=document.getElementById('div-state').value||'your state',kids=document.getElementById('div-kids').value,assets=document.getElementById('div-assets').value||'various assets';document.getElementById('formOutput').style.display='none';try{const res=await callClaude(`You are Barry T. Lawson, Esq. Generate a practical divorce preparation checklist. Be helpful and specific. Format as a numbered checklist. Add a brief disclaimer at the end. Keep to 200 words max.`,`State: ${state}, Children: ${kids}, Assets: ${assets}`);formContent=res;document.getElementById('formOutputContent').textContent=res;document.getElementById('formOutput').style.display='block';document.getElementById('formOutput').scrollIntoView({behavior:'smooth'});}catch{document.getElementById('formOutputContent').textContent='Barry is having technical difficulties. Please try again.';document.getElementById('formOutput').style.display='block';}document.querySelectorAll('#page-forms .form-btn').forEach(b=>b.disabled=false);}
+
+async function generateLLCGuide(){const name=document.getElementById('llc-name').value||'your business',state=document.getElementById('llc-state').value||'your state',type=document.getElementById('llc-type').value;try{const res=await callClaude(`You are Barry T. Lawson, Esq. Generate a step-by-step LLC formation guide. Be specific and practical. Format as numbered steps. Include estimated costs. Add a brief disclaimer. 200 words max.`,`Business: ${name}, State: ${state}, Type: ${type}`);formContent=res;document.getElementById('formOutputContent').textContent=res;document.getElementById('formOutput').style.display='block';document.getElementById('formOutput').scrollIntoView({behavior:'smooth'});}catch{document.getElementById('formOutputContent').textContent='Barry is unavailable right now. Please try again.';document.getElementById('formOutput').style.display='block';}}
+
+function downloadForm(){const blob=new Blob([formContent],{type:'text/plain'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='barry-document.txt';a.click();}
+
+async function buildLandingPage(){const name=document.getElementById('lp-name').value||'My Business',desc=document.getElementById('lp-desc').value||'We help people.',audience=document.getElementById('lp-audience').value||'Everyone',cta=document.getElementById('lp-cta').value||'Get Started',color=document.getElementById('lp-color').value;const btn=document.getElementById('lpBtn');btn.textContent='Barry is building... adjusting his clip-on tie...';btn.disabled=true;try{const res=await callClaude(`You are Barry T. Lawson, Esq. but also secretly a great web designer. Generate a complete, beautiful single-page HTML landing page. Requirements: Full HTML file with embedded CSS and JS, hero section with headline subheadline CTA button, 3 features/benefits section, simple pricing or CTA section, footer, mobile responsive, clean modern design matching the color vibe specified. Return ONLY the complete HTML code nothing else.`,`Business: ${name}\nDescription: ${desc}\nAudience: ${audience}\nCTA: ${cta}\nColor vibe: ${color}`);lpContent=res;document.getElementById('lpOutput').style.display='block';document.getElementById('lpOutput').scrollIntoView({behavior:'smooth'});}catch{alert('Barry spilled coffee on his keyboard. Try again.');}btn.textContent='Barry, build my landing page';btn.disabled=false;}
+
+function downloadLP(){const blob=new Blob([lpContent],{type:'text/html'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='landing-page.html';a.click();}
+</script>
 </body>
 </html>
