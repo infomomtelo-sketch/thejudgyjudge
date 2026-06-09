@@ -295,7 +295,7 @@ header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px
   <div class="sidebar-section">
     <div class="sidebar-label">Membership</div>
     <div class="plan-status"><span class="plan-status-label">Current plan</span><span class="plan-status-value" id="sidebarPlanValue">Free — 10 cases/mo</span></div>
-    <div class="sidebar-item" onclick="showPaywall(); closeSidebar()"><span class="si-icon" style="color:var(--gold)">⚖</span> Upgrade plan</div>
+    <div class="sidebar-item" onclick="showPaywall(); closeSidebar()"><span class="si-icon" style="color:var(--gold)">⚖</span> Upgrade plan</div><div class="sidebar-item" onclick="manageSubscription()"><span class="si-icon" style="color:var(--text3)">↩</span> Manage subscription</div>
   </div>
   <div class="sidebar-divider"></div>
   <div class="sidebar-section">
@@ -572,6 +572,7 @@ const FREE_LIMIT=10;let totalMsgCount=parseInt(localStorage.getItem('judgy_msgs'
 function saveCount(){localStorage.setItem('judgy_msgs',totalMsgCount);}
 function checkPayment(){const params=new URLSearchParams(window.location.search);if(params.get('payment')==='success'){const plan=params.get('plan')||'pro';const limits={token20:20,token60:60,token150:150,starter:50,pro:99999};const toastMsgs={token20:'20 cases unlocked. Court is in session.',token60:'60 cases unlocked. Court is in session.',token150:'150 cases unlocked. Welcome back to court.',starter:'Starter pack unlocked — 50 cases. Court is in session.',pro:'Welcome to Pro — unlimited cases. Court is fully in session.'};isPaid=true;localStorage.setItem('judgy_paid','1');localStorage.setItem('judgy_plan',plan);localStorage.setItem('judgy_limit',limits[plan]||99999);localStorage.setItem('judgy_msgs','0');totalMsgCount=0;showToast(toastMsgs[plan]||'Welcome to The Judgy.');updatePlanUI();window.history.replaceState({},'',window.location.pathname);}}
 function updatePlanUI(){const val=document.getElementById('sidebarPlanValue');const btn=document.getElementById('upgradeHeaderBtn');if(isPaid){if(val)val.textContent='Pro — unlimited';if(btn){btn.textContent='⚖ Pro';btn.classList.add('paid');btn.onclick=null;}}else{const remaining=Math.max(0,FREE_LIMIT-totalMsgCount);if(val)val.textContent=`Free — ${remaining} cases left`;if(btn){btn.textContent='⚖ Upgrade';btn.classList.remove('paid');btn.onclick=()=>showPaywall();}}}
+function manageSubscription(){window.open('https://billing.stripe.com/p/login/3cIfZgbeq6p03ft1Fkg3600','_blank');closeSidebar();}
 function showPaywall(){if(paywallShown)return;paywallShown=true;document.getElementById('paywallOverlay').style.display='flex';document.body.style.overflow='hidden';}
 function closePaywall(){const overlay=document.getElementById('paywallOverlay');overlay.style.animation='pwFadeIn 0.2s ease reverse forwards';setTimeout(()=>{overlay.style.display='none';document.body.style.overflow='';paywallShown=false;},200);}
 function handleOverlayClick(e){if(e.target===document.getElementById('paywallOverlay'))closePaywall();}
