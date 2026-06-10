@@ -390,7 +390,76 @@ header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px
     </div>
   </div>
 </div>
-<div class="page-overlay" id="page-resources">
+<!-- COURT VOICES -->
+<div class="page-overlay" id="page-voices">
+  <div class="page-header"><button class="page-back" onclick="closePage('voices')">←</button><div class="page-title">👥 Court Voices</div></div>
+  <div class="page-body">
+    <p style="font-family:var(--serif);font-style:italic;font-size:14px;color:var(--text2);margin-bottom:8px;line-height:1.7">The court regulars. Real talk from every angle.</p>
+
+    <!-- DAILY QUESTION -->
+    <div id="cv-question-card" style="background:var(--card);border:1px solid var(--border2);border-radius:14px;padding:20px;margin-bottom:20px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--judgy2),var(--gold),#7b9fff)"></div>
+      <div style="font-size:10px;color:var(--gold);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;font-family:var(--sans);font-weight:500">⚖️ Today's Question</div>
+      <div id="cv-question-text" style="font-family:var(--display);font-size:18px;color:var(--text);line-height:1.4;font-style:italic;margin-bottom:16px">Loading today's question...</div>
+      <div style="display:flex;gap:8px">
+        <input id="cv-answer-input" class="form-input" placeholder="Your anonymous answer..." style="flex:1"/>
+        <button class="form-btn" onclick="submitCourtVoice()" style="width:auto;margin-top:0;padding:0 16px;white-space:nowrap">Post →</button>
+      </div>
+    </div>
+
+    <!-- VOICES FEED -->
+    <div id="cv-feed" style="display:flex;flex-direction:column;gap:12px"></div>
+
+    <!-- CAST -->
+    <div style="margin-top:28px;padding-top:20px;border-top:1px solid var(--border)">
+      <div style="font-size:10px;color:var(--gold);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px;font-family:var(--sans);font-weight:500">The Court Regulars</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px;cursor:pointer;transition:all 0.15s" onclick="askVoice('dre')" onmouseover="this.style.borderColor='var(--border2)'" onmouseout="this.style.borderColor='var(--border)'">
+          <div style="font-size:18px;margin-bottom:4px">🔥</div>
+          <div style="font-size:13px;font-weight:600;color:var(--text);font-family:var(--sans)">Dre</div>
+          <div style="font-size:11px;color:var(--text3);font-family:var(--serif);font-style:italic">The Realist</div>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px;cursor:pointer;transition:all 0.15s" onclick="askVoice('vee')" onmouseover="this.style.borderColor='var(--border2)'" onmouseout="this.style.borderColor='var(--border)'">
+          <div style="font-size:18px;margin-bottom:4px">💅</div>
+          <div style="font-size:13px;font-weight:600;color:var(--text);font-family:var(--sans)">Vee</div>
+          <div style="font-size:11px;color:var(--text3);font-family:var(--serif);font-style:italic">The Fashionista</div>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px;cursor:pointer;transition:all 0.15s" onclick="askVoice('marcus')" onmouseover="this.style.borderColor='var(--border2)'" onmouseout="this.style.borderColor='var(--border)'">
+          <div style="font-size:18px;margin-bottom:4px">⚖️</div>
+          <div style="font-size:13px;font-weight:600;color:var(--text);font-family:var(--sans)">Marcus</div>
+          <div style="font-size:11px;color:var(--text3);font-family:var(--serif);font-style:italic">The Philosopher</div>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px;cursor:pointer;transition:all 0.15s" onclick="askVoice('ray')" onmouseover="this.style.borderColor='var(--border2)'" onmouseout="this.style.borderColor='var(--border)'">
+          <div style="font-size:18px;margin-bottom:4px">🏋️</div>
+          <div style="font-size:13px;font-weight:600;color:var(--text);font-family:var(--sans)">Coach Ray</div>
+          <div style="font-size:11px;color:var(--text3);font-family:var(--serif);font-style:italic">The Hype Man</div>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px;cursor:pointer;transition:all 0.15s" onclick="askVoice('luna')" onmouseover="this.style.borderColor='var(--border2)'" onmouseout="this.style.borderColor='var(--border)'">
+          <div style="font-size:18px;margin-bottom:4px">🌙</div>
+          <div style="font-size:13px;font-weight:600;color:var(--text);font-family:var(--sans)">Luna</div>
+          <div style="font-size:11px;color:var(--text3);font-family:var(--serif);font-style:italic">The Empath</div>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px;cursor:pointer;transition:all 0.15s" onclick="askVoice('rico')" onmouseover="this.style.borderColor='var(--border2)'" onmouseout="this.style.borderColor='var(--border)'">
+          <div style="font-size:18px;margin-bottom:4px">💸</div>
+          <div style="font-size:13px;font-weight:600;color:var(--text);font-family:var(--sans)">Rico</div>
+          <div style="font-size:11px;color:var(--text3);font-family:var(--serif);font-style:italic">The Money Guy</div>
+        </div>
+        <div style="background:var(--card);border:1px solid rgba(139,26,26,0.3);border-radius:10px;padding:12px;cursor:pointer;transition:all 0.15s;grid-column:span 2" onclick="askVoice('mirror')" onmouseover="this.style.borderColor='var(--judgy2)'" onmouseout="this.style.borderColor='rgba(139,26,26,0.3)'">
+          <div style="font-size:18px;margin-bottom:4px">🪞</div>
+          <div style="font-size:13px;font-weight:600;color:var(--judgy2);font-family:var(--sans)">The Mirror</div>
+          <div style="font-size:11px;color:var(--text3);font-family:var(--serif);font-style:italic">Narcissist Detector — tells you the truth nobody else will</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VOICE RESPONSE -->
+    <div id="cv-voice-response" style="display:none;margin-top:20px;padding:16px;background:var(--card);border:1px solid var(--border2);border-radius:12px">
+      <div id="cv-voice-name" style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;font-family:var(--sans)"></div>
+      <div id="cv-voice-text" style="font-family:var(--serif);font-size:15px;line-height:1.8;color:var(--text)"></div>
+    </div>
+  </div>
+</div>
+  <div class="page-overlay" id="page-resources">
   <div class="page-header"><button class="page-back" onclick="closePage('resources')">←</button><div class="page-title">🆘 Resource Chamber</div></div>
   <div class="page-body">
     <p style="font-family:var(--serif);font-style:italic;font-size:14px;color:var(--text2);margin-bottom:20px;line-height:1.7">"Judgy roasts you because she cares. But some battles need more than a verdict. These are real resources — vetted, honest, and actually helpful." — Barry T. Lawson, Esq.</p>
@@ -628,7 +697,104 @@ async function generateDivorceChecklist(){const state=document.getElementById('d
 async function generateLLCGuide(){const name=document.getElementById('llc-name').value||'your business',state=document.getElementById('llc-state').value||'your state',type=document.getElementById('llc-type').value;try{const res=await callClaude(`You are Barry T. Lawson, Esq. Generate a step-by-step LLC formation guide. Numbered steps. Include estimated costs. Brief disclaimer. 200 words max.`,`Business: ${name}, State: ${state}, Type: ${type}`);formContent=res;document.getElementById('formOutputContent').textContent=res;document.getElementById('formOutput').style.display='block';document.getElementById('formOutput').scrollIntoView({behavior:'smooth'});}catch{document.getElementById('formOutputContent').textContent='Barry is unavailable right now. Please try again.';document.getElementById('formOutput').style.display='block';}}
 function downloadForm(){const blob=new Blob([formContent],{type:'text/plain'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='barry-document.txt';a.click();}
 async function buildLandingPage(){const name=document.getElementById('lp-name').value||'My Business',desc=document.getElementById('lp-desc').value||'We help people.',audience=document.getElementById('lp-audience').value||'Everyone',cta=document.getElementById('lp-cta').value||'Get Started',color=document.getElementById('lp-color').value;const btn=document.getElementById('lpBtn');btn.textContent='Barry is building... adjusting his clip-on tie...';btn.disabled=true;try{const res=await callClaude(`You are Barry T. Lawson, Esq. and a brilliant web designer. Generate a complete single-page HTML landing page. Requirements: full HTML with embedded CSS only, hero with headline and CTA button, 3 features section, CTA section, footer, mobile responsive, modern clean design matching the color vibe. IMPORTANT: Return ONLY raw HTML starting with <!DOCTYPE html> — no markdown, no backticks, no explanation.`,`Business: ${name}\nDescription: ${desc}\nAudience: ${audience}\nCTA: ${cta}\nColor: ${color}`);const clean=res.replace(/```html/gi,'').replace(/```/g,'').trim();if(clean.includes('<html')||clean.includes('<!DOCTYPE')){lpContent=clean;document.getElementById('lpOutput').style.display='block';document.getElementById('lpOutput').scrollIntoView({behavior:'smooth'});}else{alert('Barry returned something unexpected. Try again.');}}catch(e){alert('Barry spilled coffee on his keyboard. Try again.');}btn.textContent='Barry, build my landing page';btn.disabled=false;}
-function downloadLP(){const blob=new Blob([lpContent],{type:'text/html'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='landing-page.html';a.click();}
+// ── COURT VOICES ─────────────────────────────────────────────
+const CV_QUESTIONS=[
+  "What is the one thing you keep lying to yourself about?",
+  "Name the habit that is quietly destroying your life.",
+  "What would you do tomorrow if fear wasn't a factor?",
+  "What conversation have you been avoiding for too long?",
+  "What do you keep blaming others for that is actually your responsibility?",
+  "What version of yourself are you most afraid to become?",
+  "What would you do differently if no one was watching?",
+  "What are you pretending not to know?",
+  "What is costing you more than it is giving you?",
+  "When did you last do something that scared you?",
+  "What is the story you tell yourself that keeps you stuck?",
+  "Who in your life brings out the worst in you — and why do you keep them close?",
+  "What would your life look like in 5 years if nothing changes?",
+  "What is the real reason you haven't started yet?",
+  "What do you need to forgive yourself for?"
+];
+
+const CV_SEEDED=[
+  {text:"That I'll start tomorrow. I've been saying that for 3 years.",label:"Anonymous"},
+  {text:"That I'm fine. I haven't been fine in a long time.",label:"Anonymous"},
+  {text:"That my relationship is fixable. I know it isn't.",label:"Anonymous"},
+  {text:"That I don't need help. I just don't want to ask for it.",label:"Anonymous"},
+  {text:"That money will fix how I feel about myself.",label:"Anonymous"},
+  {text:"That I'm over it. I bring it up in every argument.",label:"Anonymous"},
+  {text:"That I work hard. I'm busy but I'm not productive.",label:"Anonymous"},
+  {text:"That they'll change. Three years in and nothing has.",label:"Anonymous"},
+  {text:"That I'm happy. I perform happiness really well.",label:"Anonymous"},
+  {text:"That I'm not like my parents. I hear them in everything I say.",label:"Anonymous"}
+];
+
+const CV_PROMPTS={
+  dre:`You are Dre, a court regular at The Judgy. You are sarcastic, funny, zero filter, and brutally real. You call people out but they love you for it. You speak like a sharp friend from the streets — casual, direct, occasionally hilarious. Never preachy. Always real. 2-3 sentences max.`,
+  vee:`You are Vee, a court regular at The Judgy. You are a confident, sharp fashionista who gives advice like you're walking a runway. Everything is a metaphor for style and presentation. You are funny, glamorous, and surprisingly wise. 2-3 sentences max.`,
+  marcus:`You are Marcus, a court regular at The Judgy. You are a calm, deep philosopher who makes people think. You speak slowly and precisely. Every sentence lands. You quote nobody famous — your wisdom is your own. 2-3 sentences max.`,
+  ray:`You are Coach Ray, a court regular at The Judgy. You are pure energy, motivation, and hype. You treat every problem like a comeback story. You will not let anyone quit on themselves. Loud, warm, unstoppable. 2-3 sentences max.`,
+  luna:`You are Luna, a court regular at The Judgy. You are a gentle empath who sees through the noise to what people are actually feeling. Warm, soft, deeply perceptive. You name the emotion nobody else named. 2-3 sentences max.`,
+  mirror:`You are The Mirror at The Judgy. You do not take sides. You do not comfort. You simply reflect reality back. You ask the question nobody wants to answer. You never accuse — you just ask. Cold, precise, unflinching. Ask ONE question back that cuts to the real truth. No statements, just a question.`
+};
+
+const CV_COLORS={dre:'#e8a020',vee:'#e879a0',marcus:'var(--gold)',ray:'#4caf50',luna:'#a8c0ff',mirror:'var(--judgy2)'};
+const CV_EMOJIS={dre:'🔥',vee:'💅',marcus:'⚖️',ray:'🏋️',luna:'🌙',mirror:'🪞'};
+const CV_NAMES={dre:'Dre — The Realist',vee:'Vee — The Fashionista',marcus:'Marcus — The Philosopher',ray:'Coach Ray — The Hype Man',luna:'Luna — The Empath',mirror:'🪞 The Mirror'};
+
+function getTodayQuestion(){const idx=new Date().getDate()%CV_QUESTIONS.length;return CV_QUESTIONS[idx];}
+
+function loadCourtVoices(){
+  const q=getTodayQuestion();
+  document.getElementById('cv-question-text').textContent=q;
+  const feed=document.getElementById('cv-feed');
+  const stored=JSON.parse(localStorage.getItem('cv_answers_'+new Date().toDateString())||'[]');
+  const all=[...CV_SEEDED,...stored];
+  feed.innerHTML=all.map(a=>`
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;font-family:var(--serif);font-size:15px;line-height:1.8;color:var(--text)">
+      ${a.text}
+      <div style="font-size:10px;color:var(--text3);margin-top:6px;font-family:var(--sans)">${a.label||'Anonymous'}</div>
+    </div>
+  `).join('');
+}
+
+function submitCourtVoice(){
+  const input=document.getElementById('cv-answer-input');
+  const text=input.value.trim();
+  if(!text)return;
+  const key='cv_answers_'+new Date().toDateString();
+  const stored=JSON.parse(localStorage.getItem(key)||'[]');
+  stored.push({text,label:'You · just now'});
+  localStorage.setItem(key,JSON.stringify(stored));
+  input.value='';
+  loadCourtVoices();
+}
+
+async function askVoice(voiceId){
+  const q=getTodayQuestion();
+  const respDiv=document.getElementById('cv-voice-response');
+  const nameDiv=document.getElementById('cv-voice-name');
+  const textDiv=document.getElementById('cv-voice-text');
+  respDiv.style.display='block';
+  nameDiv.style.color=CV_COLORS[voiceId];
+  nameDiv.textContent=CV_EMOJIS[voiceId]+' '+CV_NAMES[voiceId];
+  textDiv.textContent='...';
+  respDiv.scrollIntoView({behavior:'smooth',block:'start'});
+  try{
+    const raw=await callClaude(CV_PROMPTS[voiceId],`Today's court question is: "${q}"\n\nRespond to this question in your voice.`);
+    textDiv.textContent=raw;
+  }catch{
+    textDiv.textContent='Connection dropped. Try again.';
+  }
+}
+
+// Load voices when page opens
+document.addEventListener('click',function(e){
+  if(e.target.closest('[onclick*="openPage(\'voices\')"]')){
+    setTimeout(loadCourtVoices,100);
+  }
+});
+  function downloadLP(){const blob=new Blob([lpContent],{type:'text/html'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='landing-page.html';a.click();}
 </script>
 </body>
 </html>
