@@ -331,7 +331,7 @@ header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px
   <div class="input-area">
     <div id="suggestionChips"></div>
     <div class="input-wrap">
-      <textarea class="chat-input" id="chatInput" placeholder="Present your case to the court..." rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)" onfocus="fillFromPlaceholder()"></textarea>
+      <textarea class="chat-input" id="chatInput" placeholder="Present your case to the court..." rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)" ></textarea>
       <button class="send-btn" id="sendBtn" onclick="sendMessage()">⚖</button>
     </div>
     <div class="input-footer">
@@ -998,18 +998,6 @@ function fillRandomQuestion() {
   input.setSelectionRange(input.value.length, input.value.length);
 }
 
-function fillFromPlaceholder() {
-  const input = document.getElementById('chatInput');
-  if (input.value.trim() !== '') return;
-  const ph = input.placeholder;
-  if (!ph || ph === 'Present your case to the court...') return;
-  // Small delay so focus completes first
-  setTimeout(() => {
-    input.value = ph;
-    autoResize(input);
-    input.setSelectionRange(input.value.length, input.value.length);
-  }, 50);
-}
 function handleKey(e) {
   if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
 }
