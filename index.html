@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
-  
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>The Judgy — Brutally Honest AI Advice</title>
 <meta name="description" content="Brutally honest AI advice from The Judgy and Barry T. Lawson, Esq. Life, love, work, legal and business guidance — no filter.">
-  <link rel="canonical" href="https://thejudgy.com/">
+<link rel="canonical" href="https://thejudgy.com/">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
 <style>
@@ -242,7 +242,7 @@ header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px
     <div style="display:flex;gap:10px;">
       <button onclick="enterCourt()" style="background:none;border:1px solid rgba(196,160,80,0.35);color:#c4a050;font-size:0.8rem;padding:7px 16px;border-radius:2px;cursor:pointer;font-family:'DM Sans',sans-serif;">Sign in</button>
       <button onclick="enterCourt()" style="background:#8b1a1a;border:none;color:#f2ede4;font-size:0.8rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:8px 18px;border-radius:2px;cursor:pointer;font-family:'DM Sans',sans-serif;">Enter Court</button>
-  </div>
+    </div>
   </nav>
 
   <div style="text-align:center;padding:80px 24px 48px;">
@@ -351,7 +351,8 @@ header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px
       <span class="cabinet-plan-label">Current plan</span>
       <span class="cabinet-plan-value" id="cabinetPlanValue">Free — 10 cases/mo</span>
     </div>
-    <div class="cabinet-item" onclick="showPaywall();closeCabinet()"><span class="ci-icon" style="color:var(--gold)">⚖</span> Upgrade plan</div> <div class="cabinet-item" id="signOutBtn" style="display:none" onclick="handleSignOut()"><span class="ci-icon">🚪</span> Sign out</div>
+    <div class="cabinet-item" onclick="showPaywall();closeCabinet()"><span class="ci-icon" style="color:var(--gold)">⚖</span> Upgrade plan</div>
+    <div class="cabinet-item" id="signOutBtn" style="display:none" onclick="handleSignOut()"><span class="ci-icon">🚪</span> Sign out</div>
   </div>
   <div class="cabinet-divider"></div>
   <div class="cabinet-section">
@@ -379,7 +380,7 @@ header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px
     <div class="header-right">
       <div class="rage-pips" id="ragePips"><div class="rage-pip"></div><div class="rage-pip"></div><div class="rage-pip"></div><div class="rage-pip"></div><div class="rage-pip"></div></div>
       <button class="upgrade-btn" id="upgradeHeaderBtn" onclick="showPaywall()">⚖ Upgrade</button>
-   <button class="hbtn icon-only" onclick="toggleTheme()" id="themeBtn" title="Toggle theme">🌙</button>
+      <button class="hbtn icon-only" onclick="toggleTheme()" id="themeBtn" title="Toggle theme">🌙</button>
       <div class="user-menu-wrap" id="userMenuWrap">
         <div class="user-avatar" id="userAvatar" onclick="toggleUserMenu()">?</div>
         <div class="user-dropdown" id="userDropdown">
@@ -427,7 +428,7 @@ header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px
   <div class="input-area">
     <div id="suggestionChips"></div>
     <div class="input-wrap">
-      <textarea class="chat-input" id="chatInput" placeholder="Present your case to the court..." rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)" ></textarea>
+      <textarea class="chat-input" id="chatInput" placeholder="Present your case to the court..." rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
       <button class="send-btn" id="sendBtn" onclick="sendMessage()">⚖</button>
     </div>
     <div class="input-footer">
@@ -620,11 +621,11 @@ header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px
 
 <script>
 
-// ============================================================
-// THE JUDGY — UPDATED SCRIPT
-// Adds: conversation hooks, clickable follow-up options,
-//       cross-product recommendations, token usage awareness
-// ============================================================
+// ── SUPABASE CLIENT ──────────────────────────────────────────
+const supabaseClient = supabase.createClient(
+  'https://dmemzljerldzeiwqfxzp.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRtZW16bGplcmxkemVpd3FmeHpwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2NDMxNzgsImV4cCI6MjA5NDIxOTE3OH0.u4FL1mk555dUesVNjF58pXwkQlvvQYQgR5JpcxRtB40'
+);
 
 // ── LANDING SCREEN LOGIC ─────────────────────────────────────
 function showLanding() {
@@ -642,154 +643,47 @@ function enterCourt() {
     localStorage.setItem('judgy_visited', '1');
   }, 400);
 }
-  // ── YOUR BUILDS — cross-recommend based on topic ────────────
+
+// ── YOUR BUILDS — cross-recommend based on topic ────────────
 const MY_BUILDS = [
-  {
-    id: 'rentyapp',
-    name: 'RentyApp',
-    url: 'https://rentyapp.net',
-    emoji: '🏠',
-    tagline: 'Property management made simple for landlords',
-    keywords: ['landlord','tenant','rent','lease','property','manage','evict','maintenance','rental income','property manager','rent collection','lease agreement'],
-    topics: ['legal','money','family'],
-  },
-  {
-    id: 'myrental',
-    name: 'MyRental.space',
-    url: 'https://myrental.space',
-    emoji: '🔑',
-    tagline: 'Find and list rental properties easily',
-    keywords: ['rent','rental','apartment','sublet','subletting','housing','furnished','find a place','listing','landlord','tenant','move in'],
-    topics: ['legal','money','family'],
-  },
-  {
-    id: 'dropvault',
-    name: 'DropVault',
-    url: 'https://dropvault.live',
-    emoji: '📦',
-    tagline: 'Sell digital products and earn passive income',
-    keywords: ['sell','product','digital','ebook','course','template','income','passive','creator','monetize','online store','download','side hustle','make money'],
-    topics: ['business','money'],
-  },
-  {
-    id: 'fluentra',
-    name: 'Fluentra AI',
-    url: 'https://fluentra.ai',
-    emoji: '🤖',
-    tagline: 'AI assistant for building, strategy and copywriting',
-    keywords: ['ai','artificial intelligence','learn ai','build website','strategy','copywriting','ai learning','automation','chatgpt','ai tools','skills','tech'],
-    topics: ['work','personal','business'],
-  },
-  {
-    id: 'buildshowcase',
-    name: 'Build Showcase',
-    url: 'https://build-showcase.dev',
-    emoji: '🏗️',
-    tagline: 'Showcase and promote your web projects',
-    keywords: ['portfolio','showcase','project','builder','developer','website','launch','side project','build','deploy','freelance','coding'],
-    topics: ['business','work'],
-  },
-  {
-    id: 'postpilots',
-    name: 'PostPilots',
-    url: 'https://postpilots.xyz',
-    emoji: '✏️',
-    tagline: 'Schedule posts to LinkedIn, X, Instagram and more',
-    keywords: ['social media','linkedin','instagram','twitter','post','content','brand','marketing','followers','audience','viral','tiktok','facebook','career path'],
-    topics: ['business','work'],
-  },
+  {id:'rentyapp',name:'RentyApp',url:'https://rentyapp.net',emoji:'🏠',tagline:'Property management made simple for landlords',keywords:['landlord','tenant','rent','lease','property','manage','evict','maintenance','rental income','property manager','rent collection','lease agreement'],topics:['legal','money','family']},
+  {id:'myrental',name:'MyRental.space',url:'https://myrental.space',emoji:'🔑',tagline:'Find and list rental properties easily',keywords:['rent','rental','apartment','sublet','subletting','housing','furnished','find a place','listing','landlord','tenant','move in'],topics:['legal','money','family']},
+  {id:'dropvault',name:'DropVault',url:'https://dropvault.live',emoji:'📦',tagline:'Sell digital products and earn passive income',keywords:['sell','product','digital','ebook','course','template','income','passive','creator','monetize','online store','download','side hustle','make money'],topics:['business','money']},
+  {id:'fluentra',name:'Fluentra AI',url:'https://fluentra.ai',emoji:'🤖',tagline:'AI assistant for building, strategy and copywriting',keywords:['ai','artificial intelligence','learn ai','build website','strategy','copywriting','ai learning','automation','chatgpt','ai tools','skills','tech'],topics:['work','personal','business']},
+  {id:'buildshowcase',name:'Build Showcase',url:'https://build-showcase.dev',emoji:'🏗️',tagline:'Showcase and promote your web projects',keywords:['portfolio','showcase','project','builder','developer','website','launch','side project','build','deploy','freelance','coding'],topics:['business','work']},
+  {id:'postpilots',name:'PostPilots',url:'https://postpilots.xyz',emoji:'✏️',tagline:'Schedule posts to LinkedIn, X, Instagram and more',keywords:['social media','linkedin','instagram','twitter','post','content','brand','marketing','followers','audience','viral','tiktok','facebook','career path'],topics:['business','work']},
 ];
 
-// ── DETECT RELEVANT BUILD FROM CONVERSATION ──────────────────
 function detectRelevantBuild(userText, topic) {
   const lower = userText.toLowerCase();
-  let best = null;
-  let bestScore = 0;
-
+  let best = null, bestScore = 0;
   for (const build of MY_BUILDS) {
     let score = 0;
-    // Keyword match
-    for (const kw of build.keywords) {
-      if (lower.includes(kw)) score += 2;
-    }
-    // Topic match
+    for (const kw of build.keywords) { if (lower.includes(kw)) score += 2; }
     if (build.topics.includes(topic)) score += 1;
-
-    if (score > bestScore) {
-      bestScore = score;
-      best = build;
-    }
+    if (score > bestScore) { bestScore = score; best = build; }
   }
-  // Only recommend if strong enough match
   return bestScore >= 2 ? best : null;
 }
 
-// ── BUILD RECOMMENDATION HTML ────────────────────────────────
 function buildRecommendationHTML(build) {
-  return `
-    <div onclick="window.open('${build.url}','_blank')"
-         style="margin-top:12px;padding:10px 13px;background:rgba(196,160,80,0.05);
-                border:1px solid rgba(196,160,80,0.18);border-radius:9px;
-                cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:10px;"
-         onmouseover="this.style.borderColor='rgba(196,160,80,0.5)';this.style.background='rgba(196,160,80,0.09)'"
-         onmouseout="this.style.borderColor='rgba(196,160,80,0.18)';this.style.background='rgba(196,160,80,0.05)'">
-      <div style="width:32px;height:32px;border-radius:8px;background:rgba(196,160,80,0.1);
-                  border:1px solid rgba(196,160,80,0.2);display:flex;align-items:center;
-                  justify-content:center;font-size:14px;flex-shrink:0">${build.emoji}</div>
-      <div style="flex:1;min-width:0">
-        <div style="font-size:10px;color:rgba(196,160,80,0.6);font-weight:500;
-                    text-transform:uppercase;letter-spacing:1px;margin-bottom:2px">
-          Might help you
-        </div>
-        <div style="font-size:13px;color:#f2ede4;font-weight:500;font-family:'Playfair Display',serif">${build.name}</div>
-        <div style="font-size:11px;color:#a89880;margin-top:1px;font-family:'DM Sans',sans-serif">${build.tagline}</div>
-      </div>
-      <span style="font-size:11px;color:rgba(196,160,80,0.5);flex-shrink:0">↗</span>
-    </div>`;
+  return `<div onclick="window.open('${build.url}','_blank')" style="margin-top:12px;padding:10px 13px;background:rgba(196,160,80,0.05);border:1px solid rgba(196,160,80,0.18);border-radius:9px;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:10px;" onmouseover="this.style.borderColor='rgba(196,160,80,0.5)';this.style.background='rgba(196,160,80,0.09)'" onmouseout="this.style.borderColor='rgba(196,160,80,0.18)';this.style.background='rgba(196,160,80,0.05)'"><div style="width:32px;height:32px;border-radius:8px;background:rgba(196,160,80,0.1);border:1px solid rgba(196,160,80,0.2);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">${build.emoji}</div><div style="flex:1;min-width:0"><div style="font-size:10px;color:rgba(196,160,80,0.6);font-weight:500;text-transform:uppercase;letter-spacing:1px;margin-bottom:2px">Might help you</div><div style="font-size:13px;color:#f2ede4;font-weight:500;font-family:'Playfair Display',serif">${build.name}</div><div style="font-size:11px;color:#a89880;margin-top:1px;font-family:'DM Sans',sans-serif">${build.tagline}</div></div><span style="font-size:11px;color:rgba(196,160,80,0.5);flex-shrink:0">↗</span></div>`;
 }
 
-// ── FOLLOW-UP OPTIONS HTML ────────────────────────────────────
 function buildFollowUpHTML(options, question) {
-  const optionBtns = options.map(opt => `
-    <button class="followup-btn" onclick="useFollowUp(this)"
-            style="background:var(--card2);border:1px solid var(--border2);
-                   border-radius:8px;padding:7px 12px;font-size:12px;
-                   color:var(--text2);cursor:pointer;font-family:var(--sans);
-                   text-align:left;transition:all 0.15s;line-height:1.4;"
-            onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--text)'"
-            onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--text2)'">
-      ${opt}
-    </button>`).join('');
-
-  return `
-    <div class="followup-wrap" style="margin-top:10px;padding:10px 12px;
-          background:rgba(255,255,255,0.03);border:1px solid var(--border);
-          border-radius:8px;">
-      <div style="font-size:11px;color:var(--text3);margin-bottom:7px;
-                  text-transform:uppercase;letter-spacing:0.5px;font-weight:500;">
-        ⚖️ ${question}
-      </div>
-      <div style="display:flex;flex-wrap:wrap;gap:6px;">
-        ${optionBtns}
-      </div>
-    </div>`;
+  const optionBtns = options.map(opt => `<button class="followup-btn" onclick="useFollowUp(this)" style="background:var(--card2);border:1px solid var(--border2);border-radius:8px;padding:7px 12px;font-size:12px;color:var(--text2);cursor:pointer;font-family:var(--sans);text-align:left;transition:all 0.15s;line-height:1.4;" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--text)'" onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--text2)'">${opt}</button>`).join('');
+  return `<div class="followup-wrap" style="margin-top:10px;padding:10px 12px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:8px;"><div style="font-size:11px;color:var(--text3);margin-bottom:7px;text-transform:uppercase;letter-spacing:0.5px;font-weight:500;">⚖️ ${question}</div><div style="display:flex;flex-wrap:wrap;gap:6px;">${optionBtns}</div></div>`;
 }
 
-// ── USE FOLLOW-UP OPTION ──────────────────────────────────────
 function useFollowUp(btn) {
   const text = btn.textContent.trim();
-  // Remove the whole followup block from the DOM
   const wrap = btn.closest('.followup-wrap');
   if (wrap) wrap.remove();
-  // Put text in input and send
   const input = document.getElementById('chatInput');
   input.value = text;
   autoResize(input);
   sendMessage();
 }
-
-// ── UPDATED SYSTEM PROMPTS ────────────────────────────────────
-// Key change: instruct AI to end with FOLLOW_UP and OPTIONS blocks
 
 const JUDGY_PROMPT = `You are THE JUDGY — a sharp, authoritative AI judge. Think Judge Judy meets a no-nonsense best friend — commanding, witty, cutting, but ultimately caring.
 
@@ -841,96 +735,44 @@ OPTIONS: [option 1] | [option 2] | [option 3]
 
 No verdict line — just a short clap back then the follow-up.`;
 
-// ── PARSE AI RESPONSE ─────────────────────────────────────────
 function parseAIResponse(text, verdictMarker) {
-  let body = text;
-  let verdict = '';
-  let followUp = '';
-  let options = [];
-
-  // Extract FOLLOW_UP
+  let body = text, verdict = '', followUp = '', options = [];
   const fuMatch = text.match(/FOLLOW_UP:\s*(.+)/i);
-  if (fuMatch) {
-    followUp = fuMatch[1].trim();
-    body = body.replace(fuMatch[0], '').trim();
-  }
-
-  // Extract OPTIONS
+  if (fuMatch) { followUp = fuMatch[1].trim(); body = body.replace(fuMatch[0], '').trim(); }
   const opMatch = text.match(/OPTIONS:\s*(.+)/i);
-  if (opMatch) {
-    options = opMatch[1].split('|').map(o => o.trim()).filter(Boolean);
-    body = body.replace(opMatch[0], '').trim();
-  }
-
-  // Extract VERDICT/RULING
+  if (opMatch) { options = opMatch[1].split('|').map(o => o.trim()).filter(Boolean); body = body.replace(opMatch[0], '').trim(); }
   if (verdictMarker) {
     const re = new RegExp(`${verdictMarker}\\s*(.+)`, 'i');
     const m = body.match(re);
-    if (m) {
-      verdict = m[1].trim();
-      body = body.replace(m[0], '').trim();
-    }
+    if (m) { verdict = m[1].trim(); body = body.replace(m[0], '').trim(); }
   }
-
   return { body, verdict, followUp, options };
 }
 
-// ── ADD MESSAGE WITH FOLLOW-UPS AND RECOMMENDATION ───────────
 function addMsgFull(role, parsed, isBarry, userText, currentTopic) {
   const { body, verdict, followUp, options } = parsed;
   const verdictMarker = isBarry ? '📋' : '⚖️';
   const verdictClass = isBarry ? 'barry-verdict' : 'verdict-line';
-
-  // Build verdict HTML
-  const verdictHtml = verdict
-    ? `<div class="${verdictClass}">${verdictMarker} ${verdict}</div>`
-    : '';
-
-  // Build follow-up HTML
-  const followUpHtml = (followUp && options.length)
-    ? buildFollowUpHTML(options, followUp)
-    : '';
-
-  // Build recommendation HTML
+  const verdictHtml = verdict ? `<div class="${verdictClass}">${verdictMarker} ${verdict}</div>` : '';
+  const followUpHtml = (followUp && options.length) ? buildFollowUpHTML(options, followUp) : '';
   const build = userText ? detectRelevantBuild(userText, currentTopic) : null;
   const recHtml = build ? buildRecommendationHTML(build) : '';
-
-  // Assemble
   const msgs = document.getElementById('messages');
   const div = document.createElement('div');
   div.className = `msg ${role}`;
   const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-  div.innerHTML = `
-    <div class="msg-av">${role === 'barry' ? '👔' : '⚖️'}</div>
-    <div class="msg-wrap">
-      <div class="msg-name">${role === 'barry' ? 'BARRY T. LAWSON, ESQ.' : 'THE JUDGY'}</div>
-      <div class="msg-bubble">
-        ${formatResponse(body)}
-        ${verdictHtml}
-        ${followUpHtml}
-        ${recHtml}
-      </div>
-      <div class="msg-time">${time}</div>
-    </div>`;
-
+  div.innerHTML = `<div class="msg-av">${role === 'barry' ? '👔' : '⚖️'}</div><div class="msg-wrap"><div class="msg-name">${role === 'barry' ? 'BARRY T. LAWSON, ESQ.' : 'THE JUDGY'}</div><div class="msg-bubble">${formatResponse(body)}${verdictHtml}${followUpHtml}${recHtml}</div><div class="msg-time">${time}</div></div>`;
   msgs.appendChild(div);
   msgs.scrollTop = msgs.scrollHeight;
 }
+
 function showTyping(role) {
   removeWelcome();
   const msgs = document.getElementById('messages');
   const div = document.createElement('div');
   div.className = `msg ${role}`;
   div.id = `typing-${role}`;
-  div.innerHTML = `
-    <div class="msg-av">${role === 'barry' ? '👔' : '⚖️'}</div>
-    <div class="msg-wrap">
-      <div class="msg-name">${role === 'barry' ? 'BARRY' : 'JUDGY'}</div>
-      <div class="typing-bub">
-        <div class="td"></div><div class="td"></div><div class="td"></div>
-      </div>
-    </div>`;
+  div.innerHTML = `<div class="msg-av">${role === 'barry' ? '👔' : '⚖️'}</div><div class="msg-wrap"><div class="msg-name">${role === 'barry' ? 'BARRY' : 'JUDGY'}</div><div class="typing-bub"><div class="td"></div><div class="td"></div><div class="td"></div></div></div>`;
   msgs.appendChild(div);
   msgs.scrollTop = msgs.scrollHeight;
 }
@@ -946,32 +788,14 @@ function removeTyping(role) {
 }
 
 function formatResponse(text) {
-  return text
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\n/g, '<br>');
+  return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
 }
 
-// ── STATE ──────────────────────────────────────────────────
-let topic = 'general';
-let charMode = 'both';
-let isDark = true;
-let msgCount = 0;
-let isThinking = false;
-let lpContent = '';
-let formContent = '';
-let lastUserText = '';
+let topic = 'general', charMode = 'both', isDark = true, msgCount = 0, isThinking = false, lpContent = '', formContent = '', lastUserText = '';
 
-// ── SIDEBAR ────────────────────────────────────────────────
-function openCabinet() {
-  document.getElementById('cabinet').classList.add('open');
-  document.getElementById('cabinetOverlay').classList.add('open');
-}
-function closeCabinet() {
-  document.getElementById('cabinet').classList.remove('open');
-  document.getElementById('cabinetOverlay').classList.remove('open');
-}
+function openCabinet() { document.getElementById('cabinet').classList.add('open'); document.getElementById('cabinetOverlay').classList.add('open'); }
+function closeCabinet() { document.getElementById('cabinet').classList.remove('open'); document.getElementById('cabinetOverlay').classList.remove('open'); }
 
-// ── THEME ──────────────────────────────────────────────────
 const themes = ['dark', 'light'];
 const themeIcons = { dark: '🌙', light: '☀' };
 const themeLabels = { dark: 'Light mode', light: 'Dark mode' };
@@ -981,152 +805,62 @@ function toggleTheme() {
   const t = themes[themeIndex];
   document.documentElement.setAttribute('data-theme', t);
   document.getElementById('themeBtn').textContent = themeIcons[t];
-  const lbl = document.getElementById('themeLabel');
-  if (lbl) lbl.textContent = themeLabels[t];
-  const icon = document.getElementById('themeIcon');
-  if (icon) icon.textContent = themeIcons[t];
+  const lbl = document.getElementById('themeLabel'); if (lbl) lbl.textContent = themeLabels[t];
+  const icon = document.getElementById('themeIcon'); if (icon) icon.textContent = themeIcons[t];
 }
 
-// ── PAGES ──────────────────────────────────────────────────
 function openPage(id) { document.getElementById('page-' + id).classList.add('open'); }
 function closePage(id) { document.getElementById('page-' + id).classList.remove('open'); }
-function setView(v, el) {
-  document.querySelectorAll('.cabinet-item').forEach(i => i.classList.remove('active'));
-  el.classList.add('active');
-}
 
-// ── SOUND ──────────────────────────────────────────────────
 let judgySoundOn = true;
 function toggleJudgySound() {
   judgySoundOn = !judgySoundOn;
-  const si = document.getElementById('soundIcon');
-  const sl = document.getElementById('soundLabel');
+  const si = document.getElementById('soundIcon'); const sl = document.getElementById('soundLabel');
   if (si) si.textContent = judgySoundOn ? '🔊' : '🔇';
   if (sl) sl.textContent = judgySoundOn ? 'Sound on' : 'Sound off';
 }
 
-// ── TOPICS ─────────────────────────────────────────────────
-const topicPlaceholders = {
-  general:      "Present your case to the court...",
-  relationship: "My ex wants to get back together but they cheated...",
-  work:         "I don't know which career path is right for me...",
-  coworker:     "My coworker gets the same pay but does half the work...",
-  personal:     "I want to learn AI but don't know where to start...",
-  family:       "My parents keep comparing me to my sibling...",
-  legal:        "What do I need to know about subletting my apartment?",
-  business:     "How do I figure out which skills are worth learning in 2026?",
-  money:        "I have no idea how to handle my taxes as a freelancer...",
-};
+const topicPlaceholders = {general:"Present your case to the court...",relationship:"My ex wants to get back together but they cheated...",work:"I don't know which career path is right for me...",coworker:"My coworker gets the same pay but does half the work...",personal:"I want to learn AI but don't know where to start...",family:"My parents keep comparing me to my sibling...",legal:"What do I need to know about subletting my apartment?",business:"How do I figure out which skills are worth learning in 2026?",money:"I have no idea how to handle my taxes as a freelancer..."};
 
 const topicRotations = {
-  general: [
-    "Present your case to the court...",
-    "Ask Judgy anything — she's heard worse...",
-    "State your situation. Court is in session.",
-    "What's going on? Barry's ready to advise.",
-  ],
-  work: [
-    "I don't know which career path is right for me...",
-    "My boss takes credit for my work in every meeting...",
-    "I want to switch careers but I'm scared to start over...",
-    "How do I negotiate a raise without getting fired?",
-    "I want to build skills in AI — where do I begin?",
-  ],
-  legal: [
-    "What do I need to know about subletting my apartment?",
-    "My landlord won't return my security deposit...",
-    "I need to send a demand letter — how do I do it?",
-    "What are my rights as a tenant?",
-    "I want to start an LLC — what state is best?",
-    "My employer hasn't paid me — what can I do?",
-  ],
-  business: [
-    "How do I figure out which skills are worth learning in 2026?",
-    "I want to start a side hustle — where do I begin?",
-    "How do I price my freelance services?",
-    "I want to build and sell a digital product — is it realistic?",
-    "What's the difference between an LLC and sole proprietor?",
-  ],
-  money: [
-    "I have no idea how to handle my taxes as a freelancer...",
-    "Someone owes me money and keeps avoiding me...",
-    "I want to start investing but don't know where to start...",
-    "How do I create a budget I'll actually stick to?",
-    "I'm thinking about subletting my place — what do I need to know?",
-  ],
-  personal: [
-    "I want to learn AI but don't know where to start...",
-    "I keep self-sabotaging every good thing in my life...",
-    "I feel stuck and don't know how to move forward...",
-    "I want to build new skills but have no time...",
-    "How do I stop procrastinating on things that matter?",
-  ],
-  relationship: [
-    "My ex wants to get back together but they cheated on me...",
-    "I think I'm falling for someone who isn't available...",
-    "My partner and I fight about money constantly...",
-    "I don't know if I should end this relationship...",
-  ],
-  family: [
-    "My parents keep comparing me to my sibling...",
-    "I'm thinking about subletting a room to help with rent...",
-    "My family doesn't support my career choice...",
-    "I'm dealing with a difficult family member at work...",
-  ],
-  coworker: [
-    "My coworker gets the same pay but does half the work...",
-    "Someone keeps taking credit for my ideas in meetings...",
-    "My coworker is undermining me to our boss...",
-    "How do I deal with a passive-aggressive colleague?",
-  ],
+  general:["Present your case to the court...","Ask Judgy anything — she's heard worse...","State your situation. Court is in session.","What's going on? Barry's ready to advise."],
+  work:["I don't know which career path is right for me...","My boss takes credit for my work in every meeting...","I want to switch careers but I'm scared to start over...","How do I negotiate a raise without getting fired?","I want to build skills in AI — where do I begin?"],
+  legal:["What do I need to know about subletting my apartment?","My landlord won't return my security deposit...","I need to send a demand letter — how do I do it?","What are my rights as a tenant?","I want to start an LLC — what state is best?","My employer hasn't paid me — what can I do?"],
+  business:["How do I figure out which skills are worth learning in 2026?","I want to start a side hustle — where do I begin?","How do I price my freelance services?","I want to build and sell a digital product — is it realistic?","What's the difference between an LLC and sole proprietor?"],
+  money:["I have no idea how to handle my taxes as a freelancer...","Someone owes me money and keeps avoiding me...","I want to start investing but don't know where to start...","How do I create a budget I'll actually stick to?","I'm thinking about subletting my place — what do I need to know?"],
+  personal:["I want to learn AI but don't know where to start...","I keep self-sabotaging every good thing in my life...","I feel stuck and don't know how to move forward...","I want to build new skills but have no time...","How do I stop procrastinating on things that matter?"],
+  relationship:["My ex wants to get back together but they cheated on me...","I think I'm falling for someone who isn't available...","My partner and I fight about money constantly...","I don't know if I should end this relationship..."],
+  family:["My parents keep comparing me to my sibling...","I'm thinking about subletting a room to help with rent...","My family doesn't support my career choice...","I'm dealing with a difficult family member at work..."],
+  coworker:["My coworker gets the same pay but does half the work...","Someone keeps taking credit for my ideas in meetings...","My coworker is undermining me to our boss...","How do I deal with a passive-aggressive colleague?"],
 };
 
-let placeholderTimers = {};
 function rotatePlaceholder() {
   const input = document.getElementById('chatInput');
   if (!input || document.activeElement === input) return;
   const rots = topicRotations[topic] || topicRotations.general;
-  const idx = Math.floor(Math.random() * rots.length);
-  input.placeholder = rots[idx];
+  input.placeholder = rots[Math.floor(Math.random() * rots.length)];
 }
 setInterval(rotatePlaceholder, 4000);
 
-
-function setTopic(btn, t) {
-  document.querySelectorAll('.topic-pill').forEach(p => p.classList.remove('active'));
-  btn.classList.add('active');
-  topic = t;
-  const input = document.getElementById('chatInput');
-  if (input) input.placeholder = topicPlaceholders[t] || 'Present your case to the court...';
-  renderChips();
-}
-
 function renderChips() {
-  const wrap = document.getElementById('suggestionChips');
-  if (!wrap) return;
+  const wrap = document.getElementById('suggestionChips'); if (!wrap) return;
   const rots = topicRotations[topic] || topicRotations.general;
   const shuffled = [...rots].sort(() => Math.random() - 0.5).slice(0, 3);
-  wrap.innerHTML = shuffled.map(q =>
-    `<button class="suggestion-chip" onclick="useChip(this)">${q}</button>`
-  ).join('');
+  wrap.innerHTML = shuffled.map(q => `<button class="suggestion-chip" onclick="useChip(this)">${q}</button>`).join('');
 }
 
 function useChip(btn) {
   const input = document.getElementById('chatInput');
-  input.value = btn.textContent;
-  autoResize(input);
-  input.focus();
+  input.value = btn.textContent; autoResize(input); input.focus();
   document.getElementById('suggestionChips').innerHTML = '';
   sendMessage();
 }
+
 function quickTopic(t) {
   topic = t;
-  document.querySelectorAll('.topic-pill').forEach(p => {
-    p.classList.toggle('active', p.textContent.toLowerCase().includes(t.substring(0, 4)));
-  });
+  document.querySelectorAll('.topic-pill').forEach(p => { p.classList.toggle('active', p.textContent.toLowerCase().includes(t.substring(0, 4))); });
 }
 
-// ── INPUT ──────────────────────────────────────────────────
 function autoResize(el) {
   el.style.height = 'auto';
   el.style.height = Math.min(el.scrollHeight, 100) + 'px';
@@ -1136,16 +870,13 @@ function autoResize(el) {
 function fillRandomQuestion() {
   const input = document.getElementById('chatInput');
   const rots = topicRotations[topic] || topicRotations.general;
-  const idx = Math.floor(Math.random() * rots.length);
-  input.value = rots[idx];
-  autoResize(input);
-  input.focus();
+  input.value = rots[Math.floor(Math.random() * rots.length)];
+  autoResize(input); input.focus();
   input.setSelectionRange(input.value.length, input.value.length);
 }
 
-function handleKey(e) {
-  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
-}
+function handleKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } }
+
 function useStarter(card) {
   const t = card.querySelector('.starter-t').textContent;
   document.getElementById('chatInput').value = t;
@@ -1153,18 +884,13 @@ function useStarter(card) {
   sendMessage();
 }
 
-// ── RAGE METER ─────────────────────────────────────────────
 function updateRage() {
   msgCount++;
   const level = Math.min(5, Math.ceil(msgCount / 2));
   document.querySelectorAll('.rage-pip').forEach((p, i) => p.classList.toggle('on', i < level));
 }
 
-// ── MESSAGES ──────────────────────────────────────────────
-function removeWelcome() {
-  const w = document.getElementById('welcome');
-  if (w) w.remove();
-}
+function removeWelcome() { const w = document.getElementById('welcome'); if (w) w.remove(); }
 
 function addMsg(role, html, verdict = '', isBarry = false) {
   removeWelcome();
@@ -1172,112 +898,25 @@ function addMsg(role, html, verdict = '', isBarry = false) {
   const div = document.createElement('div');
   div.className = `msg ${role}`;
   const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  const verdictHtml = verdict
-    ? `<div class="${isBarry ? 'barry-verdict' : 'verdict-line'}">${isBarry ? '📋' : '⚖️'} ${verdict}</div>`
-    : '';
+  const verdictHtml = verdict ? `<div class="${isBarry ? 'barry-verdict' : 'verdict-line'}">${isBarry ? '📋' : '⚖️'} ${verdict}</div>` : '';
   if (role === 'judgy' || role === 'barry') {
-    div.innerHTML = `
-      <div class="msg-av">${role === 'barry' ? '👔' : '⚖️'}</div>
-      <div class="msg-wrap">
-        <div class="msg-name">${role === 'barry' ? 'BARRY T. LAWSON, ESQ.' : 'THE JUDGY'}</div>
-        <div class="msg-bubble">${html}${verdictHtml}</div>
-        <div class="msg-time">${time}</div>
-      </div>`;
+    div.innerHTML = `<div class="msg-av">${role === 'barry' ? '👔' : '⚖️'}</div><div class="msg-wrap"><div class="msg-name">${role === 'barry' ? 'BARRY T. LAWSON, ESQ.' : 'THE JUDGY'}</div><div class="msg-bubble">${html}${verdictHtml}</div><div class="msg-time">${time}</div></div>`;
   } else {
-    div.innerHTML = `
-      <div class="msg-av">👤</div>
-      <div class="msg-wrap">
-        <div class="msg-bubble">${html.replace(/\n/g, '<br>')}</div>
-        <div class="msg-time">${time}</div>
-      </div>`;
+    div.innerHTML = `<div class="msg-av">👤</div><div class="msg-wrap"><div class="msg-bubble">${html.replace(/\n/g, '<br>')}</div><div class="msg-time">${time}</div></div>`;
   }
   msgs.appendChild(div);
   msgs.scrollTop = msgs.scrollHeight;
 }
 
-function showTyping(role) {
-  removeWelcome();
-  const msgs = document.getElementById('messages');
-  const div = document.createElement('div');
-  div.className = `msg ${role}`;
-  div.id = `typing-${role}`;
-  div.innerHTML = `
-    <div class="msg-av">${role === 'barry' ? '👔' : '⚖️'}</div>
-    <div class="msg-wrap">
-      <div class="msg-name">${role === 'barry' ? 'BARRY' : 'JUDGY'}</div>
-      <div class="typing-bub">
-        <div class="td"></div><div class="td"></div><div class="td"></div>
-      </div>
-    </div>`;
-  msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
-}
-function removeTyping(role) {
-  const t = document.getElementById(`typing-${role}`);
-  if (t) t.remove();
-}
-
-function formatResponse(text) {
-  return text
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\n/g, '<br>');
-}
-
-// ── DETECT LEGAL / BUSINESS ────────────────────────────────
-const legalKeywords = ['legal','law','sue','court','lawyer','attorney','contract','divorce','custody','evict','tenant','landlord','copyright','trademark','will','estate','llc','incorporate','tax','irs','insurance','claim','settlement'];
-const businessKeywords = ['business','startup','company','brand','market','pricing','revenue','profit','client','customer','invoice','landing page','website','saas','product','launch','competitor'];
-function isLegalOrBusiness(text) {
-  const lower = text.toLowerCase();
-  return legalKeywords.some(k => lower.includes(k)) ||
-    businessKeywords.some(k => lower.includes(k)) ||
-    topic === 'legal' || topic === 'business' || topic === 'money';
-}
-
-// ── NEW CASE ──────────────────────────────────────────────
 function newCase() {
   const msgs = document.getElementById('messages');
-  msgs.innerHTML = `
-    <div class="welcome" id="welcome">
-      <div class="welcome-crest">⚖</div>
-      <h2>THE <span class="judgy-name">JUDGY</span><br>& <span class="barry-name">BARRY</span></h2>
-      <div class="welcome-subtitle">Brutally honest. Surprisingly competent.</div>
-      <div class="welcome-rule"></div>
-      <div class="char-duo">
-        <div class="char-card judgy" id="charJudgy" onclick="selectChar('judgy')">
-          <div class="char-monogram">J.</div>
-          <div class="char-card-name">The Judgy</div>
-          <div class="char-card-title">The Honorable Judge</div>
-          <div class="char-card-tag">Life · Love · Work</div>
-        </div>
-        <div class="char-card barry" id="charBarry" onclick="selectChar('barry')">
-          <div class="char-monogram">B.</div>
-          <div class="char-card-name">Barry T. Lawson</div>
-          <div class="char-card-title">Esq. — Her Ex-Husband</div>
-          <div class="char-card-tag">Legal · Business · Tax</div>
-        </div>
-      </div>
-      <div id="charModeBar" style="display:none">
-        <div class="char-mode-bar">
-          <span class="char-mode-label" id="charModeLabel"></span>
-          <button class="char-mode-back" onclick="selectChar('both')">← Both</button>
-        </div>
-      </div>
-      <div class="starters">
-        <button class="starter" onclick="useStarter(this)"><span class="starter-icon">♡</span><span class="starter-t">My ex wants to get back together but they cheated on me</span></button>
-        <button class="starter barry-s" onclick="useStarter(this)"><span class="starter-icon">§</span><span class="starter-t">I want to start an LLC — where do I begin?</span></button>
-        <button class="starter" onclick="useStarter(this)"><span class="starter-icon">◉</span><span class="starter-t">My coworker keeps stealing my ideas in meetings</span></button>
-        <button class="starter barry-s" onclick="useStarter(this)"><span class="starter-icon">📋</span><span class="starter-t">I need a demand letter for money owed to me</span></button>
-      </div>
-    </div>`;
-  msgCount = 0;
-  charMode = 'both';
-  lastUserText = '';
+  msgs.innerHTML = `<div class="welcome" id="welcome"><div class="welcome-crest">⚖</div><h2>THE <span class="judgy-name">JUDGY</span><br>& <span class="barry-name">BARRY</span></h2><div class="welcome-subtitle">Brutally honest. Surprisingly competent.</div><div class="welcome-rule"></div><div class="char-duo"><div class="char-card judgy" id="charJudgy" onclick="selectChar('judgy')"><div class="char-monogram">J.</div><div class="char-card-name">The Judgy</div><div class="char-card-title">The Honorable Judge</div><div class="char-card-tag">Life · Love · Work</div></div><div class="char-card barry" id="charBarry" onclick="selectChar('barry')"><div class="char-monogram">B.</div><div class="char-card-name">Barry T. Lawson</div><div class="char-card-title">Esq. — Her Ex-Husband</div><div class="char-card-tag">Legal · Business · Tax</div></div></div><div id="charModeBar" style="display:none"><div class="char-mode-bar"><span class="char-mode-label" id="charModeLabel"></span><button class="char-mode-back" onclick="selectChar('both')">← Both</button></div></div><div class="starters"><button class="starter" onclick="useStarter(this)"><span class="starter-icon">♡</span><span class="starter-t">My ex wants to get back together but they cheated on me</span></button><button class="starter barry-s" onclick="useStarter(this)"><span class="starter-icon">§</span><span class="starter-t">I want to start an LLC — where do I begin?</span></button><button class="starter" onclick="useStarter(this)"><span class="starter-icon">◉</span><span class="starter-t">My coworker keeps stealing my ideas in meetings</span></button><button class="starter barry-s" onclick="useStarter(this)"><span class="starter-icon">📋</span><span class="starter-t">I need a demand letter for money owed to me</span></button></div></div>`;
+  msgCount = 0; charMode = 'both'; lastUserText = '';
   document.querySelectorAll('.rage-pip').forEach(p => p.classList.remove('on'));
   document.getElementById('chatInput').value = '';
   document.getElementById('chatInput').placeholder = 'Present your case to the court...';
   autoResize(document.getElementById('chatInput'));
 }
-
 
 function selectChar(mode) {
   charMode = mode;
@@ -1298,25 +937,14 @@ function selectChar(mode) {
   document.getElementById('chatInput')?.focus();
 }
 
-// ── MAIN SEND ──────────────────────────────────────────────
-
-// ── STRIPE PAYMENT LINKS ────────────────────────────────────
-const STRIPE_LINKS = {
-  starter:  'https://buy.stripe.com/3cIfZgbeq6p03ft1Fkg3600',
-  pro:      'https://buy.stripe.com/00wdR882eaFg03hcjYg3601',
-  token_sm: 'https://buy.stripe.com/aFa4gy5U6fZA17l1Fkg360a',
-  token_md: 'https://buy.stripe.com/00w9ASbeqcNo5nBgAeg3609',
-  token_lg: 'https://buy.stripe.com/8x29AS5U65kW03h1Fkg3608',
-};
+const STRIPE_LINKS = {starter:'https://buy.stripe.com/3cIfZgbeq6p03ft1Fkg3600',pro:'https://buy.stripe.com/00wdR882eaFg03hcjYg3601',token_sm:'https://buy.stripe.com/aFa4gy5U6fZA17l1Fkg360a',token_md:'https://buy.stripe.com/00w9ASbeqcNo5nBgAeg3609',token_lg:'https://buy.stripe.com/8x29AS5U65kW03h1Fkg3608'};
 
 const FREE_LIMIT = 10;
 let totalMsgCount = parseInt(localStorage.getItem('judgy_msgs') || '0');
 let isPaid = localStorage.getItem('judgy_paid') === '1';
 let paywallShown = false;
 
-function saveCount() {
-  localStorage.setItem('judgy_msgs', totalMsgCount);
-}
+function saveCount() { localStorage.setItem('judgy_msgs', totalMsgCount); }
 
 function checkPayment() {
   const params = new URLSearchParams(window.location.search);
@@ -1331,17 +959,14 @@ function checkPayment() {
   }
 }
 
-
 function updatePlanUI() {
-  const msgs = totalMsgCount;
-  const paid = isPaid;
   const val = document.getElementById('cabinetPlanValue');
   const btn = document.getElementById('upgradeHeaderBtn');
-  if (paid) {
+  if (isPaid) {
     if (val) val.textContent = 'Pro — unlimited';
     if (btn) { btn.textContent = '⚖ Pro'; btn.classList.add('paid'); btn.onclick = null; }
   } else {
-    const remaining = Math.max(0, FREE_LIMIT - msgs);
+    const remaining = Math.max(0, FREE_LIMIT - totalMsgCount);
     if (val) val.textContent = `Free — ${remaining} cases left`;
     if (btn) { btn.textContent = '⚖ Upgrade'; btn.classList.remove('paid'); btn.onclick = () => showPaywall(); }
   }
@@ -1350,31 +975,21 @@ function updatePlanUI() {
 function showPaywall() {
   if (paywallShown) return;
   paywallShown = true;
-  const overlay = document.getElementById('paywallOverlay');
-  overlay.style.display = 'flex';
+  document.getElementById('paywallOverlay').style.display = 'flex';
   document.body.style.overflow = 'hidden';
 }
 
 function closePaywall() {
   const overlay = document.getElementById('paywallOverlay');
   overlay.style.animation = 'pwFadeIn 0.2s ease reverse forwards';
-  setTimeout(() => {
-    overlay.style.display = 'none';
-    document.body.style.overflow = '';
-    paywallShown = false;
-  }, 200);
+  setTimeout(() => { overlay.style.display = 'none'; document.body.style.overflow = ''; paywallShown = false; }, 200);
 }
 
-function handleOverlayClick(e) {
-  if (e.target === document.getElementById('paywallOverlay')) closePaywall();
-}
-
-function trackClick(plan) {
-  localStorage.setItem('judgy_last_plan', plan);
-}
+function handleOverlayClick(e) { if (e.target === document.getElementById('paywallOverlay')) closePaywall(); }
+function trackClick(plan) { localStorage.setItem('judgy_last_plan', plan); }
 
 async function handleSignOut() {
-  await supabase.auth.signOut();
+  await supabaseClient.auth.signOut();
   localStorage.removeItem('judgy_paid');
   localStorage.removeItem('judgy_msgs');
   localStorage.removeItem('judgy_visited');
@@ -1383,7 +998,7 @@ async function handleSignOut() {
 
 async function updateSignOutVisibility() {
   try {
-    const { data } = await supabase.auth.getSession();
+    const { data } = await supabaseClient.auth.getSession();
     const session = data?.session;
     const avatar = document.getElementById('userAvatar');
     const emailEl = document.getElementById('userDropdownEmail');
@@ -1400,8 +1015,8 @@ async function updateSignOutVisibility() {
     }
   } catch(e) {}
 }
-  
-  function showToast(msg) {
+
+function showToast(msg) {
   const t = document.getElementById('successToast');
   document.getElementById('successMsg').textContent = msg;
   t.classList.add('show');
@@ -1413,23 +1028,25 @@ function checkLimit() {
   totalMsgCount++;
   saveCount();
   updatePlanUI();
-  if (totalMsgCount > FREE_LIMIT) {
-    showPaywall();
-    return false;
-  }
+  if (totalMsgCount > FREE_LIMIT) { showPaywall(); return false; }
   return true;
 }
 
-// Check for payment success on page load
-window.addEventListener('load', () => {   checkPayment();   updatePlanUI();   renderChips();   updateSignOutVisibility();   const hasVisited = localStorage.getItem('judgy_visited');   if (!hasVisited) showLanding(); });
+window.addEventListener('load', () => {
+  checkPayment();
+  updatePlanUI();
+  renderChips();
+  updateSignOutVisibility();
+  const hasVisited = localStorage.getItem('judgy_visited');
+  if (!hasVisited) showLanding();
+});
 
 async function sendMessage() {
   const input = document.getElementById('chatInput');
   const text = input.value.trim();
   if (!text || isThinking) return;
   if (!checkLimit()) return;
-  input.value = '';
-  autoResize(input);
+  input.value = ''; autoResize(input);
   lastUserText = text;
   addMsg('user', text);
   updateRage();
@@ -1442,22 +1059,12 @@ async function sendMessage() {
   if (judgyOnly) {
     showTyping('judgy');
     try {
-      const topicCtx = { relationship:'relationship issue', work:'work situation', coworker:'coworker drama', personal:'personal growth', family:'family situation', general:'' };
-      const raw = await callClaude(
-        JUDGY_PROMPT + (topicCtx[topic] ? `\n\nContext: This is a ${topicCtx[topic]}.` : ''),
-        text
-      );
+      const topicCtx = {relationship:'relationship issue',work:'work situation',coworker:'coworker drama',personal:'personal growth',family:'family situation',general:''};
+      const raw = await callClaude(JUDGY_PROMPT + (topicCtx[topic] ? `\n\nContext: This is a ${topicCtx[topic]}.` : ''), text);
       removeTyping('judgy');
-      const parsed = parseAIResponse(raw, '⚖️ VERDICT:');
-      addMsgFull('judgy', parsed, false, text, topic);
-    } catch (e) {
-      removeTyping('judgy');
-      addMsg('judgy', "Court is experiencing technical difficulties. Try again.", '⚖️ VERDICT: Case postponed.');
-    }
-    isThinking = false;
-    document.getElementById('sendBtn').disabled = false;
-    input.focus();
-    return;
+      addMsgFull('judgy', parseAIResponse(raw, '⚖️ VERDICT:'), false, text, topic);
+    } catch (e) { removeTyping('judgy'); addMsg('judgy', "Court is experiencing technical difficulties. Try again.", '⚖️ VERDICT: Case postponed.'); }
+    isThinking = false; document.getElementById('sendBtn').disabled = false; input.focus(); return;
   }
 
   if (charMode === 'barry') {
@@ -1465,72 +1072,39 @@ async function sendMessage() {
     try {
       const raw = await callClaude(BARRY_PROMPT, text);
       removeTyping('barry');
-      const parsed = parseAIResponse(raw, '📋 RULING:');
-      addMsgFull('barry', parsed, true, text, topic);
-    } catch (e) {
-      removeTyping('barry');
-      addMsg('barry', "Connection dropped. Barry T. Lawson, Esq.", '📋 RULING: Try again.', true);
-    }
-    isThinking = false;
-    document.getElementById('sendBtn').disabled = false;
-    input.focus();
-    return;
+      addMsgFull('barry', parseAIResponse(raw, '📋 RULING:'), true, text, topic);
+    } catch (e) { removeTyping('barry'); addMsg('barry', "Connection dropped. Barry T. Lawson, Esq.", '📋 RULING: Try again.', true); }
+    isThinking = false; document.getElementById('sendBtn').disabled = false; input.focus(); return;
   }
 
   if (barrySituation) {
-    // BARRY leads
     showTyping('barry');
     try {
       const barryRaw = await callClaude(BARRY_PROMPT, text);
       removeTyping('barry');
-      const barryParsed = parseAIResponse(barryRaw, '📋 RULING:');
-      addMsgFull('barry', barryParsed, true, text, topic);
-
-      // JUDGY claps back
+      addMsgFull('barry', parseAIResponse(barryRaw, '📋 RULING:'), true, text, topic);
       await new Promise(r => setTimeout(r, 800));
       showTyping('judgy');
-      const judgyRaw = await callClaude(
-        JUDGY_CLAP_BACK,
-        `User asked: "${text}"\n\nBarry just said: "${barryRaw}"`
-      );
+      const judgyRaw = await callClaude(JUDGY_CLAP_BACK, `User asked: "${text}"\n\nBarry just said: "${barryRaw}"`);
       removeTyping('judgy');
-      const judgyParsed = parseAIResponse(judgyRaw, null);
-      addMsgFull('judgy', judgyParsed, false, null, topic); // no rec on clap back
-    } catch (e) {
-      removeTyping('barry'); removeTyping('judgy');
-      addMsg('barry', "Objection! My connection dropped.", '📋 RULING: Try again.', true);
-    }
-
+      addMsgFull('judgy', parseAIResponse(judgyRaw, null), false, null, topic);
+    } catch (e) { removeTyping('barry'); removeTyping('judgy'); addMsg('barry', "Objection! My connection dropped.", '📋 RULING: Try again.', true); }
   } else {
-    // JUDGY leads
     showTyping('judgy');
     try {
-      const topicCtx = { relationship:'relationship issue', work:'work situation', coworker:'coworker drama', personal:'personal growth', family:'family situation', general:'' };
-      const judgyRaw = await callClaude(
-        JUDGY_PROMPT + (topicCtx[topic] ? `\n\nContext: This is a ${topicCtx[topic]}.` : ''),
-        text
-      );
+      const topicCtx = {relationship:'relationship issue',work:'work situation',coworker:'coworker drama',personal:'personal growth',family:'family situation',general:''};
+      const judgyRaw = await callClaude(JUDGY_PROMPT + (topicCtx[topic] ? `\n\nContext: This is a ${topicCtx[topic]}.` : ''), text);
       removeTyping('judgy');
-      const judgyParsed = parseAIResponse(judgyRaw, '⚖️ VERDICT:');
-      addMsgFull('judgy', judgyParsed, false, text, topic);
-
-      // Barry jumps in if money/legal detected
+      addMsgFull('judgy', parseAIResponse(judgyRaw, '⚖️ VERDICT:'), false, text, topic);
       const barryJump = ['money','loan','debt','pay','fired','contract','rights','sue'].some(k => text.toLowerCase().includes(k));
       if (barryJump) {
         await new Promise(r => setTimeout(r, 1000));
         showTyping('barry');
-        const barryRaw = await callClaude(
-          `You are BARRY T. LAWSON, ESQ. Judgy just gave life advice. Add a quick legal/financial angle she missed. Roast her a little. Keep it SHORT — 60-80 words. End with:\n📋 RULING: [short ruling]\nFOLLOW_UP: [short question max 10 words]\nOPTIONS: [option 1] | [option 2] | [option 3]`,
-          `User asked: "${text}"\n\nJudgy said: "${judgyRaw}"`
-        );
+        const barryRaw = await callClaude(`You are BARRY T. LAWSON, ESQ. Judgy just gave life advice. Add a quick legal/financial angle she missed. Roast her a little. Keep it SHORT — 60-80 words. End with:\n📋 RULING: [short ruling]\nFOLLOW_UP: [short question max 10 words]\nOPTIONS: [option 1] | [option 2] | [option 3]`, `User asked: "${text}"\n\nJudgy said: "${judgyRaw}"`);
         removeTyping('barry');
-        const barryParsed = parseAIResponse(barryRaw, '📋 RULING:');
-        addMsgFull('barry', barryParsed, true, null, topic);
+        addMsgFull('barry', parseAIResponse(barryRaw, '📋 RULING:'), true, null, topic);
       }
-    } catch (e) {
-      removeTyping('judgy');
-      addMsg('judgy', "Court is experiencing technical difficulties. Try again.", '⚖️ VERDICT: Case postponed.');
-    }
+    } catch (e) { removeTyping('judgy'); addMsg('judgy', "Court is experiencing technical difficulties. Try again.", '⚖️ VERDICT: Case postponed.'); }
   }
 
   isThinking = false;
@@ -1539,7 +1113,13 @@ async function sendMessage() {
   renderChips();
 }
 
-// ── SUPABASE EDGE FUNCTION CALL ─────────────────────────────
+const legalKeywords = ['legal','law','sue','court','lawyer','attorney','contract','divorce','custody','evict','tenant','landlord','copyright','trademark','will','estate','llc','incorporate','tax','irs','insurance','claim','settlement'];
+const businessKeywords = ['business','startup','company','brand','market','pricing','revenue','profit','client','customer','invoice','landing page','website','saas','product','launch','competitor'];
+function isLegalOrBusiness(text) {
+  const lower = text.toLowerCase();
+  return legalKeywords.some(k => lower.includes(k)) || businessKeywords.some(k => lower.includes(k)) || topic === 'legal' || topic === 'business' || topic === 'money';
+}
+
 const JUDGY_FN_URL = 'https://dmemzljerldzeiwqfxzp.supabase.co/functions/v1/judgy-chat-v2-ts';
 
 async function callClaude(system, userMsg) {
@@ -1553,14 +1133,13 @@ async function callClaude(system, userMsg) {
   throw new Error(data.error || 'No response');
 }
 
-// ── LEGAL FORMS ────────────────────────────────────────────
 function generateDemandLetter() {
-  const from     = document.getElementById('dl-from').value || '[Your Name]';
-  const to       = document.getElementById('dl-to').value   || '[Recipient]';
-  const amt      = document.getElementById('dl-amount').value || '[Amount]';
-  const reason   = document.getElementById('dl-reason').value || '[Reason]';
+  const from = document.getElementById('dl-from').value || '[Your Name]';
+  const to = document.getElementById('dl-to').value || '[Recipient]';
+  const amt = document.getElementById('dl-amount').value || '[Amount]';
+  const reason = document.getElementById('dl-reason').value || '[Reason]';
   const deadline = document.getElementById('dl-deadline').value || '[Date]';
-  const today    = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
   formContent = `DEMAND LETTER\n\nDate: ${today}\n\nFrom: ${from}\nTo:   ${to}\n\nDear ${to},\n\nThis letter serves as formal notice that you owe me the sum of $${amt} for the following reason: ${reason}.\n\nDespite prior attempts to resolve this matter, payment has not been received. I hereby demand full payment of $${amt} no later than ${deadline}.\n\nIf payment is not received by the above date, I reserve the right to pursue all available legal remedies, including but not limited to filing a claim in small claims court.\n\nSincerely,\n\n${from}\n\n---\n⚠️ DISCLAIMER: This is a general template generated by an AI character. It is NOT a substitute for advice from a licensed attorney.`;
   document.getElementById('formOutputContent').textContent = formContent;
   document.getElementById('formOutput').style.display = 'block';
@@ -1568,46 +1147,36 @@ function generateDemandLetter() {
 }
 
 async function generateDivorceChecklist() {
-  const state  = document.getElementById('div-state').value || 'your state';
-  const kids   = document.getElementById('div-kids').value;
+  const state = document.getElementById('div-state').value || 'your state';
+  const kids = document.getElementById('div-kids').value;
   const assets = document.getElementById('div-assets').value || 'various assets';
   const btns = document.querySelectorAll('#page-forms .form-btn');
   btns.forEach(b => b.disabled = true);
   document.getElementById('formOutput').style.display = 'none';
   try {
-    const res = await callClaude(
-      `You are Barry T. Lawson, Esq. Generate a practical divorce preparation checklist. Be helpful and specific. Format as a numbered checklist. Add a brief disclaimer at the end. Keep to 200 words max.`,
-      `State: ${state}, Children: ${kids}, Assets: ${assets}`
-    );
+    const res = await callClaude(`You are Barry T. Lawson, Esq. Generate a practical divorce preparation checklist. Be helpful and specific. Format as a numbered checklist. Add a brief disclaimer at the end. Keep to 200 words max.`, `State: ${state}, Children: ${kids}, Assets: ${assets}`);
     formContent = res;
     document.getElementById('formOutputContent').textContent = res;
     document.getElementById('formOutput').style.display = 'block';
     document.getElementById('formOutput').scrollIntoView({ behavior: 'smooth' });
   } catch (e) {
-    const out = document.getElementById('formOutputContent');
-    out.textContent = 'Barry is having technical difficulties. Please try again in a moment.';
+    document.getElementById('formOutputContent').textContent = 'Barry is having technical difficulties. Please try again in a moment.';
     document.getElementById('formOutput').style.display = 'block';
-  } finally {
-    document.querySelectorAll('#page-forms .form-btn').forEach(b => b.disabled = false);
-  }
+  } finally { document.querySelectorAll('#page-forms .form-btn').forEach(b => b.disabled = false); }
 }
 
 async function generateLLCGuide() {
-  const name  = document.getElementById('llc-name').value || 'your business';
+  const name = document.getElementById('llc-name').value || 'your business';
   const state = document.getElementById('llc-state').value || 'your state';
-  const type  = document.getElementById('llc-type').value;
+  const type = document.getElementById('llc-type').value;
   try {
-    const res = await callClaude(
-      `You are Barry T. Lawson, Esq. Generate a step-by-step LLC formation guide. Be specific and practical. Format as numbered steps. Include estimated costs. Add a brief disclaimer. 200 words max.`,
-      `Business: ${name}, State: ${state}, Type: ${type}`
-    );
+    const res = await callClaude(`You are Barry T. Lawson, Esq. Generate a step-by-step LLC formation guide. Be specific and practical. Format as numbered steps. Include estimated costs. Add a brief disclaimer. 200 words max.`, `Business: ${name}, State: ${state}, Type: ${type}`);
     formContent = res;
     document.getElementById('formOutputContent').textContent = res;
     document.getElementById('formOutput').style.display = 'block';
     document.getElementById('formOutput').scrollIntoView({ behavior: 'smooth' });
   } catch (e) {
-    const out = document.getElementById('formOutputContent');
-    out.textContent = 'Barry is unavailable right now. Please try again in a moment.';
+    document.getElementById('formOutputContent').textContent = 'Barry is unavailable right now. Please try again in a moment.';
     document.getElementById('formOutput').style.display = 'block';
   }
 }
@@ -1615,47 +1184,34 @@ async function generateLLCGuide() {
 function downloadForm() {
   const blob = new Blob([formContent], { type: 'text/plain' });
   const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'barry-document.txt';
-  a.click();
+  a.href = URL.createObjectURL(blob); a.download = 'barry-document.txt'; a.click();
 }
 
-// ── LANDING PAGE BUILDER ───────────────────────────────────
 async function buildLandingPage() {
-  const name     = document.getElementById('lp-name').value     || 'My Business';
-  const desc     = document.getElementById('lp-desc').value     || 'We help people.';
+  const name = document.getElementById('lp-name').value || 'My Business';
+  const desc = document.getElementById('lp-desc').value || 'We help people.';
   const audience = document.getElementById('lp-audience').value || 'Everyone';
-  const cta      = document.getElementById('lp-cta').value      || 'Get Started';
-  const color    = document.getElementById('lp-color').value;
+  const cta = document.getElementById('lp-cta').value || 'Get Started';
+  const color = document.getElementById('lp-color').value;
   const btn = document.getElementById('lpBtn');
-  btn.textContent = 'Barry is building... adjusting his clip-on tie...';
-  btn.disabled = true;
+  btn.textContent = 'Barry is building... adjusting his clip-on tie...'; btn.disabled = true;
   try {
-    const res = await callClaude(
-      `You are Barry T. Lawson, Esq. but also secretly a great web designer. Generate a complete, beautiful single-page HTML landing page. Requirements: Full HTML file with embedded CSS and JS, hero section with headline subheadline CTA button, 3 features/benefits section, simple pricing or CTA section, footer, mobile responsive, clean modern design matching the color vibe specified. Return ONLY the complete HTML code nothing else.`,
-      `Business: ${name}\nDescription: ${desc}\nAudience: ${audience}\nCTA: ${cta}\nColor vibe: ${color}`
-    );
+    const res = await callClaude(`You are Barry T. Lawson, Esq. but also secretly a great web designer. Generate a complete, beautiful single-page HTML landing page. Requirements: Full HTML file with embedded CSS and JS, hero section with headline subheadline CTA button, 3 features/benefits section, simple pricing or CTA section, footer, mobile responsive, clean modern design matching the color vibe specified. Return ONLY the complete HTML code nothing else.`, `Business: ${name}\nDescription: ${desc}\nAudience: ${audience}\nCTA: ${cta}\nColor vibe: ${color}`);
     lpContent = res;
     document.getElementById('lpOutput').style.display = 'block';
     document.getElementById('lpOutput').scrollIntoView({ behavior: 'smooth' });
   } catch (e) { alert('Barry spilled coffee on his keyboard. Try again.'); }
-  btn.textContent = '🏗️ Barry, build my landing page';
-  btn.disabled = false;
+  btn.textContent = '🏗️ Barry, build my landing page'; btn.disabled = false;
 }
 
 function downloadLP() {
   const blob = new Blob([lpContent], { type: 'text/html' });
   const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'landing-page.html';
-  a.click();
+  a.href = URL.createObjectURL(blob); a.download = 'landing-page.html'; a.click();
 }
-function toggleUserMenu() {
-  document.getElementById('userDropdown').classList.toggle('open');
-}
-function closeUserMenu() {
-  document.getElementById('userDropdown').classList.remove('open');
-}
+
+function toggleUserMenu() { document.getElementById('userDropdown').classList.toggle('open'); }
+function closeUserMenu() { document.getElementById('userDropdown').classList.remove('open'); }
 document.addEventListener('click', function(e) {
   if (!document.getElementById('userMenuWrap')?.contains(e.target)) closeUserMenu();
 });
