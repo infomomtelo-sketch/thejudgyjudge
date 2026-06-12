@@ -897,6 +897,39 @@ function addMsgFull(role, parsed, isBarry, userText, currentTopic) {
   msgs.appendChild(div);
   msgs.scrollTop = msgs.scrollHeight;
 }
+function showTyping(role) {
+  removeWelcome();
+  const msgs = document.getElementById('messages');
+  const div = document.createElement('div');
+  div.className = `msg ${role}`;
+  div.id = `typing-${role}`;
+  div.innerHTML = `
+    <div class="msg-av">${role === 'barry' ? '👔' : '⚖️'}</div>
+    <div class="msg-wrap">
+      <div class="msg-name">${role === 'barry' ? 'BARRY' : 'JUDGY'}</div>
+      <div class="typing-bub">
+        <div class="td"></div><div class="td"></div><div class="td"></div>
+      </div>
+    </div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function removeTyping(role) {
+  const t = document.getElementById(`typing-${role}`);
+  if (t) t.remove();
+  setTimeout(() => {
+    const msgs = document.getElementById('messages');
+    const lastMsg = msgs.lastElementChild;
+    if (lastMsg) lastMsg.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
+}
+
+function formatResponse(text) {
+  return text
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\n/g, '<br>');
+}
 
 // ── STATE ──────────────────────────────────────────────────
 let topic = 'general';
