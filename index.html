@@ -1353,7 +1353,23 @@ function trackClick(plan) {
   localStorage.setItem('judgy_last_plan', plan);
 }
 
-function showToast(msg) {
+async function handleSignOut() {
+  await supabase.auth.signOut();
+  localStorage.removeItem('judgy_paid');
+  localStorage.removeItem('judgy_msgs');
+  localStorage.removeItem('judgy_visited');
+  location.reload();
+}
+
+async function updateSignOutVisibility() {
+  try {
+    const { data } = await supabase.auth.getSession();
+    const btn = document.getElementById('signOutBtn');
+    if (btn) btn.style.display = data?.session ? 'flex' : 'none';
+  } catch(e) {}
+}
+  
+  function showToast(msg) {
   const t = document.getElementById('successToast');
   document.getElementById('successMsg').textContent = msg;
   t.classList.add('show');
@@ -1373,7 +1389,7 @@ function checkLimit() {
 }
 
 // Check for payment success on page load
-window.addEventListener('load', () => {   checkPayment();   updatePlanUI();   renderChips();   const hasVisited = localStorage.getItem('judgy_visited');   if (!hasVisited) showLanding(); });
+window.addEventListener('load', () => {   checkPayment();   updatePlanUI();   renderChips();   updateSignOutVisibility();   const hasVisited = localStorage.getItem('judgy_visited');   if (!hasVisited) showLanding(); });
 
 async function sendMessage() {
   const input = document.getElementById('chatInput');
