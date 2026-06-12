@@ -218,6 +218,16 @@ header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px
 .success-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--bg2);border:1px solid rgba(196,160,80,0.4);border-radius:10px;padding:10px 18px;font-size:13px;color:var(--gold);font-family:var(--serif);font-style:italic;z-index:9000;transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);white-space:nowrap;display:flex;align-items:center;gap:8px}
 .success-toast.show{transform:translateX(-50%) translateY(0)}
 @media(max-width:540px){.starters{grid-template-columns:1fr}.msg-wrap{max-width:88%}.char-duo{max-width:300px}}
+.user-menu-wrap{position:relative}
+.user-avatar{width:32px;height:32px;border-radius:50%;background:var(--gold-dim);border:1px solid var(--border2);color:var(--gold);font-size:12px;font-weight:700;cursor:pointer;display:none;align-items:center;justify-content:center;font-family:var(--display);flex-shrink:0;transition:all 0.15s}
+.user-avatar:hover{border-color:var(--gold);background:rgba(196,160,80,0.15)}
+.user-dropdown{position:absolute;top:38px;right:0;background:var(--bg2);border:1px solid var(--border2);border-radius:10px;min-width:160px;z-index:500;overflow:hidden;box-shadow:0 8px 24px var(--shadow);display:none}
+.user-dropdown.open{display:block}
+.user-dropdown-email{padding:9px 13px;font-size:11px;color:var(--text3);border-bottom:1px solid var(--border);font-family:var(--sans);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.user-dropdown-item{padding:9px 13px;font-size:13px;color:var(--text2);cursor:pointer;display:flex;align-items:center;gap:8px;transition:all 0.15s;font-family:var(--sans)}
+.user-dropdown-item:hover{background:var(--card);color:var(--text)}
+.user-dropdown-item.danger{color:#c42020}
+.user-dropdown-item.danger:hover{background:var(--judgy-dim);color:#c42020}
 
 </style>
 </head>
@@ -230,7 +240,7 @@ header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px
     <div style="display:flex;gap:10px;">
       <button onclick="enterCourt()" style="background:none;border:1px solid rgba(196,160,80,0.35);color:#c4a050;font-size:0.8rem;padding:7px 16px;border-radius:2px;cursor:pointer;font-family:'DM Sans',sans-serif;">Sign in</button>
       <button onclick="enterCourt()" style="background:#8b1a1a;border:none;color:#f2ede4;font-size:0.8rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:8px 18px;border-radius:2px;cursor:pointer;font-family:'DM Sans',sans-serif;">Enter Court</button>
-    </div>
+  </div>
   </nav>
 
   <div style="text-align:center;padding:80px 24px 48px;">
@@ -367,7 +377,15 @@ header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px
     <div class="header-right">
       <div class="rage-pips" id="ragePips"><div class="rage-pip"></div><div class="rage-pip"></div><div class="rage-pip"></div><div class="rage-pip"></div><div class="rage-pip"></div></div>
       <button class="upgrade-btn" id="upgradeHeaderBtn" onclick="showPaywall()">⚖ Upgrade</button>
-      <button class="hbtn icon-only" onclick="toggleTheme()" id="themeBtn" title="Toggle theme">🌙</button>
+   <button class="hbtn icon-only" onclick="toggleTheme()" id="themeBtn" title="Toggle theme">🌙</button>
+      <div class="user-menu-wrap" id="userMenuWrap">
+        <div class="user-avatar" id="userAvatar" onclick="toggleUserMenu()">?</div>
+        <div class="user-dropdown" id="userDropdown">
+          <div class="user-dropdown-email" id="userDropdownEmail"></div>
+          <div class="user-dropdown-item" onclick="showPaywall();closeUserMenu()">⚖ Upgrade plan</div>
+          <div class="user-dropdown-item danger" onclick="handleSignOut()">🚪 Sign out</div>
+        </div>
+      </div>
     </div>
   </header>
   <div class="messages" id="messages">
@@ -1364,8 +1382,20 @@ async function handleSignOut() {
 async function updateSignOutVisibility() {
   try {
     const { data } = await supabase.auth.getSession();
-    const btn = document.getElementById('signOutBtn');
-    if (btn) btn.style.display = data?.session ? 'flex' : 'none';
+    const session = data?.session;
+    const avatar = document.getElementById('userAvatar');
+    const emailEl = document.getElementById('userDropdownEmail');
+    const cabinetBtn = document.getElementById('signOutBtn');
+    if (session) {
+      const email = session.user?.email || '';
+      const initial = email ? email[0].toUpperCase() : '?';
+      if (avatar) { avatar.textContent = initial; avatar.style.display = 'flex'; }
+      if (emailEl) emailEl.textContent = email;
+      if (cabinetBtn) cabinetBtn.style.display = 'flex';
+    } else {
+      if (avatar) avatar.style.display = 'none';
+      if (cabinetBtn) cabinetBtn.style.display = 'none';
+    }
   } catch(e) {}
 }
   
@@ -1618,7 +1648,15 @@ function downloadLP() {
   a.download = 'landing-page.html';
   a.click();
 }
-
+function toggleUserMenu() {
+  document.getElementById('userDropdown').classList.toggle('open');
+}
+function closeUserMenu() {
+  document.getElementById('userDropdown').classList.remove('open');
+}
+document.addEventListener('click', function(e) {
+  if (!document.getElementById('userMenuWrap')?.contains(e.target)) closeUserMenu();
+});
 
 </script>
 </body>
