@@ -223,6 +223,82 @@ header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px
 </head>
 <body>
 
+<!-- ── LANDING SCREEN ── -->
+<div id="landingScreen" style="display:none;position:fixed;inset:0;z-index:9999;overflow-y:auto;background:#0e0c09;">
+  <nav style="position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:18px 28px;background:rgba(14,12,9,0.95);border-bottom:1px solid rgba(196,160,80,0.12);">
+    <div style="font-family:'Playfair Display',serif;font-weight:900;font-size:1rem;letter-spacing:0.12em;color:#c4a050;text-transform:uppercase;">⚖️ The Judgy</div>
+    <div style="display:flex;gap:10px;">
+      <button onclick="enterCourt()" style="background:none;border:1px solid rgba(196,160,80,0.35);color:#c4a050;font-size:0.8rem;padding:7px 16px;border-radius:2px;cursor:pointer;font-family:'DM Sans',sans-serif;">Sign in</button>
+      <button onclick="enterCourt()" style="background:#8b1a1a;border:none;color:#f2ede4;font-size:0.8rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:8px 18px;border-radius:2px;cursor:pointer;font-family:'DM Sans',sans-serif;">Enter Court</button>
+    </div>
+  </nav>
+
+  <div style="text-align:center;padding:80px 24px 48px;">
+    <div style="font-family:'DM Sans',sans-serif;font-size:0.68rem;letter-spacing:0.3em;color:#c4a050;text-transform:uppercase;margin-bottom:24px;opacity:0.8;">⚖ Court is now in session ⚖</div>
+    <h1 style="font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(2.8rem,10vw,5.5rem);line-height:0.95;color:#f2ede4;margin-bottom:8px;">The advice<br>your friends<br><em style="font-style:italic;color:#c4a050;">won't give you.</em></h1>
+    <div style="width:50px;height:1px;background:#c4a050;margin:28px auto;opacity:0.5;"></div>
+    <p style="font-size:clamp(0.95rem,2.5vw,1.1rem);font-weight:300;color:#ede4d0;max-width:440px;line-height:1.65;margin:0 auto 36px;opacity:0.88;">Two AI characters. Zero sugarcoating. Bring your situation — relationships, work drama, legal trouble, money — and get the verdict you actually need.</p>
+    <button onclick="enterCourt()" style="background:#8b1a1a;border:none;color:#f2ede4;font-size:0.9rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:15px 36px;border-radius:2px;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 4px 24px rgba(139,26,26,0.4);">State Your Case — It's Free</button>
+    <div style="font-family:'DM Sans',sans-serif;font-size:0.68rem;letter-spacing:0.15em;color:#c4a050;opacity:0.6;margin-top:12px;text-transform:uppercase;">5 free verdicts · no credit card</div>
+  </div>
+
+  <!-- CHARACTER CARDS -->
+  <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;padding:0 24px 64px;max-width:680px;margin:0 auto;">
+    <div style="background:rgba(92,42,20,0.3);border:1px solid rgba(196,160,80,0.2);border-radius:3px;padding:26px 24px;width:280px;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:#c42020;"></div>
+      <div style="font-size:1.8rem;margin-bottom:10px;">⚖️</div>
+      <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.1rem;color:#e8c870;margin-bottom:4px;">The Judgy</div>
+      <div style="font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.15em;color:#c4a050;text-transform:uppercase;opacity:0.7;margin-bottom:12px;">The Honorable Judge</div>
+      <p style="font-size:0.85rem;font-weight:300;color:#ede4d0;line-height:1.6;opacity:0.9;">Brutally honest. Sarcastic when warranted. Will tell you exactly what you don't want to hear — and exactly why you need to hear it.</p>
+    </div>
+    <div style="background:rgba(26,39,68,0.4);border:1px solid rgba(196,160,80,0.2);border-radius:3px;padding:26px 24px;width:280px;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:#7b9fff;"></div>
+      <div style="font-size:1.8rem;margin-bottom:10px;">👔</div>
+      <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.1rem;color:#a8c0ff;margin-bottom:4px;">Barry T. Lawson</div>
+      <div style="font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.15em;color:#7b9fff;text-transform:uppercase;opacity:0.7;margin-bottom:12px;">Esq. — Her Ex-Husband</div>
+      <p style="font-size:0.85rem;font-weight:300;color:#ede4d0;line-height:1.6;opacity:0.9;">The AI lawyer who actually explains things. Demand letters, LLC guides, divorce checklists — Barry handles the paperwork, Judgy handles the attitude.</p>
+    </div>
+  </div>
+
+  <!-- EXAMPLE VERDICT -->
+  <div style="background:rgba(14,12,9,0.6);border-top:1px solid rgba(196,160,80,0.1);border-bottom:1px solid rgba(196,160,80,0.1);padding:64px 24px;">
+    <div style="font-family:'DM Sans',sans-serif;font-size:0.65rem;letter-spacing:0.3em;color:#c4a050;text-transform:uppercase;text-align:center;margin-bottom:14px;opacity:0.7;">From the courtroom</div>
+    <h2 style="font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(1.4rem,4vw,2rem);color:#f2ede4;text-align:center;margin-bottom:40px;">What a real verdict looks like</h2>
+    <div style="max-width:600px;margin:0 auto;background:rgba(26,23,20,0.9);border:1px solid rgba(196,160,80,0.2);border-radius:3px;overflow:hidden;">
+      <div style="background:rgba(92,42,20,0.4);padding:18px 24px;border-bottom:1px solid rgba(196,160,80,0.12);">
+        <div style="font-family:'DM Sans',sans-serif;font-size:0.6rem;letter-spacing:0.2em;color:#c4a050;text-transform:uppercase;opacity:0.6;margin-bottom:8px;">Case submitted</div>
+        <p style="font-size:0.9rem;color:#ede4d0;font-style:italic;line-height:1.5;font-family:'EB Garamond',serif;">"My best friend of 10 years keeps canceling plans last minute. I'm always the one making the effort. Am I being too sensitive?"</p>
+      </div>
+      <div style="padding:22px 24px;">
+        <div style="font-family:'DM Sans',sans-serif;font-size:0.6rem;letter-spacing:0.2em;color:#c42020;text-transform:uppercase;opacity:0.8;margin-bottom:10px;">The Judgy responds</div>
+        <p style="font-size:0.88rem;color:#f2ede4;line-height:1.75;font-family:'EB Garamond',serif;">You already know the answer — that's why you're here instead of asking your friend directly.<br><br><strong style="color:#e8c870;">This isn't about sensitivity.</strong> It's about a pattern you've been making excuses for. Ten years of friendship doesn't mean ten years of unlimited credit.<br><br>The real question is whether you're willing to have the conversation that might actually change something.</p>
+        <div style="display:inline-block;border:2px solid #8b1a1a;color:#8b1a1a;font-family:'Playfair Display',serif;font-weight:900;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;padding:4px 12px;border-radius:2px;transform:rotate(-2deg);margin-top:18px;opacity:0.85;">Verdict: You're right</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOPICS -->
+  <div style="text-align:center;padding:64px 24px;">
+    <div style="font-family:'DM Sans',sans-serif;font-size:0.65rem;letter-spacing:0.3em;color:#c4a050;text-transform:uppercase;margin-bottom:14px;opacity:0.7;">Jurisdiction</div>
+    <h2 style="font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(1.4rem,4vw,2rem);color:#f2ede4;margin-bottom:32px;">Bring any case to court</h2>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:600px;margin:0 auto 48px;">
+      <button onclick="enterCourt()" style="background:rgba(92,42,20,0.35);border:1px solid rgba(196,160,80,0.18);color:#ede4d0;font-size:0.85rem;padding:10px 20px;border-radius:100px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;">💔 Relationships</button>
+      <button onclick="enterCourt()" style="background:rgba(92,42,20,0.35);border:1px solid rgba(196,160,80,0.18);color:#ede4d0;font-size:0.85rem;padding:10px 20px;border-radius:100px;cursor:pointer;font-family:'DM Sans',sans-serif;">💼 Work drama</button>
+      <button onclick="enterCourt()" style="background:rgba(92,42,20,0.35);border:1px solid rgba(196,160,80,0.18);color:#ede4d0;font-size:0.85rem;padding:10px 20px;border-radius:100px;cursor:pointer;font-family:'DM Sans',sans-serif;">👔 Legal questions</button>
+      <button onclick="enterCourt()" style="background:rgba(92,42,20,0.35);border:1px solid rgba(196,160,80,0.18);color:#ede4d0;font-size:0.85rem;padding:10px 20px;border-radius:100px;cursor:pointer;font-family:'DM Sans',sans-serif;">💸 Money decisions</button>
+      <button onclick="enterCourt()" style="background:rgba(92,42,20,0.35);border:1px solid rgba(196,160,80,0.18);color:#ede4d0;font-size:0.85rem;padding:10px 20px;border-radius:100px;cursor:pointer;font-family:'DM Sans',sans-serif;">🤝 Co-worker issues</button>
+      <button onclick="enterCourt()" style="background:rgba(92,42,20,0.35);border:1px solid rgba(196,160,80,0.18);color:#ede4d0;font-size:0.85rem;padding:10px 20px;border-radius:100px;cursor:pointer;font-family:'DM Sans',sans-serif;">👨‍👩‍👧 Family situations</button>
+      <button onclick="enterCourt()" style="background:rgba(92,42,20,0.35);border:1px solid rgba(196,160,80,0.18);color:#ede4d0;font-size:0.85rem;padding:10px 20px;border-radius:100px;cursor:pointer;font-family:'DM Sans',sans-serif;">🏢 Business advice</button>
+    </div>
+    <button onclick="enterCourt()" style="background:#8b1a1a;border:none;color:#f2ede4;font-size:0.9rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:15px 36px;border-radius:2px;cursor:pointer;font-family:'DM Sans',sans-serif;">Enter the Courtroom</button>
+  </div>
+
+  <!-- FOOTER -->
+  <div style="border-top:1px solid rgba(196,160,80,0.1);padding:32px 24px;text-align:center;">
+    <div style="font-family:'Playfair Display',serif;font-weight:900;font-size:1.1rem;color:#c4a050;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:14px;">⚖️ The Judgy</div>
+    <div style="font-size:0.72rem;color:#f2ede4;opacity:0.25;letter-spacing:0.05em;">© 2025 The Judgy · AI characters for entertainment only · Not professional advice</div>
+  </div>
+</div>
 <div class="cabinet-overlay" id="cabinetOverlay" onclick="closeCabinet()"></div>
 
 <nav class="cabinet" id="cabinet">
@@ -530,7 +606,23 @@ header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px
 //       cross-product recommendations, token usage awareness
 // ============================================================
 
-// ── YOUR BUILDS — cross-recommend based on topic ────────────
+// ── LANDING SCREEN LOGIC ─────────────────────────────────────
+function showLanding() {
+  document.getElementById('landingScreen').style.display = 'block';
+  document.body.style.overflow = 'auto';
+}
+
+function enterCourt() {
+  const landing = document.getElementById('landingScreen');
+  landing.style.opacity = '0';
+  landing.style.transition = 'opacity 0.4s ease';
+  setTimeout(() => {
+    landing.style.display = 'none';
+    document.body.style.overflow = '';
+    localStorage.setItem('judgy_visited', '1');
+  }, 400);
+}
+  // ── YOUR BUILDS — cross-recommend based on topic ────────────
 const MY_BUILDS = [
   {
     id: 'rentyapp',
@@ -1248,7 +1340,7 @@ function checkLimit() {
 }
 
 // Check for payment success on page load
-window.addEventListener('load', () => { checkPayment(); updatePlanUI(); renderChips(); });
+window.addEventListener('load', () => {   checkPayment();   updatePlanUI();   renderChips();   const hasVisited = localStorage.getItem('judgy_visited');   if (!hasVisited) showLanding(); });
 
 async function sendMessage() {
   const input = document.getElementById('chatInput');
