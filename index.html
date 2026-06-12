@@ -622,10 +622,9 @@ header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px
 <script>
 
 // ── SUPABASE CLIENT ──────────────────────────────────────────
-const supabaseClient = window.supabase.createClient(
+const supabaseClient = supabase.createClient(
   'https://dmemzljerldzeiwqfxzp.supabase.co',
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRtZW16bGplcmxkemVpd3FmeHpwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2NDMxNzgsImV4cCI6MjA5NDIxOTE3OH0.u4FL1mk555dUesVNjF58pXwkQlvvQYQgR5JpcxRtB40'
-);
 );
 
 // ── LANDING SCREEN LOGIC ─────────────────────────────────────
