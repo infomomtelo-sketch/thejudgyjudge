@@ -218,7 +218,8 @@ header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px
 .success-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--bg2);border:1px solid rgba(196,160,80,0.4);border-radius:10px;padding:10px 18px;font-size:13px;color:var(--gold);font-family:var(--serif);font-style:italic;z-index:9000;transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);white-space:nowrap;display:flex;align-items:center;gap:8px}
 .success-toast.show{transform:translateX(-50%) translateY(0)}
 @media(max-width:540px){.starters{grid-template-columns:1fr}.msg-wrap{max-width:88%}.char-duo{max-width:300px}}
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
 </style>
 </head>
 <body>
@@ -600,6 +601,11 @@ header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px
 
 <script>
 
+  // ── SUPABASE CLIENT ─────────────────────────────────────────
+const supabase = window.supabase.createClient(
+  'https://dmemzljerldzeiwqfxzp.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRtZW16bGplcmxkemVpd3FmeHpwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2NDMxNzgsImV4cCI6MjA5NDIxOTE3OH0.u4FL1mk555dUesVNjF58pXwkQlvvQYQgR5JpcxRtB40'
+);
 // ============================================================
 // THE JUDGY — UPDATED SCRIPT
 // Adds: conversation hooks, clickable follow-up options,
