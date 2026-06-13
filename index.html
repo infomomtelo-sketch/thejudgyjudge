@@ -634,6 +634,19 @@ function showLanding() {
 }
 
 function enterCourt() {
+  showAuthModal();
+}
+
+function showAuthModal() {
+  document.getElementById('authModal').style.display = 'flex';
+}
+
+function closeAuthModal() {
+  document.getElementById('authModal').style.display = 'none';
+}
+
+function skipAuth() {
+  closeAuthModal();
   const landing = document.getElementById('landingScreen');
   landing.style.opacity = '0';
   landing.style.transition = 'opacity 0.4s ease';
@@ -642,6 +655,63 @@ function enterCourt() {
     document.body.style.overflow = '';
     localStorage.setItem('judgy_visited', '1');
   }, 400);
+}
+
+let authMode = 'signin';
+function toggleAuthMode() {
+  authMode = authMode === 'signin' ? 'signup' : 'signin';
+  document.getElementById('authTitle').textContent = authMode === 'signin' ? 'Sign in to The Judgy' : 'Create your account';
+  document.getElementById('authSubmitBtn').textContent = authMode === 'signin' ? 'Sign in' : 'Create account';
+  document.getElementById('authToggleText').innerHTML = authMode === 'signin'
+    ? 'No account? <span onclick="toggleAuthMode()" style="color:var(--gold);cursor:pointer;text-decoration:underline">Sign up free</span>'
+    : 'Already have one? <span onclick="toggleAuthMode()" style="color:var(--gold);cursor:pointer;text-decoration:underline">Sign in</span>';
+  document.getElementById('authError').textContent = '';
+}
+
+async function handleEmailAuth() {
+  const email = document.getElementById('authEmail').value.trim();
+  const password = document.getElementById('authPassword').value;
+  const btn = document.getElementById('authSubmitBtn');
+  const err = document.getElementById('authError');
+  if (!email || !password) { err.textContent = 'Please enter email and password.'; return; }
+  btn.disabled = true;
+  btn.textContent = authMode === 'signin' ? 'Signing in...' : 'Creating account...';
+  err.textContent = '';
+  try {
+    let result;
+    if (authMode === 'signup') {
+      result = await supabaseClient.auth.signUp({ email, password });
+      if (result.error) throw result.error;
+      if (result.data?.user && !result.data?.session) {
+        err.style.color = 'var(--gold)';
+        err.textContent = 'Check your email to confirm your account, then sign in.';
+        authMode = 'signin';
+        document.getElementById('authSubmitBtn').textContent = 'Sign in';
+        btn.disabled = false;
+        return;
+      }
+    } else {
+      result = await supabaseClient.auth.signInWithPassword({ email, password });
+      if (result.error) throw result.error;
+    }
+    closeAuthModal();
+    skipAuth();
+    updateSignOutVisibility();
+    showToast('Welcome to The Judgy — court is in session.');
+  } catch (e) {
+    err.style.color = '#c42020';
+    err.textContent = e.message || 'Something went wrong. Try again.';
+  }
+  btn.disabled = false;
+  btn.textContent = authMode === 'signin' ? 'Sign in' : 'Create account';
+}
+
+async function handleGoogleAuth() {
+  const { error } = await supabaseClient.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo: 'https://thejudgy.com' }
+  });
+  if (error) document.getElementById('authError').textContent = error.message;
 }
 
 // ── YOUR BUILDS — cross-recommend based on topic ────────────
