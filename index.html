@@ -2,7 +2,7 @@
 <html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"> 
 <title>The Judgy — Brutally Honest AI Advice</title>
 <meta name="description" content="Brutally honest AI advice from The Judgy and Barry T. Lawson, Esq. Life, love, work, legal and business guidance — no filter.">
 <link rel="canonical" href="https://thejudgy.com/">
@@ -1107,8 +1107,13 @@ window.addEventListener('load', () => {
   updatePlanUI();
   renderChips();
   updateSignOutVisibility();
-  const hasVisited = localStorage.getItem('judgy_visited');
-  if (!hasVisited) showLanding();
+const hasVisited = localStorage.getItem('judgy_visited');
+const fromOAuth = window.location.hash.includes('access_token');
+if (fromOAuth) {
+  localStorage.setItem('judgy_visited', '1');
+} else if (!hasVisited) {
+  showLanding();
+}
 });
 
 async function sendMessage() {
@@ -1285,7 +1290,26 @@ function closeUserMenu() { document.getElementById('userDropdown').classList.rem
 document.addEventListener('click', function(e) {
   if (!document.getElementById('userMenuWrap')?.contains(e.target)) closeUserMenu();
 });
-
+async function showForgotPassword() {
+  const email = document.getElementById('authEmail')?.value?.trim();
+  if (!email) {
+    alert('Enter your email address first, then click Forgot password.');
+    return;
+  }
+  try {
+    const res = await fetch('https://dmemzljerldzeiwqfxzp.supabase.co/auth/v1/recover', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRtZW16bGplcmxkemVpd3FmeHpwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2NDMxNzgsImV4cCI6MjA5NDIxOTE3OH0.u4FL1mk555dUesVNjF58pXwkQlvvQYQgR5JpcxRtB40'
+      },
+      body: JSON.stringify({ email, gotrue_meta_security: {} })
+    });
+    showToast('Password reset email sent — check your inbox.');
+  } catch(e) {
+    showToast('Could not send reset email. Try again.');
+  }
+}
 </script>
   
   <div id="authModal" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.82);align-items:center;justify-content:center;padding:20px;">
@@ -1304,7 +1328,7 @@ document.addEventListener('click', function(e) {
     <input id="authEmail" type="email" placeholder="Email address" style="width:100%;padding:9px 11px;border-radius:7px;border:1px solid rgba(196,160,80,0.2);background:#0e0c09;color:#f2ede4;font-size:13px;outline:none;margin-bottom:9px;"/>
     <input id="authPassword" type="password" placeholder="Password" style="width:100%;padding:9px 11px;border-radius:7px;border:1px solid rgba(196,160,80,0.2);background:#0e0c09;color:#f2ede4;font-size:13px;outline:none;margin-bottom:6px;" onkeydown="if(event.key==='Enter')handleEmailAuth()"/>
     <div id="authError" style="font-size:12px;min-height:16px;margin-bottom:10px;color:#c42020;"></div>
-    <button id="authSubmitBtn" onclick="handleEmailAuth()" style="width:100%;padding:10px;border-radius:8px;background:#8b1a1a;border:none;color:#f2ede4;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:14px;">Sign in</button>
+    <button id="authSubmitBtn" onclick="handleEmailAuth()" style="width:100%;padding:10px;border-radius:8px;background:#8b1a1a;border:none;color:#f2ede4;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:14px;">Sign in</button><div style="text-align:right;margin:6px 0 10px"><span onclick="showForgotPassword()" style="font-size:12px;color:var(--gold);cursor:pointer;font-family:var(--serif);font-style:italic">Forgot password?</span></div>
     <div id="authToggleText" style="text-align:center;font-size:12px;color:#a89880;">No account? <span onclick="toggleAuthMode()" style="color:#c4a050;cursor:pointer;text-decoration:underline">Sign up free</span></div>
     <div style="text-align:center;margin-top:14px;"><span onclick="skipAuth()" style="font-size:11px;color:#5c5040;cursor:pointer;font-style:italic;text-decoration:underline;">Continue without signing in</span></div>
   </div>
