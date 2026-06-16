@@ -1278,19 +1278,18 @@ async function buildLandingPage() {
   btn.textContent = 'Barry is building... adjusting his clip-on tie...'; btn.disabled = true;
   try {
     const res = await callClaude(`You are Barry T. Lawson, Esq. but also secretly a great web designer. Generate a complete, beautiful single-page HTML landing page. Requirements: Full HTML file with embedded CSS and JS, hero section with headline subheadline CTA button, 3 features/benefits section, simple pricing or CTA section, footer, mobile responsive, clean modern design matching the color vibe specified. Return ONLY the complete HTML code nothing else.`, `Business: ${name}\nDescription: ${desc}\nAudience: ${audience}\nCTA: ${cta}\nColor vibe: ${color}`);
-    lpContent = res;
-    document.getElementById('lpOutput').style.display = 'block';
-    document.getElementById('lpOutput').scrollIntoView({ behavior: 'smooth' });
+ 
   } catch (e) { alert('Barry spilled coffee on his keyboard. Try again.'); }
   btn.textContent = '🏗️ Barry, build my landing page'; btn.disabled = false;
-}
-
+};
 function downloadLP() {
   const blob = new Blob([lpContent], { type: 'text/html' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob); a.download = 'landing-page.html'; a.click();
 }
-
+   lpContent = res;
+    document.getElementById('lpOutput').style.display = 'block';
+    document.getElementById('lpOutput').scrollIntoView({ behavior: 'smooth' });
 function toggleUserMenu() { document.getElementById('userDropdown').classList.toggle('open'); }
 function closeUserMenu() { document.getElementById('userDropdown').classList.remove('open'); }
 document.addEventListener('click', function(e) {
