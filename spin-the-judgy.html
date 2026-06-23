@@ -138,35 +138,74 @@ header{width:100%;padding:14px 20px;display:flex;align-items:center;gap:12px;bor
 .hi-tag{color:var(--gold);font-weight:600;white-space:nowrap;flex-shrink:0;}
 
   /* DESKTOP RESPONSIVE */
-  @media (min-width: 600px) {
-    .main { max-width: 620px; padding: 28px 32px 80px; gap: 22px; }
+  @media (min-width: 768px) {
+    body { background: var(--bg); }
+    header { padding: 16px 40px; }
+    .logo { font-size: 1.4rem; }
+
+    /* Two column layout */
+    .main {
+      max-width: 1100px;
+      padding: 28px 40px 60px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto;
+      gap: 20px 32px;
+      align-items: start;
+    }
+
+    /* Left column items */
+    .phase-bar         { grid-column: 1; }
+    .score-bar         { grid-column: 1; }
+    .setup-panel       { grid-column: 1; }
+    .players-row       { grid-column: 1; }
+    .cat-tabs          { grid-column: 1; }
+    #roastMachine      { grid-column: 1; }
+    #spinBtn           { grid-column: 1; width: 90%; margin: 0 auto; }
+    .landed-card       { grid-column: 1; }
+    .know-section      { grid-column: 1; }
+
+    /* Right column items */
+    #roastBubbleWrap   { grid-column: 2; grid-row: 2 / 8; align-self: start; position: sticky; top: 20px; }
+    .reply-box         { grid-column: 2; }
+    #clapBubbleWrap    { grid-column: 2; }
+    .share-btn         { grid-column: 2; }
+    .history-section   { grid-column: 1 / -1; }
+
+    /* Bigger slot on desktop */
     .slot-item { height: 110px; }
     .slot-item-icon { font-size: 2.6rem; }
-    .slot-item-label { font-size: 1.25rem; }
-    .slot-item-sub { font-size: .82rem; color: #888; }
+    .slot-item-label { font-size: 1.2rem; }
+    .slot-item-sub { font-size: .8rem; color: #888; }
     .slot-window { height: 330px; }
     .slot-highlight { height: 110px; }
+
+    /* Bigger text */
     .judgy-text { font-size: 1.08rem; line-height: 1.8; }
-    .judgy-bubble { padding: 20px 24px; }
-    .landed-text { font-size: 1.3rem; }
-    .know-q-text { font-size: 1.3rem; }
-    .spin-btn { font-size: 1.1rem; padding: 18px; }
-    .phase-pill { font-size: .82rem; padding: 10px 8px; }
+    .judgy-bubble { padding: 22px 26px; min-height: 200px; }
+    .landed-text { font-size: 1.2rem; }
+    .know-q-text { font-size: 1.2rem; }
+    .spin-btn { font-size: 1.1rem; padding: 17px; }
+    .phase-pill { font-size: .8rem; padding: 10px 8px; }
     .cat-tab { font-size: .85rem; padding: 11px 8px; }
     .cat-tab .ct-icon { font-size: 1.3rem; }
-    .logo { font-size: 1.4rem; }
-    .reply-input { font-size: 1.05rem; }
-    .know-input { font-size: 1rem; padding: 13px 16px; }
-    .know-submit { font-size: .92rem; padding: 13px 20px; }
-    .know-skip { font-size: .88rem; padding: 13px 16px; }
-    .score-val { font-size: 1.4rem; }
-    .landed-label { font-size: .72rem; }
-    .know-q-cat { font-size: .75rem; }
-    .know-badge { font-size: .7rem; }
-    .history-item { font-size: .88rem; }
-    .player-card .p-name { font-size: 1.05rem; }
-    .setup-input { font-size: .95rem; padding: 11px 14px; }
+    .reply-input { font-size: 1rem; }
+    .know-input { font-size: .95rem; padding: 12px 14px; }
+    .know-submit { font-size: .9rem; padding: 12px 18px; }
+    .know-skip { font-size: .85rem; padding: 12px 14px; }
+    .score-val { font-size: 1.3rem; }
+    .history-item { font-size: .86rem; }
+    .player-card .p-name { font-size: 1rem; }
+    .setup-input { font-size: .95rem; }
+    .know-next-btn { font-size: .95rem; padding: 15px; }
   }
+
+  /* SHARE */
+  .share-btn { display:none; width:100%; background:transparent; border:1px solid var(--gold); color:var(--gold); padding:13px; border-radius:12px; font-weight:700; font-family:Inter,sans-serif; font-size:.88rem; cursor:pointer; letter-spacing:1px; text-transform:uppercase; transition:all .2s; gap:8px; align-items:center; justify-content:center; }
+  .share-btn.visible { display:flex; }
+  .share-btn:hover { background:var(--gold); color:#000; }
+  .share-toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(100px); background:var(--card2); border:1px solid var(--gold); border-radius:10px; padding:10px 20px; font-size:.85rem; color:var(--gold); z-index:9999; transition:transform .4s cubic-bezier(.16,1,.3,1); white-space:nowrap; }
+  .share-toast.show { transform:translateX(-50%) translateY(0); }
 </style>
 </head>
 <body>
@@ -249,6 +288,11 @@ header{width:100%;padding:14px 20px;display:flex;align-items:center;gap:12px;bor
     </div>
     <div class="roast-badge" id="roastBadge"><span id="roastBadgeText">ROASTED</span></div>
   </div>
+
+
+  <!-- Share -->
+  <button class="share-btn" id="shareBtn" onclick="shareResult()">&#128279; Share My Roast</button>
+  <div class="share-toast" id="shareToast">Copied to clipboard &#127881;</div>
 
   <!-- Reply Box (clap back) -->
   <div class="reply-box" id="replyBox">
@@ -386,6 +430,30 @@ const CATEGORIES = {
 };
 
 // ── KNOWLEDGE QUESTIONS ────────────────────────────────────
+
+// ── SHARE ────────────────────────────────────────────────────
+let lastRoastText = "";
+let lastKnowResult = "";
+
+function shareResult() {
+  const roast = lastRoastText ? lastRoastText.slice(0,120) + "..." : "";
+  const know = lastKnowResult ? " " + lastKnowResult : "";
+  const text = "I just got destroyed by Judgy \u2694\ufe0f\n\n\u201c" + roast + "\u201d" + know + "\n\nTry it: thejudgy.com/spin-the-judgy.html";
+  if (navigator.share) {
+    navigator.share({ title:"Spin the Judgy", text }).catch(() => copyFallback(text));
+  } else {
+    copyFallback(text);
+  }
+}
+
+function copyFallback(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    const t = document.getElementById("shareToast");
+    t.classList.add("show");
+    setTimeout(() => t.classList.remove("show"), 2500);
+  });
+}
+
 const KNOW_QUESTIONS = [
   {cat:"&#127757; Geography",icon:"&#127757;",label:"Geography",sub:"Where in the world?",q:"What is the capital of Australia?",a:"Canberra",hint:"Not Sydney, not Melbourne. The one everyone forgets."},
   {cat:"&#127757; Geography",icon:"&#127758;",label:"Geography",sub:"Think hard",q:"What is the capital of Canada?",a:"Ottawa",hint:"Not Toronto. Not Vancouver. Ottawa."},
@@ -416,7 +484,42 @@ const KNOW_QUESTIONS = [
   {cat:"&#127919; General",icon:"&#128161;",label:"General",sub:"Common knowledge",q:"What does APR stand for?",a:"Annual Percentage Rate",hint:"Annual Percentage Rate. The number on your credit card that haunts you."},
   {cat:"&#127919; General",icon:"&#128200;",label:"General",sub:"Numbers",q:"How many amendments are in the US Constitution?",a:"27",hint:"27 amendments. The first 10 are the Bill of Rights."},
   {cat:"&#127919; General",icon:"&#128483;",label:"General",sub:"Modern terms",q:"What is gaslighting?",a:"Manipulating someone into questioning their own reality",hint:"Making someone question their own memory and perception. Named after the 1944 film Gaslight."},
-  {cat:"&#127919; General",icon:"&#128081;",label:"General",sub:"Pop culture",q:"What year was the iPhone first released?",a:"2007",hint:"2007. Steve Jobs. Changed everything. You're welcome."}
+  {cat:"&#127919; General",icon:"&#128081;",label:"General",sub:"Pop culture",q:"What year was the iPhone first released?",a:"2007",hint:"2007. Steve Jobs. Changed everything. You're welcome."},
+  // MOVIES & TV
+  {cat:"&#127916; Movies & TV",icon:"&#127916;",label:"Movies",sub:"Lights camera action",q:"What year did Titanic come out?",a:"1997",hint:"1997. Leonardo DiCaprio. Celine Dion. You know every word."},
+  {cat:"&#127916; Movies & TV",icon:"&#127910;",label:"Movies",sub:"Marvel universe",q:"Who played Iron Man in the Marvel movies?",a:"Robert Downey Jr",hint:"Robert Downey Jr. RDJ. I am Iron Man. The end."},
+  {cat:"&#127916; Movies & TV",icon:"&#127873;",label:"Movies",sub:"Box office",q:"What is the highest grossing movie of all time?",a:"Avatar",hint:"Avatar. 2009. James Cameron. $2.9 billion. Blue people."},
+  {cat:"&#127916; Movies & TV",icon:"&#9976;",label:"TV",sub:"Fantasy series",q:"What show is the line 'Winter is Coming' from?",a:"Game of Thrones",hint:"Game of Thrones. House Stark. They said it every episode."},
+  {cat:"&#127916; Movies & TV",icon:"&#128081;",label:"Movies",sub:"Disney classic",q:"What is the name of the lion king's father?",a:"Mufasa",hint:"Mufasa. The scene we do not talk about. You know."},
+  {cat:"&#127916; Movies & TV",icon:"&#127958;",label:"Movies",sub:"Sci-fi classic",q:"What year was the original Star Wars released?",a:"1977",hint:"1977. A New Hope. George Lucas changed cinema forever."},
+  // SPORTS
+  {cat:"&#127944; Sports",icon:"&#127944;",label:"Sports",sub:"Basketball basics",q:"How many players from one team are on a basketball court at once?",a:"Five",hint:"Five players per team. Ten total on the court. Basic basketball."},
+  {cat:"&#127944; Sports",icon:"&#9917;",label:"Sports",sub:"Football",q:"How many players are on a soccer team on the field?",a:"Eleven",hint:"Eleven per side. Twenty two total. Ninety minutes. Drama."},
+  {cat:"&#127944; Sports",icon:"&#127936;",label:"Sports",sub:"Tennis",q:"What sport is played at Wimbledon?",a:"Tennis",hint:"Tennis. On grass. In England. Strawberries and cream. Very posh."},
+  {cat:"&#127944; Sports",icon:"&#127936;",label:"Sports",sub:"MJ the GOAT",q:"How many NBA championships did Michael Jordan win?",a:"Six",hint:"Six rings. All with the Chicago Bulls. Never went to Game 7. Iconic."},
+  {cat:"&#127944; Sports",icon:"&#127952;",label:"Sports",sub:"Golf basics",q:"What does par mean in golf?",a:"The expected number of strokes to complete a hole",hint:"Par is the expected number of strokes. Under par is good. Over par is you."},
+  {cat:"&#127944; Sports",icon:"&#127951;",label:"Sports",sub:"Olympics",q:"How often are the Summer Olympics held?",a:"Every four years",hint:"Every four years. Unless you count 2020 which was 2021. Long story."},
+  // FOOD & CULTURE  
+  {cat:"&#127829; Food",icon:"&#127829;",label:"Food",sub:"Japanese cuisine",q:"What country does sushi originally come from?",a:"Japan",hint:"Japan. Not California. The California roll is American. Real sushi is Japanese."},
+  {cat:"&#127829; Food",icon:"&#127798;",label:"Food",sub:"Mexican food",q:"What is the main ingredient in guacamole?",a:"Avocado",hint:"Avocado. Just avocado. Lime, salt, maybe onion. But avocado is the star."},
+  {cat:"&#127829; Food",icon:"&#127829;",label:"Food",sub:"American classic",q:"What city is deep dish pizza from?",a:"Chicago",hint:"Chicago. Not New York. This causes arguments. Chicago invented it."},
+  {cat:"&#127829; Food",icon:"&#127858;",label:"Food",sub:"Italian food",q:"What is pasta carbonara traditionally made with?",a:"Eggs, cheese, pork, and black pepper",hint:"Eggs, Pecorino cheese, guanciale pork, black pepper. No cream. Never cream."},
+  {cat:"&#127829; Food",icon:"&#9749;",label:"Food",sub:"Coffee culture",q:"What country is coffee originally from?",a:"Ethiopia",hint:"Ethiopia. The kaffa region. A goat herder noticed his goats were hyper. True story."},
+  // ADULTS SHOULD KNOW
+  {cat:"&#129504; Adults Should Know",icon:"&#129504;",label:"Adults Know",sub:"Everyone should know this",q:"What does HTTP stand for?",a:"HyperText Transfer Protocol",hint:"HyperText Transfer Protocol. The thing before every website you visit."},
+  {cat:"&#129504; Adults Should Know",icon:"&#129504;",label:"Adults Know",sub:"Human body",q:"How many chambers does the human heart have?",a:"Four",hint:"Four chambers. Left and right atria, left and right ventricles. Four."},
+  {cat:"&#129504; Adults Should Know",icon:"&#127746;",label:"Adults Know",sub:"Biology",q:"What is the largest organ in the human body?",a:"The skin",hint:"The skin. Not the liver. Not the brain. Your skin. It is an organ."},
+  {cat:"&#129504; Adults Should Know",icon:"&#128196;",label:"Adults Know",sub:"Tech basics",q:"What does PDF stand for?",a:"Portable Document Format",hint:"Portable Document Format. Created by Adobe in 1993. You use it daily."},
+  {cat:"&#129504; Adults Should Know",icon:"&#128176;",label:"Adults Know",sub:"Math",q:"How many zeros are in one billion?",a:"Nine",hint:"Nine zeros. 1,000,000,000. One thousand millions. A lot of zeros."},
+  {cat:"&#129504; Adults Should Know",icon:"&#128200;",label:"Adults Know",sub:"Finance",q:"What does compound interest mean?",a:"Earning interest on your interest",hint:"Earning interest on your interest. Einstein called it the eighth wonder of the world."},
+  {cat:"&#129504; Adults Should Know",icon:"&#128139;",label:"Adults Know",sub:"Health",q:"What is a normal resting heart rate for adults?",a:"60 to 100 beats per minute",hint:"60 to 100 beats per minute. Athletes can be lower. Stressed people higher."},
+  // POP CULTURE
+  {cat:"&#127925; Pop Culture",icon:"&#127925;",label:"Pop Culture",sub:"Queen Bey",q:"What year did Beyonce release Lemonade?",a:"2016",hint:"2016. Visual album. Shocking. Iconic. Hold up they don't love you like I love you."},
+  {cat:"&#127925; Pop Culture",icon:"&#127908;",label:"Pop Culture",sub:"Drake facts",q:"What is Drake's real name?",a:"Aubrey Drake Graham",hint:"Aubrey Drake Graham. He was on Degrassi. He played a wheelchair kid. True."},
+  {cat:"&#127925; Pop Culture",icon:"&#127911;",label:"Pop Culture",sub:"Geography",q:"What city is Hollywood located in?",a:"Los Angeles",hint:"Los Angeles, California. Not New York. Not San Francisco. Los Angeles."},
+  {cat:"&#127925; Pop Culture",icon:"&#127925;",label:"Pop Culture",sub:"Music history",q:"What band was Beyonce in before going solo?",a:"Destiny's Child",hint:"Destiny's Child. Kelly Rowland. Michelle Williams. Say My Name. Iconic."},
+  {cat:"&#127925; Pop Culture",icon:"&#128247;",label:"Pop Culture",sub:"Social media",q:"What year was Instagram launched?",a:"2010",hint:"2010. Kevin Systrom. Originally called Burbn. Changed everything about photos."},
+  {cat:"&#127925; Pop Culture",icon:"&#127926;",label:"Pop Culture",sub:"Streaming",q:"What year did Netflix start streaming movies online?",a:"2007",hint:"2007. Before that it was DVDs by mail. Yes really. Red envelopes everywhere."},
 ];
 
 // ── STATE ────────────────────────────────────────────────────
@@ -662,6 +765,8 @@ async function askJudgy(type, data, targetName, userInput, skipped, correct) {
     await typeText(outputEl, text);
 
     if (type === "roast") {
+      lastRoastText = text;
+      document.getElementById("shareBtn").classList.add("visible");
       if (mode === "duo" && targetName) {
         if (targetName === p1.name) { p1.score++; document.getElementById("p1score").textContent = p1.score + " roasts"; }
         else { p2.score++; document.getElementById("p2score").textContent = p2.score + " roasts"; }
@@ -684,6 +789,7 @@ async function askJudgy(type, data, targetName, userInput, skipped, correct) {
     } else if (type === "clapback") {
       setTimeout(() => startKnowledge(), 1200);
     } else if (type === "knowledge") {
+      lastKnowResult = correct ? "\u2705 Got it right!" : "\u274c Got it wrong.";
       document.getElementById("knowNextBtn").classList.add("visible");
     }
   } catch(e) {
@@ -755,6 +861,7 @@ function resetUI() {
   document.getElementById("judgyBubble").classList.remove("belt","know");
   document.getElementById("spinBtn").disabled = false;
   document.getElementById("spinBtn").textContent = "SPIN";
+  document.getElementById("shareBtn").classList.remove("visible");
   setPhase("roast");
 }
 
