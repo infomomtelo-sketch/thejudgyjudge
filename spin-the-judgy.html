@@ -6,105 +6,164 @@
 <title>Spin the Judgy</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --gold: #E8B84B;
-    --gold-dim: #a07d2a;
-    --bg: #0a0a0a;
-    --card: #141414;
-    --card2: #1E1E1E;
-    --white: #FFFFFF;
-    --gray: #666;
-    --red: #c0392b;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: var(--bg); color: var(--white); font-family: Inter, sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
-  header { width: 100%; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #1a1a1a; gap: 12px; }
-  .back-btn { background: #1a1a1a; border: 1px solid #2a2a2a; color: #888; width: 34px; height: 34px; border-radius: 10px; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all .2s; }
-  .logo { font-family: "Playfair Display", serif; font-size: 1.1rem; color: var(--gold); flex: 1; }
-  
-  .mode-toggle { display: flex; gap: 6px; }
-  .mode-btn { background: #1a1a1a; border: 1px solid #2a2a2a; color: var(--gray); padding: 6px 16px; border-radius: 20px; font-size: .78rem; cursor: pointer; font-family: Inter, sans-serif; transition: all .2s; }
-  .mode-btn.active { background: var(--gold); color: #000; border-color: var(--gold); font-weight: 700; }
-  .main { width: 100%; max-width: 480px; padding: 28px 20px 60px; display: flex; flex-direction: column; align-items: center; gap: 24px; }
+:root{--gold:#E8B84B;--gold-dim:#a07d2a;--bg:#0a0a0a;--card:#141414;--card2:#1E1E1E;--white:#fff;--gray:#666;--red:#c0392b;--blue:#60a5fa;--green:#4ade80;--purple:#c084fc;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--white);font-family:Inter,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;}
+header{width:100%;padding:14px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid #1a1a1a;}
+.back-btn{background:#1a1a1a;border:1px solid #2a2a2a;color:#888;width:34px;height:34px;border-radius:10px;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.logo{font-family:"Playfair Display",serif;font-size:1.1rem;color:var(--gold);flex:1;}
+.mode-toggle{display:flex;gap:6px;}
+.mode-btn{background:#1a1a1a;border:1px solid #2a2a2a;color:var(--gray);padding:6px 14px;border-radius:20px;font-size:.75rem;cursor:pointer;font-family:Inter,sans-serif;transition:all .2s;}
+.mode-btn.active{background:var(--gold);color:#000;border-color:var(--gold);font-weight:700;}
+.main{width:100%;max-width:480px;padding:20px 20px 80px;display:flex;flex-direction:column;align-items:center;gap:18px;}
 
-  /* SLOT */
-  .slot-machine { width: 100%; display: flex; flex-direction: column; align-items: center; }
-  .slot-chrome-top { width: 90%; height: 20px; background: linear-gradient(180deg,#3a3020,#1a1400); border-radius: 12px 12px 0 0; border: 1.5px solid var(--gold-dim); border-bottom: none; display: flex; align-items: center; justify-content: center; gap: 7px; }
-  .slot-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); opacity: .55; }
-  .slot-window { width: 90%; height: 288px; min-height: 288px; background: #080808; border: 1.5px solid var(--gold-dim); border-top: none; border-bottom: none; overflow: hidden; position: relative; }
-  .slot-window::before, .slot-window::after { content: ""; position: absolute; left: 0; right: 0; height: 80px; z-index: 3; pointer-events: none; }
-  .slot-window::before { top: 0; background: linear-gradient(to bottom, #080808 0%, transparent 100%); }
-  .slot-window::after { bottom: 0; background: linear-gradient(to top, #080808 0%, transparent 100%); }
-  .slot-highlight { position: absolute; top: 50%; left: 0; right: 0; transform: translateY(-50%); height: 96px; border-top: 1.5px solid var(--gold); border-bottom: 1.5px solid var(--gold); z-index: 2; pointer-events: none; background: rgba(232,184,75,.05); }
-  .slot-reel { display: flex; flex-direction: column; will-change: transform; }
-  .slot-item { height: 96px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; flex-shrink: 0; padding: 0 12px; }
-  .slot-item-icon { font-size: 2rem; line-height: 1; }
-  .slot-item-label { font-family: "Playfair Display", serif; font-size: 1rem; font-weight: 700; color: var(--white); text-align: center; }
-  .slot-item-sub { font-size: .65rem; color: #555; text-align: center; line-height: 1.3; }
-  .slot-chrome-bot { width: 90%; height: 22px; background: linear-gradient(180deg,#1a1400,#3a3020); border-radius: 0 0 12px 12px; border: 1.5px solid var(--gold-dim); border-top: none; }
+/* PHASE INDICATOR */
+.phase-bar{width:100%;display:flex;gap:6px;}
+.phase-pill{flex:1;padding:7px 6px;border-radius:8px;text-align:center;font-size:.65rem;font-weight:600;letter-spacing:.5px;text-transform:uppercase;border:1px solid #222;color:var(--gray);background:var(--card);transition:all .3s;}
+.phase-pill.active{color:#000;font-weight:700;}
+.phase-pill.p-roast.active{background:var(--gold);border-color:var(--gold);}
+.phase-pill.p-reply.active{background:var(--blue);border-color:var(--blue);}
+.phase-pill.p-know.active{background:var(--purple);border-color:var(--purple);}
 
-  .spin-btn { width: 90%; background: var(--gold); color: #000; border: none; padding: 16px; border-radius: 14px; font-size: 1rem; font-weight: 700; font-family: Inter, sans-serif; cursor: pointer; letter-spacing: 1.5px; text-transform: uppercase; transition: all .15s; margin-top: 6px; }
-  .spin-btn:hover { background: #f5c84f; }
-  .spin-btn:active { transform: scale(.98); }
-  .spin-btn:disabled { opacity: .35; cursor: not-allowed; transform: none; }
+/* CATEGORY TABS */
+.cat-tabs{display:flex;width:100%;gap:0;background:#111;border-radius:12px;padding:4px;}
+.cat-tab{flex:1;padding:8px 4px;text-align:center;border-radius:9px;cursor:pointer;font-size:.68rem;font-weight:600;color:var(--gray);transition:all .2s;border:none;background:transparent;font-family:Inter,sans-serif;}
+.cat-tab .ct-icon{display:block;font-size:1rem;margin-bottom:2px;}
+.cat-tab.active{background:var(--card2);color:var(--white);}
 
-  /* PLAYERS */
-  .players-row { display: none; gap: 12px; width: 100%; }
-  .players-row.visible { display: flex; }
-  .player-card { flex: 1; background: var(--card); border: 2px solid #222; border-radius: 12px; padding: 12px; text-align: center; transition: all .2s; }
-  .player-card.active-player { border-color: var(--gold); background: #130f00; }
-  .player-card .p-label { font-size: .6rem; color: var(--gray); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 2px; }
-  .player-card .p-name { font-family: "Playfair Display", serif; font-size: .95rem; }
-  .player-card .p-score { font-size: .68rem; color: var(--gold); margin-top: 2px; }
+/* SLOT */
+.slot-machine{width:100%;display:flex;flex-direction:column;align-items:center;}
+.slot-label{font-size:.6rem;color:var(--gray);text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;width:90%;text-align:left;}
+.slot-chrome-top{width:90%;height:18px;background:linear-gradient(180deg,#3a3020,#1a1400);border-radius:12px 12px 0 0;border:1.5px solid var(--gold-dim);border-bottom:none;display:flex;align-items:center;justify-content:center;gap:7px;}
+.slot-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);opacity:.5;}
+.slot-window{width:90%;height:288px;background:#080808;border:1.5px solid var(--gold-dim);border-top:none;border-bottom:none;overflow:hidden;position:relative;}
+.slot-window.know-window{border-color:var(--purple);opacity:1;}
+.slot-window::before,.slot-window::after{content:"";position:absolute;left:0;right:0;height:80px;z-index:3;pointer-events:none;}
+.slot-window::before{top:0;background:linear-gradient(to bottom,#080808,transparent);}
+.slot-window::after{bottom:0;background:linear-gradient(to top,#080808,transparent);}
+.slot-highlight{position:absolute;top:50%;left:0;right:0;transform:translateY(-50%);height:96px;border-top:1.5px solid var(--gold);border-bottom:1.5px solid var(--gold);z-index:2;pointer-events:none;background:rgba(232,184,75,.04);}
+.slot-highlight.know-hl{border-color:var(--purple);}
+.slot-reel{display:flex;flex-direction:column;will-change:transform;}
+.slot-item{height:96px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;flex-shrink:0;padding:0 16px;}
+.slot-item-icon{font-size:1.9rem;line-height:1;}
+.slot-item-label{font-family:"Playfair Display",serif;font-size:.95rem;font-weight:700;color:var(--white);text-align:center;}
+.slot-item-sub{font-size:.6rem;color:#555;text-align:center;line-height:1.3;max-width:240px;}
+.slot-chrome-bot{width:90%;height:20px;background:linear-gradient(180deg,#1a1400,#3a3020);border-radius:0 0 12px 12px;border:1.5px solid var(--gold-dim);border-top:none;}
+.slot-chrome-bot.know-bot{border-color:var(--purple);}
 
-  /* SETUP */
-  .setup-panel { display: none; background: var(--card); border: 1px solid #222; border-radius: 14px; padding: 20px; width: 100%; gap: 12px; flex-direction: column; }
-  .setup-panel.visible { display: flex; }
-  .setup-panel h3 { font-family: "Playfair Display", serif; color: var(--gold); font-size: 1rem; }
-  .setup-row { display: flex; gap: 10px; }
-  .setup-input { flex: 1; background: #0a0a0a; border: 1px solid #2a2a2a; color: var(--white); padding: 10px 12px; border-radius: 8px; font-family: Inter, sans-serif; font-size: .88rem; outline: none; }
-  .setup-input:focus { border-color: var(--gold); }
-  .setup-start-btn { background: var(--gold); color: #000; border: none; padding: 10px 18px; border-radius: 8px; font-weight: 700; cursor: pointer; font-family: Inter, sans-serif; }
+.spin-btn{width:90%;background:var(--gold);color:#000;border:none;padding:14px;border-radius:14px;font-size:.95rem;font-weight:700;font-family:Inter,sans-serif;cursor:pointer;letter-spacing:1.5px;text-transform:uppercase;transition:all .15s;margin-top:4px;}
+.spin-btn:hover{background:#f5c84f;}
+.spin-btn:active{transform:scale(.98);}
+.spin-btn:disabled{opacity:.35;cursor:not-allowed;transform:none;}
 
-  /* LANDED */
-  .landed-card { display: none; background: var(--card2); border: 1px solid #2a2a2a; border-radius: 14px; padding: 16px 20px; width: 100%; text-align: center; animation: popIn .3s cubic-bezier(.34,1.56,.64,1); }
-  .landed-card.visible { display: block; }
-  @keyframes popIn { from { opacity:0; transform:scale(.92); } to { opacity:1; transform:scale(1); } }
-  .landed-label { font-size: .62rem; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px; }
-  .landed-text { font-family: "Playfair Display", serif; font-size: 1.1rem; color: var(--white); margin-bottom: 12px; line-height: 1.4; }
-  .throw-btn { background: transparent; border: 1px solid var(--gold); color: var(--gold); padding: 8px 20px; border-radius: 20px; font-size: .82rem; font-weight: 600; cursor: pointer; font-family: Inter, sans-serif; transition: all .2s; }
-  .throw-btn:hover { background: var(--gold); color: #000; }
+/* PLAYERS */
+.players-row{display:none;gap:12px;width:100%;}
+.players-row.visible{display:flex;}
+.player-card{flex:1;background:var(--card);border:2px solid #222;border-radius:12px;padding:11px;text-align:center;transition:all .2s;}
+.player-card.active-player{border-color:var(--gold);background:#130f00;}
+.player-card .p-label{font-size:.58rem;color:var(--gray);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:2px;}
+.player-card .p-name{font-family:"Playfair Display",serif;font-size:.9rem;}
+.player-card .p-score{font-size:.63rem;color:var(--gold);margin-top:2px;}
 
-  /* JUDGY */
-  .judgy-section { width: 100%; }
-  .judgy-bubble { background: var(--card); border-left: 3px solid var(--gold); border-radius: 0 14px 14px 0; padding: 18px 20px; min-height: 70px; }
-  .judgy-name { font-size: .6rem; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; }
-  .judgy-text { font-size: .96rem; line-height: 1.7; color: var(--white); }
-  .judgy-cursor { display: inline-block; width: 2px; height: 1em; background: var(--gold); margin-left: 2px; vertical-align: text-bottom; animation: blink .8s step-end infinite; }
-  @keyframes blink { 50% { opacity: 0; } }
-  .judgy-placeholder { color: #555; font-style: italic; font-size: .88rem; }
-  .roast-badge { display: none; margin-top: 10px; text-align: right; }
-  .roast-badge.visible { display: block; }
-  .roast-badge span { background: var(--red); color: #fff; font-size: .65rem; font-weight: 700; padding: 3px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 1px; }
+/* SETUP */
+.setup-panel{display:none;background:var(--card);border:1px solid #222;border-radius:14px;padding:18px;width:100%;gap:12px;flex-direction:column;}
+.setup-panel.visible{display:flex;}
+.setup-panel h3{font-family:"Playfair Display",serif;color:var(--gold);font-size:.95rem;}
+.setup-row{display:flex;gap:10px;}
+.setup-input{flex:1;background:#0a0a0a;border:1px solid #2a2a2a;color:var(--white);padding:9px 12px;border-radius:8px;font-family:Inter,sans-serif;font-size:.86rem;outline:none;}
+.setup-input:focus{border-color:var(--gold);}
+.setup-start-btn{background:var(--gold);color:#000;border:none;padding:9px 16px;border-radius:8px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;}
 
-  /* HISTORY */
-  .history-section { width: 100%; }
-  .history-title { font-size: .6rem; color: var(--gray); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; }
-  .history-list { display: flex; flex-direction: column; gap: 6px; }
-  .history-item { background: var(--card2); border-radius: 8px; padding: 8px 12px; font-size: .76rem; color: #777; display: flex; gap: 8px; }
-  .hi-tag { color: var(--gold); font-weight: 600; white-space: nowrap; flex-shrink: 0; }
+/* LANDED */
+.landed-card{display:none;background:var(--card2);border:1px solid #2a2a2a;border-radius:14px;padding:14px 18px;width:100%;text-align:center;}
+.landed-card.visible{display:block;animation:popIn .3s cubic-bezier(.34,1.56,.64,1);}
+@keyframes popIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+.landed-label{font-size:.58rem;color:var(--gold);text-transform:uppercase;letter-spacing:2px;margin-bottom:5px;}
+.landed-text{font-family:"Playfair Display",serif;font-size:1.05rem;color:var(--white);margin-bottom:11px;line-height:1.4;}
+.throw-btn{background:transparent;border:1px solid var(--gold);color:var(--gold);padding:7px 18px;border-radius:20px;font-size:.78rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;transition:all .2s;}
+.throw-btn:hover{background:var(--gold);color:#000;}
+
+/* JUDGY BUBBLE */
+.judgy-section{width:100%;}
+.judgy-bubble{background:var(--card);border-left:3px solid var(--gold);border-radius:0 14px 14px 0;padding:16px 18px;min-height:70px;}
+.judgy-bubble.belt{border-left-color:var(--red);}
+.judgy-bubble.know{border-left-color:var(--purple);}
+.judgy-name{font-size:.57rem;color:var(--gold);text-transform:uppercase;letter-spacing:2px;margin-bottom:7px;}
+.judgy-text{font-size:.93rem;line-height:1.7;color:var(--white);}
+.judgy-cursor{display:inline-block;width:2px;height:1em;background:var(--gold);margin-left:2px;vertical-align:text-bottom;animation:blink .8s step-end infinite;}
+@keyframes blink{50%{opacity:0}}
+.judgy-placeholder{color:#444;font-style:italic;font-size:.86rem;}
+.roast-badge{display:none;margin-top:8px;text-align:right;}
+.roast-badge.visible{display:block;}
+.roast-badge span{background:var(--red);color:#fff;font-size:.62rem;font-weight:700;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:1px;}
+
+/* REPLY BOX */
+.reply-box{display:none;width:100%;flex-direction:column;gap:8px;animation:popIn .3s ease;}
+.reply-box.visible{display:flex;}
+.reply-label{font-size:.6rem;color:var(--blue);text-transform:uppercase;letter-spacing:2px;}
+.reply-wrap{display:flex;gap:8px;align-items:flex-end;background:var(--card);border:1px solid #333;border-radius:12px;padding:9px 12px;transition:border-color .2s;}
+.reply-wrap:focus-within{border-color:var(--blue);}
+.reply-input{flex:1;background:transparent;border:none;outline:none;font-family:Inter,sans-serif;font-size:.9rem;color:var(--white);resize:none;min-height:22px;max-height:80px;line-height:1.5;}
+.reply-input::placeholder{color:#444;font-style:italic;}
+.reply-send{background:var(--blue);color:#000;border:none;width:32px;height:32px;border-radius:8px;font-size:.85rem;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:700;}
+
+/* KNOWLEDGE SECTION */
+.know-section{display:none;width:100%;flex-direction:column;gap:12px;}
+.know-section.visible{display:flex;}
+.know-header{display:flex;align-items:center;gap:8px;}
+.know-badge{font-size:.6rem;background:rgba(192,132,252,.15);color:var(--purple);border:1px solid rgba(192,132,252,.3);padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:1.5px;font-weight:600;}
+.know-q-card{background:var(--card2);border:1px solid rgba(192,132,252,.25);border-radius:14px;padding:14px 18px;text-align:center;}
+.know-q-cat{font-size:.58rem;color:var(--purple);text-transform:uppercase;letter-spacing:2px;margin-bottom:6px;}
+.know-q-text{font-family:"Playfair Display",serif;font-size:1.05rem;color:var(--white);line-height:1.4;}
+.know-answer-wrap{display:flex;gap:8px;}
+.know-input{flex:1;background:var(--card);border:1px solid #333;color:var(--white);padding:10px 14px;border-radius:10px;font-family:Inter,sans-serif;font-size:.88rem;outline:none;}
+.know-input:focus{border-color:var(--purple);}
+.know-submit{background:var(--purple);color:#000;border:none;padding:10px 16px;border-radius:10px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;font-size:.82rem;white-space:nowrap;}
+.know-skip{background:transparent;border:1px solid #333;color:var(--gray);padding:10px 14px;border-radius:10px;font-family:Inter,sans-serif;font-size:.78rem;cursor:pointer;}
+.know-next-btn{display:none;width:100%;background:var(--gold);color:#000;border:none;padding:13px;border-radius:12px;font-weight:700;font-family:Inter,sans-serif;font-size:.88rem;cursor:pointer;letter-spacing:1px;text-transform:uppercase;}
+.know-next-btn.visible{display:block;}
+
+/* SCORE */
+.score-bar{display:none;width:100%;background:var(--card);border:1px solid #222;border-radius:12px;padding:12px 16px;align-items:center;justify-content:space-between;}
+.score-bar.visible{display:flex;}
+.score-label{font-size:.6rem;color:var(--gray);text-transform:uppercase;letter-spacing:1.5px;}
+.score-val{font-family:"Playfair Display",serif;font-size:1.1rem;color:var(--gold);}
+.score-streak{font-size:.65rem;color:var(--green);}
+
+/* HISTORY */
+.history-section{width:100%;}
+.history-title{font-size:.58rem;color:var(--gray);text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;}
+.history-list{display:flex;flex-direction:column;gap:5px;}
+.history-item{background:var(--card2);border-radius:8px;padding:7px 11px;font-size:.73rem;color:#666;display:flex;gap:8px;}
+.hi-tag{color:var(--gold);font-weight:600;white-space:nowrap;flex-shrink:0;}
 </style>
 </head>
 <body>
 <header>
-  <button class="back-btn" onclick="history.back()">←</button>
-  <div class="logo">⚖️ Spin the Judgy</div>
+  <button class="back-btn" onclick="history.back()">&#8592;</button>
+  <div class="logo">&#9878;&#65039; Spin the Judgy</div>
   <div class="mode-toggle">
     <button class="mode-btn active" onclick="setMode('solo')" id="btn-solo">Solo</button>
     <button class="mode-btn" onclick="setMode('duo')" id="btn-duo">1v1</button>
   </div>
 </header>
+
 <div class="main">
+
+  <!-- Phase bar -->
+  <div class="phase-bar">
+    <div class="phase-pill p-roast active" id="ph-roast">&#127919; Roast</div>
+    <div class="phase-pill p-reply" id="ph-reply">&#128172; Clap Back</div>
+    <div class="phase-pill p-know" id="ph-know">&#129504; Knowledge</div>
+  </div>
+
+  <!-- Score -->
+  <div class="score-bar" id="scoreBar">
+    <div><div class="score-label">Knowledge Score</div><div class="score-val" id="scoreVal">0 / 0</div></div>
+    <div style="text-align:right"><div class="score-label">Streak</div><div class="score-streak" id="streakVal">&#128293; 0</div></div>
+  </div>
+
+  <!-- Setup -->
   <div class="setup-panel" id="setupPanel">
     <h3>Who is getting roasted today?</h3>
     <div class="setup-row">
@@ -113,6 +172,8 @@
     </div>
     <button class="setup-start-btn" onclick="startDuo()">Enter the Court</button>
   </div>
+
+  <!-- Players -->
   <div class="players-row" id="playersRow">
     <div class="player-card active-player" id="p1card">
       <div class="p-label">Spinning</div>
@@ -125,134 +186,304 @@
       <div class="p-score" id="p2score">0 roasts</div>
     </div>
   </div>
-  <div class="slot-machine">
-    <div class="slot-chrome-top">
-      <div class="slot-dot"></div><div class="slot-dot"></div><div class="slot-dot"></div>
-    </div>
-    <div class="slot-window">
-      <div class="slot-highlight"></div>
-      <div class="slot-reel" id="slotReel"></div>
-    </div>
+
+  <!-- Category Tabs -->
+  <div class="cat-tabs">
+    <button class="cat-tab active" onclick="setCategory('personal')"><span class="ct-icon">&#127919;</span>Personal</button>
+    <button class="cat-tab" onclick="setCategory('work')"><span class="ct-icon">&#128188;</span>Work</button>
+    <button class="cat-tab" onclick="setCategory('belt')"><span class="ct-icon">&#128293;</span>Below Belt</button>
+  </div>
+
+  <!-- ROAST SLOT -->
+  <div class="slot-machine" id="roastMachine">
+    <div class="slot-label">&#127919; Spin &amp; Get Roasted</div>
+    <div class="slot-chrome-top"><div class="slot-dot"></div><div class="slot-dot"></div><div class="slot-dot"></div></div>
+    <div class="slot-window"><div class="slot-highlight"></div><div class="slot-reel" id="slotReel"></div></div>
     <div class="slot-chrome-bot"></div>
   </div>
   <button class="spin-btn" id="spinBtn" onclick="doSpin()">SPIN</button>
+
+  <!-- Landed -->
   <div class="landed-card" id="landedCard">
     <div class="landed-label" id="landedType">Landed on</div>
     <div class="landed-text" id="landedText"></div>
-    <button class="throw-btn" id="throwBtn" onclick="throwAtOpponent()" style="display:none">
-      Throw at <span id="throwTarget">them</span>
-    </button>
+    <button class="throw-btn" id="throwBtn" onclick="throwAtOpponent()" style="display:none">Throw at <span id="throwTarget">them</span></button>
   </div>
-  <div class="judgy-section">
-    <div class="judgy-bubble">
+
+  <!-- Judgy Roast Bubble -->
+  <div class="judgy-section" id="roastBubbleWrap" style="display:none">
+    <div class="judgy-bubble" id="judgyBubble">
       <div class="judgy-name">THE JUDGY</div>
       <div class="judgy-text" id="judgyText"><span class="judgy-placeholder">Spin. Judgy is watching.</span></div>
     </div>
     <div class="roast-badge" id="roastBadge"><span id="roastBadgeText">ROASTED</span></div>
   </div>
+
+  <!-- Reply Box (clap back) -->
+  <div class="reply-box" id="replyBox">
+    <div class="reply-label">&#128172; Clap back at Judgy</div>
+    <div class="reply-wrap">
+      <textarea class="reply-input" id="replyInput" placeholder="Say something back... if you dare" rows="1" onkeydown="handleReplyKey(event)" oninput="autoResizeReply(this)"></textarea>
+      <button class="reply-send" onclick="sendReply()">&#8594;</button>
+    </div>
+  </div>
+
+  <!-- Judgy Clap Back Bubble -->
+  <div class="judgy-section" id="clapBubbleWrap" style="display:none">
+    <div class="judgy-bubble" id="clapBubble">
+      <div class="judgy-name">THE JUDGY &#8212; CLAP BACK</div>
+      <div class="judgy-text" id="clapText"></div>
+    </div>
+  </div>
+
+  <!-- KNOWLEDGE SECTION -->
+  <div class="know-section" id="knowSection">
+    <div class="know-header">
+      <span class="know-badge">&#129504; Judgy Wants to Know</span>
+    </div>
+
+    <!-- Knowledge Slot -->
+    <div class="slot-machine">
+      <div class="slot-label" style="color:var(--purple)">&#129504; Judgy is spinning a question for you</div>
+      <div class="slot-chrome-top" style="background:linear-gradient(180deg,#2a1a40,#140a28);border-color:rgba(192,132,252,.4)"><div class="slot-dot" style="background:var(--purple)"></div><div class="slot-dot" style="background:var(--purple)"></div><div class="slot-dot" style="background:var(--purple)"></div></div>
+      <div class="slot-window know-window"><div class="slot-highlight know-hl"></div><div class="slot-reel" id="knowReel"></div></div>
+      <div class="slot-chrome-bot know-bot" style="background:linear-gradient(180deg,#140a28,#2a1a40);border-color:rgba(192,132,252,.4)"></div>
+    </div>
+
+    <!-- Question card -->
+    <div class="know-q-card" id="knowQCard" style="display:none">
+      <div class="know-q-cat" id="knowQCat"></div>
+      <div class="know-q-text" id="knowQText"></div>
+    </div>
+
+    <!-- Answer area -->
+    <div id="knowAnswerArea" style="display:none">
+      <div class="know-answer-wrap">
+        <input class="know-input" id="knowInput" placeholder="Your answer..." onkeydown="handleKnowKey(event)">
+        <button class="know-submit" onclick="submitAnswer()">Submit</button>
+        <button class="know-skip" onclick="skipAnswer()">I don't know</button>
+      </div>
+    </div>
+
+    <!-- Judgy Knowledge Reaction -->
+    <div class="judgy-section" id="knowBubbleWrap" style="display:none">
+      <div class="judgy-bubble know" id="knowBubble">
+        <div class="judgy-name" style="color:var(--purple)">THE JUDGY &#8212; KNOWLEDGE CHECK</div>
+        <div class="judgy-text" id="knowText"></div>
+      </div>
+    </div>
+
+    <button class="know-next-btn" id="knowNextBtn" onclick="nextRound()">Spin Again &#127919;</button>
+  </div>
+
+  <!-- History -->
   <div class="history-section" id="historySection" style="display:none">
     <div class="history-title">Court Record</div>
     <div class="history-list" id="historyList"></div>
   </div>
+
 </div>
 <script>
-const SOLO_SLICES = [
-  { type:"identity", icon:"📸", label:"Influencer",      sub:"I wanna be an influencer",           text:"I wanna be an influencer" },
-  { type:"identity", icon:"💼", label:"Future CEO",      sub:"I wanna be a CEO",                   text:"I wanna be a CEO" },
-  { type:"identity", icon:"🧘", label:"Life Coach",      sub:"I wanna be a life coach",            text:"I wanna be a life coach" },
-  { type:"identity", icon:"🎧", label:"DJ Life",         sub:"I wanna be a DJ",                    text:"I wanna be a DJ" },
-  { type:"identity", icon:"😤", label:"Brutally Honest", sub:"No filter, all facts",               text:"This is me, I am brutally honest" },
-  { type:"identity", icon:"👑", label:"Main Character",  sub:"The story revolves around me",       text:"This is me, I am the main character" },
-  { type:"identity", icon:"🙅", label:"Don't Care",     sub:"Your opinion means nothing",         text:"This is me, I do not care what people think" },
-  { type:"identity", icon:"✅", label:"Always Right",    sub:"Not my fault, I just am",            text:"This is me, I am always right" }
-];
-const DUO_SLICES = [
-  { type:"personal",   icon:"🎂", label:"How Old?",      sub:"A classic rude opener",              text:"How old are you?" },
-  { type:"personal",   icon:"💍", label:"Single?",        sub:"None of your business",              text:"Are you single?" },
-  { type:"personal",   icon:"💰", label:"Your Salary?",   sub:"The audacity",                       text:"How much do you make?" },
-  { type:"personal",   icon:"🎓", label:"College?",       sub:"Did you even go?",                   text:"Did you go to college?" },
-  { type:"accusation", icon:"🐟", label:"Fish Micro",     sub:"Admit it. That was you.",            text:"Are YOU the one putting fish in the microwave?" },
-  { type:"accusation", icon:"📧", label:"Reply-All",      sub:"300 people. Really.",                text:"Was that YOU who replied-all to the entire company?" },
-  { type:"accusation", icon:"🥡", label:"Lunch Thief",    sub:"Someone had a name on that.",        text:"Did you steal someones lunch from the fridge?" },
-  { type:"accusation", icon:"🚗", label:"My Spot!",       sub:"Every. Single. Day.",                text:"Did you park in someone elses spot again?" }
+// ── ROAST SLICES ────────────────────────────────────────────
+const CATEGORIES = {
+  personal:{
+    solo:[
+      {icon:"&#128248;",label:"Influencer",sub:"I wanna be an influencer",text:"I wanna be an influencer"},
+      {icon:"&#128188;",label:"Future CEO",sub:"I wanna be a CEO",text:"I wanna be a CEO"},
+      {icon:"&#129496;",label:"Life Coach",sub:"I wanna be a life coach",text:"I wanna be a life coach"},
+      {icon:"&#127911;",label:"DJ Life",sub:"I wanna be a DJ",text:"I wanna be a DJ"},
+      {icon:"&#128544;",label:"Brutally Honest",sub:"No filter, all facts",text:"This is me, I am brutally honest"},
+      {icon:"&#128081;",label:"Main Character",sub:"The story revolves around me",text:"This is me, I am the main character"},
+      {icon:"&#128581;",label:"Don't Care",sub:"Your opinion means nothing",text:"This is me, I do not care what people think"},
+      {icon:"&#9989;",label:"Always Right",sub:"Not my fault, I just am",text:"This is me, I am always right"}
+    ],
+    duo:[
+      {icon:"&#127874;",label:"How Old?",sub:"A classic rude opener",text:"How old are you?"},
+      {icon:"&#128141;",label:"Single?",sub:"None of your business",text:"Are you single?"},
+      {icon:"&#128176;",label:"Your Salary?",sub:"The audacity",text:"How much do you make?"},
+      {icon:"&#127891;",label:"College?",sub:"Did you even go?",text:"Did you go to college?"},
+      {icon:"&#128546;",label:"Work Out?",sub:"Excuse me?",text:"Do you even work out?"},
+      {icon:"&#9994;",label:"Smile More",sub:"Oh no you didn't",text:"You should smile more"},
+      {icon:"&#128064;",label:"Look Tired",sub:"Wow. Rude.",text:"You look tired"},
+      {icon:"&#127775;",label:"Scorpio?",sub:"The absolute nerve",text:"You seem like a Scorpio"}
+    ]
+  },
+  work:{
+    solo:[
+      {icon:"&#128247;",label:"Fish Micro",sub:"It was definitely you",text:"I microwaved fish in the office kitchen"},
+      {icon:"&#128231;",label:"Reply-All King",sub:"300 people. Still going.",text:"I was the one who replied-all to the entire company"},
+      {icon:"&#127822;",label:"Lunch Thief",sub:"Had a name on it.",text:"I may have eaten someone's labeled lunch from the fridge"},
+      {icon:"&#128197;",label:"8am Meetings",sub:"Monster behavior",text:"I schedule 8am Monday meetings for the whole team"},
+      {icon:"&#128564;",label:"Camera Off",sub:"We know you're in bed",text:"I always have my camera off on video calls"},
+      {icon:"&#127381;",label:"Early Escape",sub:"Another call, really?",text:"I leave meetings early saying I have another call"},
+      {icon:"&#128203;",label:"Credit Taker",sub:"That was Sarah's idea",text:"I sometimes present my team's ideas as my own"},
+      {icon:"&#128268;",label:"Slack Ghost",sub:"Read receipts don't lie",text:"I read Slack messages and don't respond for days"}
+    ],
+    duo:[
+      {icon:"&#128247;",label:"Fish Micro?",sub:"Admit it.",text:"Are YOU the one putting fish in the microwave?"},
+      {icon:"&#128231;",label:"Reply-All?",sub:"300 people. Really.",text:"Was that YOU who replied-all to the entire company?"},
+      {icon:"&#127822;",label:"Lunch Thief?",sub:"Someone had a name on that.",text:"Did you steal someone's lunch from the fridge?"},
+      {icon:"&#128197;",label:"8am Meetings?",sub:"Explain yourself.",text:"Are you scheduling 8am Monday meetings?"},
+      {icon:"&#128564;",label:"Camera Off?",sub:"We can hear you eating.",text:"Do you always have your camera off on calls?"},
+      {icon:"&#128203;",label:"Idea Thief?",sub:"Sarah wants her credit back.",text:"Did you present someone else's idea as your own?"},
+      {icon:"&#128268;",label:"Slack Ghost?",sub:"Three ticks. Silence.",text:"Are you the one who reads messages and never responds?"},
+      {icon:"&#127381;",label:"Meeting Ditcher?",sub:"Another call? Really?",text:"Did you fake an excuse to leave the meeting early?"}
+    ]
+  },
+  belt:{
+    solo:[
+      {icon:"&#128580;",label:"Fun or Boring?",sub:"Pick one",text:"I'm the fun one in my friend group"},
+      {icon:"&#128169;",label:"Toxic Trait",sub:"My toxic trait is being right",text:"My toxic trait is that I'm always right"},
+      {icon:"&#129327;",label:"Not Like Others",sub:"Oh honey",text:"I'm not like other people, I'm different"},
+      {icon:"&#128293;",label:"Manifesting",sub:"The vision board is full",text:"I'm currently manifesting my dream life"},
+      {icon:"&#128513;",label:"Just Sarcastic",sub:"No really, shocking",text:"I'm just being sarcastic, I don't mean it"},
+      {icon:"&#128123;",label:"Empath",sub:"This is going to be good",text:"I'm a highly sensitive empath"},
+      {icon:"&#129504;",label:"Overthinker",sub:"You think?",text:"I'm an overthinker, I can't help it"},
+      {icon:"&#127774;",label:"Night Owl",sub:"Productivity at 2am sure",text:"I do my best work after midnight"}
+    ],
+    duo:[
+      {icon:"&#128580;",label:"Fun or Boring?",sub:"We're all wondering",text:"Are you the fun one or the boring one?"},
+      {icon:"&#128064;",label:"Have Kids?",sub:"This is not a census",text:"Do you have kids? You should have kids."},
+      {icon:"&#128169;",label:"Toxic Trait?",sub:"Name it. We dare you.",text:"What is your toxic trait? Be honest."},
+      {icon:"&#127381;",label:"Still Single?",sub:"The emphasis on still",text:"You're STILL single? Why though?"},
+      {icon:"&#128293;",label:"Real Job?",sub:"Oh it's happening",text:"Is that your real job or just a side thing?"},
+      {icon:"&#128513;",label:"Joke Explainer",sub:"You kill every room",text:"Do you explain your jokes when people don't laugh?"},
+      {icon:"&#129327;",label:"Lost Weight?",sub:"Absolutely not",text:"Did you lose weight? You look different."},
+      {icon:"&#128148;",label:"Last Breakup?",sub:"Going for the jugular",text:"When was your last relationship and why did it end?"}
+    ]
+  }
+};
+
+// ── KNOWLEDGE QUESTIONS ────────────────────────────────────
+const KNOW_QUESTIONS = [
+  {cat:"&#127757; Geography",icon:"&#127757;",label:"Geography",sub:"Where in the world?",q:"What is the capital of Australia?",a:"Canberra",hint:"Not Sydney, not Melbourne. The one everyone forgets."},
+  {cat:"&#127757; Geography",icon:"&#127758;",label:"Geography",sub:"Think hard",q:"What is the capital of Canada?",a:"Ottawa",hint:"Not Toronto. Not Vancouver. Ottawa."},
+  {cat:"&#127757; Geography",icon:"&#127759;",label:"Geography",sub:"Continent check",q:"What continent is Egypt in?",a:"Africa",hint:"Egypt is in Africa. The Nile is in Africa. All of it."},
+  {cat:"&#127757; Geography",icon:"&#127760;",label:"Geography",sub:"Smallest country",q:"What is the smallest country in the world?",a:"Vatican City",hint:"Vatican City. Fits inside Rome. Technically a country."},
+  {cat:"&#127757; Geography",icon:"&#127956;",label:"Geography",sub:"Island nation",q:"What country owns the Galapagos Islands?",a:"Ecuador",hint:"Ecuador. Where Darwin had his big moment."},
+  {cat:"&#127775; History",icon:"&#127775;",label:"History",sub:"Pay attention",q:"In what year did World War II end?",a:"1945",hint:"1945. V-E Day May 8, V-J Day September 2."},
+  {cat:"&#127775; History",icon:"&#11088;",label:"History",sub:"American history",q:"Who was the first President of the United States?",a:"George Washington",hint:"George Washington. The one on the dollar bill."},
+  {cat:"&#127775; History",icon:"&#127981;",label:"History",sub:"Ancient world",q:"What ancient wonder was located in Alexandria Egypt?",a:"The Lighthouse of Alexandria",hint:"The Lighthouse of Alexandria. One of the Seven Wonders."},
+  {cat:"&#127775; History",icon:"&#128081;",label:"History",sub:"Cold War",q:"What year did the Berlin Wall fall?",a:"1989",hint:"1989. Same year as Taylor Swift was born. Coincidence?"},
+  {cat:"&#127775; History",icon:"&#9982;",label:"History",sub:"Space race",q:"Who was the first human to walk on the moon?",a:"Neil Armstrong",hint:"Neil Armstrong. July 20 1969. One small step."},
+  {cat:"&#127925; Music",icon:"&#127925;",label:"Music",sub:"King of Pop",q:"What year did Michael Jackson release Thriller?",a:"1982",hint:"1982. The best-selling album of all time. Forever."},
+  {cat:"&#127925; Music",icon:"&#127926;",label:"Music",sub:"MJ classics",q:"What was Michael Jackson's first solo number one hit?",a:"Don't Stop 'Til You Get Enough",hint:"Don't Stop Til You Get Enough. 1979. Off The Wall."},
+  {cat:"&#127925; Music",icon:"&#127897;",label:"Music",sub:"The Beatles",q:"What city were The Beatles from?",a:"Liverpool",hint:"Liverpool, England. Not London. Liverpool."},
+  {cat:"&#127925; Music",icon:"&#127908;",label:"Music",sub:"Iconic albums",q:"What is the best-selling album of all time?",a:"Thriller by Michael Jackson",hint:"Thriller. Michael Jackson. Over 70 million copies."},
+  {cat:"&#127925; Music",icon:"&#127932;",label:"Music",sub:"Legends",q:"What instrument did Jimi Hendrix famously play?",a:"Guitar",hint:"Electric guitar. Left-handed. Upside down. Genius."},
+  {cat:"&#128218; Literature",icon:"&#128218;",label:"Literature",sub:"Classic novels",q:"Who wrote Moby Dick?",a:"Herman Melville",hint:"Herman Melville. 1851. The whale is a metaphor."},
+  {cat:"&#128218; Literature",icon:"&#128214;",label:"Literature",sub:"Shakespeare",q:"Who wrote Romeo and Juliet?",a:"William Shakespeare",hint:"Shakespeare. Written around 1594. Both die. Spoiler."},
+  {cat:"&#128218; Literature",icon:"&#128212;",label:"Literature",sub:"Harry Potter",q:"What is the name of Harry Potter's owl?",a:"Hedwig",hint:"Hedwig. A snowy owl. An icon. We do not talk about what happens."},
+  {cat:"&#128218; Literature",icon:"&#128213;",label:"Literature",sub:"Classic fiction",q:"Who wrote 1984?",a:"George Orwell",hint:"George Orwell. Published 1949. Big Brother is watching."},
+  {cat:"&#128218; Literature",icon:"&#9997;",label:"Literature",sub:"American lit",q:"Who wrote The Great Gatsby?",a:"F. Scott Fitzgerald",hint:"F. Scott Fitzgerald. 1925. Old sport."},
+  {cat:"&#129516; Science",icon:"&#129516;",label:"Science",sub:"Basic biology",q:"What does DNA stand for?",a:"Deoxyribonucleic Acid",hint:"Deoxyribonucleic Acid. Yes you need to know this."},
+  {cat:"&#129516; Science",icon:"&#127756;",label:"Science",sub:"Solar system",q:"How many moons does Mars have?",a:"Two",hint:"Two. Phobos and Deimos. Named after fear and dread."},
+  {cat:"&#129516; Science",icon:"&#9889;",label:"Science",sub:"Physics",q:"What is the speed of light in miles per second approximately?",a:"186,000 miles per second",hint:"About 186,000 miles per second. Or 299,792 km per second."},
+  {cat:"&#129516; Science",icon:"&#9749;",label:"Science",sub:"Chemistry",q:"What is the chemical symbol for gold?",a:"Au",hint:"Au. From the Latin Aurum. Not Go. Not Gd. Au."},
+  {cat:"&#129516; Science",icon:"&#127758;",label:"Science",sub:"Earth science",q:"What is the largest ocean on Earth?",a:"The Pacific Ocean",hint:"The Pacific Ocean. Covers more than 30 percent of Earth's surface."},
+  {cat:"&#127919; General",icon:"&#127919;",label:"General",sub:"Everyone should know",q:"How many sides does a hexagon have?",a:"Six",hint:"Six. Hex means six. Like hexadecimal. Like a beehive."},
+  {cat:"&#127919; General",icon:"&#128161;",label:"General",sub:"Common knowledge",q:"What does APR stand for?",a:"Annual Percentage Rate",hint:"Annual Percentage Rate. The number on your credit card that haunts you."},
+  {cat:"&#127919; General",icon:"&#128200;",label:"General",sub:"Numbers",q:"How many amendments are in the US Constitution?",a:"27",hint:"27 amendments. The first 10 are the Bill of Rights."},
+  {cat:"&#127919; General",icon:"&#128483;",label:"General",sub:"Modern terms",q:"What is gaslighting?",a:"Manipulating someone into questioning their own reality",hint:"Making someone question their own memory and perception. Named after the 1944 film Gaslight."},
+  {cat:"&#127919; General",icon:"&#128081;",label:"General",sub:"Pop culture",q:"What year was the iPhone first released?",a:"2007",hint:"2007. Steve Jobs. Changed everything. You're welcome."}
 ];
 
+// ── STATE ────────────────────────────────────────────────────
 let mode = "solo";
+let category = "personal";
 let spinning = false;
 let currentSlice = null;
-let p1 = { name:"Player 1", score:0 };
-let p2 = { name:"Player 2", score:0 };
+let currentKnowQ = null;
+let p1 = {name:"Player 1",score:0};
+let p2 = {name:"Player 2",score:0};
 let currentSpinner = 1;
-let history = [];
+let historyLog = [];
+let knowScore = 0;
+let knowTotal = 0;
+let streak = 0;
+let phase = "roast"; // roast -> reply -> know
 const ITEM_H = 96;
 
-function getSlices() { return mode === "solo" ? SOLO_SLICES : DUO_SLICES; }
+function getSlices() { return CATEGORIES[category][mode === "duo" ? "duo" : "solo"]; }
 
-function buildReel() {
-  const reel = document.getElementById("slotReel");
+// ── REEL ─────────────────────────────────────────────────────
+function buildReel(reelId, slices) {
+  const reel = document.getElementById(reelId);
   reel.innerHTML = "";
   reel.style.transition = "none";
-  const slices = getSlices();
-  const items = [...slices, ...slices, ...slices, ...slices];
+  const items = [...slices,...slices,...slices,...slices];
   items.forEach(s => {
     const el = document.createElement("div");
     el.className = "slot-item";
     el.innerHTML = "<div class='slot-item-icon'>" + s.icon + "</div><div class='slot-item-label'>" + s.label + "</div><div class='slot-item-sub'>" + s.sub + "</div>";
     reel.appendChild(el);
   });
-  const startItem = slices.length;
-  const startY = -(startItem * ITEM_H) + ITEM_H;
-  reel.style.transform = "translateY(" + startY + "px)";
+  reel.style.transform = "translateY(" + (-(slices.length * ITEM_H) + ITEM_H) + "px)";
 }
 
-function doSpin() {
-  if (spinning) return;
-  spinning = true;
-  document.getElementById("spinBtn").disabled = true;
-  document.getElementById("landedCard").classList.remove("visible");
-  document.getElementById("roastBadge").classList.remove("visible");
-  document.getElementById("judgyText").innerHTML = "<span class='judgy-placeholder'>Judgy is watching very carefully…</span>";
-
-  const slices = getSlices();
-  const targetIndex = Math.floor(Math.random() * slices.length);
-
-  // Rebuild reel fresh each spin so position is always known
-  buildReel();
-
-  const reel = document.getElementById("slotReel");
-  // Start position: copy 1, item 0 is centered (translateY = -(n*ITEM_H) + ITEM_H)
-  const startY = -(slices.length * ITEM_H) + ITEM_H;
-  // Land position: copy 2, targetIndex centered
+function spinReel(reelId, slices, targetIndex, onDone) {
+  const reel = document.getElementById(reelId);
+  buildReel(reelId, slices);
   const endY = -((slices.length * 2 + targetIndex) * ITEM_H) + ITEM_H;
-
-  // Phase 1: fast ticker for 1.8s
-  let tickY = startY;
+  let tickY = -(slices.length * ITEM_H) + ITEM_H;
   const tickInterval = setInterval(() => {
     tickY -= ITEM_H * 0.5;
     reel.style.transition = "none";
     reel.style.transform = "translateY(" + tickY + "px)";
   }, 60);
-
   setTimeout(() => {
     clearInterval(tickInterval);
-    // Phase 2: smooth snap to landing position
-    reel.style.transition = "transform 0.8s cubic-bezier(0.17, 0.89, 0.32, 1.1)";
+    reel.style.transition = "transform 0.8s cubic-bezier(0.17,0.89,0.32,1.1)";
     reel.style.transform = "translateY(" + endY + "px)";
-    setTimeout(() => {
-      spinning = false;
-      currentSlice = slices[targetIndex];
-      onLanded(currentSlice);
-    }, 850);
+    setTimeout(onDone, 850);
   }, 1800);
 }
 
+// ── PHASE CONTROL ─────────────────────────────────────────────
+function setPhase(p) {
+  phase = p;
+  document.getElementById("ph-roast").classList.toggle("active", p === "roast");
+  document.getElementById("ph-reply").classList.toggle("active", p === "reply");
+  document.getElementById("ph-know").classList.toggle("active", p === "know");
+}
+
+// ── ROAST SPIN ────────────────────────────────────────────────
+function doSpin() {
+  if (spinning) return;
+  spinning = true;
+  setPhase("roast");
+  document.getElementById("spinBtn").disabled = true;
+  document.getElementById("landedCard").classList.remove("visible");
+  document.getElementById("roastBadge").classList.remove("visible");
+  document.getElementById("roastBubbleWrap").style.display = "none";
+  document.getElementById("replyBox").classList.remove("visible");
+  document.getElementById("clapBubbleWrap").style.display = "none";
+  document.getElementById("knowSection").classList.remove("visible");
+  document.getElementById("knowNextBtn").classList.remove("visible");
+  document.getElementById("judgyBubble").classList.remove("belt","know");
+
+  const slices = getSlices();
+  const targetIndex = Math.floor(Math.random() * slices.length);
+
+  spinReel("slotReel", slices, targetIndex, () => {
+    spinning = false;
+    currentSlice = slices[targetIndex];
+    onLanded(currentSlice);
+  });
+}
+
 function onLanded(slice) {
-  document.getElementById("landedType").textContent = slice.type === "accusation" ? "Accusation" : slice.type === "personal" ? "Question" : "Landed on";
+  const label = category === "belt" ? "&#128293; Below the Belt" : category === "work" ? "&#128188; Work Drama" : "&#127919; Landed on";
+  document.getElementById("landedType").innerHTML = label;
   document.getElementById("landedText").textContent = slice.text;
   document.getElementById("landedCard").classList.add("visible");
+  if (category === "belt") document.getElementById("judgyBubble").classList.add("belt");
+  document.getElementById("roastBubbleWrap").style.display = "block";
+  document.getElementById("judgyText").innerHTML = "<span class='judgy-placeholder'>Judgy is deliberating…</span>";
+
   if (mode === "solo") {
     document.getElementById("throwBtn").style.display = "none";
-    askJudgy(slice, null);
+    askJudgy("roast", slice, null);
   } else {
     const opponent = currentSpinner === 1 ? p2.name : p1.name;
     document.getElementById("throwTarget").textContent = opponent;
@@ -264,49 +495,176 @@ function throwAtOpponent() {
   if (!currentSlice) return;
   const target = currentSpinner === 1 ? p2 : p1;
   document.getElementById("throwBtn").style.display = "none";
-  askJudgy(currentSlice, target.name);
+  askJudgy("roast", currentSlice, target.name);
 }
 
+// ── REPLY / CLAP BACK ─────────────────────────────────────────
+function handleReplyKey(e) { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendReply(); } }
+function autoResizeReply(el) { el.style.height = "auto"; el.style.height = Math.min(el.scrollHeight, 80) + "px"; }
+
+function sendReply() {
+  const input = document.getElementById("replyInput");
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = "";
+  document.getElementById("replyBox").classList.remove("visible");
+  document.getElementById("clapBubbleWrap").style.display = "block";
+  document.getElementById("clapText").innerHTML = "<span class='judgy-placeholder'>Judgy is unimpressed…</span>";
+  askJudgy("clapback", { text }, null, text);
+}
+
+// ── KNOWLEDGE ─────────────────────────────────────────────────
+function startKnowledge() {
+  setPhase("know");
+  document.getElementById("knowSection").classList.add("visible");
+  document.getElementById("knowQCard").style.display = "none";
+  document.getElementById("knowAnswerArea").style.display = "none";
+  document.getElementById("knowBubbleWrap").style.display = "none";
+  document.getElementById("knowNextBtn").classList.remove("visible");
+  document.getElementById("scoreBar").classList.add("visible");
+
+  const targetIndex = Math.floor(Math.random() * KNOW_QUESTIONS.length);
+  currentKnowQ = KNOW_QUESTIONS[targetIndex];
+
+  // build know reel from questions
+  const knowSlices = KNOW_QUESTIONS.map(q => ({
+    icon: q.icon, label: q.label, sub: q.cat.replace(/&#\d+;/g, "").trim()
+  }));
+
+  spinReel("knowReel", knowSlices, targetIndex, () => {
+    document.getElementById("knowQCat").innerHTML = currentKnowQ.cat;
+    document.getElementById("knowQText").textContent = currentKnowQ.q;
+    document.getElementById("knowQCard").style.display = "block";
+    document.getElementById("knowAnswerArea").style.display = "block";
+    document.getElementById("knowInput").value = "";
+    document.getElementById("knowInput").focus();
+  });
+}
+
+function handleKnowKey(e) { if (e.key === "Enter") submitAnswer(); }
+
+function submitAnswer() {
+  const input = document.getElementById("knowInput");
+  const userAnswer = input.value.trim();
+  if (!userAnswer) return;
+  processAnswer(userAnswer, false);
+}
+
+function skipAnswer() {
+  processAnswer("", true);
+}
+
+function processAnswer(userAnswer, skipped) {
+  document.getElementById("knowAnswerArea").style.display = "none";
+  document.getElementById("knowBubbleWrap").style.display = "block";
+  document.getElementById("knowText").innerHTML = "<span class='judgy-placeholder'>Judgy is judging your answer…</span>";
+
+  knowTotal++;
+  const correct = userAnswer.toLowerCase().includes(currentKnowQ.a.toLowerCase().split(" ")[0].toLowerCase()) ||
+    currentKnowQ.a.toLowerCase().includes(userAnswer.toLowerCase()) && userAnswer.length > 2;
+
+  if (correct) { knowScore++; streak++; }
+  else { streak = 0; }
+
+  document.getElementById("scoreVal").textContent = knowScore + " / " + knowTotal;
+  document.getElementById("streakVal").textContent = "&#128293; " + streak;
+
+  askJudgy("knowledge", currentKnowQ, null, userAnswer, skipped, correct);
+}
+
+// ── NEXT ROUND ────────────────────────────────────────────────
+function nextRound() {
+  document.getElementById("knowSection").classList.remove("visible");
+  document.getElementById("knowNextBtn").classList.remove("visible");
+  setPhase("roast");
+  document.getElementById("spinBtn").disabled = false;
+  document.getElementById("spinBtn").textContent = "SPIN AGAIN";
+  document.getElementById("spinBtn").scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+// ── AI CALLS ─────────────────────────────────────────────────
 const WORKER_URL = "https://judgy-api.infomomtelo.workers.dev/api/chat";
 
-async function askJudgy(slice, targetName) {
-  const judgyEl = document.getElementById("judgyText");
-  judgyEl.innerHTML = "<span class='judgy-cursor'></span>";
+async function askJudgy(type, data, targetName, userInput, skipped, correct) {
   let prompt = "";
-  if (mode === "solo") {
-    prompt = "The user just declared: " + JSON.stringify(slice.text) + ". You are The Judgy, brutally honest, theatrical, merciless. You have absolutely NO idea this came from a slot machine. React as if this person just walked into your courtroom and announced this to your face. Roast them hard. End with one grudging real piece of advice. Under 110 words. Maximum drama.";
-  } else if (slice.type === "personal") {
-    prompt = "Someone in your courtroom just asked " + targetName + ": " + JSON.stringify(slice.text) + ". You are The Judgy. You had NO idea this came from a slot machine. Address " + targetName + " directly. Take it personally on their behalf. Roast the situation. Under 110 words. Maximum drama.";
-  } else {
-    prompt = "Someone just accused " + targetName + " in your courtroom: " + JSON.stringify(slice.text) + ". You are The Judgy. No idea about any slot machine. You already believe " + targetName + " is guilty. Address " + targetName + " directly. Full dramatic guilty verdict energy. Under 110 words.";
+  let outputEl, wrapEl;
+
+  if (type === "roast") {
+    outputEl = document.getElementById("judgyText");
+    wrapEl = null;
+    const isBelt = category === "belt";
+    const isWork = category === "work";
+    if (mode === "solo") {
+      if (isBelt) prompt = "The user just confessed: " + JSON.stringify(data.text) + ". You are The Judgy. You had NO idea this came from any game. This is below the belt. Lose it dramatically. Savage, theatrical, funny. Under 100 words. NO MERCY.";
+      else if (isWork) prompt = "The user just confessed this workplace crime: " + JSON.stringify(data.text) + ". You are The Judgy. Hold them in contempt. Full courtroom energy. Under 100 words.";
+      else prompt = "The user declared: " + JSON.stringify(data.text) + ". You are The Judgy. React as if they just walked into your courtroom and announced this. Roast them hard. End with one grudging piece of real advice. Under 100 words.";
+    } else {
+      if (isBelt) prompt = "Someone just asked " + targetName + ": " + JSON.stringify(data.text) + ". You are The Judgy. You are PERSONALLY offended on " + targetName + "'s behalf. Address both of them. Full theatrical outrage. Under 100 words.";
+      else if (isWork) prompt = "Someone accused " + targetName + " of: " + JSON.stringify(data.text) + ". You are The Judgy. You already believe " + targetName + " is guilty. Dramatic verdict. Under 100 words.";
+      else prompt = "Someone just asked " + targetName + ": " + JSON.stringify(data.text) + ". You are The Judgy. Address " + targetName + " directly. Roast the audacity of this question. Under 100 words.";
+    }
+  } else if (type === "clapback") {
+    outputEl = document.getElementById("clapText");
+    wrapEl = null;
+    prompt = "The user just clapped back at you with: " + JSON.stringify(userInput) + ". You are The Judgy. They had the NERVE to respond to your verdict. Destroy them with dignity. Witty, sharp, final word. Under 80 words. Make it legendary.";
+  } else if (type === "knowledge") {
+    outputEl = document.getElementById("knowText");
+    wrapEl = null;
+    const q = data;
+    if (skipped) {
+      prompt = "The user admitted they don't know the answer to: " + JSON.stringify(q.q) + ". The correct answer is: " + JSON.stringify(q.a) + ". Hint for context: " + q.hint + ". You are The Judgy. Act personally betrayed. Give them the answer dramatically. Educate them with maximum condescension but make it memorable and actually informative. Under 120 words.";
+    } else if (correct) {
+      prompt = "The user answered " + JSON.stringify(userInput) + " to the question: " + JSON.stringify(q.q) + ". The correct answer is " + JSON.stringify(q.a) + ". You are The Judgy. You are GRUDGINGLY impressed. Barely. Compliment them but find something to roast. Give an interesting bonus fact about the answer. Under 100 words.";
+    } else {
+      prompt = "The user answered " + JSON.stringify(userInput) + " to the question: " + JSON.stringify(q.q) + ". The correct answer is " + JSON.stringify(q.a) + ". Hint: " + q.hint + ". You are The Judgy. WRONG. React dramatically. Give them the correct answer, explain it memorably, roast their wrong answer specifically. Under 120 words.";
+    }
   }
+
   try {
     const res = await fetch(WORKER_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        persona: "judgy",
-        message: prompt
-      })
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({persona:"judgy", message: prompt})
     });
-    const data = await res.json();
-    const text = data.response || "The court's connection was severed. Judgy blames you personally.";
-    await typeText(judgyEl, text);
-    if (mode === "duo" && targetName) {
-      if (targetName === p1.name) { p1.score++; document.getElementById("p1score").textContent = p1.score + " roasts"; }
-      else { p2.score++; document.getElementById("p2score").textContent = p2.score + " roasts"; }
-      document.getElementById("roastBadgeText").textContent = targetName + " got ROASTED";
-      document.getElementById("roastBadge").classList.add("visible");
-      swapTurn();
-    } else if (mode === "solo") {
-      document.getElementById("roastBadgeText").textContent = "YOU GOT ROASTED";
-      document.getElementById("roastBadge").classList.add("visible");
+    const respData = await res.json();
+    const text = respData.response || "The court's connection was severed. Judgy blames you personally.";
+    await typeText(outputEl, text);
+
+    if (type === "roast") {
+      if (mode === "duo" && targetName) {
+        if (targetName === p1.name) { p1.score++; document.getElementById("p1score").textContent = p1.score + " roasts"; }
+        else { p2.score++; document.getElementById("p2score").textContent = p2.score + " roasts"; }
+        document.getElementById("roastBadgeText").textContent = targetName + " got ROASTED";
+        document.getElementById("roastBadge").classList.add("visible");
+        swapTurn();
+      } else {
+        document.getElementById("roastBadgeText").textContent = category === "belt" ? "BELOW THE BELT" : "ROASTED";
+        document.getElementById("roastBadge").classList.add("visible");
+      }
+      // show reply box then trigger knowledge
+      setPhase("reply");
+      document.getElementById("replyBox").classList.add("visible");
+      document.getElementById("replyInput").focus();
+      addToHistory(currentSlice.text, text.slice(0,70) + "...", targetName);
+      // auto-start knowledge after short delay if user doesn't reply
+      setTimeout(() => {
+        if (phase === "reply") startKnowledge();
+      }, 8000);
+    } else if (type === "clapback") {
+      setTimeout(() => startKnowledge(), 1200);
+    } else if (type === "knowledge") {
+      document.getElementById("knowNextBtn").classList.add("visible");
     }
-    addToHistory(slice.text, text.slice(0,80) + "...", targetName);
   } catch(e) {
-    await typeText(judgyEl, "The courts connection was severed. Judgy blames you personally for this.");
+    if (outputEl) outputEl.textContent = "The court's connection was severed. Judgy is furious.";
+    if (type === "roast") {
+      document.getElementById("replyBox").classList.add("visible");
+      setTimeout(() => { if (phase === "reply") startKnowledge(); }, 6000);
+    }
+    if (type === "knowledge") document.getElementById("knowNextBtn").classList.add("visible");
+    document.getElementById("spinBtn").disabled = false;
   }
-  document.getElementById("spinBtn").disabled = false;
+  if (type === "roast") document.getElementById("spinBtn").disabled = false;
 }
 
 async function typeText(el, text) {
@@ -316,24 +674,33 @@ async function typeText(el, text) {
   el.appendChild(cursor);
   for (let i = 0; i < text.length; i++) {
     el.insertBefore(document.createTextNode(text[i]), cursor);
-    await new Promise(r => setTimeout(r, 16 + Math.random() * 10));
+    await new Promise(r => setTimeout(r, 14 + Math.random() * 8));
   }
   cursor.remove();
 }
 
+// ── HISTORY ──────────────────────────────────────────────────
 function addToHistory(prompt, response, target) {
-  history.unshift({ prompt, response, target });
-  if (history.length > 5) history.pop();
+  historyLog.unshift({prompt, response, target});
+  if (historyLog.length > 5) historyLog.pop();
   const section = document.getElementById("historySection");
   const list = document.getElementById("historyList");
   section.style.display = "block";
   list.innerHTML = "";
-  history.forEach(h => {
+  historyLog.forEach(h => {
     const item = document.createElement("div");
     item.className = "history-item";
     item.innerHTML = "<span class='hi-tag'>" + (h.target ? "to " + h.target : "Solo") + "</span><span>" + h.prompt + " &mdash; " + h.response + "</span>";
     list.appendChild(item);
   });
+}
+
+// ── CATEGORY / MODE ───────────────────────────────────────────
+function setCategory(cat) {
+  category = cat;
+  document.querySelectorAll(".cat-tab").forEach((t,i) => t.classList.toggle("active", ["personal","work","belt"][i] === cat));
+  resetUI();
+  buildReel("slotReel", getSlices());
 }
 
 function setMode(m) {
@@ -342,16 +709,27 @@ function setMode(m) {
   document.getElementById("btn-duo").classList.toggle("active", m === "duo");
   document.getElementById("setupPanel").classList.toggle("visible", m === "duo");
   document.getElementById("playersRow").classList.toggle("visible", false);
+  resetUI();
+  buildReel("slotReel", getSlices());
+}
+
+function resetUI() {
   document.getElementById("landedCard").classList.remove("visible");
   document.getElementById("roastBadge").classList.remove("visible");
-  document.getElementById("judgyText").innerHTML = "<span class='judgy-placeholder'>Spin. Judgy is watching.</span>";
+  document.getElementById("roastBubbleWrap").style.display = "none";
+  document.getElementById("replyBox").classList.remove("visible");
+  document.getElementById("clapBubbleWrap").style.display = "none";
+  document.getElementById("knowSection").classList.remove("visible");
+  document.getElementById("knowNextBtn").classList.remove("visible");
+  document.getElementById("judgyBubble").classList.remove("belt","know");
   document.getElementById("spinBtn").disabled = false;
-  buildReel();
+  document.getElementById("spinBtn").textContent = "SPIN";
+  setPhase("roast");
 }
 
 function startDuo() {
-  p1 = { name: document.getElementById("p1name").value.trim() || "Player 1", score: 0 };
-  p2 = { name: document.getElementById("p2name").value.trim() || "Player 2", score: 0 };
+  p1 = {name: document.getElementById("p1name").value.trim() || "Player 1", score:0};
+  p2 = {name: document.getElementById("p2name").value.trim() || "Player 2", score:0};
   currentSpinner = 1;
   document.getElementById("p1display").textContent = p1.name;
   document.getElementById("p2display").textContent = p2.name;
@@ -374,7 +752,8 @@ function updatePlayerCards() {
   document.getElementById("p2card").querySelector(".p-label").textContent = currentSpinner === 2 ? "Spinning" : "On Trial";
 }
 
-buildReel();
+// ── INIT ─────────────────────────────────────────────────────
+buildReel("slotReel", getSlices());
 </script>
 </body>
 </html>
