@@ -267,7 +267,7 @@ function throwAtOpponent() {
   askJudgy(currentSlice, target.name);
 }
 
-const WORKER_URL = "https://judgy-api.infomomtelo.workers.dev";
+const WORKER_URL = "https://judgy-api.infomomtelo.workers.dev/api/chat";
 
 async function askJudgy(slice, targetName) {
   const judgyEl = document.getElementById("judgyText");
@@ -285,18 +285,12 @@ async function askJudgy(slice, targetName) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        message: prompt,
-        messages: [{ role: "user", content: prompt }],
-        system: "You are The Judgy, a brutally honest theatrical AI judge who takes everything personally. You speak in dramatic declarations. You never hedge. You never apologize. You are always right. You had no idea about any game mechanic — someone just said something to your face."
+        persona: "judgy",
+        message: prompt
       })
     });
-    const raw = await res.text();
-    let data = {};
-    try { data = JSON.parse(raw); } catch(e) {}
-    const text = (data.content && data.content[0] && data.content[0].text)
-      || data.text || data.response || data.reply || data.message || data.result
-      || (typeof raw === "string" && raw.length > 0 && raw.length < 2000 ? raw : null)
-      || "The court's connection was severed. Judgy blames you personally.";
+    const data = await res.json();
+    const text = data.response || "The court's connection was severed. Judgy blames you personally.";
     await typeText(judgyEl, text);
     if (mode === "duo" && targetName) {
       if (targetName === p1.name) { p1.score++; document.getElementById("p1score").textContent = p1.score + " roasts"; }
