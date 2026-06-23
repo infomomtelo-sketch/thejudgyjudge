@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spin the Judgy</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #E8B84B;
+    --gold-dim: #a07d2a;
+    --bg: #0a0a0a;
+    --card: #141414;
+    --card2: #1E1E1E;
+    --white: #FFFFFF;
+    --gray: #666;
+    --red: #c0392b;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--white); font-family: Inter, sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+  header { width: 100%; padding: 18px 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #1a1a1a; }
+  .logo { font-family: "Playfair Display", serif; font-size: 1.2rem; color: var(--gold); }
+  .mode-toggle { display: flex; gap: 6px; }
+  .mode-btn { background: #1a1a1a; border: 1px solid #2a2a2a; color: var(--gray); padding: 6px 16px; border-radius: 20px; font-size: .78rem; cursor: pointer; font-family: Inter, sans-serif; transition: all .2s; }
+  .mode-btn.active { background: var(--gold); color: #000; border-color: var(--gold); font-weight: 700; }
+  .main { width: 100%; max-width: 480px; padding: 28px 20px 60px; display: flex; flex-direction: column; align-items: center; gap: 24px; }
+
+  /* SLOT */
+  .slot-machine { width: 100%; display: flex; flex-direction: column; align-items: center; }
+  .slot-chrome-top { width: 90%; height: 20px; background: linear-gradient(180deg,#3a3020,#1a1400); border-radius: 12px 12px 0 0; border: 1.5px solid var(--gold-dim); border-bottom: none; display: flex; align-items: center; justify-content: center; gap: 7px; }
+  .slot-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); opacity: .55; }
+  .slot-window { width: 90%; height: 288px; background: #080808; border: 1.5px solid var(--gold-dim); border-top: none; border-bottom: none; overflow: hidden; position: relative; }
+  .slot-window::before, .slot-window::after { content: ""; position: absolute; left: 0; right: 0; height: 80px; z-index: 3; pointer-events: none; }
+  .slot-window::before { top: 0; background: linear-gradient(to bottom, #080808 0%, transparent 100%); }
+  .slot-window::after { bottom: 0; background: linear-gradient(to top, #080808 0%, transparent 100%); }
+  .slot-highlight { position: absolute; top: 50%; left: 0; right: 0; transform: translateY(-50%); height: 96px; border-top: 1.5px solid var(--gold); border-bottom: 1.5px solid var(--gold); z-index: 2; pointer-events: none; background: rgba(232,184,75,.05); }
+  .slot-reel { display: flex; flex-direction: column; will-change: transform; }
+  .slot-item { height: 96px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; flex-shrink: 0; padding: 0 12px; }
+  .slot-item-icon { font-size: 2rem; line-height: 1; }
+  .slot-item-label { font-family: "Playfair Display", serif; font-size: 1rem; font-weight: 700; color: var(--white); text-align: center; }
+  .slot-item-sub { font-size: .65rem; color: #555; text-align: center; line-height: 1.3; }
+  .slot-chrome-bot { width: 90%; height: 22px; background: linear-gradient(180deg,#1a1400,#3a3020); border-radius: 0 0 12px 12px; border: 1.5px solid var(--gold-dim); border-top: none; }
+
+  .spin-btn { width: 90%; background: var(--gold); color: #000; border: none; padding: 16px; border-radius: 14px; font-size: 1rem; font-weight: 700; font-family: Inter, sans-serif; cursor: pointer; letter-spacing: 1.5px; text-transform: uppercase; transition: all .15s; margin-top: 6px; }
+  .spin-btn:hover { background: #f5c84f; }
+  .spin-btn:active { transform: scale(.98); }
+  .spin-btn:disabled { opacity: .35; cursor: not-allowed; transform: none; }
+
+  /* PLAYERS */
+  .players-row { display: none; gap: 12px; width: 100%; }
+  .players-row.visible { display: flex; }
+  .player-card { flex: 1; background: var(--card); border: 2px solid #222; border-radius: 12px; padding: 12px; text-align: center; transition: all .2s; }
+  .player-card.active-player { border-color: var(--gold); background: #130f00; }
+  .player-card .p-label { font-size: .6rem; color: var(--gray); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 2px; }
+  .player-card .p-name { font-family: "Playfair Display", serif; font-size: .95rem; }
+  .player-card .p-score { font-size: .68rem; color: var(--gold); margin-top: 2px; }
+
+  /* SETUP */
+  .setup-panel { display: none; background: var(--card); border: 1px solid #222; border-radius: 14px; padding: 20px; width: 100%; gap: 12px; flex-direction: column; }
+  .setup-panel.visible { display: flex; }
+  .setup-panel h3 { font-family: "Playfair Display", serif; color: var(--gold); font-size: 1rem; }
+  .setup-row { display: flex; gap: 10px; }
+  .setup-input { flex: 1; background: #0a0a0a; border: 1px solid #2a2a2a; color: var(--white); padding: 10px 12px; border-radius: 8px; font-family: Inter, sans-serif; font-size: .88rem; outline: none; }
+  .setup-input:focus { border-color: var(--gold); }
+  .setup-start-btn { background: var(--gold); color: #000; border: none; padding: 10px 18px; border-radius: 8px; font-weight: 700; cursor: pointer; font-family: Inter, sans-serif; }
+
+  /* LANDED */
+  .landed-card { display: none; background: var(--card2); border: 1px solid #2a2a2a; border-radius: 14px; padding: 16px 20px; width: 100%; text-align: center; animation: popIn .3s cubic-bezier(.34,1.56,.64,1); }
+  .landed-card.visible { display: block; }
+  @keyframes popIn { from { opacity:0; transform:scale(.92); } to { opacity:1; transform:scale(1); } }
+  .landed-label { font-size: .62rem; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px; }
+  .landed-text { font-family: "Playfair Display", serif; font-size: 1.1rem; color: var(--white); margin-bottom: 12px; line-height: 1.4; }
+  .throw-btn { background: transparent; border: 1px solid var(--gold); color: var(--gold); padding: 8px 20px; border-radius: 20px; font-size: .82rem; font-weight: 600; cursor: pointer; font-family: Inter, sans-serif; transition: all .2s; }
+  .throw-btn:hover { background: var(--gold); color: #000; }
+
+  /* JUDGY */
+  .judgy-section { width: 100%; }
+  .judgy-bubble { background: var(--card); border-left: 3px solid var(--gold); border-radius: 0 14px 14px 0; padding: 18px 20px; min-height: 70px; }
+  .judgy-name { font-size: .6rem; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; }
+  .judgy-text { font-size: .96rem; line-height: 1.7; color: var(--white); }
+  .judgy-cursor { display: inline-block; width: 2px; height: 1em; background: var(--gold); margin-left: 2px; vertical-align: text-bottom; animation: blink .8s step-end infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .judgy-placeholder { color: #555; font-style: italic; font-size: .88rem; }
+  .roast-badge { display: none; margin-top: 10px; text-align: right; }
+  .roast-badge.visible { display: block; }
+  .roast-badge span { background: var(--red); color: #fff; font-size: .65rem; font-weight: 700; padding: 3px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 1px; }
+
+  /* HISTORY */
+  .history-section { width: 100%; }
+  .history-title { font-size: .6rem; color: var(--gray); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; }
+  .history-list { display: flex; flex-direction: column; gap: 6px; }
+  .history-item { background: var(--card2); border-radius: 8px; padding: 8px 12px; font-size: .76rem; color: #777; display: flex; gap: 8px; }
+  .hi-tag { color: var(--gold); font-weight: 600; white-space: nowrap; flex-shrink: 0; }
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">⚖️ Spin the Judgy</div>
+  <div class="mode-toggle">
+    <button class="mode-btn active" onclick="setMode('solo')" id="btn-solo">Solo</button>
+    <button class="mode-btn" onclick="setMode('duo')" id="btn-duo">1v1</button>
+  </div>
+</header>
+<div class="main">
+  <div class="setup-panel" id="setupPanel">
+    <h3>Who is getting roasted today?</h3>
+    <div class="setup-row">
+      <input class="setup-input" id="p1name" placeholder="Player 1" maxlength="16">
+      <input class="setup-input" id="p2name" placeholder="Player 2" maxlength="16">
+    </div>
+    <button class="setup-start-btn" onclick="startDuo()">Enter the Court</button>
+  </div>
+  <div class="players-row" id="playersRow">
+    <div class="player-card active-player" id="p1card">
+      <div class="p-label">Spinning</div>
+      <div class="p-name" id="p1display">Player 1</div>
+      <div class="p-score" id="p1score">0 roasts</div>
+    </div>
+    <div class="player-card" id="p2card">
+      <div class="p-label">On Trial</div>
+      <div class="p-name" id="p2display">Player 2</div>
+      <div class="p-score" id="p2score">0 roasts</div>
+    </div>
+  </div>
+  <div class="slot-machine">
+    <div class="slot-chrome-top">
+      <div class="slot-dot"></div><div class="slot-dot"></div><div class="slot-dot"></div>
+    </div>
+    <div class="slot-window">
+      <div class="slot-highlight"></div>
+      <div class="slot-reel" id="slotReel"></div>
+    </div>
+    <div class="slot-chrome-bot"></div>
+  </div>
+  <button class="spin-btn" id="spinBtn" onclick="doSpin()">SPIN</button>
+  <div class="landed-card" id="landedCard">
+    <div class="landed-label" id="landedType">Landed on</div>
+    <div class="landed-text" id="landedText"></div>
+    <button class="throw-btn" id="throwBtn" onclick="throwAtOpponent()" style="display:none">
+      Throw at <span id="throwTarget">them</span>
+    </button>
+  </div>
+  <div class="judgy-section">
+    <div class="judgy-bubble">
+      <div class="judgy-name">THE JUDGY</div>
+      <div class="judgy-text" id="judgyText"><span class="judgy-placeholder">Spin. Judgy is watching.</span></div>
+    </div>
+    <div class="roast-badge" id="roastBadge"><span id="roastBadgeText">ROASTED</span></div>
+  </div>
+  <div class="history-section" id="historySection" style="display:none">
+    <div class="history-title">Court Record</div>
+    <div class="history-list" id="historyList"></div>
+  </div>
+</div>
+<script>
+const SOLO_SLICES = [
+  { type:"identity", icon:"📸", label:"Influencer",      sub:"I wanna be an influencer",           text:"I wanna be an influencer" },
+  { type:"identity", icon:"💼", label:"Future CEO",      sub:"I wanna be a CEO",                   text:"I wanna be a CEO" },
+  { type:"identity", icon:"🧘", label:"Life Coach",      sub:"I wanna be a life coach",            text:"I wanna be a life coach" },
+  { type:"identity", icon:"🎧", label:"DJ Life",         sub:"I wanna be a DJ",                    text:"I wanna be a DJ" },
+  { type:"identity", icon:"😤", label:"Brutally Honest", sub:"No filter, all facts",               text:"This is me, I am brutally honest" },
+  { type:"identity", icon:"👑", label:"Main Character",  sub:"The story revolves around me",       text:"This is me, I am the main character" },
+  { type:"identity", icon:"🙅", label:"Don't Care",     sub:"Your opinion means nothing",         text:"This is me, I do not care what people think" },
+  { type:"identity", icon:"✅", label:"Always Right",    sub:"Not my fault, I just am",            text:"This is me, I am always right" }
+];
+const DUO_SLICES = [
+  { type:"personal",   icon:"🎂", label:"How Old?",      sub:"A classic rude opener",              text:"How old are you?" },
+  { type:"personal",   icon:"💍", label:"Single?",        sub:"None of your business",              text:"Are you single?" },
+  { type:"personal",   icon:"💰", label:"Your Salary?",   sub:"The audacity",                       text:"How much do you make?" },
+  { type:"personal",   icon:"🎓", label:"College?",       sub:"Did you even go?",                   text:"Did you go to college?" },
+  { type:"accusation", icon:"🐟", label:"Fish Micro",     sub:"Admit it. That was you.",            text:"Are YOU the one putting fish in the microwave?" },
+  { type:"accusation", icon:"📧", label:"Reply-All",      sub:"300 people. Really.",                text:"Was that YOU who replied-all to the entire company?" },
+  { type:"accusation", icon:"🥡", label:"Lunch Thief",    sub:"Someone had a name on that.",        text:"Did you steal someones lunch from the fridge?" },
+  { type:"accusation", icon:"🚗", label:"My Spot!",       sub:"Every. Single. Day.",                text:"Did you park in someone elses spot again?" }
+];
+
+let mode = "solo";
+let spinning = false;
+let currentSlice = null;
+let p1 = { name:"Player 1", score:0 };
+let p2 = { name:"Player 2", score:0 };
+let currentSpinner = 1;
+let history = [];
+const ITEM_H = 96;
+
+function getSlices() { return mode === "solo" ? SOLO_SLICES : DUO_SLICES; }
+
+function buildReel() {
+  const reel = document.getElementById("slotReel");
+  reel.innerHTML = "";
+  reel.style.transition = "none";
+  const slices = getSlices();
+  const items = [...slices, ...slices, ...slices, ...slices];
+  items.forEach(s => {
+    const el = document.createElement("div");
+    el.className = "slot-item";
+    el.innerHTML = "<div class='slot-item-icon'>" + s.icon + "</div><div class='slot-item-label'>" + s.label + "</div><div class='slot-item-sub'>" + s.sub + "</div>";
+    reel.appendChild(el);
+  });
+  const startItem = slices.length;
+  const startY = -(startItem * ITEM_H) + ITEM_H;
+  reel.style.transform = "translateY(" + startY + "px)";
+}
+
+function doSpin() {
+  if (spinning) return;
+  spinning = true;
+  document.getElementById("spinBtn").disabled = true;
+  document.getElementById("landedCard").classList.remove("visible");
+  document.getElementById("roastBadge").classList.remove("visible");
+  document.getElementById("judgyText").innerHTML = "<span class='judgy-placeholder'>Judgy is watching very carefully…</span>";
+
+  const slices = getSlices();
+  const targetIndex = Math.floor(Math.random() * slices.length);
+  const landItem = slices.length * 2 + targetIndex;
+  const endY = -(landItem * ITEM_H) + ITEM_H;
+  const duration = 2000 + Math.random() * 600;
+
+  const reel = document.getElementById("slotReel");
+  const startY = parseFloat(reel.style.transform.replace("translateY(","").replace("px)","")) || 0;
+
+  // fast scroll phase
+  let tickY = startY;
+  const tickSpeed = ITEM_H * 0.45;
+  const tickInterval = setInterval(() => {
+    tickY -= tickSpeed;
+    reel.style.transition = "none";
+    reel.style.transform = "translateY(" + tickY + "px)";
+  }, 50);
+
+  setTimeout(() => {
+    clearInterval(tickInterval);
+    reel.style.transition = "transform 0.7s cubic-bezier(0.22,1,0.36,1)";
+    reel.style.transform = "translateY(" + endY + "px)";
+    setTimeout(() => {
+      spinning = false;
+      currentSlice = slices[targetIndex];
+      onLanded(currentSlice);
+    }, 750);
+  }, duration);
+}
+
+function onLanded(slice) {
+  document.getElementById("landedType").textContent = slice.type === "accusation" ? "Accusation" : slice.type === "personal" ? "Question" : "Landed on";
+  document.getElementById("landedText").textContent = slice.text;
+  document.getElementById("landedCard").classList.add("visible");
+  if (mode === "solo") {
+    document.getElementById("throwBtn").style.display = "none";
+    askJudgy(slice, null);
+  } else {
+    const opponent = currentSpinner === 1 ? p2.name : p1.name;
+    document.getElementById("throwTarget").textContent = opponent;
+    document.getElementById("throwBtn").style.display = "inline-block";
+  }
+}
+
+function throwAtOpponent() {
+  if (!currentSlice) return;
+  const target = currentSpinner === 1 ? p2 : p1;
+  document.getElementById("throwBtn").style.display = "none";
+  askJudgy(currentSlice, target.name);
+}
+
+const WORKER_URL = "https://judgy-api.infomomtelo.workers.dev";
+
+async function askJudgy(slice, targetName) {
+  const judgyEl = document.getElementById("judgyText");
+  judgyEl.innerHTML = "<span class='judgy-cursor'></span>";
+  let prompt = "";
+  if (mode === "solo") {
+    prompt = "The user just declared: " + JSON.stringify(slice.text) + ". You are The Judgy, brutally honest, theatrical, merciless. You have absolutely NO idea this came from a slot machine. React as if this person just walked into your courtroom and announced this to your face. Roast them hard. End with one grudging real piece of advice. Under 110 words. Maximum drama.";
+  } else if (slice.type === "personal") {
+    prompt = "Someone in your courtroom just asked " + targetName + ": " + JSON.stringify(slice.text) + ". You are The Judgy. You had NO idea this came from a slot machine. Address " + targetName + " directly. Take it personally on their behalf. Roast the situation. Under 110 words. Maximum drama.";
+  } else {
+    prompt = "Someone just accused " + targetName + " in your courtroom: " + JSON.stringify(slice.text) + ". You are The Judgy. No idea about any slot machine. You already believe " + targetName + " is guilty. Address " + targetName + " directly. Full dramatic guilty verdict energy. Under 110 words.";
+  }
+  try {
+    const res = await fetch(WORKER_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        messages: [{ role:"user", content: prompt }],
+        system: "You are The Judgy, a brutally honest theatrical AI judge who takes everything personally. You speak in dramatic declarations. You never hedge. You never apologize. You are always right. You have no idea about any game mechanic, someone just said something to your face and you are responding in real time."
+      })
+    });
+    const data = await res.json();
+    const text = (data && data.content && data.content[0] && data.content[0].text) || "The courts connection was severed. Judgy blames you personally.";
+    await typeText(judgyEl, text);
+    if (mode === "duo" && targetName) {
+      if (targetName === p1.name) { p1.score++; document.getElementById("p1score").textContent = p1.score + " roasts"; }
+      else { p2.score++; document.getElementById("p2score").textContent = p2.score + " roasts"; }
+      document.getElementById("roastBadgeText").textContent = targetName + " got ROASTED";
+      document.getElementById("roastBadge").classList.add("visible");
+      swapTurn();
+    } else if (mode === "solo") {
+      document.getElementById("roastBadgeText").textContent = "YOU GOT ROASTED";
+      document.getElementById("roastBadge").classList.add("visible");
+    }
+    addToHistory(slice.text, text.slice(0,80) + "...", targetName);
+  } catch(e) {
+    await typeText(judgyEl, "The courts connection was severed. Judgy blames you personally for this.");
+  }
+  document.getElementById("spinBtn").disabled = false;
+}
+
+async function typeText(el, text) {
+  el.innerHTML = "";
+  const cursor = document.createElement("span");
+  cursor.className = "judgy-cursor";
+  el.appendChild(cursor);
+  for (let i = 0; i < text.length; i++) {
+    el.insertBefore(document.createTextNode(text[i]), cursor);
+    await new Promise(r => setTimeout(r, 16 + Math.random() * 10));
+  }
+  cursor.remove();
+}
+
+function addToHistory(prompt, response, target) {
+  history.unshift({ prompt, response, target });
+  if (history.length > 5) history.pop();
+  const section = document.getElementById("historySection");
+  const list = document.getElementById("historyList");
+  section.style.display = "block";
+  list.innerHTML = "";
+  history.forEach(h => {
+    const item = document.createElement("div");
+    item.className = "history-item";
+    item.innerHTML = "<span class='hi-tag'>" + (h.target ? "to " + h.target : "Solo") + "</span><span>" + h.prompt + " &mdash; " + h.response + "</span>";
+    list.appendChild(item);
+  });
+}
+
+function setMode(m) {
+  mode = m;
+  document.getElementById("btn-solo").classList.toggle("active", m === "solo");
+  document.getElementById("btn-duo").classList.toggle("active", m === "duo");
+  document.getElementById("setupPanel").classList.toggle("visible", m === "duo");
+  document.getElementById("playersRow").classList.toggle("visible", false);
+  document.getElementById("landedCard").classList.remove("visible");
+  document.getElementById("roastBadge").classList.remove("visible");
+  document.getElementById("judgyText").innerHTML = "<span class='judgy-placeholder'>Spin. Judgy is watching.</span>";
+  document.getElementById("spinBtn").disabled = false;
+  buildReel();
+}
+
+function startDuo() {
+  p1 = { name: document.getElementById("p1name").value.trim() || "Player 1", score: 0 };
+  p2 = { name: document.getElementById("p2name").value.trim() || "Player 2", score: 0 };
+  currentSpinner = 1;
+  document.getElementById("p1display").textContent = p1.name;
+  document.getElementById("p2display").textContent = p2.name;
+  document.getElementById("p1score").textContent = "0 roasts";
+  document.getElementById("p2score").textContent = "0 roasts";
+  document.getElementById("setupPanel").classList.remove("visible");
+  document.getElementById("playersRow").classList.add("visible");
+  updatePlayerCards();
+}
+
+function swapTurn() {
+  currentSpinner = currentSpinner === 1 ? 2 : 1;
+  updatePlayerCards();
+}
+
+function updatePlayerCards() {
+  document.getElementById("p1card").classList.toggle("active-player", currentSpinner === 1);
+  document.getElementById("p2card").classList.toggle("active-player", currentSpinner === 2);
+  document.getElementById("p1card").querySelector(".p-label").textContent = currentSpinner === 1 ? "Spinning" : "On Trial";
+  document.getElementById("p2card").querySelector(".p-label").textContent = currentSpinner === 2 ? "Spinning" : "On Trial";
+}
+
+buildReel();
+<\/script>
+</body>
+</html>
