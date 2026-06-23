@@ -139,65 +139,115 @@ header{width:100%;padding:14px 20px;display:flex;align-items:center;gap:12px;bor
 
   /* DESKTOP RESPONSIVE */
   @media (min-width: 768px) {
-    body { background: var(--bg); }
-    header { padding: 16px 40px; }
+    header { padding: 16px 48px; }
     .logo { font-size: 1.4rem; }
 
-    /* Two column layout */
+    /* Desktop = fixed height, no scroll on body */
+    body { height: 100vh; overflow: hidden; }
+
     .main {
-      max-width: 1100px;
-      padding: 28px 40px 60px;
+      max-width: 1200px;
+      width: 100%;
+      padding: 20px 48px 0;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      grid-template-rows: auto;
-      gap: 20px 32px;
-      align-items: start;
+      grid-template-rows: auto auto auto auto 1fr auto;
+      gap: 14px 40px;
+      height: calc(100vh - 60px);
+      overflow: hidden;
     }
 
-    /* Left column items */
-    .phase-bar         { grid-column: 1; }
-    .score-bar         { grid-column: 1; }
-    .setup-panel       { grid-column: 1; }
-    .players-row       { grid-column: 1; }
-    .cat-tabs          { grid-column: 1; }
-    #roastMachine      { grid-column: 1; }
-    #spinBtn           { grid-column: 1; width: 90%; margin: 0 auto; }
-    .landed-card       { grid-column: 1; }
-    .know-section      { grid-column: 1; }
+    /* Top full-width */
+    .phase-bar       { grid-column: 1 / -1; grid-row: 1; }
+    .score-bar       { grid-column: 1 / -1; grid-row: 1; }
+    .setup-panel     { grid-column: 1 / -1; }
+    .players-row     { grid-column: 1 / -1; }
 
-    /* Right column items */
-    #roastBubbleWrap   { grid-column: 2; grid-row: 2 / 8; align-self: start; position: sticky; top: 20px; }
-    .reply-box         { grid-column: 2; }
-    #clapBubbleWrap    { grid-column: 2; }
-    .share-btn         { grid-column: 2; }
-    .history-section   { grid-column: 1 / -1; }
+    /* Column headers */
+    .col-header-left, .col-header-right {
+      display: flex !important;
+      align-items: center;
+      gap: 6px;
+      font-size: .62rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #2a2535;
+    }
+    .col-header-left  { grid-column: 1; grid-row: 2; color: var(--gold); }
+    .col-header-right { grid-column: 2; grid-row: 2; color: #f87171; }
 
-    /* Bigger slot on desktop */
-    .slot-item { height: 110px; }
-    .slot-item-icon { font-size: 2.6rem; }
-    .slot-item-label { font-size: 1.2rem; }
-    .slot-item-sub { font-size: .8rem; color: #888; }
-    .slot-window { height: 330px; }
-    .slot-highlight { height: 110px; }
+    /* LEFT column — wheels */
+    .cat-tabs        { grid-column: 1; grid-row: 3; }
+    #roastMachine    { grid-column: 1; grid-row: 4; }
+    #spinBtn         { grid-column: 1; grid-row: 5; align-self: start; width: 90%; }
+    .landed-card     { grid-column: 1; grid-row: 6; align-self: start; }
+    .know-section    { grid-column: 1; grid-row: 4 / 7; align-self: start; }
 
-    /* Bigger text */
-    .judgy-text { font-size: 1.08rem; line-height: 1.8; }
-    .judgy-bubble { padding: 22px 26px; min-height: 200px; }
-    .landed-text { font-size: 1.2rem; }
-    .know-q-text { font-size: 1.2rem; }
-    .spin-btn { font-size: 1.1rem; padding: 17px; }
-    .phase-pill { font-size: .8rem; padding: 10px 8px; }
-    .cat-tab { font-size: .85rem; padding: 11px 8px; }
-    .cat-tab .ct-icon { font-size: 1.3rem; }
-    .reply-input { font-size: 1rem; }
-    .know-input { font-size: .95rem; padding: 12px 14px; }
-    .know-submit { font-size: .9rem; padding: 12px 18px; }
-    .know-skip { font-size: .85rem; padding: 12px 14px; }
-    .score-val { font-size: 1.3rem; }
-    .history-item { font-size: .86rem; }
+    /* RIGHT column — scrollable chat log */
+    #desktopChat {
+      grid-column: 2;
+      grid-row: 2 / 7;
+      display: flex !important;
+      flex-direction: column;
+      height: 100%;
+      overflow: hidden;
+      border-left: 1px solid #2a2535;
+      padding-left: 32px;
+    }
+
+    .desktop-chat-log {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding-bottom: 16px;
+      scrollbar-width: thin;
+      scrollbar-color: #333 transparent;
+    }
+    .desktop-chat-log::-webkit-scrollbar { width: 3px; }
+    .desktop-chat-log::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+
+    .desktop-reply-area {
+      flex-shrink: 0;
+      padding-top: 12px;
+      border-top: 1px solid #2a2535;
+    }
+
+    /* Hide mobile-only elements on desktop */
+    #roastBubbleWrap  { display: none !important; }
+    .reply-box        { display: none !important; }
+    #clapBubbleWrap   { display: none !important; }
+    .share-btn        { display: none !important; }
+    .history-section  { display: none !important; }
+
+    /* Slot bigger */
+    .slot-item { height: 100px; }
+    .slot-item-icon { font-size: 2.3rem; }
+    .slot-item-label { font-size: 1.1rem; }
+    .slot-item-sub { font-size: .75rem; color: #888; }
+    .slot-window { height: 300px; }
+    .slot-highlight { height: 100px; }
+
+    /* Text bigger */
+    .judgy-text { font-size: 1rem; line-height: 1.75; }
+    .judgy-bubble { padding: 18px 20px; }
+    .landed-text { font-size: 1.1rem; }
+    .know-q-text { font-size: 1.15rem; }
+    .spin-btn { font-size: 1rem; padding: 14px; border-radius: 12px; }
+    .phase-pill { font-size: .75rem; padding: 9px 8px; }
+    .cat-tab { font-size: .8rem; padding: 9px 6px; }
+    .cat-tab .ct-icon { font-size: 1.15rem; }
+    .know-input { font-size: .92rem; padding: 11px 14px; }
+    .know-submit { font-size: .85rem; padding: 11px 16px; }
+    .know-skip { font-size: .8rem; padding: 11px 14px; }
+    .score-val { font-size: 1.25rem; }
     .player-card .p-name { font-size: 1rem; }
-    .setup-input { font-size: .95rem; }
-    .know-next-btn { font-size: .95rem; padding: 15px; }
+    .setup-input { font-size: .92rem; }
+    .know-next-btn { font-size: .9rem; padding: 13px; }
+    .know-badge { font-size: .68rem; }
   }
 
   /* SHARE */
@@ -256,6 +306,29 @@ header{width:100%;padding:14px 20px;display:flex;align-items:center;gap:12px;bor
       <div class="p-score" id="p2score">0 roasts</div>
     </div>
   </div>
+
+
+  <!-- Desktop Chat Panel (right column, visible only on desktop) -->
+  <div id="desktopChat" style="display:none">
+    <div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#f87171;padding-bottom:6px;border-bottom:1px solid #2a2535;margin-bottom:12px;">&#9878;&#65039; Judgy Responds</div>
+    <div class="desktop-chat-log" id="desktopChatLog">
+      <div style="color:#444;font-style:italic;font-size:.88rem;text-align:center;margin-top:40px;">Spin the wheel.<br>Judgy is waiting.</div>
+    </div>
+    <div class="desktop-reply-area" id="desktopReplyArea" style="display:none">
+      <div style="font-size:.6rem;color:#60a5fa;text-transform:uppercase;letter-spacing:2px;margin-bottom:7px;">&#128172; Clap back at Judgy</div>
+      <div style="display:flex;gap:8px;align-items:flex-end;background:var(--card);border:1px solid #333;border-radius:12px;padding:9px 12px;">
+        <textarea id="desktopReplyInput" placeholder="Say something back... if you dare" rows="1"
+          style="flex:1;background:transparent;border:none;outline:none;font-family:Inter,sans-serif;font-size:.95rem;color:var(--white);resize:none;min-height:22px;max-height:80px;line-height:1.5;"
+          onkeydown="handleDesktopReplyKey(event)" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,80)+'px'"></textarea>
+        <button onclick="sendDesktopReply()" style="background:#60a5fa;color:#000;border:none;width:32px;height:32px;border-radius:8px;font-size:.9rem;cursor:pointer;font-weight:700;flex-shrink:0;display:flex;align-items:center;justify-content:center;">&#8594;</button>
+      </div>
+      <button onclick="shareResult()" style="margin-top:8px;width:100%;background:transparent;border:1px solid var(--gold);color:var(--gold);padding:9px;border-radius:10px;font-weight:700;font-family:Inter,sans-serif;font-size:.8rem;cursor:pointer;letter-spacing:1px;text-transform:uppercase;">&#128279; Share My Roast</button>
+    </div>
+  </div>
+
+  <!-- Column Headers -->
+  <div class="col-header-left" style="display:none">&#127919; Your Spin</div>
+  <div class="col-header-right" style="display:none">&#9878;&#65039; Judgy Responds</div>
 
   <!-- Category Tabs -->
   <div class="cat-tabs">
@@ -466,10 +539,10 @@ const KNOW_QUESTIONS = [
   {cat:"&#127775; History",icon:"&#128081;",label:"History",sub:"Cold War",q:"What year did the Berlin Wall fall?",a:"1989",hint:"1989. Same year as Taylor Swift was born. Coincidence?"},
   {cat:"&#127775; History",icon:"&#9982;",label:"History",sub:"Space race",q:"Who was the first human to walk on the moon?",a:"Neil Armstrong",hint:"Neil Armstrong. July 20 1969. One small step."},
   {cat:"&#127925; Music",icon:"&#127925;",label:"Music",sub:"King of Pop",q:"What year did Michael Jackson release Thriller?",a:"1982",hint:"1982. The best-selling album of all time. Forever."},
-  {cat:"&#127925; Music",icon:"&#127926;",label:"Music",sub:"MJ classics",q:"What was Michael Jackson's first solo number one hit?",a:"Don't Stop 'Til You Get Enough",hint:"Don't Stop Til You Get Enough. 1979. Off The Wall."},
-  {cat:"&#127925; Music",icon:"&#127897;",label:"Music",sub:"The Beatles",q:"What city were The Beatles from?",a:"Liverpool",hint:"Liverpool, England. Not London. Liverpool."},
-  {cat:"&#127925; Music",icon:"&#127908;",label:"Music",sub:"Iconic albums",q:"What is the best-selling album of all time?",a:"Thriller by Michael Jackson",hint:"Thriller. Michael Jackson. Over 70 million copies."},
-  {cat:"&#127925; Music",icon:"&#127932;",label:"Music",sub:"Legends",q:"What instrument did Jimi Hendrix famously play?",a:"Guitar",hint:"Electric guitar. Left-handed. Upside down. Genius."},
+  {cat:"&#127925; Music",icon:"&#127931;",label:"MJ Classic",sub:"Off The Wall era",q:"What was Michael Jackson's first solo number one hit?",a:"Don't Stop 'Til You Get Enough",hint:"Don't Stop Til You Get Enough. 1979. Off The Wall."},
+  {cat:"&#127925; Music",icon:"&#127897;",label:"Beatles",sub:"Fab Four hometown",q:"What city were The Beatles from?",a:"Liverpool",hint:"Liverpool, England. Not London. Liverpool."},
+  {cat:"&#127925; Music",icon:"&#127908;",label:"Thriller",sub:"Best selling album",q:"What is the best-selling album of all time?",a:"Thriller by Michael Jackson",hint:"Thriller. Michael Jackson. Over 70 million copies."},
+  {cat:"&#127925; Music",icon:"&#127932;",label:"Hendrix",sub:"Guitar legend",q:"What instrument did Jimi Hendrix famously play?",a:"Guitar",hint:"Electric guitar. Left-handed. Upside down. Genius."},
   {cat:"&#128218; Literature",icon:"&#128218;",label:"Literature",sub:"Classic novels",q:"Who wrote Moby Dick?",a:"Herman Melville",hint:"Herman Melville. 1851. The whale is a metaphor."},
   {cat:"&#128218; Literature",icon:"&#128214;",label:"Literature",sub:"Shakespeare",q:"Who wrote Romeo and Juliet?",a:"William Shakespeare",hint:"Shakespeare. Written around 1594. Both die. Spoiler."},
   {cat:"&#128218; Literature",icon:"&#128212;",label:"Literature",sub:"Harry Potter",q:"What is the name of Harry Potter's owl?",a:"Hedwig",hint:"Hedwig. A snowy owl. An icon. We do not talk about what happens."},
@@ -514,12 +587,12 @@ const KNOW_QUESTIONS = [
   {cat:"&#129504; Adults Should Know",icon:"&#128200;",label:"Adults Know",sub:"Finance",q:"What does compound interest mean?",a:"Earning interest on your interest",hint:"Earning interest on your interest. Einstein called it the eighth wonder of the world."},
   {cat:"&#129504; Adults Should Know",icon:"&#128139;",label:"Adults Know",sub:"Health",q:"What is a normal resting heart rate for adults?",a:"60 to 100 beats per minute",hint:"60 to 100 beats per minute. Athletes can be lower. Stressed people higher."},
   // POP CULTURE
-  {cat:"&#127925; Pop Culture",icon:"&#127925;",label:"Pop Culture",sub:"Queen Bey",q:"What year did Beyonce release Lemonade?",a:"2016",hint:"2016. Visual album. Shocking. Iconic. Hold up they don't love you like I love you."},
-  {cat:"&#127925; Pop Culture",icon:"&#127908;",label:"Pop Culture",sub:"Drake facts",q:"What is Drake's real name?",a:"Aubrey Drake Graham",hint:"Aubrey Drake Graham. He was on Degrassi. He played a wheelchair kid. True."},
-  {cat:"&#127925; Pop Culture",icon:"&#127911;",label:"Pop Culture",sub:"Geography",q:"What city is Hollywood located in?",a:"Los Angeles",hint:"Los Angeles, California. Not New York. Not San Francisco. Los Angeles."},
-  {cat:"&#127925; Pop Culture",icon:"&#127925;",label:"Pop Culture",sub:"Music history",q:"What band was Beyonce in before going solo?",a:"Destiny's Child",hint:"Destiny's Child. Kelly Rowland. Michelle Williams. Say My Name. Iconic."},
-  {cat:"&#127925; Pop Culture",icon:"&#128247;",label:"Pop Culture",sub:"Social media",q:"What year was Instagram launched?",a:"2010",hint:"2010. Kevin Systrom. Originally called Burbn. Changed everything about photos."},
-  {cat:"&#127925; Pop Culture",icon:"&#127926;",label:"Pop Culture",sub:"Streaming",q:"What year did Netflix start streaming movies online?",a:"2007",hint:"2007. Before that it was DVDs by mail. Yes really. Red envelopes everywhere."},
+  {cat:"&#127925; Pop Culture",icon:"&#128081;",label:"Beyonce",sub:"Queen Bey",q:"What year did Beyonce release Lemonade?",a:"2016",hint:"2016. Visual album. Shocking. Iconic. Hold up they don't love you like I love you."},
+  {cat:"&#127925; Pop Culture",icon:"&#127908;",label:"Drake",sub:"Real name",q:"What is Drake's real name?",a:"Aubrey Drake Graham",hint:"Aubrey Drake Graham. He was on Degrassi. He played a wheelchair kid. True."},
+  {cat:"&#127925; Pop Culture",icon:"&#127911;",label:"Hollywood",sub:"Where is it",q:"What city is Hollywood located in?",a:"Los Angeles",hint:"Los Angeles, California. Not New York. Not San Francisco. Los Angeles."},
+  {cat:"&#127925; Pop Culture",icon:"&#127926;",label:"Destinys Child",sub:"Before Beyonce",q:"What band was Beyonce in before going solo?",a:"Destiny's Child",hint:"Destiny's Child. Kelly Rowland. Michelle Williams. Say My Name. Iconic."},
+  {cat:"&#127925; Pop Culture",icon:"&#128247;",label:"Instagram",sub:"Launch year",q:"What year was Instagram launched?",a:"2010",hint:"2010. Kevin Systrom. Originally called Burbn. Changed everything about photos."},
+  {cat:"&#127925; Pop Culture",icon:"&#127916;",label:"Netflix",sub:"Streaming start",q:"What year did Netflix start streaming movies online?",a:"2007",hint:"2007. Before that it was DVDs by mail. Yes really. Red envelopes everywhere."},
 ];
 
 // ── STATE ────────────────────────────────────────────────────
@@ -535,8 +608,20 @@ let historyLog = [];
 let knowScore = 0;
 let knowTotal = 0;
 let streak = 0;
-let phase = "roast"; // roast -> reply -> know
+let phase = "roast";
 const ITEM_H = 96;
+
+// No-repeat tracking
+let usedRoastIndexes = [];
+let usedKnowIndexes = [];
+
+function getRandomUnused(total, usedArr) {
+  if (usedArr.length >= total) usedArr.length = 0; // reset when all used
+  let idx;
+  do { idx = Math.floor(Math.random() * total); } while (usedArr.includes(idx));
+  usedArr.push(idx);
+  return idx;
+}
 
 function getSlices() { return CATEGORIES[category][mode === "duo" ? "duo" : "solo"]; }
 
@@ -597,7 +682,7 @@ function doSpin() {
   document.getElementById("judgyBubble").classList.remove("belt","know");
 
   const slices = getSlices();
-  const targetIndex = Math.floor(Math.random() * slices.length);
+  const targetIndex = getRandomUnused(slices.length, usedRoastIndexes);
 
   spinReel("slotReel", slices, targetIndex, () => {
     spinning = false;
@@ -657,7 +742,7 @@ function startKnowledge() {
   document.getElementById("knowNextBtn").classList.remove("visible");
   document.getElementById("scoreBar").classList.add("visible");
 
-  const targetIndex = Math.floor(Math.random() * KNOW_QUESTIONS.length);
+  const targetIndex = getRandomUnused(KNOW_QUESTIONS.length, usedKnowIndexes);
   currentKnowQ = KNOW_QUESTIONS[targetIndex];
 
   // build know reel from questions
@@ -767,6 +852,7 @@ async function askJudgy(type, data, targetName, userInput, skipped, correct) {
     if (type === "roast") {
       lastRoastText = text;
       document.getElementById("shareBtn").classList.add("visible");
+      if (isDesktop()) { document.getElementById("desktopChat").style.display = "flex"; addDesktopMessage("judgy", text); }
       if (mode === "duo" && targetName) {
         if (targetName === p1.name) { p1.score++; document.getElementById("p1score").textContent = p1.score + " roasts"; }
         else { p2.score++; document.getElementById("p2score").textContent = p2.score + " roasts"; }
@@ -781,12 +867,14 @@ async function askJudgy(type, data, targetName, userInput, skipped, correct) {
       setPhase("reply");
       document.getElementById("replyBox").classList.add("visible");
       document.getElementById("replyInput").focus();
+      showDesktopReply();
       addToHistory(currentSlice.text, text.slice(0,70) + "...", targetName);
       // auto-start knowledge after short delay if user doesn't reply
       setTimeout(() => {
         if (phase === "reply") startKnowledge();
       }, 22000);
     } else if (type === "clapback") {
+      if (isDesktop()) addDesktopMessage("clap", text);
       setTimeout(() => startKnowledge(), 1200);
     } else if (type === "knowledge") {
       lastKnowResult = correct ? "\u2705 Got it right!" : "\u274c Got it wrong.";
@@ -838,6 +926,7 @@ function setCategory(cat) {
   document.querySelectorAll(".cat-tab").forEach((t,i) => t.classList.toggle("active", ["personal","work","belt"][i] === cat));
   resetUI();
   buildReel("slotReel", getSlices());
+if (isDesktop()) document.getElementById("desktopChat").style.display = "flex";
 }
 
 function setMode(m) {
@@ -848,6 +937,7 @@ function setMode(m) {
   document.getElementById("playersRow").classList.toggle("visible", false);
   resetUI();
   buildReel("slotReel", getSlices());
+if (isDesktop()) document.getElementById("desktopChat").style.display = "flex";
 }
 
 function resetUI() {
@@ -863,6 +953,7 @@ function resetUI() {
   document.getElementById("spinBtn").textContent = "SPIN";
   document.getElementById("shareBtn").classList.remove("visible");
   setPhase("roast");
+  usedRoastIndexes = [];
 }
 
 function startDuo() {
@@ -890,8 +981,56 @@ function updatePlayerCards() {
   document.getElementById("p2card").querySelector(".p-label").textContent = currentSpinner === 2 ? "Spinning" : "On Trial";
 }
 
+
+// ── DESKTOP CHAT LOG ─────────────────────────────────────────
+function isDesktop() { return window.innerWidth >= 768; }
+
+function addDesktopMessage(role, text, color) {
+  if (!isDesktop()) return;
+  const log = document.getElementById("desktopChatLog");
+  // clear placeholder
+  const placeholder = log.querySelector("div[style*='Spin the wheel']");
+  if (placeholder) placeholder.remove();
+
+  const msg = document.createElement("div");
+  msg.style.cssText = "display:flex;flex-direction:column;gap:4px;";
+
+  const label = role === "judgy" ? "THE JUDGY" : role === "user" ? "YOU" : "JUDGY — CLAP BACK";
+  const borderColor = role === "judgy" ? "var(--gold)" : role === "user" ? "#60a5fa" : "var(--red)";
+  const labelColor = role === "judgy" ? "var(--gold)" : role === "user" ? "#60a5fa" : "var(--red)";
+
+  msg.innerHTML = '<div style="font-size:.58rem;color:' + labelColor + ';text-transform:uppercase;letter-spacing:2px;margin-bottom:3px;">' + label + '</div>' +
+    '<div style="background:var(--card);border-left:3px solid ' + borderColor + ';border-radius:0 10px 10px 0;padding:12px 16px;font-size:.95rem;line-height:1.7;color:var(--white);">' + text + '</div>';
+
+  log.appendChild(msg);
+  log.scrollTop = log.scrollHeight;
+}
+
+function handleDesktopReplyKey(e) {
+  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendDesktopReply(); }
+}
+
+function sendDesktopReply() {
+  const input = document.getElementById("desktopReplyInput");
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = "";
+  addDesktopMessage("user", text);
+  document.getElementById("desktopReplyArea").style.display = "none";
+  // send to judgy as clapback
+  askJudgy("clapback", { text }, null, text);
+}
+
+function showDesktopReply() {
+  if (!isDesktop()) return;
+  document.getElementById("desktopReplyArea").style.display = "block";
+  document.getElementById("desktopReplyInput").focus();
+  document.getElementById("desktopChat").style.display = "flex";
+}
+
 // ── INIT ─────────────────────────────────────────────────────
 buildReel("slotReel", getSlices());
+if (isDesktop()) document.getElementById("desktopChat").style.display = "flex";
 </script>
 </body>
 </html>
