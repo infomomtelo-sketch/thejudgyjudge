@@ -18,8 +18,10 @@
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { background: var(--bg); color: var(--white); font-family: Inter, sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
-  header { width: 100%; padding: 18px 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #1a1a1a; }
-  .logo { font-family: "Playfair Display", serif; font-size: 1.2rem; color: var(--gold); }
+  header { width: 100%; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #1a1a1a; gap: 12px; }
+  .back-btn { background: #1a1a1a; border: 1px solid #2a2a2a; color: #888; width: 34px; height: 34px; border-radius: 10px; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all .2s; }
+  .logo { font-family: "Playfair Display", serif; font-size: 1.1rem; color: var(--gold); flex: 1; }
+  
   .mode-toggle { display: flex; gap: 6px; }
   .mode-btn { background: #1a1a1a; border: 1px solid #2a2a2a; color: var(--gray); padding: 6px 16px; border-radius: 20px; font-size: .78rem; cursor: pointer; font-family: Inter, sans-serif; transition: all .2s; }
   .mode-btn.active { background: var(--gold); color: #000; border-color: var(--gold); font-weight: 700; }
@@ -29,7 +31,7 @@
   .slot-machine { width: 100%; display: flex; flex-direction: column; align-items: center; }
   .slot-chrome-top { width: 90%; height: 20px; background: linear-gradient(180deg,#3a3020,#1a1400); border-radius: 12px 12px 0 0; border: 1.5px solid var(--gold-dim); border-bottom: none; display: flex; align-items: center; justify-content: center; gap: 7px; }
   .slot-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); opacity: .55; }
-  .slot-window { width: 90%; height: 288px; background: #080808; border: 1.5px solid var(--gold-dim); border-top: none; border-bottom: none; overflow: hidden; position: relative; }
+  .slot-window { width: 90%; height: 288px; min-height: 288px; background: #080808; border: 1.5px solid var(--gold-dim); border-top: none; border-bottom: none; overflow: hidden; position: relative; }
   .slot-window::before, .slot-window::after { content: ""; position: absolute; left: 0; right: 0; height: 80px; z-index: 3; pointer-events: none; }
   .slot-window::before { top: 0; background: linear-gradient(to bottom, #080808 0%, transparent 100%); }
   .slot-window::after { bottom: 0; background: linear-gradient(to top, #080808 0%, transparent 100%); }
@@ -95,6 +97,7 @@
 </head>
 <body>
 <header>
+  <button class="back-btn" onclick="history.back()">←</button>
   <div class="logo">⚖️ Spin the Judgy</div>
   <div class="mode-toggle">
     <button class="mode-btn active" onclick="setMode('solo')" id="btn-solo">Solo</button>
@@ -212,32 +215,35 @@ function doSpin() {
 
   const slices = getSlices();
   const targetIndex = Math.floor(Math.random() * slices.length);
-  const landItem = slices.length * 2 + targetIndex;
-  const endY = -(landItem * ITEM_H) + ITEM_H;
-  const duration = 2000 + Math.random() * 600;
+
+  // Rebuild reel fresh each spin so position is always known
+  buildReel();
 
   const reel = document.getElementById("slotReel");
-  const startY = parseFloat(reel.style.transform.replace("translateY(","").replace("px)","")) || 0;
+  // Start position: copy 1, item 0 is centered (translateY = -(n*ITEM_H) + ITEM_H)
+  const startY = -(slices.length * ITEM_H) + ITEM_H;
+  // Land position: copy 2, targetIndex centered
+  const endY = -((slices.length * 2 + targetIndex) * ITEM_H) + ITEM_H;
 
-  // fast scroll phase
+  // Phase 1: fast ticker for 1.8s
   let tickY = startY;
-  const tickSpeed = ITEM_H * 0.45;
   const tickInterval = setInterval(() => {
-    tickY -= tickSpeed;
+    tickY -= ITEM_H * 0.5;
     reel.style.transition = "none";
     reel.style.transform = "translateY(" + tickY + "px)";
-  }, 50);
+  }, 60);
 
   setTimeout(() => {
     clearInterval(tickInterval);
-    reel.style.transition = "transform 0.7s cubic-bezier(0.22,1,0.36,1)";
+    // Phase 2: smooth snap to landing position
+    reel.style.transition = "transform 0.8s cubic-bezier(0.17, 0.89, 0.32, 1.1)";
     reel.style.transform = "translateY(" + endY + "px)";
     setTimeout(() => {
       spinning = false;
       currentSlice = slices[targetIndex];
       onLanded(currentSlice);
-    }, 750);
-  }, duration);
+    }, 850);
+  }, 1800);
 }
 
 function onLanded(slice) {
@@ -279,12 +285,18 @@ async function askJudgy(slice, targetName) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        messages: [{ role:"user", content: prompt }],
-        system: "You are The Judgy, a brutally honest theatrical AI judge who takes everything personally. You speak in dramatic declarations. You never hedge. You never apologize. You are always right. You have no idea about any game mechanic, someone just said something to your face and you are responding in real time."
+        message: prompt,
+        messages: [{ role: "user", content: prompt }],
+        system: "You are The Judgy, a brutally honest theatrical AI judge who takes everything personally. You speak in dramatic declarations. You never hedge. You never apologize. You are always right. You had no idea about any game mechanic — someone just said something to your face."
       })
     });
-    const data = await res.json();
-    const text = (data && data.content && data.content[0] && data.content[0].text) || "The courts connection was severed. Judgy blames you personally.";
+    const raw = await res.text();
+    let data = {};
+    try { data = JSON.parse(raw); } catch(e) {}
+    const text = (data.content && data.content[0] && data.content[0].text)
+      || data.text || data.response || data.reply || data.message || data.result
+      || (typeof raw === "string" && raw.length > 0 && raw.length < 2000 ? raw : null)
+      || "The court's connection was severed. Judgy blames you personally.";
     await typeText(judgyEl, text);
     if (mode === "duo" && targetName) {
       if (targetName === p1.name) { p1.score++; document.getElementById("p1score").textContent = p1.score + " roasts"; }
