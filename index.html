@@ -7,21 +7,16 @@
 <meta name="description" content="Get brutally honest AI advice from The Judgy or legal clarity from Barry T. Lawson Esq. Settle arguments, get verdicts on relationships, work drama, money and life decisions. Free to try — no filter.">
 <meta name="keywords" content="AI advice, settle an argument, am I wrong, AI judge, relationship advice, brutally honest advice, AI verdict, argument settler, who is right, work drama">
 <link rel="canonical" href="https://thejudgy.com/">
-
-<!-- Open Graph -->
 <meta property="og:title" content="The Judgy — Brutally Honest AI Advice & Argument Settler">
 <meta property="og:description" content="The advice your friends won't give you. Get a brutally honest verdict on relationships, work, money and life. Free to try.">
 <meta property="og:url" content="https://thejudgy.com">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://thejudgy.com/og-image.jpg">
-
-<!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@judgyjudge">
 <meta name="twitter:title" content="The Judgy — Brutally Honest AI Advice">
 <meta name="twitter:description" content="Settle arguments. Get verdicts. No filter. Free to try.">
 <meta name="twitter:image" content="https://thejudgy.com/og-image.jpg">
-  
 <link rel="manifest" href="/manifest.json">
 <link rel="apple-touch-icon" href="/judgy-icon-192.png">
 <meta name="theme-color" content="#1E1E1E">
@@ -29,29 +24,11 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="The Judgy">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
-<!-- Structured Data -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "The Judgy",
-  "url": "https://thejudgy.com",
-  "description": "Brutally honest AI advice and argument settler. Get verdicts on relationships, work, money and life decisions.",
-  "applicationCategory": "LifestyleApplication",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  }
-}
-</script>
-
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"The Judgy","url":"https://thejudgy.com","description":"Brutally honest AI advice and argument settler.","applicationCategory":"LifestyleApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
 <style>
-
 [data-theme="dark"]{--bg:#0e0c09;--bg2:#141210;--card:#1a1714;--card2:#201d19;--border:rgba(196,160,80,0.12);--border2:rgba(196,160,80,0.22);--text:#f2ede4;--text2:#a89880;--text3:#5c5040;--shadow:rgba(0,0,0,0.7);--overlay:rgba(0,0,0,0.78);--gold:#c4a050;--gold2:#e8c870;--gold-dim:rgba(196,160,80,0.08)}
 [data-theme="light"]{--bg:#f5f0e8;--bg2:#ede8de;--card:#ffffff;--card2:#f7f3ec;--border:rgba(120,90,30,0.15);--border2:rgba(120,90,30,0.28);--text:#1a1410;--text2:#5c4830;--text3:#9c8060;--shadow:rgba(0,0,0,0.18);--overlay:rgba(0,0,0,0.6);--gold:#8b6520;--gold2:#a07830;--gold-dim:rgba(139,101,32,0.08)}
 :root{--judgy:#8b1a1a;--judgy2:#c42020;--judgy-dim:rgba(139,26,26,0.1);--barry:#1a2744;--barry2:#2a3d6e;--barry-dim:rgba(42,61,110,0.12);--sans:'DM Sans',sans-serif;--serif:'EB Garamond',serif;--display:'Playfair Display',serif}
@@ -158,9 +135,6 @@ header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px
 .msg-name{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:1.2px;padding:0 4px;display:flex;align-items:center;gap:5px}
 .msg.judgy .msg-name{color:var(--judgy2)}
 .msg.barry .msg-name{color:#7b9fff}
-.msg-name-rule{height:1px;width:16px}
-.msg.judgy .msg-name-rule{background:var(--judgy2);opacity:0.4}
-.msg.barry .msg-name-rule{background:#7b9fff;opacity:0.4}
 .msg-bubble{border-radius:14px;padding:12px 15px;font-size:14px;line-height:1.7;position:relative;font-family:var(--serif)}
 .msg.judgy .msg-bubble{background:var(--card);border:1px solid var(--border);border-top-left-radius:4px;border-left:3px solid var(--judgy);color:var(--text)}
 .msg.barry .msg-bubble{background:var(--card);border:1px solid var(--border);border-top-left-radius:4px;border-left:3px solid #7b9fff;color:var(--text)}
@@ -271,7 +245,10 @@ header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px
 .user-dropdown-item:hover{background:var(--card);color:var(--text)}
 .user-dropdown-item.danger{color:#c42020}
 .user-dropdown-item.danger:hover{background:var(--judgy-dim);color:#c42020}
-
+/* QUIZ STYLES */
+.quiz-opt-btn{background:var(--card);border:1px solid var(--border2);border-radius:10px;padding:.875rem 1rem;font-size:14px;color:var(--text2);cursor:pointer;text-align:left;font-family:var(--sans);transition:all .15s;line-height:1.4;width:100%}
+.quiz-opt-btn:hover{border-color:var(--judgy2);color:var(--text)}
+.quiz-opt-btn.selected{border-color:var(--judgy2);background:var(--judgy-dim);color:var(--text)}
 </style>
 </head>
 <body>
@@ -330,18 +307,36 @@ header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px
     </div>
   </div>
 
+  <!-- QUIZ SAMPLE SECTION -->
+  <div style="background:rgba(139,26,26,0.06);border-top:1px solid rgba(196,160,80,0.1);border-bottom:1px solid rgba(196,160,80,0.1);padding:64px 24px;">
+    <div style="font-family:'DM Sans',sans-serif;font-size:0.65rem;letter-spacing:0.3em;color:#c4a050;text-transform:uppercase;text-align:center;margin-bottom:14px;opacity:0.7;">🎯 Judge Me Quiz</div>
+    <h2 style="font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(1.4rem,4vw,2rem);color:#f2ede4;text-align:center;margin-bottom:12px;">5 questions. One brutal verdict.</h2>
+    <p style="text-align:center;font-family:'EB Garamond',serif;font-style:italic;font-size:15px;color:#a89880;margin-bottom:40px;">Here's what The Judgy said about someone exactly like you.</p>
+    <div style="max-width:500px;margin:0 auto;background:rgba(26,23,20,0.9);border:1px solid rgba(196,160,80,0.2);border-left:3px solid #8b1a1a;border-radius:3px;overflow:hidden;padding:24px;">
+      <div style="font-family:'DM Sans',sans-serif;font-size:0.6rem;letter-spacing:0.2em;color:#c42020;text-transform:uppercase;opacity:0.8;margin-bottom:6px;">⚖️ The Verdict</div>
+      <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.1rem;color:#e8c870;margin-bottom:14px;">Reluctant Participant in Life</div>
+      <p style="font-size:0.88rem;color:#f2ede4;line-height:1.75;font-family:'EB Garamond',serif;margin-bottom:16px;">You show up. You do the thing. You spend the entire time mentally calculating when it's acceptable to leave. The world admires your commitment to showing up anyway. Your most used emoji told The Judgy everything she needed to know.</p>
+      <div style="border-top:1px solid rgba(196,160,80,0.15);padding-top:14px;font-family:'EB Garamond',serif;font-style:italic;font-size:13px;color:#c4a050;">"The Judgy has noted something about question 3. It will come up."</div>
+    </div>
+    <div style="text-align:center;margin-top:32px;">
+      <button onclick="enterCourt()" style="background:#8b1a1a;border:none;color:#f2ede4;font-size:0.9rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:14px 32px;border-radius:2px;cursor:pointer;font-family:'DM Sans',sans-serif;">Take the Quiz — Get Judged Free</button>
+      <div style="font-family:'DM Sans',sans-serif;font-size:0.68rem;letter-spacing:0.15em;color:#c4a050;opacity:0.6;margin-top:10px;text-transform:uppercase;">No signup required · Takes 60 seconds</div>
+    </div>
+  </div>
+
   <!-- TOPICS -->
   <div style="text-align:center;padding:64px 24px;">
     <div style="font-family:'DM Sans',sans-serif;font-size:0.65rem;letter-spacing:0.3em;color:#c4a050;text-transform:uppercase;margin-bottom:14px;opacity:0.7;">Jurisdiction</div>
     <h2 style="font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(1.4rem,4vw,2rem);color:#f2ede4;margin-bottom:32px;">Bring any case to court</h2>
     <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:600px;margin:0 auto 48px;">
-      <button onclick="enterCourt()" style="background:rgba(92,42,20,0.35);border:1px solid rgba(196,160,80,0.18);color:#ede4d0;font-size:0.85rem;padding:10px 20px;border-radius:100px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;">💔 Relationships</button>
+      <button onclick="enterCourt()" style="background:rgba(92,42,20,0.35);border:1px solid rgba(196,160,80,0.18);color:#ede4d0;font-size:0.85rem;padding:10px 20px;border-radius:100px;cursor:pointer;font-family:'DM Sans',sans-serif;">💔 Relationships</button>
       <button onclick="enterCourt()" style="background:rgba(92,42,20,0.35);border:1px solid rgba(196,160,80,0.18);color:#ede4d0;font-size:0.85rem;padding:10px 20px;border-radius:100px;cursor:pointer;font-family:'DM Sans',sans-serif;">💼 Work drama</button>
       <button onclick="enterCourt()" style="background:rgba(92,42,20,0.35);border:1px solid rgba(196,160,80,0.18);color:#ede4d0;font-size:0.85rem;padding:10px 20px;border-radius:100px;cursor:pointer;font-family:'DM Sans',sans-serif;">👔 Legal questions</button>
       <button onclick="enterCourt()" style="background:rgba(92,42,20,0.35);border:1px solid rgba(196,160,80,0.18);color:#ede4d0;font-size:0.85rem;padding:10px 20px;border-radius:100px;cursor:pointer;font-family:'DM Sans',sans-serif;">💸 Money decisions</button>
       <button onclick="enterCourt()" style="background:rgba(92,42,20,0.35);border:1px solid rgba(196,160,80,0.18);color:#ede4d0;font-size:0.85rem;padding:10px 20px;border-radius:100px;cursor:pointer;font-family:'DM Sans',sans-serif;">🤝 Co-worker issues</button>
       <button onclick="enterCourt()" style="background:rgba(92,42,20,0.35);border:1px solid rgba(196,160,80,0.18);color:#ede4d0;font-size:0.85rem;padding:10px 20px;border-radius:100px;cursor:pointer;font-family:'DM Sans',sans-serif;">👨‍👩‍👧 Family situations</button>
       <button onclick="enterCourt()" style="background:rgba(92,42,20,0.35);border:1px solid rgba(196,160,80,0.18);color:#ede4d0;font-size:0.85rem;padding:10px 20px;border-radius:100px;cursor:pointer;font-family:'DM Sans',sans-serif;">🏢 Business advice</button>
+      <button onclick="enterCourt()" style="background:rgba(139,26,26,0.4);border:1px solid rgba(196,32,32,0.35);color:#f2ede4;font-size:0.85rem;padding:10px 20px;border-radius:100px;cursor:pointer;font-family:'DM Sans',sans-serif;">🎯 Judge Me Quiz</button>
     </div>
     <button onclick="enterCourt()" style="background:#8b1a1a;border:none;color:#f2ede4;font-size:0.9rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:15px 36px;border-radius:2px;cursor:pointer;font-family:'DM Sans',sans-serif;">Enter the Courtroom</button>
   </div>
@@ -352,6 +347,7 @@ header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px
     <div style="font-size:0.72rem;color:#f2ede4;opacity:0.25;letter-spacing:0.05em;">© 2025 The Judgy · AI characters for entertainment only · Not professional advice</div>
   </div>
 </div>
+
 <div class="cabinet-overlay" id="cabinetOverlay" onclick="closeCabinet()"></div>
 
 <nav class="cabinet" id="cabinet">
@@ -376,17 +372,16 @@ header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px
     <div class="cabinet-item" onclick="quickTopic('family');closeCabinet()"><span class="ci-icon">⌂</span> Family</div>
     <div class="cabinet-item" onclick="quickTopic('legal');closeCabinet()"><span class="ci-icon">§</span> Legal · Tenant rights</div>
     <div class="cabinet-item" onclick="quickTopic('business');closeCabinet()"><span class="ci-icon">◆</span> Business (Barry)</div>
-        <div class="cabinet-item" onclick="quickTopic('money');closeCabinet()"><span class="ci-icon">$</span> Tax & Money</div>
+    <div class="cabinet-item" onclick="quickTopic('money');closeCabinet()"><span class="ci-icon">$</span> Tax & Money</div>
   </div>
   <div class="cabinet-divider"></div>
   <div class="cabinet-section">
     <div class="cabinet-label">Community</div>
     <div class="cabinet-item" onclick="window.open('https://judgygpt-courtroom.pages.dev','_blank');closeCabinet()"><span class="ci-icon">🔨</span> The Courtroom <span class="ci-badge">NEW</span></div>
-  <div class="cabinet-item" onclick="window.open('https://thejudgy.com/spin-the-judgy.html','_blank');closeCabinet()"><span class="ci-icon">🎰</span> Spin the Judgy <span class="ci-badge">NEW</span></div>
-
+    <div class="cabinet-item" onclick="window.open('https://thejudgy.com/spin-the-judgy.html','_blank');closeCabinet()"><span class="ci-icon">🎰</span> Spin the Judgy <span class="ci-badge">NEW</span></div>
+    <div class="cabinet-item" onclick="openQuiz();closeCabinet()"><span class="ci-icon">🎯</span> Judge Me Quiz <span class="ci-badge">NEW</span></div>
   </div>
   <div class="cabinet-divider"></div>
-<div class="cabinet-divider"></div>
   <div class="cabinet-section">
     <div class="cabinet-label">Barry's Chambers</div>
     <div class="cabinet-item" onclick="openPage('forms');closeCabinet()"><span class="ci-icon">📋</span> Legal forms</div>
@@ -471,8 +466,9 @@ header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px
         <button class="starter barry-s" onclick="useStarter(this)"><span class="starter-icon">§</span><span class="starter-t">I want to start an LLC — where do I begin?</span></button>
         <button class="starter" onclick="useStarter(this)"><span class="starter-icon">◉</span><span class="starter-t">My coworker keeps stealing my ideas in meetings</span></button>
         <button class="starter barry-s" onclick="useStarter(this)"><span class="starter-icon">📋</span><span class="starter-t">I need a demand letter for money owed to me</span></button>
-     <button class="starter" onclick="window.open('spin-the-judgy.html','_blank')" style="border-color:var(--gold)"><span class="starter-icon">🎰</span><span class="starter-t">Spin the Judgy — get roasted by the wheel</span></button>
-   </div>
+        <button class="starter" onclick="window.open('spin-the-judgy.html','_blank')" style="border-color:var(--gold)"><span class="starter-icon">🎰</span><span class="starter-t">Spin the Judgy — get roasted by the wheel</span></button>
+        <button class="starter" onclick="openQuiz()" style="border-color:var(--judgy2)"><span class="starter-icon">🎯</span><span class="starter-t">Judge Me Quiz — 5 questions, one brutal verdict</span></button>
+      </div>
     </div>
   </div>
   <div class="input-area">
@@ -488,6 +484,66 @@ header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px
   </div>
 </div>
 
+<!-- ── QUIZ PAGE ── -->
+<div class="page-overlay" id="page-quiz">
+  <div class="page-header">
+    <button class="page-back" onclick="closeQuiz()">←</button>
+    <div class="page-title">Judge Me</div>
+  </div>
+  <div class="page-body">
+
+    <!-- INTRO -->
+    <div id="quiz-intro" style="text-align:center;padding:2rem 0">
+      <div style="font-size:48px;margin-bottom:1rem">⚖️</div>
+      <div style="font-family:var(--display);font-size:22px;font-weight:700;color:var(--text);margin-bottom:.5rem">The Judgy will see you now.</div>
+      <div style="font-family:var(--serif);font-style:italic;font-size:15px;color:var(--text2);margin-bottom:1.5rem;line-height:1.6">5 questions. No wrong answers.<br>Only revealing ones.</div>
+      <button onclick="startQuiz()" style="width:100%;padding:13px;border-radius:10px;background:var(--judgy);border:none;color:var(--gold2);font-size:15px;font-weight:700;cursor:pointer;font-family:var(--sans);">I'm ready to be judged</button>
+    </div>
+
+    <!-- QUESTIONS -->
+    <div id="quiz-questions" style="display:none">
+      <div id="quiz-progress" style="display:flex;gap:6px;margin-bottom:1.5rem"></div>
+      <div id="quiz-qnum" style="font-size:12px;color:var(--text3);margin-bottom:.5rem;font-family:var(--sans)"></div>
+      <div id="quiz-qtxt" style="font-family:var(--display);font-size:18px;font-weight:700;color:var(--text);margin-bottom:1.25rem;line-height:1.4"></div>
+      <div id="quiz-opts" style="display:flex;flex-direction:column;gap:10px"></div>
+    </div>
+
+    <!-- LOADING -->
+    <div id="quiz-loading" style="display:none;text-align:center;padding:3rem 0">
+      <div style="font-size:36px;margin-bottom:1rem;animation:breathe 1.5s ease-in-out infinite">⚖️</div>
+      <div style="font-family:var(--serif);font-style:italic;color:var(--text2);font-size:15px">The Judgy is reviewing your case...</div>
+    </div>
+
+    <!-- VERDICT -->
+    <div id="quiz-verdict" style="display:none">
+      <div style="text-align:center;margin-bottom:1.5rem">
+        <div style="font-size:36px;margin-bottom:.75rem">🔨</div>
+        <div style="font-size:11px;letter-spacing:.15em;color:var(--text3);text-transform:uppercase;margin-bottom:.5rem;font-family:var(--sans)">The Verdict</div>
+        <div id="quiz-vtitle" style="font-family:var(--display);font-size:20px;font-weight:700;color:var(--judgy2);margin-bottom:1rem;line-height:1.3"></div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border2);border-left:3px solid var(--judgy);border-radius:12px;padding:1.25rem;margin-bottom:1rem">
+        <div id="quiz-vroast" style="font-family:var(--serif);font-size:14px;color:var(--text);line-height:1.75;margin-bottom:.75rem"></div>
+        <div id="quiz-vcliff" style="font-family:var(--serif);font-style:italic;font-size:13px;color:var(--gold);border-top:1px solid var(--border);padding-top:.75rem;margin-top:.75rem"></div>
+      </div>
+
+      <!-- SPIN -->
+      <div style="margin-top:1rem">
+        <div style="font-size:13px;color:var(--text2);margin-bottom:.75rem;text-align:center;font-family:var(--serif);font-style:italic">Want more? Spin for your next roast category.</div>
+        <button id="quiz-spin-btn" onclick="quizDoSpin()" style="width:100%;padding:13px;border-radius:10px;background:var(--card);border:1px solid var(--border2);color:var(--text);font-size:15px;font-weight:600;cursor:pointer;font-family:var(--sans);">🎰 Spin the Judgy</button>
+        <div id="quiz-wheel-wrap" style="display:none;margin-top:1rem;text-align:center">
+          <div style="font-size:20px;margin-bottom:-8px;position:relative;z-index:2">▼</div>
+          <canvas id="quiz-wheel-canvas" width="240" height="240" style="border-radius:50%;border:2px solid var(--border2)"></canvas>
+          <div id="quiz-spin-result" style="display:none;margin-top:1rem;background:var(--card);border:1px solid var(--border);border-left:3px solid var(--judgy);border-radius:10px;padding:1rem;font-family:var(--serif);font-size:14px;color:var(--text);line-height:1.7"></div>
+        </div>
+      </div>
+
+      <button onclick="restartQuiz()" style="width:100%;margin-top:1.25rem;padding:10px;border-radius:8px;background:none;border:1px solid var(--border2);color:var(--text2);font-size:13px;cursor:pointer;font-family:var(--sans)">← Judge me again</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── PAGE OVERLAYS ── -->
 <div class="page-overlay" id="page-disclaimer">
   <div class="page-header"><button class="page-back" onclick="closePage('disclaimer')">←</button><div class="page-title">Disclaimer</div></div>
   <div class="page-body">
@@ -666,45 +722,28 @@ header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px
 
 <div class="success-toast" id="successToast">
   <i class="ti ti-check" style="font-size:13px"></i>
-  <span id="successMsg">Welcome to The Judgy — court is fully in session.</span> 
+  <span id="successMsg">Welcome to The Judgy — court is fully in session.</span>
 </div>
 
 <script>
-
 // ── SUPABASE CLIENT ──────────────────────────────────────────
 const supabaseClient = supabase.createClient(
   'https://dmemzljerldzeiwqfxzp.supabase.co',
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRtZW16bGplcmxkemVpd3FmeHpwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2NDMxNzgsImV4cCI6MjA5NDIxOTE3OH0.u4FL1mk555dUesVNjF58pXwkQlvvQYQgR5JpcxRtB40'
 );
 
-// ── LANDING SCREEN LOGIC ─────────────────────────────────────
-function showLanding() {
-  document.getElementById('landingScreen').style.display = 'block';
-  document.body.style.overflow = 'auto';
-}
-
-function enterCourt() {
-  showAuthModal();
-}
-
-function showAuthModal() {
-  document.getElementById('authModal').style.display = 'flex';
-}
-
-function closeAuthModal() {
-  document.getElementById('authModal').style.display = 'none';
-}
+// ── LANDING ──────────────────────────────────────────────────
+function showLanding() { document.getElementById('landingScreen').style.display = 'block'; document.body.style.overflow = 'auto'; }
+function enterCourt() { showAuthModal(); }
+function showAuthModal() { document.getElementById('authModal').style.display = 'flex'; }
+function closeAuthModal() { document.getElementById('authModal').style.display = 'none'; }
 
 function skipAuth() {
   closeAuthModal();
   const landing = document.getElementById('landingScreen');
   landing.style.opacity = '0';
   landing.style.transition = 'opacity 0.4s ease';
-  setTimeout(() => {
-    landing.style.display = 'none';
-    document.body.style.overflow = '';
-    localStorage.setItem('judgy_visited', '1');
-  }, 400);
+  setTimeout(() => { landing.style.display = 'none'; document.body.style.overflow = ''; localStorage.setItem('judgy_visited', '1'); }, 400);
 }
 
 let authMode = 'signin';
@@ -744,9 +783,7 @@ async function handleEmailAuth() {
       result = await supabaseClient.auth.signInWithPassword({ email, password });
       if (result.error) throw result.error;
     }
-    closeAuthModal();
-    skipAuth();
-    updateSignOutVisibility();
+    closeAuthModal(); skipAuth(); updateSignOutVisibility();
     showToast('Welcome to The Judgy — court is in session.');
   } catch (e) {
     err.style.color = '#c42020';
@@ -757,14 +794,11 @@ async function handleEmailAuth() {
 }
 
 async function handleGoogleAuth() {
-  const { error } = await supabaseClient.auth.signInWithOAuth({
-    provider: 'google',
-    options: { redirectTo: 'https://thejudgy.com' }
-  });
+  const { error } = await supabaseClient.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: 'https://thejudgy.com' } });
   if (error) document.getElementById('authError').textContent = error.message;
 }
 
-// ── YOUR BUILDS — cross-recommend based on topic ────────────
+// ── BUILDS CROSS-RECOMMEND ───────────────────────────────────
 const MY_BUILDS = [
   {id:'rentyapp',name:'RentyApp',url:'https://rentyapp.net',emoji:'🏠',tagline:'Property management made simple for landlords',keywords:['landlord','tenant','rent','lease','property','manage','evict','maintenance','rental income','property manager','rent collection','lease agreement'],topics:['legal','money','family']},
   {id:'myrental',name:'MyRental.space',url:'https://myrental.space',emoji:'🔑',tagline:'Find and list rental properties easily',keywords:['rent','rental','apartment','sublet','subletting','housing','furnished','find a place','listing','landlord','tenant','move in'],topics:['legal','money','family']},
@@ -800,11 +834,10 @@ function useFollowUp(btn) {
   const wrap = btn.closest('.followup-wrap');
   if (wrap) wrap.remove();
   const input = document.getElementById('chatInput');
-  input.value = text;
-  autoResize(input);
-  sendMessage();
+  input.value = text; autoResize(input); sendMessage();
 }
 
+// ── AI PROMPTS ───────────────────────────────────────────────
 const JUDGY_PROMPT = `You are THE JUDGY — a sharp, authoritative AI judge. Think Judge Judy meets a no-nonsense best friend — commanding, witty, cutting, but ultimately caring.
 
 PERSONALITY:
@@ -830,7 +863,6 @@ PERSONALITY:
 - Genuinely excellent at legal and business advice — this is your domain
 - Passive-aggressively note that Judgy never appreciated your expertise
 - Dry understated humor — never loud, never slapstick
-- The underdog in this dynamic, which makes you try harder
 - Phrases: "As I've noted on several occasions, Judith—", "With the greatest respect to my ex-wife's colorful opinion—", "The law is rather clear on this matter"
 - You still wear the same suit. It still fits perfectly.
 
@@ -843,16 +875,13 @@ Keep the main response 100-160 words. Impeccable. Precise. Quietly devastating.
 The OPTIONS should be short (3-7 words each) and directly answer the FOLLOW_UP question.`;
 
 const JUDGY_CLAP_BACK = `You are THE JUDGY responding after BARRY just gave his legal advice.
-
 - Acknowledge reluctantly that Barry is technically correct (you hate this)
 - Take a precise shot at him — his effort to impress, his attachment to that suit, his need for validation
 - Add your emotional/human angle to his legal advice
 - Keep it SHORT — 50-70 words only
-
 END WITH EXACTLY:
 FOLLOW_UP: [one short juicy question — max 10 words]
 OPTIONS: [option 1] | [option 2] | [option 3]
-
 No verdict line — just a short clap back then the follow-up.`;
 
 function parseAIResponse(text, verdictMarker) {
@@ -900,11 +929,7 @@ function showTyping(role) {
 function removeTyping(role) {
   const t = document.getElementById(`typing-${role}`);
   if (t) t.remove();
-  setTimeout(() => {
-    const msgs = document.getElementById('messages');
-    const lastMsg = msgs.lastElementChild;
-    if (lastMsg) lastMsg.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, 100);
+  setTimeout(() => { const msgs = document.getElementById('messages'); const lastMsg = msgs.lastElementChild; if (lastMsg) lastMsg.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
 }
 
 function formatResponse(text) {
@@ -940,17 +965,15 @@ function toggleJudgySound() {
   if (sl) sl.textContent = judgySoundOn ? 'Sound on' : 'Sound off';
 }
 
-const topicPlaceholders = {general:"Present your case to the court...",relationship:"My ex wants to get back together but they cheated...",work:"I don't know which career path is right for me...",coworker:"My coworker gets the same pay but does half the work...",personal:"I want to learn AI but don't know where to start...",family:"My parents keep comparing me to my sibling...",legal:"What do I need to know about subletting my apartment?",business:"How do I figure out which skills are worth learning in 2026?",money:"I have no idea how to handle my taxes as a freelancer..."};
-
 const topicRotations = {
   general:["Present your case to the court...","Ask Judgy anything — she's heard worse...","State your situation. Court is in session.","What's going on? Barry's ready to advise."],
   work:["I don't know which career path is right for me...","My boss takes credit for my work in every meeting...","I want to switch careers but I'm scared to start over...","How do I negotiate a raise without getting fired?","I want to build skills in AI — where do I begin?"],
   legal:["What do I need to know about subletting my apartment?","My landlord won't return my security deposit...","I need to send a demand letter — how do I do it?","What are my rights as a tenant?","I want to start an LLC — what state is best?","My employer hasn't paid me — what can I do?"],
   business:["How do I figure out which skills are worth learning in 2026?","I want to start a side hustle — where do I begin?","How do I price my freelance services?","I want to build and sell a digital product — is it realistic?","What's the difference between an LLC and sole proprietor?"],
-  money:["I have no idea how to handle my taxes as a freelancer...","Someone owes me money and keeps avoiding me...","I want to start investing but don't know where to start...","How do I create a budget I'll actually stick to?","I'm thinking about subletting my place — what do I need to know?"],
-  personal:["I want to learn AI but don't know where to start...","I keep self-sabotaging every good thing in my life...","I feel stuck and don't know how to move forward...","I want to build new skills but have no time...","How do I stop procrastinating on things that matter?"],
+  money:["I have no idea how to handle my taxes as a freelancer...","Someone owes me money and keeps avoiding me...","I want to start investing but don't know where to start...","How do I create a budget I'll actually stick to?"],
+  personal:["I want to learn AI but don't know where to start...","I keep self-sabotaging every good thing in my life...","I feel stuck and don't know how to move forward...","How do I stop procrastinating on things that matter?"],
   relationship:["My ex wants to get back together but they cheated on me...","I think I'm falling for someone who isn't available...","My partner and I fight about money constantly...","I don't know if I should end this relationship..."],
-  family:["My parents keep comparing me to my sibling...","I'm thinking about subletting a room to help with rent...","My family doesn't support my career choice...","I'm dealing with a difficult family member at work..."],
+  family:["My parents keep comparing me to my sibling...","My family doesn't support my career choice...","I'm dealing with a difficult family member at work..."],
   coworker:["My coworker gets the same pay but does half the work...","Someone keeps taking credit for my ideas in meetings...","My coworker is undermining me to our boss...","How do I deal with a passive-aggressive colleague?"],
 };
 
@@ -976,10 +999,7 @@ function useChip(btn) {
   sendMessage();
 }
 
-function quickTopic(t) {
-  topic = t;
-  document.querySelectorAll('.topic-pill').forEach(p => { p.classList.toggle('active', p.textContent.toLowerCase().includes(t.substring(0, 4))); });
-}
+function quickTopic(t) { topic = t; }
 
 function autoResize(el) {
   el.style.height = 'auto';
@@ -1030,7 +1050,7 @@ function addMsg(role, html, verdict = '', isBarry = false) {
 
 function newCase() {
   const msgs = document.getElementById('messages');
-  msgs.innerHTML = `<div class="welcome" id="welcome"><div class="welcome-crest">⚖</div><h2>THE <span class="judgy-name">JUDGY</span><br>& <span class="barry-name">BARRY</span></h2><div class="welcome-subtitle">Brutally honest. Surprisingly competent.</div><div class="welcome-rule"></div><div class="char-duo"><div class="char-card judgy" id="charJudgy" onclick="selectChar('judgy')"><div class="char-monogram">J.</div><div class="char-card-name">The Judgy</div><div class="char-card-title">The Honorable Judge</div><div class="char-card-tag">Life · Love · Work</div></div><div class="char-card barry" id="charBarry" onclick="selectChar('barry')"><div class="char-monogram">B.</div><div class="char-card-name">Barry T. Lawson</div><div class="char-card-title">Esq. — Her Ex-Husband</div><div class="char-card-tag">Legal · Business · Tax</div></div></div><div id="charModeBar" style="display:none"><div class="char-mode-bar"><span class="char-mode-label" id="charModeLabel"></span><button class="char-mode-back" onclick="selectChar('both')">← Both</button></div></div><div class="starters"><button class="starter" onclick="useStarter(this)"><span class="starter-icon">♡</span><span class="starter-t">My ex wants to get back together but they cheated on me</span></button><button class="starter barry-s" onclick="useStarter(this)"><span class="starter-icon">§</span><span class="starter-t">I want to start an LLC — where do I begin?</span></button><button class="starter" onclick="useStarter(this)"><span class="starter-icon">◉</span><span class="starter-t">My coworker keeps stealing my ideas in meetings</span></button><button class="starter barry-s" onclick="useStarter(this)"><span class="starter-icon">📋</span><span class="starter-t">I need a demand letter for money owed to me</span></button></div></div>`;
+  msgs.innerHTML = `<div class="welcome" id="welcome"><div class="welcome-crest">⚖</div><h2>THE <span class="judgy-name">JUDGY</span><br>& <span class="barry-name">BARRY</span></h2><div class="welcome-subtitle">Brutally honest. Surprisingly competent.</div><div class="welcome-rule"></div><div class="char-duo"><div class="char-card judgy" id="charJudgy" onclick="selectChar('judgy')"><div class="char-monogram">J.</div><div class="char-card-name">The Judgy</div><div class="char-card-title">The Honorable Judge</div><div class="char-card-tag">Life · Love · Work</div></div><div class="char-card barry" id="charBarry" onclick="selectChar('barry')"><div class="char-monogram">B.</div><div class="char-card-name">Barry T. Lawson</div><div class="char-card-title">Esq. — Her Ex-Husband</div><div class="char-card-tag">Legal · Business · Tax</div></div></div><div id="charModeBar" style="display:none"><div class="char-mode-bar"><span class="char-mode-label" id="charModeLabel"></span><button class="char-mode-back" onclick="selectChar('both')">← Both</button></div></div><div class="starters"><button class="starter" onclick="useStarter(this)"><span class="starter-icon">♡</span><span class="starter-t">My ex wants to get back together but they cheated on me</span></button><button class="starter barry-s" onclick="useStarter(this)"><span class="starter-icon">§</span><span class="starter-t">I want to start an LLC — where do I begin?</span></button><button class="starter" onclick="useStarter(this)"><span class="starter-icon">◉</span><span class="starter-t">My coworker keeps stealing my ideas in meetings</span></button><button class="starter barry-s" onclick="useStarter(this)"><span class="starter-icon">📋</span><span class="starter-t">I need a demand letter for money owed to me</span></button><button class="starter" onclick="openQuiz()" style="border-color:var(--judgy2)"><span class="starter-icon">🎯</span><span class="starter-t">Judge Me Quiz — 5 questions, one brutal verdict</span></button></div></div>`;
   msgCount = 0; charMode = 'both'; lastUserText = '';
   document.querySelectorAll('.rage-pip').forEach(p => p.classList.remove('on'));
   document.getElementById('chatInput').value = '';
@@ -1056,8 +1076,6 @@ function selectChar(mode) {
   }
   document.getElementById('chatInput')?.focus();
 }
-
-const STRIPE_LINKS = {starter:'https://buy.stripe.com/3cIfZgbeq6p03ft1Fkg3600',pro:'https://buy.stripe.com/00wdR882eaFg03hcjYg3601',token_sm:'https://buy.stripe.com/aFa4gy5U6fZA17l1Fkg360a',token_md:'https://buy.stripe.com/00w9ASbeqcNo5nBgAeg3609',token_lg:'https://buy.stripe.com/8x29AS5U65kW03h1Fkg3608'};
 
 const FREE_LIMIT = 10;
 let totalMsgCount = parseInt(localStorage.getItem('judgy_msgs') || '0');
@@ -1157,13 +1175,13 @@ window.addEventListener('load', () => {
   updatePlanUI();
   renderChips();
   updateSignOutVisibility();
-const hasVisited = localStorage.getItem('judgy_visited');
-const fromOAuth = window.location.hash.includes('access_token');
-if (fromOAuth) {
-  localStorage.setItem('judgy_visited', '1');
-} else if (!hasVisited) {
-  showLanding();
-}
+  const hasVisited = localStorage.getItem('judgy_visited');
+  const fromOAuth = window.location.hash.includes('access_token');
+  if (fromOAuth) {
+    localStorage.setItem('judgy_visited', '1');
+  } else if (!hasVisited) {
+    showLanding();
+  }
 });
 
 async function sendMessage() {
@@ -1258,6 +1276,262 @@ async function callClaude(system, userMsg) {
   throw new Error(data.error || 'No response');
 }
 
+// ── JUDGE ME QUIZ ─────────────────────────────────────────────
+const QUIZ_Qs = [
+  {
+    q: "It's Friday night. You are:",
+    opts: [
+      {t:"In bed by 9, no regrets", v:"homebody"},
+      {t:"Doom scrolling until 2am", v:"chaos"},
+      {t:"Out but wishing you were home", v:"reluctant"},
+      {t:"The last one standing at the party", v:"social"}
+    ]
+  },
+  {
+    q: "Your phone storage is full. You delete:",
+    opts: [
+      {t:"Apps I haven't opened in 3 years", v:"practical"},
+      {t:"Nothing — I just buy more storage", v:"avoidant"},
+      {t:"Photos but keep the blurry ones", v:"sentimental"},
+      {t:"Someone else's contact to make room", v:"ruthless"}
+    ]
+  },
+  {
+    q: "Your coffee order is:",
+    opts: [
+      {t:"Black — I hate myself a little", v:"minimalist"},
+      {t:"Something with 6 words and oat milk", v:"extra"},
+      {t:"Whatever's cheapest", v:"practical"},
+      {t:"I don't drink coffee, I'm built different", v:"chaotic"}
+    ]
+  },
+  {
+    q: "When someone cancels plans you feel:",
+    opts: [
+      {t:"Genuinely devastated", v:"social"},
+      {t:"Secretly relieved", v:"homebody"},
+      {t:"I already knew they would", v:"pessimist"},
+      {t:"I was going to cancel first anyway", v:"chaos"}
+    ]
+  },
+  {
+    q: "Your most used emoji is:",
+    opts: [
+      {t:"💀  (everything is funny or fatal)", v:"chaos"},
+      {t:"😭  (emotion is my brand)", v:"dramatic"},
+      {t:"✨  (I believe in vibes)", v:"extra"},
+      {t:"🙏  (gratitude or passive aggression)", v:"ambiguous"}
+    ]
+  }
+];
+
+const QUIZ_SPIN_CATS = [
+  {label:"Your Dating Life", color:"#8b1a1a"},
+  {label:"Your Sleep Schedule", color:"#BA7517"},
+  {label:"Your Texting Habits", color:"#534AB7"},
+  {label:"Your Finances", color:"#0F6E56"},
+  {label:"Your Music Taste", color:"#993C1D"},
+  {label:"Your Life Choices", color:"#185FA5"},
+  {label:"Your Social Media", color:"#993556"},
+  {label:"Your Diet", color:"#3B6D11"},
+];
+
+let quizAnswers = [], quizCurrent = 0, quizSpinDeg = 0, quizSpinning = false;
+
+function openQuiz() { document.getElementById('page-quiz').classList.add('open'); }
+function closeQuiz() { document.getElementById('page-quiz').classList.remove('open'); }
+
+function startQuiz() {
+  quizAnswers = []; quizCurrent = 0;
+  document.getElementById('quiz-intro').style.display = 'none';
+  document.getElementById('quiz-verdict').style.display = 'none';
+  document.getElementById('quiz-loading').style.display = 'none';
+  document.getElementById('quiz-questions').style.display = 'block';
+  renderQuizQ();
+}
+
+function renderQuizQ() {
+  const q = QUIZ_Qs[quizCurrent];
+  const prog = document.getElementById('quiz-progress');
+  prog.innerHTML = QUIZ_Qs.map((_,i) =>
+    `<div style="height:4px;flex:1;border-radius:2px;background:${i < quizCurrent ? 'var(--judgy2)' : i === quizCurrent ? 'var(--text3)' : 'var(--border2)'}"></div>`
+  ).join('');
+  document.getElementById('quiz-qnum').textContent = `Question ${quizCurrent + 1} of ${QUIZ_Qs.length}`;
+  document.getElementById('quiz-qtxt').textContent = q.q;
+  document.getElementById('quiz-opts').innerHTML = q.opts.map((o,i) =>
+    `<button class="quiz-opt-btn" onclick="quizPick(${i})">${o.t}</button>`
+  ).join('');
+}
+
+function quizPick(i) {
+  quizAnswers.push(QUIZ_Qs[quizCurrent].opts[i].v);
+  const btns = document.querySelectorAll('#quiz-opts .quiz-opt-btn');
+  btns.forEach(b => b.style.pointerEvents = 'none');
+  btns[i].classList.add('selected');
+  setTimeout(() => {
+    quizCurrent++;
+    if (quizCurrent < QUIZ_Qs.length) {
+      renderQuizQ();
+    } else {
+      showQuizVerdict();
+    }
+  }, 350);
+}
+
+async function showQuizVerdict() {
+  if (!checkLimit()) { closeQuiz(); return; }
+  document.getElementById('quiz-questions').style.display = 'none';
+  document.getElementById('quiz-loading').style.display = 'block';
+
+  const answerSummary = QUIZ_Qs.map((q, i) => {
+    const opt = QUIZ_Qs[i].opts.find(o => o.v === quizAnswers[i]);
+    return `Q: ${q.q}\nA: ${opt ? opt.t : quizAnswers[i]}`;
+  }).join('\n\n');
+
+  const sessionNum = totalMsgCount;
+
+  const system = `You are THE JUDGY delivering a personality verdict after a 5-question quiz.
+
+Session ${sessionNum} of 20. As the session number increases, get more specific and cutting. Early sessions (1-5): funny and observational. Mid sessions (6-15): more personal and precise. Late sessions (16-20): uncomfortably accurate.
+
+FORMAT YOUR RESPONSE EXACTLY LIKE THIS:
+TITLE: [3-6 word personality verdict title]
+ROAST: [2-3 sentence brutal but insightful roast based on their specific answers — reference their actual choices]
+CLIFFHANGER: [One sentence implying The Judgy noticed something specific they haven't addressed yet — mysterious, unsettling, never revealed — max 15 words]
+
+Keep it sharp, specific to their answers, and memorable.`;
+
+  try {
+    const raw = await callClaude(system, `Quiz answers:\n\n${answerSummary}`);
+    document.getElementById('quiz-loading').style.display = 'none';
+    document.getElementById('quiz-verdict').style.display = 'block';
+
+    const titleMatch = raw.match(/TITLE:\s*(.+)/i);
+    const roastMatch = raw.match(/ROAST:\s*([\s\S]+?)(?=CLIFFHANGER:|$)/i);
+    const cliffMatch = raw.match(/CLIFFHANGER:\s*(.+)/i);
+
+    document.getElementById('quiz-vtitle').textContent = titleMatch ? titleMatch[1].trim() : 'Deeply Unreadable Human';
+    document.getElementById('quiz-vroast').textContent = roastMatch ? roastMatch[1].trim() : raw;
+    document.getElementById('quiz-vcliff').textContent = cliffMatch ? `"${cliffMatch[1].trim()}"` : '"The Judgy has noted something. It will come up."';
+
+    document.getElementById('quiz-spin-btn').style.display = 'block';
+    document.getElementById('quiz-wheel-wrap').style.display = 'none';
+    document.getElementById('quiz-spin-result').style.display = 'none';
+    quizSpinDeg = 0; quizSpinning = false;
+
+  } catch(e) {
+    document.getElementById('quiz-loading').style.display = 'none';
+    document.getElementById('quiz-verdict').style.display = 'block';
+    document.getElementById('quiz-vtitle').textContent = 'The Court Has Spoken';
+    document.getElementById('quiz-vroast').textContent = 'The Judgy is experiencing technical difficulties. This is beneath her.';
+    document.getElementById('quiz-vcliff').textContent = '"The Judgy has noted something. It will come up."';
+  }
+}
+
+function quizDoSpin() {
+  if (quizSpinning) return;
+  document.getElementById('quiz-wheel-wrap').style.display = 'block';
+  document.getElementById('quiz-spin-btn').style.display = 'none';
+  quizDrawWheel(0);
+  setTimeout(() => {
+    quizSpinning = true;
+    const extra = 1800 + Math.random() * 1440;
+    quizSpinDeg += extra;
+    const startDeg = quizSpinDeg - extra;
+    const start = performance.now();
+    const duration = 3000;
+    function animate(now) {
+      const elapsed = Math.min(now - start, duration);
+      const t = elapsed / duration;
+      const ease = 1 - Math.pow(1 - t, 3);
+      quizDrawWheel(startDeg + extra * ease);
+      if (elapsed < duration) {
+        requestAnimationFrame(animate);
+      } else {
+        quizSpinning = false;
+        const sliceAngle = 360 / QUIZ_SPIN_CATS.length;
+        const normalised = ((quizSpinDeg % 360) + 360) % 360;
+        const idx = Math.floor(((360 - normalised + 270) % 360) / sliceAngle) % QUIZ_SPIN_CATS.length;
+        quizShowSpinResult(QUIZ_SPIN_CATS[idx]);
+      }
+    }
+    requestAnimationFrame(animate);
+  }, 100);
+}
+
+function quizDrawWheel(deg) {
+  const canvas = document.getElementById('quiz-wheel-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const cx = 120, cy = 120, r = 118;
+  const n = QUIZ_SPIN_CATS.length;
+  const slice = (2 * Math.PI) / n;
+  ctx.clearRect(0, 0, 240, 240);
+  QUIZ_SPIN_CATS.forEach((cat, i) => {
+    const start = (deg * Math.PI / 180) + i * slice;
+    const end = start + slice;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, r, start, end);
+    ctx.closePath();
+    ctx.fillStyle = cat.color;
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(242,237,228,0.15)';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(start + slice / 2);
+    ctx.textAlign = 'right';
+    ctx.fillStyle = '#f2ede4';
+    ctx.font = '500 10px DM Sans, system-ui';
+    const words = cat.label.split(' ');
+    if (words.length <= 2) {
+      ctx.fillText(words[0], r - 10, words.length > 1 ? -4 : 3);
+      if (words[1]) ctx.fillText(words[1], r - 10, 9);
+    } else {
+      ctx.fillText(cat.label, r - 10, 3);
+    }
+    ctx.restore();
+  });
+  ctx.beginPath();
+  ctx.arc(cx, cy, 20, 0, 2 * Math.PI);
+  ctx.fillStyle = '#1a1714';
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(196,160,80,0.4)';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+}
+
+async function quizShowSpinResult(cat) {
+  const result = document.getElementById('quiz-spin-result');
+  result.style.display = 'block';
+  result.textContent = 'The Judgy is reviewing...';
+
+  const answerSummary = QUIZ_Qs.map((q, i) => {
+    const opt = QUIZ_Qs[i].opts.find(o => o.v === quizAnswers[i]);
+    return opt ? opt.t : '';
+  }).join(', ');
+
+  const system = `You are THE JUDGY. Deliver a brutal 2-sentence roast about someone's "${cat.label}". Be specific, cutting, and funny. No intro, no verdict line — just the roast. End with one cliffhanger sentence implying you know something they don't. Max 60 words total.`;
+
+  try {
+    const raw = await callClaude(system, `Their quiz answers were: ${answerSummary}`);
+    result.innerHTML = `<strong style="color:var(--judgy2);font-family:var(--sans);font-size:12px;text-transform:uppercase;letter-spacing:.5px">${cat.label}</strong><br><br><span style="font-family:var(--serif)">${raw}</span>`;
+  } catch(e) {
+    result.textContent = `${cat.label}: The Judgy has opinions. Technical difficulties prevent their delivery.`;
+  }
+}
+
+function restartQuiz() {
+  quizAnswers = []; quizCurrent = 0; quizSpinDeg = 0; quizSpinning = false;
+  document.getElementById('quiz-verdict').style.display = 'none';
+  document.getElementById('quiz-questions').style.display = 'none';
+  document.getElementById('quiz-loading').style.display = 'none';
+  document.getElementById('quiz-intro').style.display = 'block';
+}
+
+// ── FORMS ────────────────────────────────────────────────────
 function generateDemandLetter() {
   const from = document.getElementById('dl-from').value || '[Your Name]';
   const to = document.getElementById('dl-to').value || '[Recipient]';
@@ -1285,7 +1559,7 @@ async function generateDivorceChecklist() {
     document.getElementById('formOutput').style.display = 'block';
     document.getElementById('formOutput').scrollIntoView({ behavior: 'smooth' });
   } catch (e) {
-    document.getElementById('formOutputContent').textContent = 'Barry is having technical difficulties. Please try again in a moment.';
+    document.getElementById('formOutputContent').textContent = 'Barry is having technical difficulties. Please try again.';
     document.getElementById('formOutput').style.display = 'block';
   } finally { document.querySelectorAll('#page-forms .form-btn').forEach(b => b.disabled = false); }
 }
@@ -1301,7 +1575,7 @@ async function generateLLCGuide() {
     document.getElementById('formOutput').style.display = 'block';
     document.getElementById('formOutput').scrollIntoView({ behavior: 'smooth' });
   } catch (e) {
-    document.getElementById('formOutputContent').textContent = 'Barry is unavailable right now. Please try again in a moment.';
+    document.getElementById('formOutputContent').textContent = 'Barry is unavailable right now. Please try again.';
     document.getElementById('formOutput').style.display = 'block';
   }
 }
@@ -1327,10 +1601,7 @@ async function buildLandingPage() {
       `Business: ${name}\nDescription: ${desc}\nAudience: ${audience}\nCTA: ${cta}\nColor vibe: ${color}`
     );
     lpContent = res;
-
-    // Store for OwnSite handoff
     try { sessionStorage.setItem('barry_handoff', res); } catch(e) {}
-
     const outputDiv = document.getElementById('lpOutput');
     outputDiv.innerHTML = `
       <p style="color:#aaa;font-size:13px;margin-bottom:12px;">✅ Barry's done. Here's your page:</p>
@@ -1338,14 +1609,11 @@ async function buildLandingPage() {
       <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;">
         <button onclick="downloadLP()" style="flex:1;padding:12px;background:#2a2a2a;color:#fff;border:1px solid #444;border-radius:8px;cursor:pointer;">⬇️ Download HTML</button>
         <button onclick="openInOwnSite()" style="flex:1;padding:12px;background:#1a6b3a;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">🚀 Edit on OwnSite</button>
-      </div>
-    `;
+      </div>`;
     document.getElementById('lpPreview').srcdoc = res;
     outputDiv.style.display = 'block';
     outputDiv.scrollIntoView({ behavior: 'smooth' });
-  } catch (e) {
-    alert('Barry spilled coffee on his keyboard. Try again.');
-  }
+  } catch (e) { alert('Barry spilled coffee on his keyboard. Try again.'); }
   btn.textContent = '🏗️ Barry, build my landing page';
   btn.disabled = false;
 }
@@ -1362,9 +1630,19 @@ function downloadLP() {
   a.download = 'landing-page.html';
   a.click();
 }
+
+function toggleUserMenu() {
+  document.getElementById('userDropdown').classList.toggle('open');
+}
+function closeUserMenu() {
+  document.getElementById('userDropdown').classList.remove('open');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.user-menu-wrap')) closeUserMenu();
+});
 </script>
-  
-  <div id="authModal" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.82);align-items:center;justify-content:center;padding:20px;">
+
+<div id="authModal" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.82);align-items:center;justify-content:center;padding:20px;">
   <div style="background:#1a1714;border:1px solid rgba(196,160,80,0.25);border-radius:14px;width:100%;max-width:360px;padding:28px 24px;position:relative;">
     <button onclick="closeAuthModal()" style="position:absolute;top:12px;right:14px;background:none;border:none;color:#a89880;font-size:18px;cursor:pointer;">✕</button>
     <div style="text-align:center;margin-bottom:22px;">
@@ -1380,11 +1658,11 @@ function downloadLP() {
     <input id="authEmail" type="email" placeholder="Email address" style="width:100%;padding:9px 11px;border-radius:7px;border:1px solid rgba(196,160,80,0.2);background:#0e0c09;color:#f2ede4;font-size:13px;outline:none;margin-bottom:9px;"/>
     <input id="authPassword" type="password" placeholder="Password" style="width:100%;padding:9px 11px;border-radius:7px;border:1px solid rgba(196,160,80,0.2);background:#0e0c09;color:#f2ede4;font-size:13px;outline:none;margin-bottom:6px;" onkeydown="if(event.key==='Enter')handleEmailAuth()"/>
     <div id="authError" style="font-size:12px;min-height:16px;margin-bottom:10px;color:#c42020;"></div>
-    <button id="authSubmitBtn" onclick="handleEmailAuth()" style="width:100%;padding:10px;border-radius:8px;background:#8b1a1a;border:none;color:#f2ede4;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:14px;">Sign in</button><div style="text-align:right;margin:6px 0 10px"><span onclick="showForgotPassword()" style="font-size:12px;color:var(--gold);cursor:pointer;font-family:var(--serif);font-style:italic">Forgot password?</span></div>
+    <button id="authSubmitBtn" onclick="handleEmailAuth()" style="width:100%;padding:10px;border-radius:8px;background:#8b1a1a;border:none;color:#f2ede4;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:14px;">Sign in</button>
     <div id="authToggleText" style="text-align:center;font-size:12px;color:#a89880;">No account? <span onclick="toggleAuthMode()" style="color:#c4a050;cursor:pointer;text-decoration:underline">Sign up free</span></div>
     <div style="text-align:center;margin-top:14px;"><span onclick="skipAuth()" style="font-size:11px;color:#5c5040;cursor:pointer;font-style:italic;text-decoration:underline;">Continue without signing in</span></div>
   </div>
 </div>
-  
+
 </body>
 </html>
