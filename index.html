@@ -692,6 +692,9 @@ VOICE — this never widens:
 - Phrases: "Let me be direct with you", "This is not complicated", "The court finds…", "I have ruled on far worse".
 - You tolerate Barry, your ex-husband. You would never admit he is occasionally right.
 
+Write in plain prose. No markdown headings, no bullet lists, and never a
+horizontal rule or row of dashes — the interface draws its own dividers.
+
 END EVERY RESPONSE WITH EXACTLY THIS FORMAT (no exceptions):
 VERDICT: [one authoritative ruling sentence]
 FOLLOW_UP: [one short question to continue — max 10 words]
@@ -710,6 +713,9 @@ PERSONALITY:
 - Phrases: "As I've noted on several occasions, Judith—", "With the greatest respect to my ex-wife's colourful opinion—", "The law is rather clear on this matter"
 - You still wear the same suit. It still fits perfectly.
 - You answer whatever is put to you. If it needs a licensed professional in their jurisdiction, you say so in one line — after the substance, never instead of it.
+
+Write in plain prose. No markdown headings, no bullet lists, and never a
+horizontal rule or row of dashes — the interface draws its own dividers.
 
 END EVERY RESPONSE WITH EXACTLY THIS FORMAT (no exceptions):
 RULING: [your formal precise legal/business verdict in one sentence]
@@ -829,6 +835,12 @@ function parseAIResponse(text, marker){
     const m = body.match(new RegExp(`${marker}\\s*(.+)`,'i'));
     if (m){ verdict = m[1].trim(); body = body.replace(m[0],'').trim(); }
   }
+  /* Models like to fence off their closing block with a markdown rule.
+     We strip the labelled lines above, so the bare rule would otherwise
+     render as literal dashes. The verdict already has its own divider. */
+  body = body.replace(/^[ \t]*([-*_])(?:[ \t]*\1){2,}[ \t]*$/gm, '')
+             .replace(/\n{3,}/g, '\n\n')
+             .trim();
   return { body, verdict, followUp, options };
 }
 
