@@ -80,11 +80,18 @@ button,input,select,textarea{font:inherit;color:inherit}
 
 /* ══ APP SHELL ══ */
 .app{display:flex;flex-direction:column;height:100vh;height:100dvh;padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}
-header{height:calc(56px + env(safe-area-inset-top));flex-shrink:0;display:flex;align-items:center;gap:8px;padding:env(safe-area-inset-top) 12px 0;border-bottom:1px solid var(--hairline);background:var(--bg)}
+header{height:calc(50px + env(safe-area-inset-top));flex-shrink:0;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:env(safe-area-inset-top) 16px 0;border-bottom:1px solid var(--hairline);background:var(--bg)}
 .hbtn{width:36px;height:36px;border-radius:8px;background:none;border:none;color:var(--graphite);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s,color .15s}
 .hbtn:hover{background:var(--sunk);color:var(--ink)}
-.wordmark{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;font-family:var(--serif);font-size:15px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);user-select:none}
-.wordmark .seal{width:20px;height:20px}
+.wordmark{display:flex;align-items:center;gap:8px;font-family:var(--serif);font-size:15px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);user-select:none}
+.wordmark .seal{width:18px;height:18px}
+
+/* ══ BOTTOM TAB BAR ══ */
+.tab-bar{flex-shrink:0;display:flex;align-items:stretch;background:var(--bg);border-top:1px solid var(--hairline);padding-bottom:env(safe-area-inset-bottom)}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:10px 4px 8px;background:none;border:none;color:var(--faint);cursor:pointer;transition:color .15s;font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;font-family:var(--sans);-webkit-tap-highlight-color:transparent}
+.tab svg{display:block;flex-shrink:0}
+.tab.active{color:var(--brass)}
+.tab:hover{color:var(--ink)}
 
 /* ══ THREAD ══ */
 .messages{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:28px 20px 8px;scrollbar-width:thin}
@@ -135,7 +142,7 @@ header{height:calc(56px + env(safe-area-inset-top));flex-shrink:0;display:flex;a
 .counsel button:hover{color:var(--ink)}
 
 /* ══ INPUT ══ */
-.dock{flex-shrink:0;padding:10px 20px;padding-bottom:max(14px,env(safe-area-inset-bottom));background:var(--bg);border-top:1px solid var(--hairline)}
+.dock{flex-shrink:0;padding:10px 20px 12px;background:var(--bg);border-top:1px solid var(--hairline)}
 .dock-inner{max-width:var(--col);margin:0 auto}
 .field{display:flex;align-items:flex-end;gap:10px;padding:10px 10px 10px 16px;background:var(--raised);border:1px solid var(--rule);border-radius:14px;transition:border-color .2s}
 .field:focus-within{border-color:var(--ink)}
@@ -176,6 +183,9 @@ header{height:calc(56px + env(safe-area-inset-top));flex-shrink:0;display:flex;a
 /* ══ PAGE OVERLAYS ══ */
 .page{position:fixed;inset:0;z-index:400;background:var(--bg);overflow-y:auto;transform:translateX(100%);transition:transform .38s var(--ease)}
 .page.open{transform:none}
+/* tab-driven pages sit below the tab bar */
+#page-show,#page-voice{bottom:calc(50px + env(safe-area-inset-bottom));transform:translateX(100%)}
+#page-show.open,#page-voice.open{transform:none}
 .page-head{position:sticky;top:0;z-index:1;display:flex;align-items:center;gap:12px;height:calc(56px + env(safe-area-inset-top));padding:env(safe-area-inset-top) 12px 0;background:var(--bg);border-bottom:1px solid var(--hairline)}
 .page-title{font-family:var(--serif);font-size:16px;font-weight:500;letter-spacing:.06em}
 .page-body{max-width:var(--col);margin:0 auto;padding:32px 20px 56px}
@@ -282,6 +292,42 @@ header{height:calc(56px + env(safe-area-inset-top));flex-shrink:0;display:flex;a
 .auth-toggle{text-align:center;font-size:12.5px;color:var(--graphite);margin-top:16px}
 .auth-toggle button{background:none;border:none;color:var(--brass);cursor:pointer;font-size:12.5px;text-decoration:underline;text-underline-offset:3px}
 
+/* ══ SHOW PAGE ══ */
+.show-hero{text-align:center;padding:28px 0 20px}
+.show-hero .seal{width:44px;height:44px;margin:0 auto 16px}
+.show-hero h2{font-family:var(--serif);font-size:24px;font-weight:400;line-height:1.2;margin-bottom:6px}
+.show-hero p{font-size:13.5px;color:var(--graphite);line-height:1.6}
+.topic-chips{display:flex;flex-wrap:wrap;gap:7px;margin:18px 0}
+.chip{font-size:12.5px;padding:7px 13px;border-radius:100px;border:1px solid var(--rule);background:none;color:var(--graphite);cursor:pointer;transition:border-color .15s,color .15s;line-height:1}
+.chip:hover,.chip.active{border-color:var(--brass);color:var(--brass)}
+.show-input{width:100%;padding:11px 14px;border:1px solid var(--rule);border-radius:10px;background:var(--bg);font-size:14px;outline:none;transition:border-color .2s;margin-bottom:14px}
+.show-input:focus{border-color:var(--ink)}
+.show-go{width:100%;padding:12px;border-radius:10px;background:var(--ink);border:none;color:var(--bg);font-size:14px;font-weight:500;cursor:pointer;transition:opacity .15s;display:flex;align-items:center;justify-content:center;gap:9px}
+.show-go:hover:not(:disabled){opacity:.86}
+.show-go:disabled{opacity:.38;cursor:default}
+.show-loading{text-align:center;padding:30px 0;display:none}
+.show-loading .seal{width:36px;height:36px;margin:0 auto 12px;animation:gavel .8s ease infinite alternate}
+@keyframes gavel{from{transform:rotate(-12deg)}to{transform:rotate(12deg)}}
+.show-loading p{font-size:13.5px;color:var(--graphite)}
+.show-player{display:none;margin-top:20px;border:1px solid var(--hairline);border-radius:12px;padding:16px;background:var(--raised)}
+.show-player-label{font-size:9.5px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--brass);margin-bottom:10px}
+.show-player audio{width:100%;margin-bottom:12px}
+.show-player-btns{display:flex;gap:8px}
+.show-player-btns button{flex:1;padding:9px;border-radius:8px;border:1px solid var(--rule);background:none;color:var(--graphite);font-size:13px;cursor:pointer;transition:border-color .15s,color .15s}
+.show-player-btns button:hover{border-color:var(--ink);color:var(--ink)}
+
+/* ══ VOICE PAGE ══ */
+.voice-hero{text-align:center;padding:40px 20px}
+.voice-hero .seal{width:52px;height:52px;margin:0 auto 20px}
+.voice-hero h2{font-family:var(--serif);font-size:26px;font-weight:400;margin-bottom:10px}
+.voice-hero p{font-size:14px;color:var(--graphite);line-height:1.65;margin-bottom:28px}
+.voice-mic{width:72px;height:72px;border-radius:50%;background:var(--ink);border:none;color:var(--bg);margin:0 auto 16px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .15s,opacity .15s}
+.voice-mic:hover{transform:scale(1.05)}
+.voice-mic.listening{background:var(--brass);animation:pulse-ring 1.2s ease infinite}
+@keyframes pulse-ring{0%,100%{box-shadow:0 0 0 0 rgba(176,138,79,0.4)}50%{box-shadow:0 0 0 14px rgba(176,138,79,0)}}
+.voice-status{font-size:13px;color:var(--graphite);text-align:center;min-height:20px}
+.voice-coming{display:inline-block;margin-top:6px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);border:1px solid var(--hairline);border-radius:100px;padding:4px 12px}
+
 /* ══ TOAST ══ */
 .toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,140%);z-index:950;padding:11px 20px;border-radius:100px;background:var(--chrome);color:var(--chrome-ink);font-size:13px;transition:transform .4s var(--ease);white-space:nowrap}
 .toast.show{transform:translate(-50%,0)}
@@ -369,9 +415,6 @@ header{height:calc(56px + env(safe-area-inset-top));flex-shrink:0;display:flex;a
 <!-- ═══ THE STAGE ═════════════════════════════════════════════ -->
 <div class="app">
   <header>
-    <button class="hbtn" onclick="openCabinet()" aria-label="Open the Cabinet">
-      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><line x1="2.5" y1="5" x2="15.5" y2="5"/><line x1="2.5" y1="9" x2="15.5" y2="9"/><line x1="2.5" y1="13" x2="15.5" y2="13"/></svg>
-    </button>
     <div class="wordmark"><span id="headSeal"></span> The Judgy</div>
     <button class="hbtn" onclick="newCase()" aria-label="New case" title="New case">
       <svg width="17" height="17" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15.5 9a6.5 6.5 0 1 1-1.9-4.6"/><polyline points="15.5,2.5 15.5,6.5 11.5,6.5"/></svg>
@@ -393,6 +436,26 @@ header{height:calc(56px + env(safe-area-inset-top));flex-shrink:0;display:flex;a
       </div>
     </div>
   </div>
+
+  <!-- ═══ BOTTOM TAB BAR ════════════════════════════════════════ -->
+  <nav class="tab-bar" aria-label="Main navigation">
+    <button class="tab active" id="tab-court" onclick="switchTab('court')" aria-label="Court">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M6 12h12M12 6l6 6-6 6"/></svg>
+      Court
+    </button>
+    <button class="tab" id="tab-show" onclick="switchTab('show')" aria-label="The Show">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+      Show
+    </button>
+    <button class="tab" id="tab-voice" onclick="switchTab('voice')" aria-label="Voice Court">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+      Voice
+    </button>
+    <button class="tab" id="tab-more" onclick="switchTab('more')" aria-label="More">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      More
+    </button>
+  </nav>
 </div>
 
 <!-- ═══ QUIZ ══════════════════════════════════════════════════ -->
@@ -544,28 +607,28 @@ header{height:calc(56px + env(safe-area-inset-top));flex-shrink:0;display:flex;a
     <p class="lede">Barry's vetted resources. He actually researched these. Shocking, I know. — The Judgy</p>
     <div class="sec"><h3>Legal</h3>
       <div class="links">
-        <a href="https://www.legalzoom.com" target="_blank" rel="noopener">LegalZoom — Online legal documents and attorney consultation</a>
-        <a href="https://www.rocketlawyer.com" target="_blank" rel="noopener">Rocket Lawyer — Legal documents and advice</a>
-        <a href="https://www.avvo.com" target="_blank" rel="noopener">Avvo — Find a local attorney</a>
+        <a href="https://www.legalzoom.com/?utm_source=thejudgy&utm_medium=referrals&utm_campaign=barry" target="_blank" rel="noopener" onclick="trackAff('legalzoom','referrals')">LegalZoom — Online legal documents and attorney consultation</a>
+        <a href="https://www.rocketlawyer.com/?utm_source=thejudgy&utm_medium=referrals&utm_campaign=barry" target="_blank" rel="noopener" onclick="trackAff('rocketlawyer','referrals')">Rocket Lawyer — Legal documents and advice</a>
+        <a href="https://www.avvo.com/?utm_source=thejudgy&utm_medium=referrals&utm_campaign=barry" target="_blank" rel="noopener" onclick="trackAff('avvo','referrals')">Avvo — Find a local attorney</a>
       </div>
     </div>
     <div class="sec"><h3>Tax and finance</h3>
       <div class="links">
-        <a href="https://turbotax.intuit.com" target="_blank" rel="noopener">TurboTax — File your taxes online</a>
-        <a href="https://www.creditkarma.com" target="_blank" rel="noopener">Credit Karma — Free credit monitoring</a>
-        <a href="https://www.nerdwallet.com" target="_blank" rel="noopener">NerdWallet — Financial advice and comparisons</a>
+        <a href="https://turbotax.intuit.com/?utm_source=thejudgy&utm_medium=referrals&utm_campaign=barry" target="_blank" rel="noopener" onclick="trackAff('turbotax','referrals')">TurboTax — File your taxes online</a>
+        <a href="https://www.creditkarma.com/?utm_source=thejudgy&utm_medium=referrals&utm_campaign=barry" target="_blank" rel="noopener" onclick="trackAff('creditkarma','referrals')">Credit Karma — Free credit monitoring</a>
+        <a href="https://www.nerdwallet.com/?utm_source=thejudgy&utm_medium=referrals&utm_campaign=barry" target="_blank" rel="noopener" onclick="trackAff('nerdwallet','referrals')">NerdWallet — Financial advice and comparisons</a>
       </div>
     </div>
     <div class="sec"><h3>Mental health</h3>
       <div class="links">
-        <a href="https://www.betterhelp.com" target="_blank" rel="noopener">BetterHelp — Online therapy with licensed therapists</a>
-        <a href="https://www.talkspace.com" target="_blank" rel="noopener">Talkspace — Therapy via text, voice and video</a>
+        <a href="https://www.betterhelp.com/?referral=thejudgy&utm_source=thejudgy&utm_medium=referrals&utm_campaign=barry" target="_blank" rel="noopener" onclick="trackAff('betterhelp','referrals')">BetterHelp — Online therapy with licensed therapists</a>
+        <a href="https://www.talkspace.com/?utm_source=thejudgy&utm_medium=referrals&utm_campaign=barry" target="_blank" rel="noopener" onclick="trackAff('talkspace','referrals')">Talkspace — Therapy via text, voice and video</a>
       </div>
     </div>
     <div class="sec"><h3>Business formation</h3>
       <div class="links">
-        <a href="https://www.incfile.com" target="_blank" rel="noopener">Bizee — Form your LLC or Corp</a>
-        <a href="https://stripe.com" target="_blank" rel="noopener">Stripe — Accept payments online</a>
+        <a href="https://www.incfile.com/?utm_source=thejudgy&utm_medium=referrals&utm_campaign=barry" target="_blank" rel="noopener" onclick="trackAff('bizee','referrals')">Bizee — Form your LLC or Corp</a>
+        <a href="https://stripe.com/?utm_source=thejudgy&utm_medium=referrals&utm_campaign=barry" target="_blank" rel="noopener" onclick="trackAff('stripe','referrals')">Stripe — Accept payments online</a>
       </div>
     </div>
     <div class="notice"><strong>Disclosure</strong><p>Some links on this page are affiliate links. Barry gets a small commission — which he will absolutely brag about to Judgy.</p></div>
@@ -587,6 +650,70 @@ header{height:calc(56px + env(safe-area-inset-top));flex-shrink:0;display:flex;a
       <button class="btn" id="lpBtn" onclick="buildLandingPage()">Barry, build my landing page</button>
     </div>
     <div id="lpOutput" style="display:none;margin-top:18px"></div>
+  </div>
+</div>
+
+<!-- ═══ THE SHOW ═══════════════════════════════════════════════ -->
+<div class="page" id="page-show">
+  <div class="page-head">
+    <div class="page-title" style="font-size:14px;letter-spacing:.12em">🎙 The Judgy &amp; Barry Show</div>
+  </div>
+  <div class="page-body">
+    <div class="show-hero">
+      <span id="showSeal"></span>
+      <h2>Pick a topic.<br>They'll argue about it.</h2>
+      <p>Judgy roasts it. Barry defends it. They both give you real advice.</p>
+    </div>
+
+    <div class="topic-chips" id="showChips"></div>
+
+    <input class="show-input" id="showTopic" type="text" placeholder="Or type your own topic…" maxlength="120">
+    <button class="show-go" id="showGoBtn" onclick="generateEpisode()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      Go to court
+    </button>
+
+    <div class="show-loading" id="showLoading">
+      <span id="showLoadSeal"></span>
+      <p>Judgy and Barry are arguing…</p>
+    </div>
+
+    <div class="show-player" id="showPlayer">
+      <div class="show-player-label">Now playing</div>
+      <audio id="showAudio" controls></audio>
+      <div class="show-player-btns">
+        <button onclick="downloadEpisode()">⬇ Save episode</button>
+        <button onclick="shareEpisode()">↗ Share</button>
+      </div>
+    </div>
+
+    <div style="margin-top:28px;padding-top:20px;border-top:1px solid var(--hairline)">
+      <div style="font-size:9.5px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);margin-bottom:12px">Barry's recommendations</div>
+      <div class="links">
+        <a class="aff-link" href="https://www.betterhelp.com/?referral=thejudgy&utm_source=thejudgy&utm_medium=show&utm_campaign=podcast" target="_blank" rel="noopener" onclick="trackAff('betterhelp','show')">BetterHelp — Talk to a real therapist</a>
+        <a class="aff-link" href="https://www.legalzoom.com/?utm_source=thejudgy&utm_medium=show&utm_campaign=podcast" target="_blank" rel="noopener" onclick="trackAff('legalzoom','show')">LegalZoom — Sort it out legally</a>
+        <a class="aff-link" href="https://www.nerdwallet.com/?utm_source=thejudgy&utm_medium=show&utm_campaign=podcast" target="_blank" rel="noopener" onclick="trackAff('nerdwallet','show')">NerdWallet — Make smarter money moves</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ VOICE COURT ════════════════════════════════════════════ -->
+<div class="page" id="page-voice">
+  <div class="page-head">
+    <div class="page-title" style="font-size:14px;letter-spacing:.12em">🎤 Voice Court</div>
+  </div>
+  <div class="page-body">
+    <div class="voice-hero">
+      <span id="voiceSeal"></span>
+      <h2>Speak your case.<br>Judgy answers back.</h2>
+      <p>Tap the mic, state your situation out loud, and hear The Judgy's verdict in her own voice.</p>
+      <button class="voice-mic" id="voiceMicBtn" onclick="toggleVoice()">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+      </button>
+      <div class="voice-status" id="voiceStatus">Tap to speak</div>
+      <span class="voice-coming">ElevenLabs voices — coming soon</span>
+    </div>
   </div>
 </div>
 
@@ -616,7 +743,7 @@ header{height:calc(56px + env(safe-area-inset-top));flex-shrink:0;display:flex;a
       <a class="topup" href="https://buy.stripe.com/8x29AS5U65kW03h1Fkg3608" target="_blank" rel="noopener" onclick="trackClick('token_lg')"><b>150</b><i>cases</i><u>$15</u></a>
     </div>
     <div class="pw-foot">
-      <button onclick="closePaywall()">Continue with limited access</button>
+      <button onclick="closePaywall()" id="pwContinueBtn">Continue with limited access</button>
       <span>Stripe · secure</span>
     </div>
   </div>
@@ -882,6 +1009,10 @@ function openCabinet(){
 function closeCabinet(){
   document.getElementById('cabinet').classList.remove('open');
   document.getElementById('cabScrim').classList.remove('open');
+  // restore active tab highlight after More closes
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  const activeTab = document.getElementById('tab-'+currentTab);
+  if (activeTab) activeTab.classList.add('active');
 }
 
 /* Case starters. UI copy only — no topic state, no prompt gating. */
@@ -964,9 +1095,15 @@ let isPaid = localStorage.getItem('judgy_paid') === '1';
 
 function updatePlanUI(){
   const el = document.getElementById('planValue');
-  if (isPaid){ el.textContent = 'Pro — unlimited'; return; }
+  const continueBtn = document.getElementById('pwContinueBtn');
+  if (isPaid){
+    el.textContent = 'Pro — unlimited';
+    if (continueBtn) continueBtn.textContent = 'Continue';
+    return;
+  }
   const left = Math.max(0, FREE_LIMIT - totalMsgCount);
   el.textContent = left === 1 ? 'Free — 1 case left' : `Free — ${left} cases left`;
+  if (continueBtn) continueBtn.textContent = left > 0 ? `Continue — ${left} case${left===1?'':'s'} left` : 'Continue with limited access';
 }
 
 function checkLimit(){
@@ -1384,15 +1521,206 @@ function downloadLP(){
   a.click();
 }
 
+/* ── BOTTOM TAB NAVIGATION ────────────────────────────────────*/
+let currentTab = 'court';
+
+function switchTab(tab){
+  currentTab = tab;
+  // update tab states
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  const btn = document.getElementById('tab-'+tab);
+  if (btn) btn.classList.add('active');
+
+  // show/hide main court area
+  const courtArea = document.querySelector('.app .messages');
+  const courtDock = document.querySelector('.app .dock');
+  const showPage  = document.getElementById('page-show');
+  const voicePage = document.getElementById('page-voice');
+
+  // close all tab-driven pages first
+  showPage.classList.remove('open');
+  voicePage.classList.remove('open');
+
+  if (tab === 'court'){
+    courtArea.style.display = '';
+    courtDock.style.display = '';
+  } else if (tab === 'show'){
+    courtArea.style.display = 'none';
+    courtDock.style.display = 'none';
+    showPage.classList.add('open');
+  } else if (tab === 'voice'){
+    courtArea.style.display = 'none';
+    courtDock.style.display = 'none';
+    voicePage.classList.add('open');
+  } else if (tab === 'more'){
+    courtArea.style.display = '';
+    courtDock.style.display = '';
+    openCabinet();
+    // reset to court visually so More doesn't stay "active" after cabinet closes
+    setTimeout(() => {
+      document.getElementById('tab-more').classList.remove('active');
+      document.getElementById('tab-'+currentTab).classList.add('active');
+    }, 400);
+  }
+}
+
+/* ── THE SHOW ─────────────────────────────────────────────────*/
+const SHOW_TOPIC_SETS = [
+  ["Situationships","Sunday anxiety","Your situationship texting habits","When friends cancel","Saying yes when you mean no","Doomscrolling at 2am"],
+  ["Money stress","Impulse buying","Splitting bills with friends","Lifestyle creep","Comparing yourself to others","Asking for a raise"],
+  ["Work drama","Your boss","Coworkers who steal credit","Working from home","Career change fear","Sunday scaries"],
+  ["Judge Judy going viral","Reality TV drama","TikTok made me do it","Celebrity breakups","The algorithm","Oversharing online"],
+  ["Family dinner tension","Setting boundaries","Parents who compare","Sibling rivalry","Holiday stress","Saying no to family"],
+  ["Tennis drama","Sports betting","Gym motivation","Fitness guilt","Competing with friends","Being a sore loser"],
+  ["Dating app fatigue","First date nerves","Mixed signals","The talking stage","Ghosting someone","Being ghosted"]
+];
+
+let showAudioBlob = null;
+
+function initShowChips(){
+  const day = new Date().getDay();
+  const topics = SHOW_TOPIC_SETS[day % SHOW_TOPIC_SETS.length];
+  const container = document.getElementById('showChips');
+  container.innerHTML = topics.map(t =>
+    `<button class="chip" onclick="selectChip(this,'${t.replace(/'/g,"&#39;")}')">${t}</button>`
+  ).join('');
+}
+
+function selectChip(btn, topic){
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('showTopic').value = topic;
+}
+
+async function generateEpisode(){
+  const topic = document.getElementById('showTopic').value.trim();
+  if (!topic){ showToast('Pick a topic first.'); return; }
+  if (!checkLimit()) return;
+
+  document.getElementById('showGoBtn').disabled = true;
+  document.getElementById('showLoading').style.display = 'block';
+  document.getElementById('showPlayer').style.display = 'none';
+  showAudioBlob = null;
+
+  const system = `You are writing a short podcast script between two characters arguing about a topic.
+
+JUDGY: Sharp, mean, authoritative woman. Cuts to the truth brutally. Short punchy sentences.
+BARRY: Polished, passive-aggressive ex-husband lawyer. Composed but quietly devastating.
+
+Rules:
+- 5 exchanges total, alternating JUDGY then BARRY
+- They roast each other AND the topic
+- Last exchange: they both reluctantly agree on ONE piece of genuine motivational advice
+- Format each line EXACTLY as: [JUDGY]: text or [BARRY]: text
+- End with: [VERDICT]: one sentence of real advice they both agree on
+- Keep each line under 30 words
+- Funny, sharp, real`;
+
+  try {
+    const raw = await callClaude(system, `Topic: ${topic}`);
+    // For now play as text-to-speech using browser TTS until ElevenLabs is wired
+    document.getElementById('showLoading').style.display = 'none';
+    renderShowScript(raw, topic);
+  } catch(e){
+    document.getElementById('showLoading').style.display = 'none';
+    showToast('The studio had technical difficulties. Try again.');
+  }
+  document.getElementById('showGoBtn').disabled = false;
+}
+
+function renderShowScript(raw, topic){
+  const player = document.getElementById('showPlayer');
+  player.style.display = 'block';
+
+  // Parse lines
+  const lines = raw.split('\n').filter(l => l.trim());
+  let scriptHTML = `<div style="margin-bottom:14px"><div class="verdict-label" style="margin-bottom:6px">Episode: ${esc(topic)}</div>`;
+  lines.forEach(line => {
+    const judgy = line.match(/^\[JUDGY\]:\s*(.+)/i);
+    const barry = line.match(/^\[BARRY\]:\s*(.+)/i);
+    const verdict = line.match(/^\[VERDICT\]:\s*(.+)/i);
+    if (judgy){
+      scriptHTML += `<div style="margin-bottom:10px"><span style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--brass);font-weight:500">Judgy</span><div style="font-family:var(--serif);font-size:14.5px;line-height:1.6;margin-top:3px">${esc(judgy[1])}</div></div>`;
+    } else if (barry){
+      scriptHTML += `<div style="margin-bottom:10px"><span style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--graphite);font-weight:500">Barry</span><div style="font-family:var(--serif);font-size:14.5px;line-height:1.6;margin-top:3px">${esc(barry[1])}</div></div>`;
+    } else if (verdict){
+      scriptHTML += `<div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--hairline)"><div class="verdict-label" style="margin-bottom:5px">The Verdict</div><div class="verdict-text">${esc(verdict[1])}</div></div>`;
+    }
+  });
+  scriptHTML += '</div>';
+
+  // Replace audio element with script display (audio added when ElevenLabs wired)
+  player.innerHTML = `<div class="show-player-label">Episode: ${esc(topic)}</div>
+    ${scriptHTML}
+    <div style="font-size:11px;color:var(--faint);margin-top:10px;margin-bottom:12px">🎙 Voice playback coming soon — ElevenLabs integration in progress</div>
+    <div class="show-player-btns">
+      <button onclick="copyEpisode()">⎘ Copy script</button>
+      <button onclick="shareEpisode('${esc(topic)}')">↗ Share</button>
+    </div>`;
+  window._lastScript = raw;
+  window._lastTopic = topic;
+}
+
+function copyEpisode(){
+  try { navigator.clipboard.writeText(window._lastScript || ''); showToast('Script copied.'); } catch(e){}
+}
+
+function shareEpisode(topic){
+  const text = `Judgy & Barry just roasted "${topic || 'this topic'}" on The Judgy Show 🎙 thejudgy.com`;
+  if (navigator.share){ navigator.share({ text, url:'https://thejudgy.com' }).catch(()=>{}); }
+  else { try { navigator.clipboard.writeText(text); showToast('Copied to clipboard.'); } catch(e){} }
+}
+
+function downloadEpisode(){
+  if (!window._lastScript) return;
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([window._lastScript], {type:'text/plain'}));
+  a.download = `judgy-show-${(window._lastTopic||'episode').replace(/\s+/g,'-').toLowerCase()}.txt`;
+  a.click();
+}
+
+/* ── VOICE COURT STUB ─────────────────────────────────────────*/
+let voiceListening = false;
+function toggleVoice(){
+  if (voiceListening){
+    voiceListening = false;
+    document.getElementById('voiceMicBtn').classList.remove('listening');
+    document.getElementById('voiceStatus').textContent = 'Tap to speak';
+  } else {
+    voiceListening = true;
+    document.getElementById('voiceMicBtn').classList.add('listening');
+    document.getElementById('voiceStatus').textContent = 'Listening… (ElevenLabs voices coming soon)';
+    setTimeout(() => {
+      voiceListening = false;
+      document.getElementById('voiceMicBtn').classList.remove('listening');
+      document.getElementById('voiceStatus').textContent = 'Voice Court launches with ElevenLabs — stay tuned.';
+    }, 3000);
+  }
+}
+
+/* ── AFFILIATE TRACKING ───────────────────────────────────────*/
+function trackAff(partner, source){
+  try { localStorage.setItem(`judgy_aff_${partner}`, Date.now() + ':' + source); } catch(e){}
+}
+
 /* ── BOOT ─────────────────────────────────────────────────────*/
 (function boot(){
   // seals
-  document.getElementById('headSeal').innerHTML = seal(20);
+  document.getElementById('headSeal').innerHTML = seal(18);
   document.getElementById('cabSeal').innerHTML = seal(19);
   document.getElementById('quizSeal').innerHTML = seal(44);
   document.getElementById('quizLoadSeal').innerHTML = seal(44);
   document.getElementById('pwSeal').innerHTML = seal(34);
   document.getElementById('authSeal').innerHTML = seal(32);
+  document.getElementById('showSeal').innerHTML = seal(44);
+  document.getElementById('showLoadSeal').innerHTML = seal(36);
+  document.getElementById('voiceSeal').innerHTML = seal(52);
+
+  // show page chips
+  initShowChips();
+
+  // cases left on paywall continue button
+  updatePlanUI();
 
   // parked features: remove their entry points, leave the code
   document.querySelectorAll('[data-feature]').forEach(el => {
