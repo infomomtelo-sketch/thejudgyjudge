@@ -92,6 +92,10 @@ header{height:calc(50px + env(safe-area-inset-top));flex-shrink:0;display:flex;a
 .tab svg{display:block;flex-shrink:0}
 .tab.active{color:var(--brass)}
 .tab:hover{color:var(--ink)}
+/* pages that sit above the tab bar need bottom padding */
+.page{padding-bottom:calc(56px + env(safe-area-inset-bottom))}
+/* tab bar injected inside page overlays — fixed to viewport bottom */
+.page-tab-bar{position:fixed;bottom:0;left:0;right:0;z-index:401}
 
 /* ══ THREAD ══ */
 .messages{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:28px 20px 8px;scrollbar-width:thin}
@@ -183,8 +187,8 @@ header{height:calc(50px + env(safe-area-inset-top));flex-shrink:0;display:flex;a
 /* ══ PAGE OVERLAYS ══ */
 .page{position:fixed;inset:0;z-index:400;background:var(--bg);overflow-y:auto;transform:translateX(100%);transition:transform .38s var(--ease)}
 .page.open{transform:none}
-/* tab-driven pages sit below the tab bar */
-#page-show,#page-voice{bottom:calc(50px + env(safe-area-inset-bottom));transform:translateX(100%)}
+/* tab-driven pages are full screen — tab bar injected inside */
+#page-show,#page-voice{transform:translateX(100%)}
 #page-show.open,#page-voice.open{transform:none}
 .page-head{position:sticky;top:0;z-index:1;display:flex;align-items:center;gap:12px;height:calc(56px + env(safe-area-inset-top));padding:env(safe-area-inset-top) 12px 0;background:var(--bg);border-bottom:1px solid var(--hairline)}
 .page-title{font-family:var(--serif);font-size:16px;font-weight:500;letter-spacing:.06em}
@@ -439,19 +443,19 @@ header{height:calc(50px + env(safe-area-inset-top));flex-shrink:0;display:flex;a
 
   <!-- ═══ BOTTOM TAB BAR ════════════════════════════════════════ -->
   <nav class="tab-bar" aria-label="Main navigation">
-    <button class="tab active" id="tab-court" onclick="switchTab('court')" aria-label="Court">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M6 12h12M12 6l6 6-6 6"/></svg>
+    <button class="tab active" id="tab-court" data-tab="court" onclick="switchTab('court')" aria-label="Court">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 22h18M4 22V6l8-4 8 4v16M9 22v-5h6v5M9 10h.01M15 10h.01M9 14h.01M15 14h.01"/></svg>
       Court
     </button>
-    <button class="tab" id="tab-show" onclick="switchTab('show')" aria-label="The Show">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+    <button class="tab" id="tab-show" data-tab="show" onclick="switchTab('show')" aria-label="The Show">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10,8 16,12 10,16"/></svg>
       Show
     </button>
-    <button class="tab" id="tab-voice" onclick="switchTab('voice')" aria-label="Voice Court">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+    <button class="tab" id="tab-voice" data-tab="voice" onclick="switchTab('voice')" aria-label="Voice Court">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
       Voice
     </button>
-    <button class="tab" id="tab-more" onclick="switchTab('more')" aria-label="More">
+    <button class="tab" id="tab-more" data-tab="more" onclick="switchTab('more')" aria-label="More">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
       More
     </button>
@@ -655,7 +659,7 @@ header{height:calc(50px + env(safe-area-inset-top));flex-shrink:0;display:flex;a
 
 <!-- ═══ THE SHOW ═══════════════════════════════════════════════ -->
 <div class="page" id="page-show">
-  <div class="page-head">
+  <div class="page-head" style="justify-content:center">
     <div class="page-title" style="font-size:14px;letter-spacing:.12em">🎙 The Judgy &amp; Barry Show</div>
   </div>
   <div class="page-body">
@@ -1010,9 +1014,9 @@ function closeCabinet(){
   document.getElementById('cabinet').classList.remove('open');
   document.getElementById('cabScrim').classList.remove('open');
   // restore active tab highlight after More closes
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  const activeTab = document.getElementById('tab-'+currentTab);
-  if (activeTab) activeTab.classList.add('active');
+  document.querySelectorAll('.tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.tab === currentTab);
+  });
 }
 
 /* Case starters. UI copy only — no topic state, no prompt gating. */
@@ -1076,7 +1080,11 @@ function renderCounsel(){
 
 /* ── PAGES ────────────────────────────────────────────────────*/
 function openPage(id){ document.getElementById('page-'+id).classList.add('open'); closeCabinet(); }
-function closePage(id){ document.getElementById('page-'+id).classList.remove('open'); }
+function closePage(id){
+  document.getElementById('page-'+id).classList.remove('open');
+  // if we came from More, re-open cabinet; otherwise just restore tab
+  switchTab(currentTab);
+}
 
 /* ── THEME ────────────────────────────────────────────────────*/
 function applyTheme(t){
@@ -1261,7 +1269,7 @@ const QUIZ_SPIN_CATS = [
 let quizAnswers = [], quizCurrent = 0, quizSpinDeg = 0, quizSpinning = false;
 
 function openQuiz(){ document.getElementById('page-quiz').classList.add('open'); closeCabinet(); }
-function closeQuiz(){ document.getElementById('page-quiz').classList.remove('open'); }
+function closeQuiz(){ document.getElementById('page-quiz').classList.remove('open'); switchTab(currentTab); }
 
 function quizShow(id){
   ['quizIntro','quizQuestions','quizLoading','quizVerdict'].forEach(k => {
@@ -1525,11 +1533,15 @@ function downloadLP(){
 let currentTab = 'court';
 
 function switchTab(tab){
+  // close any open page overlay first (go home)
+  document.querySelectorAll('.page.open').forEach(p => {
+    if (p.id !== 'page-show' && p.id !== 'page-voice') p.classList.remove('open');
+  });
   currentTab = tab;
-  // update tab states
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  const btn = document.getElementById('tab-'+tab);
-  if (btn) btn.classList.add('active');
+  // update tab states everywhere (main bar + any injected page bars)
+  document.querySelectorAll('.tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.tab === tab);
+  });
 
   // show/hide main court area
   const courtArea = document.querySelector('.app .messages');
@@ -1558,8 +1570,9 @@ function switchTab(tab){
     openCabinet();
     // reset to court visually so More doesn't stay "active" after cabinet closes
     setTimeout(() => {
-      document.getElementById('tab-more').classList.remove('active');
-      document.getElementById('tab-'+currentTab).classList.add('active');
+      document.querySelectorAll('.tab').forEach(t => {
+        t.classList.toggle('active', t.dataset.tab === currentTab);
+      });
     }, 400);
   }
 }
@@ -1736,6 +1749,31 @@ function trackAff(partner, source){
   renderStage();
   renderCounsel();
   syncSession();
+
+  // Inject bottom tab bar into every .page overlay so navigation always visible
+  const pageTabHTML = `<nav class="tab-bar page-tab-bar" aria-label="Main navigation">
+    <button class="tab" data-tab="court" onclick="switchTab('court')" aria-label="Court">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 22h18M4 22V6l8-4 8 4v16M9 22v-5h6v5M9 10h.01M15 10h.01M9 14h.01M15 14h.01"/></svg>
+      Court
+    </button>
+    <button class="tab" data-tab="show" onclick="switchTab('show')" aria-label="The Show">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10,8 16,12 10,16"/></svg>
+      Show
+    </button>
+    <button class="tab" data-tab="voice" onclick="switchTab('voice')" aria-label="Voice Court">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+      Voice
+    </button>
+    <button class="tab" data-tab="more" onclick="switchTab('more')" aria-label="More">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      More
+    </button>
+  </nav>`;
+  document.querySelectorAll('.page').forEach(p => {
+    // skip show/voice — they have the main tab bar already via switchTab logic
+    if (p.id === 'page-show' || p.id === 'page-voice') return;
+    p.insertAdjacentHTML('beforeend', pageTabHTML);
+  });
 
   document.addEventListener('keydown', e => {
     if (e.key !== 'Escape') return;
