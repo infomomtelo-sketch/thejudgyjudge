@@ -1605,6 +1605,8 @@ function selectChip(btn, topic){
   document.getElementById('showTopic').value = topic;
 }
 
+const PODCAST_FN_URL = 'https://dmemzljerldzeiwqfxzp.supabase.co/functions/v1/judgy-podcast';
+
 async function generateEpisode(){
   const topic = document.getElementById('showTopic').value.trim();
   if (!topic){ showToast('Pick a topic first.'); return; }
@@ -1615,61 +1617,74 @@ async function generateEpisode(){
   document.getElementById('showPlayer').style.display = 'none';
   showAudioBlob = null;
 
-  const system = `You are writing a short podcast script between two characters arguing about a topic.
-
-JUDGY: Sharp, mean, authoritative woman. Cuts to the truth brutally. Short punchy sentences.
-BARRY: Polished, passive-aggressive ex-husband lawyer. Composed but quietly devastating.
-
-Rules:
-- 5 exchanges total, alternating JUDGY then BARRY
-- They roast each other AND the topic
-- Last exchange: they both reluctantly agree on ONE piece of genuine motivational advice
-- Format each line EXACTLY as: [JUDGY]: text or [BARRY]: text
-- End with: [VERDICT]: one sentence of real advice they both agree on
-- Keep each line under 30 words
-- Funny, sharp, real`;
-
   try {
-    const raw = await callClaude(system, `Topic: ${topic}`);
-    // For now play as text-to-speech using browser TTS until ElevenLabs is wired
+    const res = await fetch(PODCAST_FN_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ topic })
+    });
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+
+    // Decode base64 audio → Blob → Object URL
+    if (data.audio_b64) {
+      const bin = atob(data.audio_b64);
+      const bytes = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+      showAudioBlob = URL.createObjectURL(new Blob([bytes], { type: 'audio/mpeg' }));
+    }
+
     document.getElementById('showLoading').style.display = 'none';
-    renderShowScript(raw, topic);
+    renderShowScript(data.script || '', topic, data.lines || []);
   } catch(e){
     document.getElementById('showLoading').style.display = 'none';
     showToast('The studio had technical difficulties. Try again.');
+    console.error(e);
   }
   document.getElementById('showGoBtn').disabled = false;
 }
 
-function renderShowScript(raw, topic){
+function renderShowScript(raw, topic, lines){
   const player = document.getElementById('showPlayer');
   player.style.display = 'block';
 
-  // Parse lines
-  const lines = raw.split('\n').filter(l => l.trim());
-  let scriptHTML = `<div style="margin-bottom:14px"><div class="verdict-label" style="margin-bottom:6px">Episode: ${esc(topic)}</div>`;
-  lines.forEach(line => {
-    const judgy = line.match(/^\[JUDGY\]:\s*(.+)/i);
-    const barry = line.match(/^\[BARRY\]:\s*(.+)/i);
-    const verdict = line.match(/^\[VERDICT\]:\s*(.+)/i);
-    if (judgy){
-      scriptHTML += `<div style="margin-bottom:10px"><span style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--brass);font-weight:500">Judgy</span><div style="font-family:var(--serif);font-size:14.5px;line-height:1.6;margin-top:3px">${esc(judgy[1])}</div></div>`;
-    } else if (barry){
-      scriptHTML += `<div style="margin-bottom:10px"><span style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--graphite);font-weight:500">Barry</span><div style="font-family:var(--serif);font-size:14.5px;line-height:1.6;margin-top:3px">${esc(barry[1])}</div></div>`;
-    } else if (verdict){
-      scriptHTML += `<div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--hairline)"><div class="verdict-label" style="margin-bottom:5px">The Verdict</div><div class="verdict-text">${esc(verdict[1])}</div></div>`;
+  // Build script HTML from parsed lines
+  const parsed = lines.length ? lines : raw.split('\n').filter(l=>l.trim()).map(l=>{
+    const m = l.match(/^\[(JUDGY|BARRY|VERDICT)\]:\s*(.+)/i);
+    return m ? { speaker: m[1].toUpperCase(), text: m[2].trim() } : null;
+  }).filter(Boolean);
+
+  let scriptHTML = '';
+  parsed.forEach(({ speaker, text }) => {
+    if (speaker === 'JUDGY'){
+      scriptHTML += `<div style="margin-bottom:12px"><span style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--brass);font-weight:600">Judgy</span><div style="font-family:var(--serif);font-size:15px;line-height:1.6;margin-top:3px">${esc(text)}</div></div>`;
+    } else if (speaker === 'BARRY'){
+      scriptHTML += `<div style="margin-bottom:12px"><span style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--graphite);font-weight:600">Barry</span><div style="font-family:var(--serif);font-size:15px;line-height:1.6;margin-top:3px">${esc(text)}</div></div>`;
+    } else if (speaker === 'VERDICT'){
+      scriptHTML += `<div style="margin-top:16px;padding:14px 16px;background:var(--brass-soft);border-radius:10px;border-left:3px solid var(--brass)"><div class="verdict-label" style="margin-bottom:5px">The Verdict</div><div class="verdict-text">${esc(text)}</div></div>`;
     }
   });
-  scriptHTML += '</div>';
 
-  // Replace audio element with script display (audio added when ElevenLabs wired)
-  player.innerHTML = `<div class="show-player-label">Episode: ${esc(topic)}</div>
-    ${scriptHTML}
-    <div style="font-size:11px;color:var(--faint);margin-top:10px;margin-bottom:12px">🎙 Voice playback coming soon — ElevenLabs integration in progress</div>
+  // Audio player (real audio if available, hidden otherwise)
+  const audioHTML = showAudioBlob
+    ? `<audio id="showAudio" controls style="width:100%;margin-bottom:14px;border-radius:8px" src="${showAudioBlob}"></audio>`
+    : '';
+
+  player.innerHTML = `
+    <div class="show-player-label">🎙 ${esc(topic)}</div>
+    ${audioHTML}
+    <div style="margin-bottom:14px">${scriptHTML}</div>
     <div class="show-player-btns">
       <button onclick="copyEpisode()">⎘ Copy script</button>
       <button onclick="shareEpisode('${esc(topic)}')">↗ Share</button>
     </div>`;
+
+  // Auto-play
+  if (showAudioBlob){
+    const audio = document.getElementById('showAudio');
+    audio?.play().catch(()=>{});
+  }
+
   window._lastScript = raw;
   window._lastTopic = topic;
 }
