@@ -700,6 +700,25 @@ header{height:calc(50px + env(safe-area-inset-top));flex-shrink:0;display:flex;a
       </div>
     </div>
   </div>
+  <!-- tab bar so user can navigate away from Show -->
+  <nav class="tab-bar page-tab-bar" aria-label="Main navigation">
+    <button class="tab" data-tab="court" onclick="switchTab('court')" aria-label="Court">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 22h18M4 22V6l8-4 8 4v16M9 22v-5h6v5M9 10h.01M15 10h.01M9 14h.01M15 14h.01"/></svg>
+      Court
+    </button>
+    <button class="tab active" data-tab="show" onclick="switchTab('show')" aria-label="The Show">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10,8 16,12 10,16"/></svg>
+      Show
+    </button>
+    <button class="tab" data-tab="voice" onclick="switchTab('voice')" aria-label="Voice Court">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+      Voice
+    </button>
+    <button class="tab" data-tab="more" onclick="switchTab('more')" aria-label="More">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      More
+    </button>
+  </nav>
 </div>
 
 <!-- ═══ VOICE COURT ════════════════════════════════════════════ -->
@@ -716,9 +735,31 @@ header{height:calc(50px + env(safe-area-inset-top));flex-shrink:0;display:flex;a
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
       </button>
       <div class="voice-status" id="voiceStatus">Tap to speak</div>
-      <span class="voice-coming">ElevenLabs voices — coming soon</span>
+      <div style="margin-top:24px;padding:14px 18px;background:var(--brass-soft);border-radius:12px;border:1px solid var(--brass);max-width:280px;text-align:center">
+        <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--brass);font-weight:600;margin-bottom:6px">Coming Soon</div>
+        <div style="font-size:13px;color:var(--graphite);line-height:1.5">Live voice court with ElevenLabs — Judgy will hear you and talk back in real time.</div>
+      </div>
     </div>
   </div>
+  <!-- tab bar so user can navigate away -->
+  <nav class="tab-bar page-tab-bar" aria-label="Main navigation">
+    <button class="tab" data-tab="court" onclick="switchTab('court')" aria-label="Court">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 22h18M4 22V6l8-4 8 4v16M9 22v-5h6v5M9 10h.01M15 10h.01M9 14h.01M15 14h.01"/></svg>
+      Court
+    </button>
+    <button class="tab" data-tab="show" onclick="switchTab('show')" aria-label="The Show">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10,8 16,12 10,16"/></svg>
+      Show
+    </button>
+    <button class="tab active" data-tab="voice" onclick="switchTab('voice')" aria-label="Voice Court">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+      Voice
+    </button>
+    <button class="tab" data-tab="more" onclick="switchTab('more')" aria-label="More">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      More
+    </button>
+  </nav>
 </div>
 
 <!-- ═══ PAYWALL ═══════════════════════════════════════════════ -->
@@ -1533,19 +1574,18 @@ function downloadLP(){
 let currentTab = 'court';
 
 function switchTab(tab){
-  // close any open page overlay first (go home)
+  // close all non-tab page overlays (quiz, forms, etc.)
   document.querySelectorAll('.page.open').forEach(p => {
     if (p.id !== 'page-show' && p.id !== 'page-voice') p.classList.remove('open');
   });
+  // court area always visible — never hidden
   currentTab = tab;
   // update tab states everywhere (main bar + any injected page bars)
   document.querySelectorAll('.tab').forEach(t => {
     t.classList.toggle('active', t.dataset.tab === tab);
   });
 
-  // show/hide main court area
-  const courtArea = document.querySelector('.app .messages');
-  const courtDock = document.querySelector('.app .dock');
+  // Show/Voice are position:fixed overlays — court always stays rendered underneath
   const showPage  = document.getElementById('page-show');
   const voicePage = document.getElementById('page-voice');
 
@@ -1553,20 +1593,11 @@ function switchTab(tab){
   showPage.classList.remove('open');
   voicePage.classList.remove('open');
 
-  if (tab === 'court'){
-    courtArea.style.display = '';
-    courtDock.style.display = '';
-  } else if (tab === 'show'){
-    courtArea.style.display = 'none';
-    courtDock.style.display = 'none';
+  if (tab === 'show'){
     showPage.classList.add('open');
   } else if (tab === 'voice'){
-    courtArea.style.display = 'none';
-    courtDock.style.display = 'none';
     voicePage.classList.add('open');
   } else if (tab === 'more'){
-    courtArea.style.display = '';
-    courtDock.style.display = '';
     openCabinet();
     // reset to court visually so More doesn't stay "active" after cabinet closes
     setTimeout(() => {
