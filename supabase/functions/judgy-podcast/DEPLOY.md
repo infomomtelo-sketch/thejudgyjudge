@@ -35,3 +35,40 @@ The function is public on purpose: the browser calls it with no key. That is acc
 - only the thejudgy.com origins are allowed, and there is a kill switch.
 
 The alternative is to turn Verify JWT **on** and have the browser send the public anon key (`Authorization: Bearer <anon key>` and `apikey: <anon key>`). The CORS headers already allow both. The anon key is public, so this only filters out callers that aren't using Supabase. The caps stay the real protection either way.
+
+## Manual test checklist (after deploying)
+
+**A. Supabase, SQL editor**
+- [ ] `select * from podcast_usage;` → 0 rows.
+- [ ] `select has_table_privilege('anon','public.podcast_usage','select');` → `false`.
+- [ ] `select has_function_privilege('anon','public.podcast_try_consume(date,text,integer,integer)','execute');` → `false`.
+- [ ] The three curl checks in step 5 → 400, then 403, then a JSON episode.
+
+**B. On your phone (iPhone Safari first, then Android Chrome), at thejudgy.com**
+- [ ] The bottom bar reads **Court · Show · More**, with no Voice tab. Open any page from More: the bar is still there and doesn't cover the last line of text.
+- [ ] More → Privacy mentions **ElevenLabs** and "AI-generated voices". More → Barry's referrals has no "affiliate" claim, and each link opens a plain URL (no `?referral=`).
+- [ ] Show → tap a topic chip → **Go to court**. You see "Judgy and Barry are arguing…" for roughly 10–40 s, then the player with **"AI-generated voices. Judgy and Barry are fictional characters…"** above it.
+- [ ] Press play (iOS usually blocks autoplay). You should hear Judgy's voice and Barry's voice take turns, then the verdict. **The time shown should match the whole episode, and it should play to the end without stopping after the first line.** This is the one thing I couldn't test (no Safari/WebKit here).
+- [ ] Share → the share text includes "(AI-generated voices)".
+- [ ] Make a second episode: the first one's audio stops and the new one plays.
+- [ ] From the same network, the 6th episode of the day shows "That's all the episodes for today. Court reconvenes tomorrow." Everyone on the same Wi-Fi shares one IP; switching to mobile data gives you a fresh 5.
+
+**C. Supabase → Edge Functions → judgy-podcast → Logs**
+- [ ] A successful episode writes **no** `[judgy-podcast]` lines. The function only logs failures.
+- [ ] If audio is missing, the log line tells you why:
+  - `tts_skipped reason=voice_ids_not_set` → paste the voice IDs.
+  - `tts_failed status=401` → ElevenLabs key.
+  - `status=422` → voice ID or model ID.
+  - `status=429` → ElevenLabs quota.
+- [ ] Other lines to recognise:
+  - `anthropic_failed status=401` → key; `404` → model not available to the account.
+  - `usage_store_failed reason=usage_store_status_404` → the SQL wasn't run.
+  - `missing_PODCAST_IP_SALT` → the secret isn't set.
+- [ ] No topic text and no IP address appear anywhere in the logs.
+- [ ] `select day, key, count from podcast_usage order by day desc, key;` → the `global` count equals the number of episodes made today. Every other key is `ip:` followed by 64 hex characters.
+
+**D. Kill switch**
+- [ ] Set `PODCAST_ENABLED=false`. Go to court now shows "The Show is off the air right now. Back soon." and no new rows or counts appear. Remove the secret (or set it to `true`) to turn the Show back on.
+
+**E. Next day**
+- [ ] ElevenLabs usage should be about episodes × 2,200 characters or less. Anthropic usage should show only `claude-haiku-4-5-20251001`.
