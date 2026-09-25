@@ -335,7 +335,7 @@ header{height:calc(50px + env(safe-area-inset-top));flex-shrink:0;display:flex;a
 
 /* ══ TOAST ══ */
 /* sits above the bottom tab bar; fully hidden when idle so it never peeks over a tab */
-.toast{position:fixed;left:50%;bottom:calc(72px + env(safe-area-inset-bottom));transform:translate(-50%,12px);opacity:0;visibility:hidden;z-index:950;padding:11px 20px;border-radius:100px;background:var(--chrome);color:var(--chrome-ink);font-size:13px;transition:transform .4s var(--ease),opacity .3s,visibility .3s;white-space:nowrap;max-width:calc(100vw - 32px);overflow:hidden;text-overflow:ellipsis}
+.toast{position:fixed;left:50%;bottom:calc(72px + env(safe-area-inset-bottom));transform:translate(-50%,12px);opacity:0;visibility:hidden;z-index:950;padding:11px 20px;border-radius:18px;background:var(--chrome);color:var(--chrome-ink);font-size:13px;line-height:1.4;text-align:center;transition:transform .4s var(--ease),opacity .3s,visibility .3s;width:max-content;max-width:calc(100vw - 32px)}
 .toast.show{transform:translate(-50%,0);opacity:1;visibility:visible}
 
 @media(max-width:560px){
@@ -1666,14 +1666,20 @@ function selectChip(btn, topic){
 const PODCAST_FN_URL = 'https://dmemzljerldzeiwqfxzp.supabase.co/functions/v1/judgy-podcast';
 
 async function generateEpisode(){
-  const topic = document.getElementById('showTopic').value.trim();
+  const topic = document.getElementById('showTopic').value.replace(/\s+/g,' ').trim();
   if (!topic){ showToast('Pick a topic first.'); return; }
+  if (topic.length < 3){ showToast('Give them a bit more to argue about.'); return; }
   if (!checkLimit()) return;
 
-  document.getElementById('showGoBtn').disabled = true;
-  document.getElementById('showLoading').style.display = 'block';
+  const goBtn = document.getElementById('showGoBtn');
+  const loading = document.getElementById('showLoading');
+  goBtn.disabled = true;
+  loading.style.display = 'block';
   document.getElementById('showPlayer').style.display = 'none';
-  showAudioBlob = null;
+
+  // drop the previous episode's audio before making a new one
+  document.getElementById('showAudio')?.pause();
+  if (showAudioBlob){ URL.revokeObjectURL(showAudioBlob); showAudioBlob = null; }
 
   try {
     const res = await fetch(PODCAST_FN_URL, {
@@ -1681,25 +1687,31 @@ async function generateEpisode(){
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ topic })
     });
-    const data = await res.json();
-    if (data.error) throw new Error(data.error);
+    let data = {};
+    try { data = await res.json(); } catch(e){ /* gateway error pages aren't JSON */ }
+
+    if (res.status === 429){ showToast(data.error || "That's all the episodes for today. Court reconvenes tomorrow."); return; }
+    if (res.status === 503){ showToast(data.error || 'The Show is off the air right now. Back soon.'); return; }
+    if (res.status === 400){ showToast(data.error || 'Try a different topic.'); return; }
+    if (!res.ok || data.error) throw new Error(`podcast ${res.status}`);
 
     // Decode base64 audio → Blob → Object URL
-    if (data.audio_b64) {
+    if (data.audio_b64){
       const bin = atob(data.audio_b64);
       const bytes = new Uint8Array(bin.length);
       for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
       showAudioBlob = URL.createObjectURL(new Blob([bytes], { type: 'audio/mpeg' }));
     }
 
-    document.getElementById('showLoading').style.display = 'none';
     renderShowScript(data.script || '', topic, data.lines || []);
+    if (data.audio_error) showToast("The voices lost theirs — here's the script.");
   } catch(e){
-    document.getElementById('showLoading').style.display = 'none';
     showToast('The studio had technical difficulties. Try again.');
     console.error(e);
+  } finally {
+    loading.style.display = 'none';
+    goBtn.disabled = false;
   }
-  document.getElementById('showGoBtn').disabled = false;
 }
 
 function renderShowScript(raw, topic, lines){
