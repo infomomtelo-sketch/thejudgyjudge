@@ -1,11 +1,6 @@
 # judgy-podcast — deploy (Supabase dashboard, project dmemzljerldzeiwqfxzp)
 
-1. **Before you replace anything, copy from the current dashboard code:**
-   - Judgy's and Barry's ElevenLabs voice IDs, plus the verdict voice if it's different → paste into `JUDGY_VOICE_ID` / `BARRY_VOICE_ID` / `VERDICT_VOICE_ID` at the top of `index.ts`.
-   - The ElevenLabs `model_id`, if it isn't `eleven_multilingual_v2` → `ELEVEN_MODEL_ID`.
-   - The script prompt, if you prefer the old wording → `SHOW_PROMPT`. Keep the `[JUDGY]` / `[BARRY]` / `[VERDICT]` format.
-
-   Until the voice IDs are pasted in, the function works but returns script-only episodes, and the log says `tts_skipped reason=voice_ids_not_set`.
+1. **Voices:** Judgy (`54Cze5LrTSyLgbO6Fhlc`) and Barry (`8ZYhGJrsDOe4C8yzEEhP`) are already set at the top of `index.ts`. The verdict is read in Judgy's voice. If you ever change them, edit only those constants and redeploy.
 
 2. **SQL editor** → paste and run `supabase/sql/podcast_usage.sql`. This creates the `podcast_usage` table with RLS on and no policies, plus the `podcast_try_consume` function, which only `service_role` can execute.
 

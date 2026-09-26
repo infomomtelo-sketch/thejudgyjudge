@@ -18,11 +18,9 @@ import Anthropic from "npm:@anthropic-ai/sdk@0.128.0";
 import { encodeBase64 } from "jsr:@std/encoding@1.0.11/base64";
 
 /* ── VOICES ───────────────────────────────────────────────────
-   Paste the voice IDs your current dashboard version uses — do not pick new
-   ones. Until they are filled in, episodes come back script-only
-   (audio_error: true) and the log says why. */
-const JUDGY_VOICE_ID = "PASTE_JUDGY_VOICE_ID";
-const BARRY_VOICE_ID = "PASTE_BARRY_VOICE_ID";
+   ElevenLabs voice IDs chosen by Eli. Change them only on purpose. */
+const JUDGY_VOICE_ID = "54Cze5LrTSyLgbO6Fhlc";
+const BARRY_VOICE_ID = "8ZYhGJrsDOe4C8yzEEhP";
 const VERDICT_VOICE_ID = JUDGY_VOICE_ID; // the verdict is read by Judgy unless your current version differs
 const ELEVEN_MODEL_ID = "eleven_multilingual_v2"; // match your current version if it uses another
 
