@@ -826,6 +826,11 @@ header{height:calc(50px + env(safe-area-inset-top));flex-shrink:0;display:flex;a
 <div class="toast" id="toast"><span id="toastMsg"></span></div>
 
 <script>
+/* "thejudgy.com." (trailing dot) is a separate origin to the browser — its own
+   storage, and the podcast function's CORS. Send it to the canonical host. */
+if (location.hostname.endsWith('.')){
+  location.replace(location.href.replace(location.host, location.host.replace(/\.(?=$|:)/, '')));
+}
 /* ══════════════════════════════════════════════════════════════
    THE JUDGY — Phase 1
    One stage (user + Judgy), one cabinet (everything else).
