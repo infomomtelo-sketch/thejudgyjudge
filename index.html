@@ -13,7 +13,6 @@
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://thejudgy.com/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@thejudgy.com">
 <meta name="twitter:title" content="The Judgy — Brutally Honest AI Advice">
 <meta name="twitter:description" content="Bring any case. Get a verdict. No filter. Free to try.">
 <meta name="twitter:image" content="https://thejudgy.com/og-image.jpg">
@@ -203,6 +202,7 @@ header{height:calc(50px + env(safe-area-inset-top));flex-shrink:0;display:flex;a
 .notice{border-left:2px solid var(--brass);padding:2px 0 2px 15px;margin-bottom:28px}
 .notice strong{display:block;font-size:10px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--brass);margin-bottom:6px}
 .notice p{font-size:14px;color:var(--graphite)}
+.aff-disclosure{font-size:12.5px;line-height:1.6;color:var(--faint);margin:0 0 18px}
 
 /* forms */
 .card{border:1px solid var(--hairline);border-radius:12px;padding:18px;background:var(--raised)}
@@ -314,6 +314,7 @@ header{height:calc(50px + env(safe-area-inset-top));flex-shrink:0;display:flex;a
 @keyframes gavel{from{transform:rotate(-12deg)}to{transform:rotate(12deg)}}
 .show-loading p{font-size:13.5px;color:var(--graphite)}
 .show-player{display:none;margin-top:20px;border:1px solid var(--hairline);border-radius:12px;padding:16px;background:var(--raised)}
+.show-ai-note{font-size:11.5px;line-height:1.5;color:var(--faint);margin-bottom:10px}
 .show-player-label{font-size:9.5px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--brass);margin-bottom:10px}
 .show-player audio{width:100%;margin-bottom:12px}
 .show-player-btns{display:flex;gap:8px}
@@ -333,8 +334,9 @@ header{height:calc(50px + env(safe-area-inset-top));flex-shrink:0;display:flex;a
 .voice-coming{display:inline-block;margin-top:6px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);border:1px solid var(--hairline);border-radius:100px;padding:4px 12px}
 
 /* ══ TOAST ══ */
-.toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,140%);z-index:950;padding:11px 20px;border-radius:100px;background:var(--chrome);color:var(--chrome-ink);font-size:13px;transition:transform .4s var(--ease);white-space:nowrap}
-.toast.show{transform:translate(-50%,0)}
+/* sits above the bottom tab bar; fully hidden when idle so it never peeks over a tab */
+.toast{position:fixed;left:50%;bottom:calc(72px + env(safe-area-inset-bottom));transform:translate(-50%,12px);opacity:0;visibility:hidden;z-index:950;padding:11px 20px;border-radius:18px;background:var(--chrome);color:var(--chrome-ink);font-size:13px;line-height:1.4;text-align:center;transition:transform .4s var(--ease),opacity .3s,visibility .3s;width:max-content;max-width:calc(100vw - 32px)}
+.toast.show{transform:translate(-50%,0);opacity:1;visibility:visible}
 
 @media(max-width:560px){
   .messages{padding:20px 14px 6px}
@@ -451,7 +453,7 @@ header{height:calc(50px + env(safe-area-inset-top));flex-shrink:0;display:flex;a
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10,8 16,12 10,16"/></svg>
       Show
     </button>
-    <button class="tab" id="tab-voice" data-tab="voice" onclick="switchTab('voice')" aria-label="Voice Court">
+    <button class="tab" id="tab-voice" data-feature="voiceCourt" data-tab="voice" onclick="switchTab('voice')" aria-label="Voice Court">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
       Voice
     </button>
@@ -531,8 +533,9 @@ header{height:calc(50px + env(safe-area-inset-top));flex-shrink:0;display:flex;a
   <div class="page-head"><button class="hbtn" onclick="closePage('privacy')" aria-label="Back"><svg width="17" height="17" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><line x1="15" y1="9" x2="3" y2="9"/><polyline points="8,4 3,9 8,14"/></svg></button><div class="page-title">Privacy</div></div>
   <div class="page-body">
     <div class="sec"><h3>What we collect</h3><p>When you use The Judgy, we may collect messages you send, account information if you sign up, usage data, and device or browser information.</p></div>
-    <div class="sec"><h3>How we use it</h3><p>To provide AI responses via Anthropic's Claude API, to improve the service, to process payments via Stripe, and to send service-related emails.</p></div>
-    <div class="sec"><h3>Third parties</h3><p>We use Anthropic (AI), Supabase (database and auth), Stripe (payments), and Cloudflare (hosting). Each has their own privacy policy.</p></div>
+    <div class="sec"><h3>How we use it</h3><p>To provide AI responses via Anthropic's Claude API, to turn episodes of The Show into audio via ElevenLabs, to improve the service, to process payments via Stripe, and to send service-related emails.</p></div>
+    <div class="sec"><h3>The Show</h3><p>The topic you type in The Show is sent to Anthropic to write the episode, and the episode script — which can include your topic — is sent to ElevenLabs for text-to-speech. Episodes use AI-generated voices. Judgy and Barry are fictional characters, not real people.</p></div>
+    <div class="sec"><h3>Third parties</h3><p>We use Anthropic (AI), ElevenLabs (text-to-speech), Supabase (database and auth), Stripe (payments), and Cloudflare (hosting). Each has their own privacy policy.</p></div>
     <div class="sec"><h3>Your rights</h3><p>You can request deletion of your data at any time. We do not sell your personal information to third parties.</p></div>
   </div>
 </div>
@@ -542,7 +545,7 @@ header{height:calc(50px + env(safe-area-inset-top));flex-shrink:0;display:flex;a
   <div class="page-body">
     <div class="sec"><h3>Acceptance</h3><p>By using The Judgy, you agree to these terms.</p></div>
     <div class="sec"><h3>Use of service</h3><ul><li>You must be 18 or older</li><li>Do not use for illegal purposes</li><li>Do not rely on responses as actual legal or financial advice</li></ul></div>
-    <div class="sec"><h3>Subscriptions and billing</h3><p>Paid plans are billed monthly or annually. Cancel anytime. Refunds handled case-by-case within 7 days.</p></div>
+    <div class="sec"><h3>Subscriptions and billing</h3><p>Pro is billed monthly — cancel anytime. Packs and top-ups are one-time purchases. Refunds handled case-by-case within 7 days.</p></div>
     <div class="sec"><h3>Limitation of liability</h3><p>We are not liable for any decisions made based on AI responses. Always consult professionals for important matters.</p></div>
   </div>
 </div>
@@ -608,34 +611,36 @@ header{height:calc(50px + env(safe-area-inset-top));flex-shrink:0;display:flex;a
 <div class="page" id="page-referrals">
   <div class="page-head"><button class="hbtn" onclick="closePage('referrals')" aria-label="Back"><svg width="17" height="17" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><line x1="15" y1="9" x2="3" y2="9"/><polyline points="8,4 3,9 8,14"/></svg></button><div class="page-title">Referrals</div></div>
   <div class="page-body">
-    <p class="lede">Barry's vetted resources. He actually researched these. Shocking, I know. — The Judgy</p>
-    <div class="sec"><h3>Legal</h3>
-      <div class="links">
-        <a href="https://www.legalzoom.com/?utm_source=thejudgy&utm_medium=referrals&utm_campaign=barry" target="_blank" rel="noopener" onclick="trackAff('legalzoom','referrals')">LegalZoom — Online legal documents and attorney consultation</a>
-        <a href="https://www.rocketlawyer.com/?utm_source=thejudgy&utm_medium=referrals&utm_campaign=barry" target="_blank" rel="noopener" onclick="trackAff('rocketlawyer','referrals')">Rocket Lawyer — Legal documents and advice</a>
-        <a href="https://www.avvo.com/?utm_source=thejudgy&utm_medium=referrals&utm_campaign=barry" target="_blank" rel="noopener" onclick="trackAff('avvo','referrals')">Avvo — Find a local attorney</a>
+    <p class="lede">Barry's shortlist of well-known places to start. Do your own homework before you sign up for anything — he'd insist. — The Judgy</p>
+    <div data-aff-group>
+      <p class="aff-disclosure" hidden>Some of these are affiliate links — we may earn a commission if you sign up, at no extra cost to you.</p>
+      <div class="sec"><h3>Legal</h3>
+        <div class="links">
+          <a data-aff="legalzoom" target="_blank" rel="noopener">LegalZoom — Online legal documents and attorney consultation</a>
+          <a data-aff="rocketlawyer" target="_blank" rel="noopener">Rocket Lawyer — Legal documents and advice</a>
+          <a data-aff="avvo" target="_blank" rel="noopener">Avvo — Find a local attorney</a>
+        </div>
+      </div>
+      <div class="sec"><h3>Tax and finance</h3>
+        <div class="links">
+          <a data-aff="turbotax" target="_blank" rel="noopener">TurboTax — File your taxes online</a>
+          <a data-aff="creditkarma" target="_blank" rel="noopener">Credit Karma — Free credit monitoring</a>
+          <a data-aff="nerdwallet" target="_blank" rel="noopener">NerdWallet — Financial advice and comparisons</a>
+        </div>
+      </div>
+      <div class="sec"><h3>Mental health</h3>
+        <div class="links">
+          <a data-aff="betterhelp" target="_blank" rel="noopener">BetterHelp — Online therapy with licensed therapists</a>
+          <a data-aff="talkspace" target="_blank" rel="noopener">Talkspace — Therapy via text, voice and video</a>
+        </div>
+      </div>
+      <div class="sec"><h3>Business formation</h3>
+        <div class="links">
+          <a data-aff="bizee" target="_blank" rel="noopener">Bizee — Form your LLC or Corp</a>
+          <a data-aff="stripe" target="_blank" rel="noopener">Stripe — Accept payments online</a>
+        </div>
       </div>
     </div>
-    <div class="sec"><h3>Tax and finance</h3>
-      <div class="links">
-        <a href="https://turbotax.intuit.com/?utm_source=thejudgy&utm_medium=referrals&utm_campaign=barry" target="_blank" rel="noopener" onclick="trackAff('turbotax','referrals')">TurboTax — File your taxes online</a>
-        <a href="https://www.creditkarma.com/?utm_source=thejudgy&utm_medium=referrals&utm_campaign=barry" target="_blank" rel="noopener" onclick="trackAff('creditkarma','referrals')">Credit Karma — Free credit monitoring</a>
-        <a href="https://www.nerdwallet.com/?utm_source=thejudgy&utm_medium=referrals&utm_campaign=barry" target="_blank" rel="noopener" onclick="trackAff('nerdwallet','referrals')">NerdWallet — Financial advice and comparisons</a>
-      </div>
-    </div>
-    <div class="sec"><h3>Mental health</h3>
-      <div class="links">
-        <a href="https://www.betterhelp.com/?referral=thejudgy&utm_source=thejudgy&utm_medium=referrals&utm_campaign=barry" target="_blank" rel="noopener" onclick="trackAff('betterhelp','referrals')">BetterHelp — Online therapy with licensed therapists</a>
-        <a href="https://www.talkspace.com/?utm_source=thejudgy&utm_medium=referrals&utm_campaign=barry" target="_blank" rel="noopener" onclick="trackAff('talkspace','referrals')">Talkspace — Therapy via text, voice and video</a>
-      </div>
-    </div>
-    <div class="sec"><h3>Business formation</h3>
-      <div class="links">
-        <a href="https://www.incfile.com/?utm_source=thejudgy&utm_medium=referrals&utm_campaign=barry" target="_blank" rel="noopener" onclick="trackAff('bizee','referrals')">Bizee — Form your LLC or Corp</a>
-        <a href="https://stripe.com/?utm_source=thejudgy&utm_medium=referrals&utm_campaign=barry" target="_blank" rel="noopener" onclick="trackAff('stripe','referrals')">Stripe — Accept payments online</a>
-      </div>
-    </div>
-    <div class="notice"><strong>Disclosure</strong><p>Some links on this page are affiliate links. Barry gets a small commission — which he will absolutely brag about to Judgy.</p></div>
   </div>
 </div>
 
@@ -693,10 +698,13 @@ header{height:calc(50px + env(safe-area-inset-top));flex-shrink:0;display:flex;a
 
     <div style="margin-top:28px;padding-top:20px;border-top:1px solid var(--hairline)">
       <div style="font-size:9.5px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);margin-bottom:12px">Barry's recommendations</div>
-      <div class="links">
-        <a class="aff-link" href="https://www.betterhelp.com/?referral=thejudgy&utm_source=thejudgy&utm_medium=show&utm_campaign=podcast" target="_blank" rel="noopener" onclick="trackAff('betterhelp','show')">BetterHelp — Talk to a real therapist</a>
-        <a class="aff-link" href="https://www.legalzoom.com/?utm_source=thejudgy&utm_medium=show&utm_campaign=podcast" target="_blank" rel="noopener" onclick="trackAff('legalzoom','show')">LegalZoom — Sort it out legally</a>
-        <a class="aff-link" href="https://www.nerdwallet.com/?utm_source=thejudgy&utm_medium=show&utm_campaign=podcast" target="_blank" rel="noopener" onclick="trackAff('nerdwallet','show')">NerdWallet — Make smarter money moves</a>
+      <div data-aff-group>
+        <p class="aff-disclosure" hidden>Some of these are affiliate links — we may earn a commission if you sign up, at no extra cost to you.</p>
+        <div class="links">
+          <a data-aff="betterhelp" target="_blank" rel="noopener">BetterHelp — Talk to a real therapist</a>
+          <a data-aff="legalzoom" target="_blank" rel="noopener">LegalZoom — Sort it out legally</a>
+          <a data-aff="nerdwallet" target="_blank" rel="noopener">NerdWallet — Make smarter money moves</a>
+        </div>
       </div>
     </div>
   </div>
@@ -710,7 +718,7 @@ header{height:calc(50px + env(safe-area-inset-top));flex-shrink:0;display:flex;a
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10,8 16,12 10,16"/></svg>
       Show
     </button>
-    <button class="tab" data-tab="voice" onclick="switchTab('voice')" aria-label="Voice Court">
+    <button class="tab" data-feature="voiceCourt" data-tab="voice" onclick="switchTab('voice')" aria-label="Voice Court">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
       Voice
     </button>
@@ -722,7 +730,8 @@ header{height:calc(50px + env(safe-area-inset-top));flex-shrink:0;display:flex;a
 </div>
 
 <!-- ═══ VOICE COURT ════════════════════════════════════════════ -->
-<div class="page" id="page-voice">
+<!-- Parked: gated by FEATURES.voiceCourt. -->
+<div class="page" id="page-voice" data-feature="voiceCourt">
   <div class="page-head">
     <div class="page-title" style="font-size:14px;letter-spacing:.12em">🎤 Voice Court</div>
   </div>
@@ -827,7 +836,25 @@ header{height:calc(50px + env(safe-area-inset-top));flex-shrink:0;display:flex;a
 const FEATURES = {
   landingBuilder: false,   // moved to ownsite.app
   liveCourtroom:  false,   // parked
-  standaloneSpin: false    // folded into the quiz
+  standaloneSpin: false,   // folded into the quiz
+  voiceCourt:     false    // stub only — no live voice yet
+};
+
+/* Partner links. None of these are affiliate links today — they are
+   plain links. When a real tracking URL arrives from a partner
+   programme, drop it in `url` and set isAffiliate:true; the
+   "we may earn a commission" line then renders next to that group. */
+const AFF_LINKS = {
+  legalzoom:    { url:'https://www.legalzoom.com/',    isAffiliate:false },
+  rocketlawyer: { url:'https://www.rocketlawyer.com/', isAffiliate:false },
+  avvo:         { url:'https://www.avvo.com/',         isAffiliate:false },
+  turbotax:     { url:'https://turbotax.intuit.com/',  isAffiliate:false },
+  creditkarma:  { url:'https://www.creditkarma.com/',  isAffiliate:false },
+  nerdwallet:   { url:'https://www.nerdwallet.com/',   isAffiliate:false },
+  betterhelp:   { url:'https://www.betterhelp.com/',   isAffiliate:false },
+  talkspace:    { url:'https://www.talkspace.com/',    isAffiliate:false },
+  bizee:        { url:'https://www.incfile.com/',      isAffiliate:false },
+  stripe:       { url:'https://stripe.com/',           isAffiliate:false }
 };
 
 /* ── THE SEAL ─────────────────────────────────────────────────
@@ -1591,11 +1618,11 @@ function switchTab(tab){
 
   // close all tab-driven pages first
   showPage.classList.remove('open');
-  voicePage.classList.remove('open');
+  if (voicePage) voicePage.classList.remove('open');
 
   if (tab === 'show'){
     showPage.classList.add('open');
-  } else if (tab === 'voice'){
+  } else if (tab === 'voice' && voicePage){
     voicePage.classList.add('open');
   } else if (tab === 'more'){
     openCabinet();
@@ -1639,14 +1666,20 @@ function selectChip(btn, topic){
 const PODCAST_FN_URL = 'https://dmemzljerldzeiwqfxzp.supabase.co/functions/v1/judgy-podcast';
 
 async function generateEpisode(){
-  const topic = document.getElementById('showTopic').value.trim();
+  const topic = document.getElementById('showTopic').value.replace(/\s+/g,' ').trim();
   if (!topic){ showToast('Pick a topic first.'); return; }
+  if (topic.length < 3){ showToast('Give them a bit more to argue about.'); return; }
   if (!checkLimit()) return;
 
-  document.getElementById('showGoBtn').disabled = true;
-  document.getElementById('showLoading').style.display = 'block';
+  const goBtn = document.getElementById('showGoBtn');
+  const loading = document.getElementById('showLoading');
+  goBtn.disabled = true;
+  loading.style.display = 'block';
   document.getElementById('showPlayer').style.display = 'none';
-  showAudioBlob = null;
+
+  // drop the previous episode's audio before making a new one
+  document.getElementById('showAudio')?.pause();
+  if (showAudioBlob){ URL.revokeObjectURL(showAudioBlob); showAudioBlob = null; }
 
   try {
     const res = await fetch(PODCAST_FN_URL, {
@@ -1654,25 +1687,31 @@ async function generateEpisode(){
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ topic })
     });
-    const data = await res.json();
-    if (data.error) throw new Error(data.error);
+    let data = {};
+    try { data = await res.json(); } catch(e){ /* gateway error pages aren't JSON */ }
+
+    if (res.status === 429){ showToast(data.error || "That's all the episodes for today. Court reconvenes tomorrow."); return; }
+    if (res.status === 503){ showToast(data.error || 'The Show is off the air right now. Back soon.'); return; }
+    if (res.status === 400){ showToast(data.error || 'Try a different topic.'); return; }
+    if (!res.ok || data.error) throw new Error(`podcast ${res.status}`);
 
     // Decode base64 audio → Blob → Object URL
-    if (data.audio_b64) {
+    if (data.audio_b64){
       const bin = atob(data.audio_b64);
       const bytes = new Uint8Array(bin.length);
       for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
       showAudioBlob = URL.createObjectURL(new Blob([bytes], { type: 'audio/mpeg' }));
     }
 
-    document.getElementById('showLoading').style.display = 'none';
     renderShowScript(data.script || '', topic, data.lines || []);
+    if (data.audio_error) showToast("The voices lost theirs — here's the script.");
   } catch(e){
-    document.getElementById('showLoading').style.display = 'none';
     showToast('The studio had technical difficulties. Try again.');
     console.error(e);
+  } finally {
+    loading.style.display = 'none';
+    goBtn.disabled = false;
   }
-  document.getElementById('showGoBtn').disabled = false;
 }
 
 function renderShowScript(raw, topic, lines){
@@ -1701,13 +1740,18 @@ function renderShowScript(raw, topic, lines){
     ? `<audio id="showAudio" controls style="width:100%;margin-bottom:14px;border-radius:8px" src="${showAudioBlob}"></audio>`
     : '';
 
+  const aiNote = showAudioBlob
+    ? 'AI-generated voices. Judgy and Barry are fictional characters, not real people.'
+    : 'AI-generated episode. Judgy and Barry are fictional characters, not real people.';
+
   player.innerHTML = `
     <div class="show-player-label">🎙 ${esc(topic)}</div>
+    <div class="show-ai-note">${aiNote}</div>
     ${audioHTML}
     <div style="margin-bottom:14px">${scriptHTML}</div>
     <div class="show-player-btns">
       <button onclick="copyEpisode()">⎘ Copy script</button>
-      <button onclick="shareEpisode('${esc(topic)}')">↗ Share</button>
+      <button onclick="shareEpisode(window._lastTopic)">↗ Share</button>
     </div>`;
 
   // Auto-play
@@ -1725,7 +1769,7 @@ function copyEpisode(){
 }
 
 function shareEpisode(topic){
-  const text = `Judgy & Barry just roasted "${topic || 'this topic'}" on The Judgy Show 🎙 thejudgy.com`;
+  const text = `Judgy & Barry just roasted "${topic || 'this topic'}" on The Judgy Show 🎙 (AI-generated voices) thejudgy.com`;
   if (navigator.share){ navigator.share({ text, url:'https://thejudgy.com' }).catch(()=>{}); }
   else { try { navigator.clipboard.writeText(text); showToast('Copied to clipboard.'); } catch(e){} }
 }
@@ -1757,9 +1801,18 @@ function toggleVoice(){
   }
 }
 
-/* ── AFFILIATE TRACKING ───────────────────────────────────────*/
-function trackAff(partner, source){
-  try { localStorage.setItem(`judgy_aff_${partner}`, Date.now() + ':' + source); } catch(e){}
+/* ── PARTNER LINKS ────────────────────────────────────────────*/
+function applyAffLinks(){
+  document.querySelectorAll('a[data-aff]').forEach(a => {
+    const link = AFF_LINKS[a.dataset.aff];
+    if (!link){ a.remove(); return; }
+    a.href = link.url;
+    a.rel = link.isAffiliate ? 'sponsored noopener' : 'noopener';
+  });
+  document.querySelectorAll('[data-aff-group]').forEach(g => {
+    const paid = [...g.querySelectorAll('a[data-aff]')].some(a => AFF_LINKS[a.dataset.aff].isAffiliate);
+    g.querySelectorAll('.aff-disclosure').forEach(d => d.hidden = !paid);
+  });
 }
 
 /* ── BOOT ─────────────────────────────────────────────────────*/
@@ -1773,7 +1826,8 @@ function trackAff(partner, source){
   document.getElementById('authSeal').innerHTML = seal(32);
   document.getElementById('showSeal').innerHTML = seal(44);
   document.getElementById('showLoadSeal').innerHTML = seal(36);
-  document.getElementById('voiceSeal').innerHTML = seal(52);
+  const voiceSeal = document.getElementById('voiceSeal');
+  if (voiceSeal) voiceSeal.innerHTML = seal(52);
 
   // show page chips
   initShowChips();
@@ -1785,6 +1839,7 @@ function trackAff(partner, source){
   document.querySelectorAll('[data-feature]').forEach(el => {
     if (!FEATURES[el.dataset.feature]) el.remove();
   });
+  applyAffLinks();
 
   let saved = null;
   try { saved = localStorage.getItem('judgy_theme'); } catch(e){}
@@ -1806,10 +1861,10 @@ function trackAff(partner, source){
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10,8 16,12 10,16"/></svg>
       Show
     </button>
-    <button class="tab" data-tab="voice" onclick="switchTab('voice')" aria-label="Voice Court">
+    ${FEATURES.voiceCourt ? `<button class="tab" data-tab="voice" onclick="switchTab('voice')" aria-label="Voice Court">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
       Voice
-    </button>
+    </button>` : ''}
     <button class="tab" data-tab="more" onclick="switchTab('more')" aria-label="More">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
       More

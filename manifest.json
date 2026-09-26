@@ -1,0 +1,14 @@
+{
+  "name": "The Judgy",
+  "short_name": "Judgy",
+  "description": "Bring any case. Get a brutally honest verdict.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#FAF8F3",
+  "theme_color": "#1E1E1E",
+  "icons": [
+    { "src": "/judgy-icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/judgy-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}
