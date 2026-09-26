@@ -18,11 +18,9 @@ import Anthropic from "npm:@anthropic-ai/sdk@0.128.0";
 import { encodeBase64 } from "jsr:@std/encoding@1.0.11/base64";
 
 /* ── VOICES ───────────────────────────────────────────────────
-   Paste the voice IDs your current dashboard version uses — do not pick new
-   ones. Until they are filled in, episodes come back script-only
-   (audio_error: true) and the log says why. */
-const JUDGY_VOICE_ID = "PASTE_JUDGY_VOICE_ID";
-const BARRY_VOICE_ID = "PASTE_BARRY_VOICE_ID";
+   ElevenLabs voice IDs chosen by Eli. Change them only on purpose. */
+const JUDGY_VOICE_ID = "54Cze5LrTSyLgbO6Fhlc";
+const BARRY_VOICE_ID = "8ZYhGJrsDOe4C8yzEEhP";
 const VERDICT_VOICE_ID = JUDGY_VOICE_ID; // the verdict is read by Judgy unless your current version differs
 const ELEVEN_MODEL_ID = "eleven_multilingual_v2"; // match your current version if it uses another
 
@@ -58,6 +56,11 @@ FORMAT — output ONLY these lines, nothing else:
 [VERDICT]: one authoritative closing ruling from Judgy`;
 
 /* ── HTTP HELPERS ─────────────────────────────────────────── */
+// "https://thejudgy.com." (trailing dot) is the same site; browsers keep the dot in Origin.
+function isAllowedOrigin(origin: string | null): origin is string {
+  return !!origin && ALLOWED_ORIGINS.has(origin.replace(/\.$/, ""));
+}
+
 function corsHeaders(origin: string | null): Record<string, string> {
   const h: Record<string, string> = {
     "Access-Control-Allow-Methods": "POST, OPTIONS",
@@ -65,7 +68,7 @@ function corsHeaders(origin: string | null): Record<string, string> {
     "Access-Control-Max-Age": "86400",
     "Vary": "Origin",
   };
-  if (origin && ALLOWED_ORIGINS.has(origin)) h["Access-Control-Allow-Origin"] = origin;
+  if (isAllowedOrigin(origin)) h["Access-Control-Allow-Origin"] = origin;
   return h;
 }
 
@@ -225,7 +228,7 @@ async function handler(req: Request): Promise<Response> {
   const origin = req.headers.get("origin");
 
   if (req.method === "OPTIONS") {
-    return new Response(null, { status: origin && ALLOWED_ORIGINS.has(origin) ? 204 : 403, headers: corsHeaders(origin) });
+    return new Response(null, { status: isAllowedOrigin(origin) ? 204 : 403, headers: corsHeaders(origin) });
   }
   if (Deno.env.get("PODCAST_ENABLED") === "false") {
     return json(503, { error: "The Show is off the air right now. Back soon.", code: "disabled" }, origin);
@@ -233,7 +236,7 @@ async function handler(req: Request): Promise<Response> {
   if (req.method !== "POST") {
     return json(405, { error: "Method not allowed.", code: "method" }, origin, { Allow: "POST, OPTIONS" });
   }
-  if (!origin || !ALLOWED_ORIGINS.has(origin)) {
+  if (!isAllowedOrigin(origin)) {
     return json(403, { error: "Forbidden.", code: "origin" }, origin);
   }
 
